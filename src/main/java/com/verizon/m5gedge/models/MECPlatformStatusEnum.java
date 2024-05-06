@@ -46,8 +46,7 @@ public enum MECPlatformStatusEnum {
     @JsonCreator
     public static MECPlatformStatusEnum constructFromString(String toConvert) throws IOException {
         MECPlatformStatusEnum enumValue = fromString(toConvert);
-        if (enumValue == null)
-        {
+        if (enumValue == null) {
             throw new IOException("Unable to create enum instance with value: " + toConvert);
         }
         return enumValue;

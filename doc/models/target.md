@@ -23,7 +23,7 @@ Target resource definition.
 | `Region` | `String` | Optional | AWS region value. | String getRegion() | setRegion(String region) |
 | `Version` | `String` | Optional | Version of the underlying schema resource. | String getVersion() | setVersion(String version) |
 | `Versionid` | `String` | Optional | The version of the resource. | String getVersionid() | setVersionid(String versionid) |
-| `DescrIpTion` | `String` | Optional | Description of the target. | String getDescrIpTion() | setDescrIpTion(String descrIpTion) |
+| `Description` | `String` | Optional | Description of the target. | String getDescription() | setDescription(String description) |
 
 ## Example (as JSON)
 

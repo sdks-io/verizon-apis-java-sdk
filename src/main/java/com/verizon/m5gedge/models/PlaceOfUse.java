@@ -7,7 +7,6 @@
 package com.verizon.m5gedge.models;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonSetter;
 
 /**
@@ -41,7 +40,6 @@ public class PlaceOfUse {
      * @return Returns the Address
      */
     @JsonGetter("address")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     public Address getAddress() {
         return address;
     }
@@ -62,7 +60,6 @@ public class PlaceOfUse {
      * @return Returns the CustomerName
      */
     @JsonGetter("customerName")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     public CustomerName getCustomerName() {
         return customerName;
     }
@@ -92,9 +89,7 @@ public class PlaceOfUse {
      * @return a new {@link PlaceOfUse.Builder} object
      */
     public Builder toBuilder() {
-        Builder builder = new Builder()
-                .address(getAddress())
-                .customerName(getCustomerName());
+        Builder builder = new Builder(address, customerName);
         return builder;
     }
 
@@ -105,7 +100,21 @@ public class PlaceOfUse {
         private Address address;
         private CustomerName customerName;
 
+        /**
+         * Initialization constructor.
+         */
+        public Builder() {
+        }
 
+        /**
+         * Initialization constructor.
+         * @param  address  Address value for address.
+         * @param  customerName  CustomerName value for customerName.
+         */
+        public Builder(Address address, CustomerName customerName) {
+            this.address = address;
+            this.customerName = customerName;
+        }
 
         /**
          * Setter for address.

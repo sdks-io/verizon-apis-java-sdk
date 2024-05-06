@@ -13,7 +13,7 @@ Make changes to a device group, including changing the name and description, and
 |  --- | --- | --- | --- | --- | --- |
 | `DevicesToAdd` | [`List<DeviceId>`](../../doc/models/device-id.md) | Optional | Zero or more devices to add to the device group, specified by device ID. The devices will be removed from their current device groups. You can use POST /devices/actions/list to get a list of all devices in the account. | List<DeviceId> getDevicesToAdd() | setDevicesToAdd(List<DeviceId> devicesToAdd) |
 | `DevicesToRemove` | [`List<DeviceId>`](../../doc/models/device-id.md) | Optional | Zero or more devices to remove from the device group, specified by device ID. The devices will be added to the default device group. | List<DeviceId> getDevicesToRemove() | setDevicesToRemove(List<DeviceId> devicesToRemove) |
-| `NewGroupDescrIpTion` | `String` | Optional | A new description for the device group. Do not include this parameter to leave the group description unchanged. | String getNewGroupDescrIpTion() | setNewGroupDescrIpTion(String newGroupDescrIpTion) |
+| `NewGroupDescription` | `String` | Optional | A new description for the device group. Do not include this parameter to leave the group description unchanged. | String getNewGroupDescription() | setNewGroupDescription(String newGroupDescription) |
 | `NewGroupName` | `String` | Optional | A new name for the device group. Do not include this parameter if you want to leave the group name unchanged. | String getNewGroupName() | setNewGroupName(String newGroupName) |
 
 ## Example (as JSON)

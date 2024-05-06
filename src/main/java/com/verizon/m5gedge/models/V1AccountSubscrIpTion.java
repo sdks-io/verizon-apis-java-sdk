@@ -11,9 +11,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonSetter;
 
 /**
- * This is a model class for V1AccountSubscrIpTion type.
+ * This is a model class for V1AccountSubscription type.
  */
-public class V1AccountSubscrIpTion {
+public class V1AccountSubscription {
     private String accountName;
     private String purchaseType;
     private Integer licenseCount;
@@ -23,7 +23,7 @@ public class V1AccountSubscrIpTion {
     /**
      * Default constructor.
      */
-    public V1AccountSubscrIpTion() {
+    public V1AccountSubscription() {
     }
 
     /**
@@ -34,7 +34,7 @@ public class V1AccountSubscrIpTion {
      * @param  licenseUsedCount  Integer value for licenseUsedCount.
      * @param  updateTime  String value for updateTime.
      */
-    public V1AccountSubscrIpTion(
+    public V1AccountSubscription(
             String accountName,
             String purchaseType,
             Integer licenseCount,
@@ -153,20 +153,20 @@ public class V1AccountSubscrIpTion {
     }
 
     /**
-     * Converts this V1AccountSubscrIpTion into string format.
+     * Converts this V1AccountSubscription into string format.
      * @return String representation of this class
      */
     @Override
     public String toString() {
-        return "V1AccountSubscrIpTion [" + "accountName=" + accountName + ", purchaseType="
+        return "V1AccountSubscription [" + "accountName=" + accountName + ", purchaseType="
                 + purchaseType + ", licenseCount=" + licenseCount + ", licenseUsedCount="
                 + licenseUsedCount + ", updateTime=" + updateTime + "]";
     }
 
     /**
-     * Builds a new {@link V1AccountSubscrIpTion.Builder} object.
+     * Builds a new {@link V1AccountSubscription.Builder} object.
      * Creates the instance with the state of the current model.
-     * @return a new {@link V1AccountSubscrIpTion.Builder} object
+     * @return a new {@link V1AccountSubscription.Builder} object
      */
     public Builder toBuilder() {
         Builder builder = new Builder()
@@ -179,7 +179,7 @@ public class V1AccountSubscrIpTion {
     }
 
     /**
-     * Class to build instances of {@link V1AccountSubscrIpTion}.
+     * Class to build instances of {@link V1AccountSubscription}.
      */
     public static class Builder {
         private String accountName;
@@ -241,11 +241,11 @@ public class V1AccountSubscrIpTion {
         }
 
         /**
-         * Builds a new {@link V1AccountSubscrIpTion} object using the set fields.
-         * @return {@link V1AccountSubscrIpTion}
+         * Builds a new {@link V1AccountSubscription} object using the set fields.
+         * @return {@link V1AccountSubscription}
          */
-        public V1AccountSubscrIpTion build() {
-            return new V1AccountSubscrIpTion(accountName, purchaseType, licenseCount,
+        public V1AccountSubscription build() {
+            return new V1AccountSubscription(accountName, purchaseType, licenseCount,
                     licenseUsedCount, updateTime);
         }
     }

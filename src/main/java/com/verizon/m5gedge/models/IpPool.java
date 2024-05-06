@@ -11,9 +11,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonSetter;
 
 /**
- * This is a model class for IpPool type.
+ * This is a model class for IPPool type.
  */
-public class IpPool {
+public class IPPool {
     private String poolName;
     private String poolType;
     private Boolean isDefaultPool;
@@ -21,7 +21,7 @@ public class IpPool {
     /**
      * Default constructor.
      */
-    public IpPool() {
+    public IPPool() {
     }
 
     /**
@@ -30,7 +30,7 @@ public class IpPool {
      * @param  poolType  String value for poolType.
      * @param  isDefaultPool  Boolean value for isDefaultPool.
      */
-    public IpPool(
+    public IPPool(
             String poolName,
             String poolType,
             Boolean isDefaultPool) {
@@ -103,19 +103,19 @@ public class IpPool {
     }
 
     /**
-     * Converts this IpPool into string format.
+     * Converts this IPPool into string format.
      * @return String representation of this class
      */
     @Override
     public String toString() {
-        return "IpPool [" + "poolName=" + poolName + ", poolType=" + poolType + ", isDefaultPool="
+        return "IPPool [" + "poolName=" + poolName + ", poolType=" + poolType + ", isDefaultPool="
                 + isDefaultPool + "]";
     }
 
     /**
-     * Builds a new {@link IpPool.Builder} object.
+     * Builds a new {@link IPPool.Builder} object.
      * Creates the instance with the state of the current model.
-     * @return a new {@link IpPool.Builder} object
+     * @return a new {@link IPPool.Builder} object
      */
     public Builder toBuilder() {
         Builder builder = new Builder()
@@ -126,7 +126,7 @@ public class IpPool {
     }
 
     /**
-     * Class to build instances of {@link IpPool}.
+     * Class to build instances of {@link IPPool}.
      */
     public static class Builder {
         private String poolName;
@@ -166,11 +166,11 @@ public class IpPool {
         }
 
         /**
-         * Builds a new {@link IpPool} object using the set fields.
-         * @return {@link IpPool}
+         * Builds a new {@link IPPool} object using the set fields.
+         * @return {@link IPPool}
          */
-        public IpPool build() {
-            return new IpPool(poolName, poolType, isDefaultPool);
+        public IPPool build() {
+            return new IPPool(poolName, poolType, isDefaultPool);
         }
     }
 }

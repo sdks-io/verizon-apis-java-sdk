@@ -15,7 +15,7 @@ import com.verizon.m5gedge.http.response.ApiResponse;
 import com.verizon.m5gedge.models.ChangeConfigurationRequest;
 import com.verizon.m5gedge.models.ChangeConfigurationResponse;
 import com.verizon.m5gedge.models.FindDeviceByPropertyResponseList;
-import com.verizon.m5gedge.models.QuerySubscrIpTionRequest;
+import com.verizon.m5gedge.models.QuerySubscriptionRequest;
 import com.verizon.m5gedge.models.RemoveDeviceRequest;
 import com.verizon.m5gedge.models.SearchDeviceByPropertyResponseList;
 import com.verizon.m5gedge.models.SearchDeviceEventHistoryRequest;
@@ -40,6 +40,170 @@ public final class CloudConnectorDevicesController extends BaseController {
      */
     public CloudConnectorDevicesController(GlobalConfiguration globalConfig) {
         super(globalConfig);
+    }
+
+    /**
+     * Returns the readings of a specified sensor, with the most recent reading first. Sensor
+     * readings are stored as events; this request an array of events.
+     * @param  fieldname  Required parameter: The name of the sensor.
+     * @param  body  Required parameter: The device identifier and fields to match in the search.
+     * @return    Returns the SearchSensorHistoryResponseList wrapped in ApiResponse response from the API call
+     * @throws    ApiException    Represents error response from the server.
+     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
+     */
+    public ApiResponse<SearchSensorHistoryResponseList> searchSensorReadings(
+            final String fieldname,
+            final SearchSensorHistoryRequest body) throws ApiException, IOException {
+        return prepareSearchSensorReadingsRequest(fieldname, body).execute();
+    }
+
+    /**
+     * Returns the readings of a specified sensor, with the most recent reading first. Sensor
+     * readings are stored as events; this request an array of events.
+     * @param  fieldname  Required parameter: The name of the sensor.
+     * @param  body  Required parameter: The device identifier and fields to match in the search.
+     * @return    Returns the SearchSensorHistoryResponseList wrapped in ApiResponse response from the API call
+     */
+    public CompletableFuture<ApiResponse<SearchSensorHistoryResponseList>> searchSensorReadingsAsync(
+            final String fieldname,
+            final SearchSensorHistoryRequest body) {
+        try { 
+            return prepareSearchSensorReadingsRequest(fieldname, body).executeAsync(); 
+        } catch (Exception e) {  
+            throw new CompletionException(e); 
+        }
+    }
+
+    /**
+     * Builds the ApiCall object for searchSensorReadings.
+     */
+    private ApiCall<ApiResponse<SearchSensorHistoryResponseList>, ApiException> prepareSearchSensorReadingsRequest(
+            final String fieldname,
+            final SearchSensorHistoryRequest body) throws JsonProcessingException, IOException {
+        return new ApiCall.Builder<ApiResponse<SearchSensorHistoryResponseList>, ApiException>()
+                .globalConfig(getGlobalConfiguration())
+                .requestBuilder(requestBuilder -> requestBuilder
+                        .server(Server.CLOUD_CONNECTOR.value())
+                        .path("/devices/fields/{fieldname}/actions/history")
+                        .bodyParam(param -> param.value(body))
+                        .bodySerializer(() ->  ApiHelper.serialize(body))
+                        .templateParam(param -> param.key("fieldname").value(fieldname)
+                                .shouldEncode(true))
+                        .headerParam(param -> param.key("Content-Type")
+                                .value("application/json").isRequired(false))
+                        .headerParam(param -> param.key("accept").value("application/json"))
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
+                        .httpMethod(HttpMethod.POST))
+                .responseHandler(responseHandler -> responseHandler
+                        .responseClassType(ResponseClassType.API_RESPONSE)
+                        .apiResponseDeserializer(
+                                response -> ApiHelper.deserialize(response, SearchSensorHistoryResponseList.class))
+                        .nullify404(false)
+                        .globalErrorCase(GLOBAL_ERROR_CASES))
+                .build();
+    }
+
+    /**
+     * Remove a device from a ThingSpace account.
+     * @param  body  Required parameter: The request body identifies the device to delete.
+     * @throws    ApiException    Represents error response from the server.
+     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
+     */
+    public ApiResponse<Void> deleteDeviceFromAccount(
+            final RemoveDeviceRequest body) throws ApiException, IOException {
+        return prepareDeleteDeviceFromAccountRequest(body).execute();
+    }
+
+    /**
+     * Remove a device from a ThingSpace account.
+     * @param  body  Required parameter: The request body identifies the device to delete.
+     * @return    Returns the Void wrapped in ApiResponse response from the API call
+     */
+    public CompletableFuture<ApiResponse<Void>> deleteDeviceFromAccountAsync(
+            final RemoveDeviceRequest body) {
+        try { 
+            return prepareDeleteDeviceFromAccountRequest(body).executeAsync(); 
+        } catch (Exception e) {  
+            throw new CompletionException(e); 
+        }
+    }
+
+    /**
+     * Builds the ApiCall object for deleteDeviceFromAccount.
+     */
+    private ApiCall<ApiResponse<Void>, ApiException> prepareDeleteDeviceFromAccountRequest(
+            final RemoveDeviceRequest body) throws JsonProcessingException, IOException {
+        return new ApiCall.Builder<ApiResponse<Void>, ApiException>()
+                .globalConfig(getGlobalConfiguration())
+                .requestBuilder(requestBuilder -> requestBuilder
+                        .server(Server.CLOUD_CONNECTOR.value())
+                        .path("/devices/actions/delete")
+                        .bodyParam(param -> param.value(body))
+                        .bodySerializer(() ->  ApiHelper.serialize(body))
+                        .headerParam(param -> param.key("Content-Type")
+                                .value("application/json").isRequired(false))
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
+                        .httpMethod(HttpMethod.POST))
+                .responseHandler(responseHandler -> responseHandler
+                        .responseClassType(ResponseClassType.API_RESPONSE)
+                        .nullify404(false)
+                        .globalErrorCase(GLOBAL_ERROR_CASES))
+                .build();
+    }
+
+    /**
+     * Find devices by property values. Returns an array of all matching device resources.
+     * @param  body  Required parameter: The request body specifies fields and values to match.
+     * @return    Returns the FindDeviceByPropertyResponseList wrapped in ApiResponse response from the API call
+     * @throws    ApiException    Represents error response from the server.
+     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
+     */
+    public ApiResponse<FindDeviceByPropertyResponseList> findDeviceByPropertyValues(
+            final QuerySubscriptionRequest body) throws ApiException, IOException {
+        return prepareFindDeviceByPropertyValuesRequest(body).execute();
+    }
+
+    /**
+     * Find devices by property values. Returns an array of all matching device resources.
+     * @param  body  Required parameter: The request body specifies fields and values to match.
+     * @return    Returns the FindDeviceByPropertyResponseList wrapped in ApiResponse response from the API call
+     */
+    public CompletableFuture<ApiResponse<FindDeviceByPropertyResponseList>> findDeviceByPropertyValuesAsync(
+            final QuerySubscriptionRequest body) {
+        try { 
+            return prepareFindDeviceByPropertyValuesRequest(body).executeAsync(); 
+        } catch (Exception e) {  
+            throw new CompletionException(e); 
+        }
+    }
+
+    /**
+     * Builds the ApiCall object for findDeviceByPropertyValues.
+     */
+    private ApiCall<ApiResponse<FindDeviceByPropertyResponseList>, ApiException> prepareFindDeviceByPropertyValuesRequest(
+            final QuerySubscriptionRequest body) throws JsonProcessingException, IOException {
+        return new ApiCall.Builder<ApiResponse<FindDeviceByPropertyResponseList>, ApiException>()
+                .globalConfig(getGlobalConfiguration())
+                .requestBuilder(requestBuilder -> requestBuilder
+                        .server(Server.CLOUD_CONNECTOR.value())
+                        .path("/devices/actions/query")
+                        .bodyParam(param -> param.value(body))
+                        .bodySerializer(() ->  ApiHelper.serialize(body))
+                        .headerParam(param -> param.key("Content-Type")
+                                .value("application/json").isRequired(false))
+                        .headerParam(param -> param.key("accept").value("application/json"))
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
+                        .httpMethod(HttpMethod.POST))
+                .responseHandler(responseHandler -> responseHandler
+                        .responseClassType(ResponseClassType.API_RESPONSE)
+                        .apiResponseDeserializer(
+                                response -> ApiHelper.deserialize(response, FindDeviceByPropertyResponseList.class))
+                        .nullify404(false)
+                        .globalErrorCase(GLOBAL_ERROR_CASES))
+                .build();
     }
 
     /**
@@ -85,64 +249,13 @@ public final class CloudConnectorDevicesController extends BaseController {
                         .headerParam(param -> param.key("Content-Type")
                                 .value("application/json").isRequired(false))
                         .headerParam(param -> param.key("accept").value("application/json"))
-                        .authenticationKey(BaseController.AUTHENTICATION_KEY)
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
                         .httpMethod(HttpMethod.POST))
                 .responseHandler(responseHandler -> responseHandler
                         .responseClassType(ResponseClassType.API_RESPONSE)
                         .apiResponseDeserializer(
                                 response -> ApiHelper.deserialize(response, ChangeConfigurationResponse.class))
-                        .nullify404(false)
-                        .globalErrorCase(GLOBAL_ERROR_CASES))
-                .build();
-    }
-
-    /**
-     * Find devices by property values. Returns an array of all matching device resources.
-     * @param  body  Required parameter: The request body specifies fields and values to match.
-     * @return    Returns the FindDeviceByPropertyResponseList wrapped in ApiResponse response from the API call
-     * @throws    ApiException    Represents error response from the server.
-     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
-     */
-    public ApiResponse<FindDeviceByPropertyResponseList> findDeviceByPropertyValues(
-            final QuerySubscrIpTionRequest body) throws ApiException, IOException {
-        return prepareFindDeviceByPropertyValuesRequest(body).execute();
-    }
-
-    /**
-     * Find devices by property values. Returns an array of all matching device resources.
-     * @param  body  Required parameter: The request body specifies fields and values to match.
-     * @return    Returns the FindDeviceByPropertyResponseList wrapped in ApiResponse response from the API call
-     */
-    public CompletableFuture<ApiResponse<FindDeviceByPropertyResponseList>> findDeviceByPropertyValuesAsync(
-            final QuerySubscrIpTionRequest body) {
-        try { 
-            return prepareFindDeviceByPropertyValuesRequest(body).executeAsync(); 
-        } catch (Exception e) {  
-            throw new CompletionException(e); 
-        }
-    }
-
-    /**
-     * Builds the ApiCall object for findDeviceByPropertyValues.
-     */
-    private ApiCall<ApiResponse<FindDeviceByPropertyResponseList>, ApiException> prepareFindDeviceByPropertyValuesRequest(
-            final QuerySubscrIpTionRequest body) throws JsonProcessingException, IOException {
-        return new ApiCall.Builder<ApiResponse<FindDeviceByPropertyResponseList>, ApiException>()
-                .globalConfig(getGlobalConfiguration())
-                .requestBuilder(requestBuilder -> requestBuilder
-                        .server(Server.CLOUD_CONNECTOR.value())
-                        .path("/devices/actions/query")
-                        .bodyParam(param -> param.value(body))
-                        .bodySerializer(() ->  ApiHelper.serialize(body))
-                        .headerParam(param -> param.key("Content-Type")
-                                .value("application/json").isRequired(false))
-                        .headerParam(param -> param.key("accept").value("application/json"))
-                        .authenticationKey(BaseController.AUTHENTICATION_KEY)
-                        .httpMethod(HttpMethod.POST))
-                .responseHandler(responseHandler -> responseHandler
-                        .responseClassType(ResponseClassType.API_RESPONSE)
-                        .apiResponseDeserializer(
-                                response -> ApiHelper.deserialize(response, FindDeviceByPropertyResponseList.class))
                         .nullify404(false)
                         .globalErrorCase(GLOBAL_ERROR_CASES))
                 .build();
@@ -156,7 +269,7 @@ public final class CloudConnectorDevicesController extends BaseController {
      * @throws    IOException    Signals that an I/O exception of some sort has occurred.
      */
     public ApiResponse<SearchDeviceByPropertyResponseList> searchDevicesResourcesByPropertyValues(
-            final QuerySubscrIpTionRequest body) throws ApiException, IOException {
+            final QuerySubscriptionRequest body) throws ApiException, IOException {
         return prepareSearchDevicesResourcesByPropertyValuesRequest(body).execute();
     }
 
@@ -166,7 +279,7 @@ public final class CloudConnectorDevicesController extends BaseController {
      * @return    Returns the SearchDeviceByPropertyResponseList wrapped in ApiResponse response from the API call
      */
     public CompletableFuture<ApiResponse<SearchDeviceByPropertyResponseList>> searchDevicesResourcesByPropertyValuesAsync(
-            final QuerySubscrIpTionRequest body) {
+            final QuerySubscriptionRequest body) {
         try { 
             return prepareSearchDevicesResourcesByPropertyValuesRequest(body).executeAsync(); 
         } catch (Exception e) {  
@@ -178,7 +291,7 @@ public final class CloudConnectorDevicesController extends BaseController {
      * Builds the ApiCall object for searchDevicesResourcesByPropertyValues.
      */
     private ApiCall<ApiResponse<SearchDeviceByPropertyResponseList>, ApiException> prepareSearchDevicesResourcesByPropertyValuesRequest(
-            final QuerySubscrIpTionRequest body) throws JsonProcessingException, IOException {
+            final QuerySubscriptionRequest body) throws JsonProcessingException, IOException {
         return new ApiCall.Builder<ApiResponse<SearchDeviceByPropertyResponseList>, ApiException>()
                 .globalConfig(getGlobalConfiguration())
                 .requestBuilder(requestBuilder -> requestBuilder
@@ -189,7 +302,8 @@ public final class CloudConnectorDevicesController extends BaseController {
                         .headerParam(param -> param.key("Content-Type")
                                 .value("application/json").isRequired(false))
                         .headerParam(param -> param.key("accept").value("application/json"))
-                        .authenticationKey(BaseController.AUTHENTICATION_KEY)
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
                         .httpMethod(HttpMethod.POST))
                 .responseHandler(responseHandler -> responseHandler
                         .responseClassType(ResponseClassType.API_RESPONSE)
@@ -243,121 +357,13 @@ public final class CloudConnectorDevicesController extends BaseController {
                         .headerParam(param -> param.key("Content-Type")
                                 .value("application/json").isRequired(false))
                         .headerParam(param -> param.key("accept").value("application/json"))
-                        .authenticationKey(BaseController.AUTHENTICATION_KEY)
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
                         .httpMethod(HttpMethod.POST))
                 .responseHandler(responseHandler -> responseHandler
                         .responseClassType(ResponseClassType.API_RESPONSE)
                         .apiResponseDeserializer(
                                 response -> ApiHelper.deserialize(response, SearchDeviceEventHistoryResponseList.class))
-                        .nullify404(false)
-                        .globalErrorCase(GLOBAL_ERROR_CASES))
-                .build();
-    }
-
-    /**
-     * Returns the readings of a specified sensor, with the most recent reading first. Sensor
-     * readings are stored as events; this request an array of events.
-     * @param  fieldname  Required parameter: The name of the sensor.
-     * @param  body  Required parameter: The device identifier and fields to match in the search.
-     * @return    Returns the SearchSensorHistoryResponseList wrapped in ApiResponse response from the API call
-     * @throws    ApiException    Represents error response from the server.
-     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
-     */
-    public ApiResponse<SearchSensorHistoryResponseList> searchSensorReadings(
-            final String fieldname,
-            final SearchSensorHistoryRequest body) throws ApiException, IOException {
-        return prepareSearchSensorReadingsRequest(fieldname, body).execute();
-    }
-
-    /**
-     * Returns the readings of a specified sensor, with the most recent reading first. Sensor
-     * readings are stored as events; this request an array of events.
-     * @param  fieldname  Required parameter: The name of the sensor.
-     * @param  body  Required parameter: The device identifier and fields to match in the search.
-     * @return    Returns the SearchSensorHistoryResponseList wrapped in ApiResponse response from the API call
-     */
-    public CompletableFuture<ApiResponse<SearchSensorHistoryResponseList>> searchSensorReadingsAsync(
-            final String fieldname,
-            final SearchSensorHistoryRequest body) {
-        try { 
-            return prepareSearchSensorReadingsRequest(fieldname, body).executeAsync(); 
-        } catch (Exception e) {  
-            throw new CompletionException(e); 
-        }
-    }
-
-    /**
-     * Builds the ApiCall object for searchSensorReadings.
-     */
-    private ApiCall<ApiResponse<SearchSensorHistoryResponseList>, ApiException> prepareSearchSensorReadingsRequest(
-            final String fieldname,
-            final SearchSensorHistoryRequest body) throws JsonProcessingException, IOException {
-        return new ApiCall.Builder<ApiResponse<SearchSensorHistoryResponseList>, ApiException>()
-                .globalConfig(getGlobalConfiguration())
-                .requestBuilder(requestBuilder -> requestBuilder
-                        .server(Server.CLOUD_CONNECTOR.value())
-                        .path("/devices/fields/{fieldname}/actions/history")
-                        .bodyParam(param -> param.value(body))
-                        .bodySerializer(() ->  ApiHelper.serialize(body))
-                        .templateParam(param -> param.key("fieldname").value(fieldname)
-                                .shouldEncode(true))
-                        .headerParam(param -> param.key("Content-Type")
-                                .value("application/json").isRequired(false))
-                        .headerParam(param -> param.key("accept").value("application/json"))
-                        .authenticationKey(BaseController.AUTHENTICATION_KEY)
-                        .httpMethod(HttpMethod.POST))
-                .responseHandler(responseHandler -> responseHandler
-                        .responseClassType(ResponseClassType.API_RESPONSE)
-                        .apiResponseDeserializer(
-                                response -> ApiHelper.deserialize(response, SearchSensorHistoryResponseList.class))
-                        .nullify404(false)
-                        .globalErrorCase(GLOBAL_ERROR_CASES))
-                .build();
-    }
-
-    /**
-     * Remove a device from a ThingSpace account.
-     * @param  body  Required parameter: The request body identifies the device to delete.
-     * @throws    ApiException    Represents error response from the server.
-     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
-     */
-    public ApiResponse<Void> deleteDeviceFromAccount(
-            final RemoveDeviceRequest body) throws ApiException, IOException {
-        return prepareDeleteDeviceFromAccountRequest(body).execute();
-    }
-
-    /**
-     * Remove a device from a ThingSpace account.
-     * @param  body  Required parameter: The request body identifies the device to delete.
-     * @return    Returns the Void wrapped in ApiResponse response from the API call
-     */
-    public CompletableFuture<ApiResponse<Void>> deleteDeviceFromAccountAsync(
-            final RemoveDeviceRequest body) {
-        try { 
-            return prepareDeleteDeviceFromAccountRequest(body).executeAsync(); 
-        } catch (Exception e) {  
-            throw new CompletionException(e); 
-        }
-    }
-
-    /**
-     * Builds the ApiCall object for deleteDeviceFromAccount.
-     */
-    private ApiCall<ApiResponse<Void>, ApiException> prepareDeleteDeviceFromAccountRequest(
-            final RemoveDeviceRequest body) throws JsonProcessingException, IOException {
-        return new ApiCall.Builder<ApiResponse<Void>, ApiException>()
-                .globalConfig(getGlobalConfiguration())
-                .requestBuilder(requestBuilder -> requestBuilder
-                        .server(Server.CLOUD_CONNECTOR.value())
-                        .path("/devices/actions/delete")
-                        .bodyParam(param -> param.value(body))
-                        .bodySerializer(() ->  ApiHelper.serialize(body))
-                        .headerParam(param -> param.key("Content-Type")
-                                .value("application/json").isRequired(false))
-                        .authenticationKey(BaseController.AUTHENTICATION_KEY)
-                        .httpMethod(HttpMethod.POST))
-                .responseHandler(responseHandler -> responseHandler
-                        .responseClassType(ResponseClassType.API_RESPONSE)
                         .nullify404(false)
                         .globalErrorCase(GLOBAL_ERROR_CASES))
                 .build();

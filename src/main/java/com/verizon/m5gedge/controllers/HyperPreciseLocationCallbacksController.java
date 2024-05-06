@@ -39,6 +39,78 @@ public final class HyperPreciseLocationCallbacksController extends BaseControlle
     }
 
     /**
+     * Stops ThingSpace from sending callback messages for the specified account and listener name.
+     * @param  accountNumber  Required parameter: A unique identifier for a account.
+     * @param  service  Required parameter: The name of the callback service that will be deleted.
+     * @throws    ApiException    Represents error response from the server.
+     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
+     */
+    public ApiResponse<Void> deregisterCallback(
+            final String accountNumber,
+            final String service) throws ApiException, IOException {
+        return prepareDeregisterCallbackRequest(accountNumber, service).execute();
+    }
+
+    /**
+     * Stops ThingSpace from sending callback messages for the specified account and listener name.
+     * @param  accountNumber  Required parameter: A unique identifier for a account.
+     * @param  service  Required parameter: The name of the callback service that will be deleted.
+     * @return    Returns the Void wrapped in ApiResponse response from the API call
+     */
+    public CompletableFuture<ApiResponse<Void>> deregisterCallbackAsync(
+            final String accountNumber,
+            final String service) {
+        try { 
+            return prepareDeregisterCallbackRequest(accountNumber, service).executeAsync(); 
+        } catch (Exception e) {  
+            throw new CompletionException(e); 
+        }
+    }
+
+    /**
+     * Builds the ApiCall object for deregisterCallback.
+     */
+    private ApiCall<ApiResponse<Void>, ApiException> prepareDeregisterCallbackRequest(
+            final String accountNumber,
+            final String service) throws IOException {
+        return new ApiCall.Builder<ApiResponse<Void>, ApiException>()
+                .globalConfig(getGlobalConfiguration())
+                .requestBuilder(requestBuilder -> requestBuilder
+                        .server(Server.HYPER_PRECISE_LOCATION.value())
+                        .path("/callbacks")
+                        .queryParam(param -> param.key("accountNumber")
+                                .value(accountNumber))
+                        .queryParam(param -> param.key("service")
+                                .value(service))
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
+                        .httpMethod(HttpMethod.DELETE))
+                .responseHandler(responseHandler -> responseHandler
+                        .responseClassType(ResponseClassType.API_RESPONSE)
+                        .nullify404(false)
+                        .localErrorCase("400",
+                                 ErrorCase.setReason("Bad request.",
+                                (reason, context) -> new HyperPreciseLocationResultException(reason, context)))
+                        .localErrorCase("401",
+                                 ErrorCase.setReason("Unauthorized request. Access token is missing or invalid.",
+                                (reason, context) -> new HyperPreciseLocationResultException(reason, context)))
+                        .localErrorCase("403",
+                                 ErrorCase.setReason("Forbidden request.",
+                                (reason, context) -> new HyperPreciseLocationResultException(reason, context)))
+                        .localErrorCase("404",
+                                 ErrorCase.setReason("Bad request. Not found.",
+                                (reason, context) -> new HyperPreciseLocationResultException(reason, context)))
+                        .localErrorCase("409",
+                                 ErrorCase.setReason("Bad request. Conflict state.",
+                                (reason, context) -> new HyperPreciseLocationResultException(reason, context)))
+                        .localErrorCase("500",
+                                 ErrorCase.setReason("Internal Server Error.",
+                                (reason, context) -> new HyperPreciseLocationResultException(reason, context)))
+                        .globalErrorCase(GLOBAL_ERROR_CASES))
+                .build();
+    }
+
+    /**
      * Find registered callback listener for account by account number.
      * @param  accountNumber  Required parameter: A unique identifier for an account.
      * @return    Returns the List of CallbackCreated wrapped in ApiResponse response from the API call
@@ -77,7 +149,8 @@ public final class HyperPreciseLocationCallbacksController extends BaseControlle
                         .queryParam(param -> param.key("accountNumber")
                                 .value(accountNumber))
                         .headerParam(param -> param.key("accept").value("application/json"))
-                        .authenticationKey(BaseController.AUTHENTICATION_KEY)
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
                         .httpMethod(HttpMethod.GET))
                 .responseHandler(responseHandler -> responseHandler
                         .responseClassType(ResponseClassType.API_RESPONSE)
@@ -161,83 +234,13 @@ public final class HyperPreciseLocationCallbacksController extends BaseControlle
                         .headerParam(param -> param.key("Content-Type")
                                 .value("application/json").isRequired(false))
                         .headerParam(param -> param.key("accept").value("application/json"))
-                        .authenticationKey(BaseController.AUTHENTICATION_KEY)
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
                         .httpMethod(HttpMethod.POST))
                 .responseHandler(responseHandler -> responseHandler
                         .responseClassType(ResponseClassType.API_RESPONSE)
                         .apiResponseDeserializer(
                                 response -> ApiHelper.deserialize(response, CallbackRegistered.class))
-                        .nullify404(false)
-                        .localErrorCase("400",
-                                 ErrorCase.setReason("Bad request.",
-                                (reason, context) -> new HyperPreciseLocationResultException(reason, context)))
-                        .localErrorCase("401",
-                                 ErrorCase.setReason("Unauthorized request. Access token is missing or invalid.",
-                                (reason, context) -> new HyperPreciseLocationResultException(reason, context)))
-                        .localErrorCase("403",
-                                 ErrorCase.setReason("Forbidden request.",
-                                (reason, context) -> new HyperPreciseLocationResultException(reason, context)))
-                        .localErrorCase("404",
-                                 ErrorCase.setReason("Bad request. Not found.",
-                                (reason, context) -> new HyperPreciseLocationResultException(reason, context)))
-                        .localErrorCase("409",
-                                 ErrorCase.setReason("Bad request. Conflict state.",
-                                (reason, context) -> new HyperPreciseLocationResultException(reason, context)))
-                        .localErrorCase("500",
-                                 ErrorCase.setReason("Internal Server Error.",
-                                (reason, context) -> new HyperPreciseLocationResultException(reason, context)))
-                        .globalErrorCase(GLOBAL_ERROR_CASES))
-                .build();
-    }
-
-    /**
-     * Stops ThingSpace from sending callback messages for the specified account and listener name.
-     * @param  accountNumber  Required parameter: A unique identifier for a account.
-     * @param  service  Required parameter: The name of the callback service that will be deleted.
-     * @throws    ApiException    Represents error response from the server.
-     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
-     */
-    public ApiResponse<Void> deregisterCallback(
-            final String accountNumber,
-            final String service) throws ApiException, IOException {
-        return prepareDeregisterCallbackRequest(accountNumber, service).execute();
-    }
-
-    /**
-     * Stops ThingSpace from sending callback messages for the specified account and listener name.
-     * @param  accountNumber  Required parameter: A unique identifier for a account.
-     * @param  service  Required parameter: The name of the callback service that will be deleted.
-     * @return    Returns the Void wrapped in ApiResponse response from the API call
-     */
-    public CompletableFuture<ApiResponse<Void>> deregisterCallbackAsync(
-            final String accountNumber,
-            final String service) {
-        try { 
-            return prepareDeregisterCallbackRequest(accountNumber, service).executeAsync(); 
-        } catch (Exception e) {  
-            throw new CompletionException(e); 
-        }
-    }
-
-    /**
-     * Builds the ApiCall object for deregisterCallback.
-     */
-    private ApiCall<ApiResponse<Void>, ApiException> prepareDeregisterCallbackRequest(
-            final String accountNumber,
-            final String service) throws IOException {
-        return new ApiCall.Builder<ApiResponse<Void>, ApiException>()
-                .globalConfig(getGlobalConfiguration())
-                .requestBuilder(requestBuilder -> requestBuilder
-                        .server(Server.HYPER_PRECISE_LOCATION.value())
-                        .path("/callbacks")
-                        .queryParam(param -> param.key("accountNumber")
-                                .value(accountNumber))
-                        .queryParam(param -> param.key("service")
-                                .value(service))
-                        .authenticationKey(BaseController.AUTHENTICATION_KEY)
-                        .httpMethod(HttpMethod.DELETE))
-                .responseHandler(responseHandler -> responseHandler
-                        .responseClassType(ResponseClassType.API_RESPONSE)
                         .nullify404(false)
                         .localErrorCase("400",
                                  ErrorCase.setReason("Bad request.",

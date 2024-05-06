@@ -39,62 +39,6 @@ public final class ConnectivityCallbacksController extends BaseController {
     }
 
     /**
-     * Returns the name and endpoint URL of the callback listening services registered for a given
-     * account.
-     * @param  aname  Required parameter: Account name.
-     * @return    Returns the List of ConnectivityManagementCallback wrapped in ApiResponse response from the API call
-     * @throws    ApiException    Represents error response from the server.
-     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
-     */
-    public ApiResponse<List<ConnectivityManagementCallback>> listRegisteredCallbacks(
-            final String aname) throws ApiException, IOException {
-        return prepareListRegisteredCallbacksRequest(aname).execute();
-    }
-
-    /**
-     * Returns the name and endpoint URL of the callback listening services registered for a given
-     * account.
-     * @param  aname  Required parameter: Account name.
-     * @return    Returns the List of ConnectivityManagementCallback wrapped in ApiResponse response from the API call
-     */
-    public CompletableFuture<ApiResponse<List<ConnectivityManagementCallback>>> listRegisteredCallbacksAsync(
-            final String aname) {
-        try { 
-            return prepareListRegisteredCallbacksRequest(aname).executeAsync(); 
-        } catch (Exception e) {  
-            throw new CompletionException(e); 
-        }
-    }
-
-    /**
-     * Builds the ApiCall object for listRegisteredCallbacks.
-     */
-    private ApiCall<ApiResponse<List<ConnectivityManagementCallback>>, ApiException> prepareListRegisteredCallbacksRequest(
-            final String aname) throws IOException {
-        return new ApiCall.Builder<ApiResponse<List<ConnectivityManagementCallback>>, ApiException>()
-                .globalConfig(getGlobalConfiguration())
-                .requestBuilder(requestBuilder -> requestBuilder
-                        .server(Server.THINGSPACE.value())
-                        .path("/m2m/v1/callbacks/{aname}")
-                        .templateParam(param -> param.key("aname").value(aname)
-                                .shouldEncode(true))
-                        .headerParam(param -> param.key("accept").value("application/json"))
-                        .authenticationKey(BaseController.AUTHENTICATION_KEY)
-                        .httpMethod(HttpMethod.GET))
-                .responseHandler(responseHandler -> responseHandler
-                        .responseClassType(ResponseClassType.API_RESPONSE)
-                        .apiResponseDeserializer(
-                                response -> ApiHelper.deserializeArray(response,
-                                        ConnectivityManagementCallback[].class))
-                        .nullify404(false)
-                        .localErrorCase("400",
-                                 ErrorCase.setReason("Error response.",
-                                (reason, context) -> new ConnectivityManagementResultException(reason, context)))
-                        .globalErrorCase(GLOBAL_ERROR_CASES))
-                .build();
-    }
-
-    /**
      * You are responsible for creating and running a listening process on your server at that URL.
      * @param  aname  Required parameter: Account name.
      * @param  body  Required parameter: Request to register a callback.
@@ -142,12 +86,70 @@ public final class ConnectivityCallbacksController extends BaseController {
                         .headerParam(param -> param.key("Content-Type")
                                 .value("application/json").isRequired(false))
                         .headerParam(param -> param.key("accept").value("application/json"))
-                        .authenticationKey(BaseController.AUTHENTICATION_KEY)
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
                         .httpMethod(HttpMethod.POST))
                 .responseHandler(responseHandler -> responseHandler
                         .responseClassType(ResponseClassType.API_RESPONSE)
                         .apiResponseDeserializer(
                                 response -> ApiHelper.deserialize(response, CallbackActionResult.class))
+                        .nullify404(false)
+                        .localErrorCase("400",
+                                 ErrorCase.setReason("Error response.",
+                                (reason, context) -> new ConnectivityManagementResultException(reason, context)))
+                        .globalErrorCase(GLOBAL_ERROR_CASES))
+                .build();
+    }
+
+    /**
+     * Returns the name and endpoint URL of the callback listening services registered for a given
+     * account.
+     * @param  aname  Required parameter: Account name.
+     * @return    Returns the List of ConnectivityManagementCallback wrapped in ApiResponse response from the API call
+     * @throws    ApiException    Represents error response from the server.
+     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
+     */
+    public ApiResponse<List<ConnectivityManagementCallback>> listRegisteredCallbacks(
+            final String aname) throws ApiException, IOException {
+        return prepareListRegisteredCallbacksRequest(aname).execute();
+    }
+
+    /**
+     * Returns the name and endpoint URL of the callback listening services registered for a given
+     * account.
+     * @param  aname  Required parameter: Account name.
+     * @return    Returns the List of ConnectivityManagementCallback wrapped in ApiResponse response from the API call
+     */
+    public CompletableFuture<ApiResponse<List<ConnectivityManagementCallback>>> listRegisteredCallbacksAsync(
+            final String aname) {
+        try { 
+            return prepareListRegisteredCallbacksRequest(aname).executeAsync(); 
+        } catch (Exception e) {  
+            throw new CompletionException(e); 
+        }
+    }
+
+    /**
+     * Builds the ApiCall object for listRegisteredCallbacks.
+     */
+    private ApiCall<ApiResponse<List<ConnectivityManagementCallback>>, ApiException> prepareListRegisteredCallbacksRequest(
+            final String aname) throws IOException {
+        return new ApiCall.Builder<ApiResponse<List<ConnectivityManagementCallback>>, ApiException>()
+                .globalConfig(getGlobalConfiguration())
+                .requestBuilder(requestBuilder -> requestBuilder
+                        .server(Server.THINGSPACE.value())
+                        .path("/m2m/v1/callbacks/{aname}")
+                        .templateParam(param -> param.key("aname").value(aname)
+                                .shouldEncode(true))
+                        .headerParam(param -> param.key("accept").value("application/json"))
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
+                        .httpMethod(HttpMethod.GET))
+                .responseHandler(responseHandler -> responseHandler
+                        .responseClassType(ResponseClassType.API_RESPONSE)
+                        .apiResponseDeserializer(
+                                response -> ApiHelper.deserializeArray(response,
+                                        ConnectivityManagementCallback[].class))
                         .nullify404(false)
                         .localErrorCase("400",
                                  ErrorCase.setReason("Error response.",
@@ -202,7 +204,8 @@ public final class ConnectivityCallbacksController extends BaseController {
                         .templateParam(param -> param.key("sname").value(sname)
                                 .shouldEncode(true))
                         .headerParam(param -> param.key("accept").value("application/json"))
-                        .authenticationKey(BaseController.AUTHENTICATION_KEY)
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
                         .httpMethod(HttpMethod.DELETE))
                 .responseHandler(responseHandler -> responseHandler
                         .responseClassType(ResponseClassType.API_RESPONSE)

@@ -11,9 +11,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonSetter;
 
 /**
- * This is a model class for DeviceLocationSubscrIpTion type.
+ * This is a model class for DeviceLocationSubscription type.
  */
-public class DeviceLocationSubscrIpTion {
+public class DeviceLocationSubscription {
     private String accountName;
     private String locType;
     private String maxAllowance;
@@ -22,7 +22,7 @@ public class DeviceLocationSubscrIpTion {
     /**
      * Default constructor.
      */
-    public DeviceLocationSubscrIpTion() {
+    public DeviceLocationSubscription() {
     }
 
     /**
@@ -32,7 +32,7 @@ public class DeviceLocationSubscrIpTion {
      * @param  maxAllowance  String value for maxAllowance.
      * @param  purchaseTime  String value for purchaseTime.
      */
-    public DeviceLocationSubscrIpTion(
+    public DeviceLocationSubscription(
             String accountName,
             String locType,
             String maxAllowance,
@@ -128,20 +128,20 @@ public class DeviceLocationSubscrIpTion {
     }
 
     /**
-     * Converts this DeviceLocationSubscrIpTion into string format.
+     * Converts this DeviceLocationSubscription into string format.
      * @return String representation of this class
      */
     @Override
     public String toString() {
-        return "DeviceLocationSubscrIpTion [" + "accountName=" + accountName + ", locType="
+        return "DeviceLocationSubscription [" + "accountName=" + accountName + ", locType="
                 + locType + ", maxAllowance=" + maxAllowance + ", purchaseTime=" + purchaseTime
                 + "]";
     }
 
     /**
-     * Builds a new {@link DeviceLocationSubscrIpTion.Builder} object.
+     * Builds a new {@link DeviceLocationSubscription.Builder} object.
      * Creates the instance with the state of the current model.
-     * @return a new {@link DeviceLocationSubscrIpTion.Builder} object
+     * @return a new {@link DeviceLocationSubscription.Builder} object
      */
     public Builder toBuilder() {
         Builder builder = new Builder()
@@ -153,7 +153,7 @@ public class DeviceLocationSubscrIpTion {
     }
 
     /**
-     * Class to build instances of {@link DeviceLocationSubscrIpTion}.
+     * Class to build instances of {@link DeviceLocationSubscription}.
      */
     public static class Builder {
         private String accountName;
@@ -204,11 +204,11 @@ public class DeviceLocationSubscrIpTion {
         }
 
         /**
-         * Builds a new {@link DeviceLocationSubscrIpTion} object using the set fields.
-         * @return {@link DeviceLocationSubscrIpTion}
+         * Builds a new {@link DeviceLocationSubscription} object using the set fields.
+         * @return {@link DeviceLocationSubscription}
          */
-        public DeviceLocationSubscrIpTion build() {
-            return new DeviceLocationSubscrIpTion(accountName, locType, maxAllowance, purchaseTime);
+        public DeviceLocationSubscription build() {
+            return new DeviceLocationSubscription(accountName, locType, maxAllowance, purchaseTime);
         }
     }
 }

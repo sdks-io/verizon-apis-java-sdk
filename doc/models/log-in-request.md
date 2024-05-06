@@ -11,8 +11,8 @@ Request to initiate a Connectivity Management session and returns a VZ-M2M sessi
 
 | Name | Type | Tags | Description | Getter | Setter |
 |  --- | --- | --- | --- | --- | --- |
-| `Username` | `String` | Optional | The username for authentication. | String getUsername() | setUsername(String username) |
-| `Password` | `String` | Optional | The password for authentication. | String getPassword() | setPassword(String password) |
+| `Username` | `String` | Required | The username for authentication. | String getUsername() | setUsername(String username) |
+| `Password` | `String` | Required | The password for authentication. | String getPassword() | setPassword(String password) |
 
 ## Example (as JSON)
 

@@ -6,9 +6,11 @@
 
 package com.verizon.m5gedge;
 
+import com.verizon.m5gedge.authentication.ClientCredentialsAuthManager;
+import com.verizon.m5gedge.authentication.ClientCredentialsAuthModel;
 import com.verizon.m5gedge.controllers.AccountDevicesController;
 import com.verizon.m5gedge.controllers.AccountRequestsController;
-import com.verizon.m5gedge.controllers.AccountSubscrIpTionsController;
+import com.verizon.m5gedge.controllers.AccountSubscriptionsController;
 import com.verizon.m5gedge.controllers.AccountsController;
 import com.verizon.m5gedge.controllers.AnomalySettingsController;
 import com.verizon.m5gedge.controllers.AnomalyTriggersController;
@@ -18,7 +20,7 @@ import com.verizon.m5gedge.controllers.CampaignsV2Controller;
 import com.verizon.m5gedge.controllers.CampaignsV3Controller;
 import com.verizon.m5gedge.controllers.ClientLoggingController;
 import com.verizon.m5gedge.controllers.CloudConnectorDevicesController;
-import com.verizon.m5gedge.controllers.CloudConnectorSubscrIpTionsController;
+import com.verizon.m5gedge.controllers.CloudConnectorSubscriptionsController;
 import com.verizon.m5gedge.controllers.ConfigurationFilesController;
 import com.verizon.m5gedge.controllers.ConnectivityCallbacksController;
 import com.verizon.m5gedge.controllers.DeviceActionsController;
@@ -31,25 +33,29 @@ import com.verizon.m5gedge.controllers.DeviceProfileManagementController;
 import com.verizon.m5gedge.controllers.DeviceReportsController;
 import com.verizon.m5gedge.controllers.DeviceSMSMessagingController;
 import com.verizon.m5gedge.controllers.DeviceServiceManagementController;
-import com.verizon.m5gedge.controllers.DevicesLocationSubscrIpTionsController;
+import com.verizon.m5gedge.controllers.DevicesLocationSubscriptionsController;
 import com.verizon.m5gedge.controllers.DevicesLocationsController;
 import com.verizon.m5gedge.controllers.DiagnosticsCallbacksController;
 import com.verizon.m5gedge.controllers.DiagnosticsFactoryResetController;
 import com.verizon.m5gedge.controllers.DiagnosticsHistoryController;
 import com.verizon.m5gedge.controllers.DiagnosticsObservationsController;
 import com.verizon.m5gedge.controllers.DiagnosticsSettingsController;
-import com.verizon.m5gedge.controllers.DiagnosticsSubscrIpTionsController;
+import com.verizon.m5gedge.controllers.DiagnosticsSubscriptionsController;
 import com.verizon.m5gedge.controllers.EUICCDeviceProfileManagementController;
 import com.verizon.m5gedge.controllers.ExclusionsController;
 import com.verizon.m5gedge.controllers.FirmwareV1Controller;
 import com.verizon.m5gedge.controllers.FirmwareV3Controller;
 import com.verizon.m5gedge.controllers.FixedWirelessQualificationController;
+import com.verizon.m5gedge.controllers.GlobalReportingController;
 import com.verizon.m5gedge.controllers.HyperPreciseLocationCallbacksController;
 import com.verizon.m5gedge.controllers.M5gEdgePlatformsController;
 import com.verizon.m5gedge.controllers.MECController;
 import com.verizon.m5gedge.controllers.ManagingeSIMProfilesController;
 import com.verizon.m5gedge.controllers.OauthAuthorizationController;
 import com.verizon.m5gedge.controllers.PerformanceMetricsController;
+import com.verizon.m5gedge.controllers.PromotionPeriodInformationController;
+import com.verizon.m5gedge.controllers.RetrievetheTriggersController;
+import com.verizon.m5gedge.controllers.SIMActionsController;
 import com.verizon.m5gedge.controllers.SIMSecureforIoTLicensesController;
 import com.verizon.m5gedge.controllers.SMSController;
 import com.verizon.m5gedge.controllers.ServerLoggingController;
@@ -66,11 +72,12 @@ import com.verizon.m5gedge.controllers.SoftwareManagementLicensesV3Controller;
 import com.verizon.m5gedge.controllers.SoftwareManagementReportsV1Controller;
 import com.verizon.m5gedge.controllers.SoftwareManagementReportsV2Controller;
 import com.verizon.m5gedge.controllers.SoftwareManagementReportsV3Controller;
-import com.verizon.m5gedge.controllers.SoftwareManagementSubscrIpTionsV1Controller;
-import com.verizon.m5gedge.controllers.SoftwareManagementSubscrIpTionsV2Controller;
-import com.verizon.m5gedge.controllers.SoftwareManagementSubscrIpTionsV3Controller;
+import com.verizon.m5gedge.controllers.SoftwareManagementSubscriptionsV1Controller;
+import com.verizon.m5gedge.controllers.SoftwareManagementSubscriptionsV2Controller;
+import com.verizon.m5gedge.controllers.SoftwareManagementSubscriptionsV3Controller;
 import com.verizon.m5gedge.controllers.TargetsController;
 import com.verizon.m5gedge.controllers.ThingSpaceQualityofServiceAPIActionsController;
+import com.verizon.m5gedge.controllers.UpdateTriggersController;
 import com.verizon.m5gedge.controllers.UsageTriggerManagementController;
 import com.verizon.m5gedge.controllers.WirelessNetworkPerformanceController;
 import com.verizon.m5gedge.http.client.HttpClientConfiguration;
@@ -87,6 +94,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 /**
  * Gateway class for the library.
@@ -115,16 +123,16 @@ public final class VerizonClient implements Configuration {
     private EUICCDeviceProfileManagementController eUICCDeviceProfileManagement;
     private DevicesLocationsController devicesLocations;
     private ExclusionsController exclusions;
-    private DevicesLocationSubscrIpTionsController devicesLocationSubscrIpTions;
+    private DevicesLocationSubscriptionsController devicesLocationSubscriptions;
     private DeviceLocationCallbacksController deviceLocationCallbacks;
     private UsageTriggerManagementController usageTriggerManagement;
     private BillingController billing;
-    private SoftwareManagementSubscrIpTionsV1Controller softwareManagementSubscrIpTionsV1;
+    private SoftwareManagementSubscriptionsV1Controller softwareManagementSubscriptionsV1;
     private SoftwareManagementLicensesV1Controller softwareManagementLicensesV1;
     private FirmwareV1Controller firmwareV1;
     private SoftwareManagementCallbacksV1Controller softwareManagementCallbacksV1;
     private SoftwareManagementReportsV1Controller softwareManagementReportsV1;
-    private SoftwareManagementSubscrIpTionsV2Controller softwareManagementSubscrIpTionsV2;
+    private SoftwareManagementSubscriptionsV2Controller softwareManagementSubscriptionsV2;
     private SoftwareManagementLicensesV2Controller softwareManagementLicensesV2;
     private CampaignsV2Controller campaignsV2;
     private SoftwareManagementCallbacksV2Controller softwareManagementCallbacksV2;
@@ -132,7 +140,7 @@ public final class VerizonClient implements Configuration {
     private ClientLoggingController clientLogging;
     private ServerLoggingController serverLogging;
     private ConfigurationFilesController configurationFiles;
-    private SoftwareManagementSubscrIpTionsV3Controller softwareManagementSubscrIpTionsV3;
+    private SoftwareManagementSubscriptionsV3Controller softwareManagementSubscriptionsV3;
     private SoftwareManagementLicensesV3Controller softwareManagementLicensesV3;
     private CampaignsV3Controller campaignsV3;
     private SoftwareManagementReportsV3Controller softwareManagementReportsV3;
@@ -140,16 +148,16 @@ public final class VerizonClient implements Configuration {
     private AccountDevicesController accountDevices;
     private SoftwareManagementCallbacksV3Controller softwareManagementCallbacksV3;
     private SIMSecureforIoTLicensesController sIMSecureforIoTLicenses;
-    private AccountSubscrIpTionsController accountSubscrIpTions;
+    private AccountSubscriptionsController accountSubscriptions;
     private PerformanceMetricsController performanceMetrics;
-    private DiagnosticsSubscrIpTionsController diagnosticsSubscrIpTions;
+    private DiagnosticsSubscriptionsController diagnosticsSubscriptions;
     private DiagnosticsObservationsController diagnosticsObservations;
     private DiagnosticsHistoryController diagnosticsHistory;
     private DiagnosticsSettingsController diagnosticsSettings;
     private DiagnosticsCallbacksController diagnosticsCallbacks;
     private DiagnosticsFactoryResetController diagnosticsFactoryReset;
     private TargetsController targets;
-    private CloudConnectorSubscrIpTionsController cloudConnectorSubscrIpTions;
+    private CloudConnectorSubscriptionsController cloudConnectorSubscriptions;
     private CloudConnectorDevicesController cloudConnectorDevices;
     private DeviceServiceManagementController deviceServiceManagement;
     private DeviceReportsController deviceReports;
@@ -164,6 +172,11 @@ public final class VerizonClient implements Configuration {
     private DeviceActionsController deviceActions;
     private ThingSpaceQualityofServiceAPIActionsController thingSpaceQualityofServiceAPIActions;
     private MECController mEC;
+    private PromotionPeriodInformationController promotionPeriodInformation;
+    private RetrievetheTriggersController retrievetheTriggers;
+    private UpdateTriggersController updateTriggers;
+    private SIMActionsController sIMActions;
+    private GlobalReportingController globalReporting;
     private OauthAuthorizationController oauthAuthorization;
 
     private static final CompatibilityFactory compatibilityFactory = new CompatibilityFactoryImpl();
@@ -196,37 +209,33 @@ public final class VerizonClient implements Configuration {
     private ClientCredentialsAuthManager clientCredentialsAuthManager;
 
     /**
+     * The instance of ClientCredentialsAuthModel.
+     */
+    private ClientCredentialsAuthModel clientCredentialsAuthModel;
+
+    /**
      * Map of authentication Managers.
      */
-    private Map<String, Authentication> authentications;
-
+    private Map<String, Authentication> authentications = new HashMap<String, Authentication>();
 
     private VerizonClient(Environment environment, String vZM2mToken, HttpClient httpClient,
-            ReadonlyHttpClientConfiguration httpClientConfig, String oauthClientId,
-            String oauthClientSecret, OauthToken oauthToken, List<OauthScopeEnum> oauthScopes,
-            Map<String, Authentication> authentications) {
+            ReadonlyHttpClientConfiguration httpClientConfig,
+            ClientCredentialsAuthModel clientCredentialsAuthModel) {
         this.environment = environment;
         this.vZM2mToken = vZM2mToken;
         this.httpClient = httpClient;
         this.httpClientConfig = httpClientConfig;
-        this.authentications = 
-                (authentications == null) ? new HashMap<>() : new HashMap<>(authentications);
-        if (this.authentications.containsKey("global")) {
-            this.clientCredentialsAuthManager =
-                    (ClientCredentialsAuthManager) this.authentications.get("global");
-        }
 
-        if (!this.authentications.containsKey("global")
-                || !getClientCredentialsAuth().equals(oauthClientId, oauthClientSecret, oauthToken,
-                        oauthScopes)) {
-            this.clientCredentialsAuthManager = new ClientCredentialsAuthManager(oauthClientId,
-                    oauthClientSecret, oauthToken, oauthScopes);
-            this.authentications.put("global", clientCredentialsAuthManager);
-        }
+        this.clientCredentialsAuthModel = clientCredentialsAuthModel;
+
+        this.clientCredentialsAuthManager = new ClientCredentialsAuthManager(
+                clientCredentialsAuthModel);
+        this.authentications.put("oAuth2", clientCredentialsAuthManager);
 
         GlobalConfiguration globalConfig = new GlobalConfiguration.Builder()
-                .authentication(this.authentications).compatibilityFactory(compatibilityFactory)
                 .httpClient(httpClient).baseUri(server -> getBaseUri(server))
+                .compatibilityFactory(compatibilityFactory)
+                .authentication(this.authentications)
                 .userAgent(userAgent)
                 .globalHeader("VZ-M2M-Token", vZM2mToken)
                 .build();
@@ -249,17 +258,17 @@ public final class VerizonClient implements Configuration {
         eUICCDeviceProfileManagement = new EUICCDeviceProfileManagementController(globalConfig);
         devicesLocations = new DevicesLocationsController(globalConfig);
         exclusions = new ExclusionsController(globalConfig);
-        devicesLocationSubscrIpTions = new DevicesLocationSubscrIpTionsController(globalConfig);
+        devicesLocationSubscriptions = new DevicesLocationSubscriptionsController(globalConfig);
         deviceLocationCallbacks = new DeviceLocationCallbacksController(globalConfig);
         usageTriggerManagement = new UsageTriggerManagementController(globalConfig);
         billing = new BillingController(globalConfig);
-        softwareManagementSubscrIpTionsV1 = new SoftwareManagementSubscrIpTionsV1Controller(
+        softwareManagementSubscriptionsV1 = new SoftwareManagementSubscriptionsV1Controller(
                 globalConfig);
         softwareManagementLicensesV1 = new SoftwareManagementLicensesV1Controller(globalConfig);
         firmwareV1 = new FirmwareV1Controller(globalConfig);
         softwareManagementCallbacksV1 = new SoftwareManagementCallbacksV1Controller(globalConfig);
         softwareManagementReportsV1 = new SoftwareManagementReportsV1Controller(globalConfig);
-        softwareManagementSubscrIpTionsV2 = new SoftwareManagementSubscrIpTionsV2Controller(
+        softwareManagementSubscriptionsV2 = new SoftwareManagementSubscriptionsV2Controller(
                 globalConfig);
         softwareManagementLicensesV2 = new SoftwareManagementLicensesV2Controller(globalConfig);
         campaignsV2 = new CampaignsV2Controller(globalConfig);
@@ -268,7 +277,7 @@ public final class VerizonClient implements Configuration {
         clientLogging = new ClientLoggingController(globalConfig);
         serverLogging = new ServerLoggingController(globalConfig);
         configurationFiles = new ConfigurationFilesController(globalConfig);
-        softwareManagementSubscrIpTionsV3 = new SoftwareManagementSubscrIpTionsV3Controller(
+        softwareManagementSubscriptionsV3 = new SoftwareManagementSubscriptionsV3Controller(
                 globalConfig);
         softwareManagementLicensesV3 = new SoftwareManagementLicensesV3Controller(globalConfig);
         campaignsV3 = new CampaignsV3Controller(globalConfig);
@@ -277,16 +286,16 @@ public final class VerizonClient implements Configuration {
         accountDevices = new AccountDevicesController(globalConfig);
         softwareManagementCallbacksV3 = new SoftwareManagementCallbacksV3Controller(globalConfig);
         sIMSecureforIoTLicenses = new SIMSecureforIoTLicensesController(globalConfig);
-        accountSubscrIpTions = new AccountSubscrIpTionsController(globalConfig);
+        accountSubscriptions = new AccountSubscriptionsController(globalConfig);
         performanceMetrics = new PerformanceMetricsController(globalConfig);
-        diagnosticsSubscrIpTions = new DiagnosticsSubscrIpTionsController(globalConfig);
+        diagnosticsSubscriptions = new DiagnosticsSubscriptionsController(globalConfig);
         diagnosticsObservations = new DiagnosticsObservationsController(globalConfig);
         diagnosticsHistory = new DiagnosticsHistoryController(globalConfig);
         diagnosticsSettings = new DiagnosticsSettingsController(globalConfig);
         diagnosticsCallbacks = new DiagnosticsCallbacksController(globalConfig);
         diagnosticsFactoryReset = new DiagnosticsFactoryResetController(globalConfig);
         targets = new TargetsController(globalConfig);
-        cloudConnectorSubscrIpTions = new CloudConnectorSubscrIpTionsController(globalConfig);
+        cloudConnectorSubscriptions = new CloudConnectorSubscriptionsController(globalConfig);
         cloudConnectorDevices = new CloudConnectorDevicesController(globalConfig);
         deviceServiceManagement = new DeviceServiceManagementController(globalConfig);
         deviceReports = new DeviceReportsController(globalConfig);
@@ -302,6 +311,11 @@ public final class VerizonClient implements Configuration {
         thingSpaceQualityofServiceAPIActions = new ThingSpaceQualityofServiceAPIActionsController(
                 globalConfig);
         mEC = new MECController(globalConfig);
+        promotionPeriodInformation = new PromotionPeriodInformationController(globalConfig);
+        retrievetheTriggers = new RetrievetheTriggersController(globalConfig);
+        updateTriggers = new UpdateTriggersController(globalConfig);
+        sIMActions = new SIMActionsController(globalConfig);
+        globalReporting = new GlobalReportingController(globalConfig);
         oauthAuthorization = new OauthAuthorizationController(globalConfig);
     }
 
@@ -449,11 +463,11 @@ public final class VerizonClient implements Configuration {
     }
 
     /**
-     * Get the instance of DevicesLocationSubscrIpTionsController.
-     * @return devicesLocationSubscrIpTions
+     * Get the instance of DevicesLocationSubscriptionsController.
+     * @return devicesLocationSubscriptions
      */
-    public DevicesLocationSubscrIpTionsController getDevicesLocationSubscrIpTionsController() {
-        return devicesLocationSubscrIpTions;
+    public DevicesLocationSubscriptionsController getDevicesLocationSubscriptionsController() {
+        return devicesLocationSubscriptions;
     }
 
     /**
@@ -481,11 +495,11 @@ public final class VerizonClient implements Configuration {
     }
 
     /**
-     * Get the instance of SoftwareManagementSubscrIpTionsV1Controller.
-     * @return softwareManagementSubscrIpTionsV1
+     * Get the instance of SoftwareManagementSubscriptionsV1Controller.
+     * @return softwareManagementSubscriptionsV1
      */
-    public SoftwareManagementSubscrIpTionsV1Controller getSoftwareManagementSubscrIpTionsV1Controller() {
-        return softwareManagementSubscrIpTionsV1;
+    public SoftwareManagementSubscriptionsV1Controller getSoftwareManagementSubscriptionsV1Controller() {
+        return softwareManagementSubscriptionsV1;
     }
 
     /**
@@ -521,11 +535,11 @@ public final class VerizonClient implements Configuration {
     }
 
     /**
-     * Get the instance of SoftwareManagementSubscrIpTionsV2Controller.
-     * @return softwareManagementSubscrIpTionsV2
+     * Get the instance of SoftwareManagementSubscriptionsV2Controller.
+     * @return softwareManagementSubscriptionsV2
      */
-    public SoftwareManagementSubscrIpTionsV2Controller getSoftwareManagementSubscrIpTionsV2Controller() {
-        return softwareManagementSubscrIpTionsV2;
+    public SoftwareManagementSubscriptionsV2Controller getSoftwareManagementSubscriptionsV2Controller() {
+        return softwareManagementSubscriptionsV2;
     }
 
     /**
@@ -585,11 +599,11 @@ public final class VerizonClient implements Configuration {
     }
 
     /**
-     * Get the instance of SoftwareManagementSubscrIpTionsV3Controller.
-     * @return softwareManagementSubscrIpTionsV3
+     * Get the instance of SoftwareManagementSubscriptionsV3Controller.
+     * @return softwareManagementSubscriptionsV3
      */
-    public SoftwareManagementSubscrIpTionsV3Controller getSoftwareManagementSubscrIpTionsV3Controller() {
-        return softwareManagementSubscrIpTionsV3;
+    public SoftwareManagementSubscriptionsV3Controller getSoftwareManagementSubscriptionsV3Controller() {
+        return softwareManagementSubscriptionsV3;
     }
 
     /**
@@ -649,11 +663,11 @@ public final class VerizonClient implements Configuration {
     }
 
     /**
-     * Get the instance of AccountSubscrIpTionsController.
-     * @return accountSubscrIpTions
+     * Get the instance of AccountSubscriptionsController.
+     * @return accountSubscriptions
      */
-    public AccountSubscrIpTionsController getAccountSubscrIpTionsController() {
-        return accountSubscrIpTions;
+    public AccountSubscriptionsController getAccountSubscriptionsController() {
+        return accountSubscriptions;
     }
 
     /**
@@ -665,11 +679,11 @@ public final class VerizonClient implements Configuration {
     }
 
     /**
-     * Get the instance of DiagnosticsSubscrIpTionsController.
-     * @return diagnosticsSubscrIpTions
+     * Get the instance of DiagnosticsSubscriptionsController.
+     * @return diagnosticsSubscriptions
      */
-    public DiagnosticsSubscrIpTionsController getDiagnosticsSubscrIpTionsController() {
-        return diagnosticsSubscrIpTions;
+    public DiagnosticsSubscriptionsController getDiagnosticsSubscriptionsController() {
+        return diagnosticsSubscriptions;
     }
 
     /**
@@ -721,11 +735,11 @@ public final class VerizonClient implements Configuration {
     }
 
     /**
-     * Get the instance of CloudConnectorSubscrIpTionsController.
-     * @return cloudConnectorSubscrIpTions
+     * Get the instance of CloudConnectorSubscriptionsController.
+     * @return cloudConnectorSubscriptions
      */
-    public CloudConnectorSubscrIpTionsController getCloudConnectorSubscrIpTionsController() {
-        return cloudConnectorSubscrIpTions;
+    public CloudConnectorSubscriptionsController getCloudConnectorSubscriptionsController() {
+        return cloudConnectorSubscriptions;
     }
 
     /**
@@ -841,6 +855,46 @@ public final class VerizonClient implements Configuration {
     }
 
     /**
+     * Get the instance of PromotionPeriodInformationController.
+     * @return promotionPeriodInformation
+     */
+    public PromotionPeriodInformationController getPromotionPeriodInformationController() {
+        return promotionPeriodInformation;
+    }
+
+    /**
+     * Get the instance of RetrievetheTriggersController.
+     * @return retrievetheTriggers
+     */
+    public RetrievetheTriggersController getRetrievetheTriggersController() {
+        return retrievetheTriggers;
+    }
+
+    /**
+     * Get the instance of UpdateTriggersController.
+     * @return updateTriggers
+     */
+    public UpdateTriggersController getUpdateTriggersController() {
+        return updateTriggers;
+    }
+
+    /**
+     * Get the instance of SIMActionsController.
+     * @return sIMActions
+     */
+    public SIMActionsController getSIMActionsController() {
+        return sIMActions;
+    }
+
+    /**
+     * Get the instance of GlobalReportingController.
+     * @return globalReporting
+     */
+    public GlobalReportingController getGlobalReportingController() {
+        return globalReporting;
+    }
+
+    /**
      * Get the instance of OauthAuthorizationController.
      * @return oauthAuthorization
      */
@@ -886,6 +940,14 @@ public final class VerizonClient implements Configuration {
      */
     public ClientCredentialsAuth getClientCredentialsAuth() {
         return clientCredentialsAuthManager;
+    }
+
+    /**
+     * The auth credential model for ClientCredentialsAuth.
+     * @return the instance of ClientCredentialsAuthModel
+     */
+    public ClientCredentialsAuthModel getClientCredentialsAuthModel() {
+        return clientCredentialsAuthModel;
     }
     /**
      * The timeout to use for making HTTP requests.
@@ -954,7 +1016,7 @@ public final class VerizonClient implements Configuration {
             if (server.equals(Server.DEVICE_LOCATION)) {
                 return "https://thingspace.verizon.com/api/loc/v1";
             }
-            if (server.equals(Server.SUBSCR_IP_TION_SERVER)) {
+            if (server.equals(Server.SUBSCRIPTION_SERVER)) {
                 return "https://thingspace.verizon.com/api/subsc/v1";
             }
             if (server.equals(Server.SOFTWARE_MANAGEMENT_V1)) {
@@ -1009,13 +1071,9 @@ public final class VerizonClient implements Configuration {
         builder.environment = getEnvironment();
         builder.vZM2mToken = getVZM2mToken();
         builder.httpClient = getHttpClient();
-        builder.oauthClientId = getClientCredentialsAuth().getOauthClientId();
-        builder.oauthClientSecret = getClientCredentialsAuth().getOauthClientSecret();
-        builder.oauthToken = getClientCredentialsAuth().getOauthToken();
-        builder.oauthScopes = getClientCredentialsAuth().getOauthScopes();
-        builder.authentications = authentications;
-        builder.httpClientConfig(configBldr -> configBldr =
-                ((HttpClientConfiguration) httpClientConfig).newBuilder());
+        builder.clientCredentialsAuth(getClientCredentialsAuthModel()
+                .toBuilder().build());
+        builder.httpClientConfig(() -> ((HttpClientConfiguration) httpClientConfig).newBuilder());
         return builder;
     }
 
@@ -1027,11 +1085,8 @@ public final class VerizonClient implements Configuration {
         private Environment environment = Environment.PRODUCTION;
         private String vZM2mToken = "TODO: Replace";
         private HttpClient httpClient;
-        private String oauthClientId = "TODO: Replace";
-        private String oauthClientSecret = "TODO: Replace";
-        private OauthToken oauthToken = null;
-        private List<OauthScopeEnum> oauthScopes = null;
-        private Map<String, Authentication> authentications = null;
+        private ClientCredentialsAuthModel clientCredentialsAuthModel =
+                new ClientCredentialsAuthModel.Builder("", "").build();
         private HttpClientConfiguration.Builder httpClientConfigBuilder =
                 new HttpClientConfiguration.Builder();
 
@@ -1040,38 +1095,58 @@ public final class VerizonClient implements Configuration {
          * Credentials setter for ClientCredentialsAuth.
          * @param oauthClientId String value for oauthClientId.
          * @param oauthClientSecret String value for oauthClientSecret.
-         * @return Builder
+         * @deprecated This builder method is deprecated.
+         * Use {@link #clientCredentialsAuth(ClientCredentialsAuthModel) clientCredentialsAuth} instead.
+         * @return The current instance of builder.
          */
+        @Deprecated
         public Builder clientCredentialsAuthCredentials(String oauthClientId,
                 String oauthClientSecret) {
-            if (oauthClientId == null) {
-                throw new NullPointerException("OauthClientId cannot be null.");
-            }
-            if (oauthClientSecret == null) {
-                throw new NullPointerException("OauthClientSecret cannot be null.");
-            }
-            this.oauthClientId = oauthClientId;
-            this.oauthClientSecret = oauthClientSecret;
+            clientCredentialsAuthModel = clientCredentialsAuthModel.toBuilder()
+                .oauthClientId(oauthClientId)
+                .oauthClientSecret(oauthClientSecret)
+                .build();
             return this;
         }
 
         /**
          * Credentials setter for ClientCredentialsAuth.
          * @param oauthToken OauthToken value for oauthToken.
+         * @deprecated This builder method is deprecated.
+         * Use {@link #clientCredentialsAuth(ClientCredentialsAuthModel) clientCredentialsAuth} instead.
          * @return Builder
          */
+        @Deprecated
         public Builder oauthToken(OauthToken oauthToken) {
-            this.oauthToken = oauthToken;
+            clientCredentialsAuthModel = clientCredentialsAuthModel.toBuilder()
+                .oauthToken(oauthToken)
+                .build();
             return this;
         }
 
         /**
          * Credentials setter for ClientCredentialsAuth.
          * @param oauthScopes List of OauthScopeEnum value for oauthScopes.
+         * @deprecated This builder method is deprecated.
+         * Use {@link #clientCredentialsAuth(ClientCredentialsAuthModel) clientCredentialsAuth} instead.
          * @return Builder
          */
+        @Deprecated
         public Builder oauthScopes(List<OauthScopeEnum> oauthScopes) {
-            this.oauthScopes = oauthScopes;
+            clientCredentialsAuthModel = clientCredentialsAuthModel.toBuilder()
+                .oauthScopes(oauthScopes)
+                .build();
+            return this;
+        }
+
+        /**
+         * Credentials setter for ClientCredentialsAuth.
+         * @param clientCredentialsAuthModel The instance of ClientCredentialsAuthModel.
+         * @return The current instance of builder.
+         */
+        public Builder clientCredentialsAuth(
+                ClientCredentialsAuthModel clientCredentialsAuthModel) {
+            this.clientCredentialsAuthModel = clientCredentialsAuthModel;
             return this;
         }
 
@@ -1124,6 +1199,18 @@ public final class VerizonClient implements Configuration {
         }
 
         /**
+         * Private Setter for the Builder of httpClientConfiguration, takes in an operation to be performed
+         * on the builder instance of HTTP client configuration.
+         * 
+         * @param supplier Supplier for the builder of httpClientConfiguration.
+         * @return Builder
+         */
+        private Builder httpClientConfig(Supplier<HttpClientConfiguration.Builder> supplier) {
+            httpClientConfigBuilder = supplier.get();
+            return this;
+        }
+
+        /**
          * Builds a new VerizonClient object using the set fields.
          * @return VerizonClient
          */
@@ -1132,7 +1219,7 @@ public final class VerizonClient implements Configuration {
             httpClient = new OkClient(httpClientConfig.getConfiguration(), compatibilityFactory);
 
             return new VerizonClient(environment, vZM2mToken, httpClient, httpClientConfig,
-                    oauthClientId, oauthClientSecret, oauthToken, oauthScopes, authentications);
+                    clientCredentialsAuthModel);
         }
     }
 }

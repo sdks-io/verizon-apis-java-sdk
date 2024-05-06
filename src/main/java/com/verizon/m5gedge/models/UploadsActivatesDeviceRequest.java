@@ -21,7 +21,7 @@ public class UploadsActivatesDeviceRequest {
     private String uploadType;
     private String servicePlan;
     private String carrierIpPoolName;
-    private String mdnZIpCode;
+    private String mdnZipCode;
     private List<DeviceList> devices;
 
     /**
@@ -37,7 +37,7 @@ public class UploadsActivatesDeviceRequest {
      * @param  deviceSku  String value for deviceSku.
      * @param  uploadType  String value for uploadType.
      * @param  servicePlan  String value for servicePlan.
-     * @param  mdnZIpCode  String value for mdnZIpCode.
+     * @param  mdnZipCode  String value for mdnZipCode.
      * @param  devices  List of DeviceList value for devices.
      * @param  carrierIpPoolName  String value for carrierIpPoolName.
      */
@@ -47,7 +47,7 @@ public class UploadsActivatesDeviceRequest {
             String deviceSku,
             String uploadType,
             String servicePlan,
-            String mdnZIpCode,
+            String mdnZipCode,
             List<DeviceList> devices,
             String carrierIpPoolName) {
         this.accountName = accountName;
@@ -56,7 +56,7 @@ public class UploadsActivatesDeviceRequest {
         this.uploadType = uploadType;
         this.servicePlan = servicePlan;
         this.carrierIpPoolName = carrierIpPoolName;
-        this.mdnZIpCode = mdnZIpCode;
+        this.mdnZipCode = mdnZipCode;
         this.devices = devices;
     }
 
@@ -184,25 +184,25 @@ public class UploadsActivatesDeviceRequest {
     }
 
     /**
-     * Getter for MdnZIpCode.
+     * Getter for MdnZipCode.
      * The Zip code of the location where the line of service is primarily used, or a Zip code that
      * you have been told to use with these devices.
      * @return Returns the String
      */
     @JsonGetter("mdnZipCode")
-    public String getMdnZIpCode() {
-        return mdnZIpCode;
+    public String getMdnZipCode() {
+        return mdnZipCode;
     }
 
     /**
-     * Setter for MdnZIpCode.
+     * Setter for MdnZipCode.
      * The Zip code of the location where the line of service is primarily used, or a Zip code that
      * you have been told to use with these devices.
-     * @param mdnZIpCode Value for String
+     * @param mdnZipCode Value for String
      */
     @JsonSetter("mdnZipCode")
-    public void setMdnZIpCode(String mdnZIpCode) {
-        this.mdnZIpCode = mdnZIpCode;
+    public void setMdnZipCode(String mdnZipCode) {
+        this.mdnZipCode = mdnZipCode;
     }
 
     /**
@@ -233,7 +233,7 @@ public class UploadsActivatesDeviceRequest {
     public String toString() {
         return "UploadsActivatesDeviceRequest [" + "accountName=" + accountName + ", emailAddress="
                 + emailAddress + ", deviceSku=" + deviceSku + ", uploadType=" + uploadType
-                + ", servicePlan=" + servicePlan + ", mdnZIpCode=" + mdnZIpCode + ", devices="
+                + ", servicePlan=" + servicePlan + ", mdnZipCode=" + mdnZipCode + ", devices="
                 + devices + ", carrierIpPoolName=" + carrierIpPoolName + "]";
     }
 
@@ -244,7 +244,7 @@ public class UploadsActivatesDeviceRequest {
      */
     public Builder toBuilder() {
         Builder builder = new Builder(accountName, emailAddress, deviceSku, uploadType, servicePlan,
-                mdnZIpCode, devices)
+                mdnZipCode, devices)
                 .carrierIpPoolName(getCarrierIpPoolName());
         return builder;
     }
@@ -258,7 +258,7 @@ public class UploadsActivatesDeviceRequest {
         private String deviceSku;
         private String uploadType;
         private String servicePlan;
-        private String mdnZIpCode;
+        private String mdnZipCode;
         private List<DeviceList> devices;
         private String carrierIpPoolName;
 
@@ -275,17 +275,17 @@ public class UploadsActivatesDeviceRequest {
          * @param  deviceSku  String value for deviceSku.
          * @param  uploadType  String value for uploadType.
          * @param  servicePlan  String value for servicePlan.
-         * @param  mdnZIpCode  String value for mdnZIpCode.
+         * @param  mdnZipCode  String value for mdnZipCode.
          * @param  devices  List of DeviceList value for devices.
          */
         public Builder(String accountName, String emailAddress, String deviceSku, String uploadType,
-                String servicePlan, String mdnZIpCode, List<DeviceList> devices) {
+                String servicePlan, String mdnZipCode, List<DeviceList> devices) {
             this.accountName = accountName;
             this.emailAddress = emailAddress;
             this.deviceSku = deviceSku;
             this.uploadType = uploadType;
             this.servicePlan = servicePlan;
-            this.mdnZIpCode = mdnZIpCode;
+            this.mdnZipCode = mdnZipCode;
             this.devices = devices;
         }
 
@@ -340,12 +340,12 @@ public class UploadsActivatesDeviceRequest {
         }
 
         /**
-         * Setter for mdnZIpCode.
-         * @param  mdnZIpCode  String value for mdnZIpCode.
+         * Setter for mdnZipCode.
+         * @param  mdnZipCode  String value for mdnZipCode.
          * @return Builder
          */
-        public Builder mdnZIpCode(String mdnZIpCode) {
-            this.mdnZIpCode = mdnZIpCode;
+        public Builder mdnZipCode(String mdnZipCode) {
+            this.mdnZipCode = mdnZipCode;
             return this;
         }
 
@@ -375,7 +375,7 @@ public class UploadsActivatesDeviceRequest {
          */
         public UploadsActivatesDeviceRequest build() {
             return new UploadsActivatesDeviceRequest(accountName, emailAddress, deviceSku,
-                    uploadType, servicePlan, mdnZIpCode, devices, carrierIpPoolName);
+                    uploadType, servicePlan, mdnZipCode, devices, carrierIpPoolName);
         }
     }
 }

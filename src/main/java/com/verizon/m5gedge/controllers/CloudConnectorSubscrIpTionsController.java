@@ -12,10 +12,10 @@ import com.verizon.m5gedge.Server;
 import com.verizon.m5gedge.exceptions.ApiException;
 import com.verizon.m5gedge.http.request.HttpMethod;
 import com.verizon.m5gedge.http.response.ApiResponse;
-import com.verizon.m5gedge.models.CreateSubscrIpTionRequest;
-import com.verizon.m5gedge.models.DeleteSubscrIpTionRequest;
-import com.verizon.m5gedge.models.QuerySubscrIpTionRequest;
-import com.verizon.m5gedge.models.SubscrIpTion;
+import com.verizon.m5gedge.models.CreateSubscriptionRequest;
+import com.verizon.m5gedge.models.DeleteSubscriptionRequest;
+import com.verizon.m5gedge.models.QuerySubscriptionRequest;
+import com.verizon.m5gedge.models.Subscription;
 import io.apimatic.core.ApiCall;
 import io.apimatic.core.GlobalConfiguration;
 import io.apimatic.coreinterfaces.http.request.ResponseClassType;
@@ -27,13 +27,13 @@ import java.util.concurrent.CompletionException;
 /**
  * This class lists all the endpoints of the groups.
  */
-public final class CloudConnectorSubscrIpTionsController extends BaseController {
+public final class CloudConnectorSubscriptionsController extends BaseController {
 
     /**
      * Initializes the controller.
      * @param globalConfig    Configurations added in client.
      */
-    public CloudConnectorSubscrIpTionsController(GlobalConfiguration globalConfig) {
+    public CloudConnectorSubscriptionsController(GlobalConfiguration globalConfig) {
         super(globalConfig);
     }
 
@@ -42,13 +42,13 @@ public final class CloudConnectorSubscrIpTionsController extends BaseController 
      * account to an endpoint defined in a target resource.
      * @param  body  Required parameter: The request body provides the details of the subscription
      *         that you want to create.
-     * @return    Returns the SubscrIpTion wrapped in ApiResponse response from the API call
+     * @return    Returns the Subscription wrapped in ApiResponse response from the API call
      * @throws    ApiException    Represents error response from the server.
      * @throws    IOException    Signals that an I/O exception of some sort has occurred.
      */
-    public ApiResponse<SubscrIpTion> createSubscrIpTion(
-            final CreateSubscrIpTionRequest body) throws ApiException, IOException {
-        return prepareCreateSubscrIpTionRequest(body).execute();
+    public ApiResponse<Subscription> createSubscription(
+            final CreateSubscriptionRequest body) throws ApiException, IOException {
+        return prepareCreateSubscriptionRequest(body).execute();
     }
 
     /**
@@ -56,23 +56,23 @@ public final class CloudConnectorSubscrIpTionsController extends BaseController 
      * account to an endpoint defined in a target resource.
      * @param  body  Required parameter: The request body provides the details of the subscription
      *         that you want to create.
-     * @return    Returns the SubscrIpTion wrapped in ApiResponse response from the API call
+     * @return    Returns the Subscription wrapped in ApiResponse response from the API call
      */
-    public CompletableFuture<ApiResponse<SubscrIpTion>> createSubscrIpTionAsync(
-            final CreateSubscrIpTionRequest body) {
+    public CompletableFuture<ApiResponse<Subscription>> createSubscriptionAsync(
+            final CreateSubscriptionRequest body) {
         try { 
-            return prepareCreateSubscrIpTionRequest(body).executeAsync(); 
+            return prepareCreateSubscriptionRequest(body).executeAsync(); 
         } catch (Exception e) {  
             throw new CompletionException(e); 
         }
     }
 
     /**
-     * Builds the ApiCall object for createSubscrIpTion.
+     * Builds the ApiCall object for createSubscription.
      */
-    private ApiCall<ApiResponse<SubscrIpTion>, ApiException> prepareCreateSubscrIpTionRequest(
-            final CreateSubscrIpTionRequest body) throws JsonProcessingException, IOException {
-        return new ApiCall.Builder<ApiResponse<SubscrIpTion>, ApiException>()
+    private ApiCall<ApiResponse<Subscription>, ApiException> prepareCreateSubscriptionRequest(
+            final CreateSubscriptionRequest body) throws JsonProcessingException, IOException {
+        return new ApiCall.Builder<ApiResponse<Subscription>, ApiException>()
                 .globalConfig(getGlobalConfiguration())
                 .requestBuilder(requestBuilder -> requestBuilder
                         .server(Server.CLOUD_CONNECTOR.value())
@@ -82,12 +82,13 @@ public final class CloudConnectorSubscrIpTionsController extends BaseController 
                         .headerParam(param -> param.key("Content-Type")
                                 .value("application/json").isRequired(false))
                         .headerParam(param -> param.key("accept").value("application/json"))
-                        .authenticationKey(BaseController.AUTHENTICATION_KEY)
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
                         .httpMethod(HttpMethod.POST))
                 .responseHandler(responseHandler -> responseHandler
                         .responseClassType(ResponseClassType.API_RESPONSE)
                         .apiResponseDeserializer(
-                                response -> ApiHelper.deserialize(response, SubscrIpTion.class))
+                                response -> ApiHelper.deserialize(response, Subscription.class))
                         .nullify404(false)
                         .globalErrorCase(GLOBAL_ERROR_CASES))
                 .build();
@@ -97,36 +98,36 @@ public final class CloudConnectorSubscrIpTionsController extends BaseController 
      * Search for subscriptions by property values. Returns an array of all matching subscription
      * resources.
      * @param  body  Required parameter: The request body specifies fields and values to match.
-     * @return    Returns the List of SubscrIpTion wrapped in ApiResponse response from the API call
+     * @return    Returns the List of Subscription wrapped in ApiResponse response from the API call
      * @throws    ApiException    Represents error response from the server.
      * @throws    IOException    Signals that an I/O exception of some sort has occurred.
      */
-    public ApiResponse<List<SubscrIpTion>> querySubscrIpTion(
-            final QuerySubscrIpTionRequest body) throws ApiException, IOException {
-        return prepareQuerySubscrIpTionRequest(body).execute();
+    public ApiResponse<List<Subscription>> querySubscription(
+            final QuerySubscriptionRequest body) throws ApiException, IOException {
+        return prepareQuerySubscriptionRequest(body).execute();
     }
 
     /**
      * Search for subscriptions by property values. Returns an array of all matching subscription
      * resources.
      * @param  body  Required parameter: The request body specifies fields and values to match.
-     * @return    Returns the List of SubscrIpTion wrapped in ApiResponse response from the API call
+     * @return    Returns the List of Subscription wrapped in ApiResponse response from the API call
      */
-    public CompletableFuture<ApiResponse<List<SubscrIpTion>>> querySubscrIpTionAsync(
-            final QuerySubscrIpTionRequest body) {
+    public CompletableFuture<ApiResponse<List<Subscription>>> querySubscriptionAsync(
+            final QuerySubscriptionRequest body) {
         try { 
-            return prepareQuerySubscrIpTionRequest(body).executeAsync(); 
+            return prepareQuerySubscriptionRequest(body).executeAsync(); 
         } catch (Exception e) {  
             throw new CompletionException(e); 
         }
     }
 
     /**
-     * Builds the ApiCall object for querySubscrIpTion.
+     * Builds the ApiCall object for querySubscription.
      */
-    private ApiCall<ApiResponse<List<SubscrIpTion>>, ApiException> prepareQuerySubscrIpTionRequest(
-            final QuerySubscrIpTionRequest body) throws JsonProcessingException, IOException {
-        return new ApiCall.Builder<ApiResponse<List<SubscrIpTion>>, ApiException>()
+    private ApiCall<ApiResponse<List<Subscription>>, ApiException> prepareQuerySubscriptionRequest(
+            final QuerySubscriptionRequest body) throws JsonProcessingException, IOException {
+        return new ApiCall.Builder<ApiResponse<List<Subscription>>, ApiException>()
                 .globalConfig(getGlobalConfiguration())
                 .requestBuilder(requestBuilder -> requestBuilder
                         .server(Server.CLOUD_CONNECTOR.value())
@@ -136,13 +137,14 @@ public final class CloudConnectorSubscrIpTionsController extends BaseController 
                         .headerParam(param -> param.key("Content-Type")
                                 .value("application/json").isRequired(false))
                         .headerParam(param -> param.key("accept").value("application/json"))
-                        .authenticationKey(BaseController.AUTHENTICATION_KEY)
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
                         .httpMethod(HttpMethod.POST))
                 .responseHandler(responseHandler -> responseHandler
                         .responseClassType(ResponseClassType.API_RESPONSE)
                         .apiResponseDeserializer(
                                 response -> ApiHelper.deserializeArray(response,
-                                        SubscrIpTion[].class))
+                                        Subscription[].class))
                         .nullify404(false)
                         .globalErrorCase(GLOBAL_ERROR_CASES))
                 .build();
@@ -154,9 +156,9 @@ public final class CloudConnectorSubscrIpTionsController extends BaseController 
      * @throws    ApiException    Represents error response from the server.
      * @throws    IOException    Signals that an I/O exception of some sort has occurred.
      */
-    public ApiResponse<Void> deleteSubscrIpTion(
-            final DeleteSubscrIpTionRequest body) throws ApiException, IOException {
-        return prepareDeleteSubscrIpTionRequest(body).execute();
+    public ApiResponse<Void> deleteSubscription(
+            final DeleteSubscriptionRequest body) throws ApiException, IOException {
+        return prepareDeleteSubscriptionRequest(body).execute();
     }
 
     /**
@@ -164,20 +166,20 @@ public final class CloudConnectorSubscrIpTionsController extends BaseController 
      * @param  body  Required parameter: The request body identifies the subscription to delete.
      * @return    Returns the Void wrapped in ApiResponse response from the API call
      */
-    public CompletableFuture<ApiResponse<Void>> deleteSubscrIpTionAsync(
-            final DeleteSubscrIpTionRequest body) {
+    public CompletableFuture<ApiResponse<Void>> deleteSubscriptionAsync(
+            final DeleteSubscriptionRequest body) {
         try { 
-            return prepareDeleteSubscrIpTionRequest(body).executeAsync(); 
+            return prepareDeleteSubscriptionRequest(body).executeAsync(); 
         } catch (Exception e) {  
             throw new CompletionException(e); 
         }
     }
 
     /**
-     * Builds the ApiCall object for deleteSubscrIpTion.
+     * Builds the ApiCall object for deleteSubscription.
      */
-    private ApiCall<ApiResponse<Void>, ApiException> prepareDeleteSubscrIpTionRequest(
-            final DeleteSubscrIpTionRequest body) throws JsonProcessingException, IOException {
+    private ApiCall<ApiResponse<Void>, ApiException> prepareDeleteSubscriptionRequest(
+            final DeleteSubscriptionRequest body) throws JsonProcessingException, IOException {
         return new ApiCall.Builder<ApiResponse<Void>, ApiException>()
                 .globalConfig(getGlobalConfiguration())
                 .requestBuilder(requestBuilder -> requestBuilder
@@ -187,7 +189,8 @@ public final class CloudConnectorSubscrIpTionsController extends BaseController 
                         .bodySerializer(() ->  ApiHelper.serialize(body))
                         .headerParam(param -> param.key("Content-Type")
                                 .value("application/json").isRequired(false))
-                        .authenticationKey(BaseController.AUTHENTICATION_KEY)
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
                         .httpMethod(HttpMethod.POST))
                 .responseHandler(responseHandler -> responseHandler
                         .responseClassType(ResponseClassType.API_RESPONSE)

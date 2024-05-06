@@ -1,11 +1,11 @@
 
-# Ip Pool
+# IP Pool
 
 IP pool that is available to the account.
 
 ## Structure
 
-`IpPool`
+`IPPool`
 
 ## Fields
 

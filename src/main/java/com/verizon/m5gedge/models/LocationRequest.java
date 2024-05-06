@@ -7,6 +7,7 @@
 package com.verizon.m5gedge.models;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import java.util.List;
 
@@ -15,9 +16,9 @@ import java.util.List;
  */
 public class LocationRequest {
     private String accountName;
+    private List<DeviceInfo> deviceList;
     private AccuracyModeEnum accuracyMode;
     private CacheModeEnum cacheMode;
-    private List<DeviceInfo> deviceList;
 
     /**
      * Default constructor.
@@ -28,19 +29,19 @@ public class LocationRequest {
     /**
      * Initialization constructor.
      * @param  accountName  String value for accountName.
+     * @param  deviceList  List of DeviceInfo value for deviceList.
      * @param  accuracyMode  AccuracyModeEnum value for accuracyMode.
      * @param  cacheMode  CacheModeEnum value for cacheMode.
-     * @param  deviceList  List of DeviceInfo value for deviceList.
      */
     public LocationRequest(
             String accountName,
+            List<DeviceInfo> deviceList,
             AccuracyModeEnum accuracyMode,
-            CacheModeEnum cacheMode,
-            List<DeviceInfo> deviceList) {
+            CacheModeEnum cacheMode) {
         this.accountName = accountName;
+        this.deviceList = deviceList;
         this.accuracyMode = accuracyMode;
         this.cacheMode = cacheMode;
-        this.deviceList = deviceList;
     }
 
     /**
@@ -64,46 +65,6 @@ public class LocationRequest {
     }
 
     /**
-     * Getter for AccuracyMode.
-     * Accurary, currently only 0-coarse supported.
-     * @return Returns the AccuracyModeEnum
-     */
-    @JsonGetter("accuracyMode")
-    public AccuracyModeEnum getAccuracyMode() {
-        return accuracyMode;
-    }
-
-    /**
-     * Setter for AccuracyMode.
-     * Accurary, currently only 0-coarse supported.
-     * @param accuracyMode Value for AccuracyModeEnum
-     */
-    @JsonSetter("accuracyMode")
-    public void setAccuracyMode(AccuracyModeEnum accuracyMode) {
-        this.accuracyMode = accuracyMode;
-    }
-
-    /**
-     * Getter for CacheMode.
-     * Location cache mode.
-     * @return Returns the CacheModeEnum
-     */
-    @JsonGetter("cacheMode")
-    public CacheModeEnum getCacheMode() {
-        return cacheMode;
-    }
-
-    /**
-     * Setter for CacheMode.
-     * Location cache mode.
-     * @param cacheMode Value for CacheModeEnum
-     */
-    @JsonSetter("cacheMode")
-    public void setCacheMode(CacheModeEnum cacheMode) {
-        this.cacheMode = cacheMode;
-    }
-
-    /**
      * Getter for DeviceList.
      * Device list.
      * @return Returns the List of DeviceInfo
@@ -124,13 +85,55 @@ public class LocationRequest {
     }
 
     /**
+     * Getter for AccuracyMode.
+     * Accurary, currently only 0-coarse supported.
+     * @return Returns the AccuracyModeEnum
+     */
+    @JsonGetter("accuracyMode")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public AccuracyModeEnum getAccuracyMode() {
+        return accuracyMode;
+    }
+
+    /**
+     * Setter for AccuracyMode.
+     * Accurary, currently only 0-coarse supported.
+     * @param accuracyMode Value for AccuracyModeEnum
+     */
+    @JsonSetter("accuracyMode")
+    public void setAccuracyMode(AccuracyModeEnum accuracyMode) {
+        this.accuracyMode = accuracyMode;
+    }
+
+    /**
+     * Getter for CacheMode.
+     * Location cache mode.
+     * @return Returns the CacheModeEnum
+     */
+    @JsonGetter("cacheMode")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public CacheModeEnum getCacheMode() {
+        return cacheMode;
+    }
+
+    /**
+     * Setter for CacheMode.
+     * Location cache mode.
+     * @param cacheMode Value for CacheModeEnum
+     */
+    @JsonSetter("cacheMode")
+    public void setCacheMode(CacheModeEnum cacheMode) {
+        this.cacheMode = cacheMode;
+    }
+
+    /**
      * Converts this LocationRequest into string format.
      * @return String representation of this class
      */
     @Override
     public String toString() {
-        return "LocationRequest [" + "accountName=" + accountName + ", accuracyMode=" + accuracyMode
-                + ", cacheMode=" + cacheMode + ", deviceList=" + deviceList + "]";
+        return "LocationRequest [" + "accountName=" + accountName + ", deviceList=" + deviceList
+                + ", accuracyMode=" + accuracyMode + ", cacheMode=" + cacheMode + "]";
     }
 
     /**
@@ -139,7 +142,9 @@ public class LocationRequest {
      * @return a new {@link LocationRequest.Builder} object
      */
     public Builder toBuilder() {
-        Builder builder = new Builder(accountName, accuracyMode, cacheMode, deviceList);
+        Builder builder = new Builder(accountName, deviceList)
+                .accuracyMode(getAccuracyMode())
+                .cacheMode(getCacheMode());
         return builder;
     }
 
@@ -148,9 +153,9 @@ public class LocationRequest {
      */
     public static class Builder {
         private String accountName;
+        private List<DeviceInfo> deviceList;
         private AccuracyModeEnum accuracyMode;
         private CacheModeEnum cacheMode;
-        private List<DeviceInfo> deviceList;
 
         /**
          * Initialization constructor.
@@ -161,15 +166,10 @@ public class LocationRequest {
         /**
          * Initialization constructor.
          * @param  accountName  String value for accountName.
-         * @param  accuracyMode  AccuracyModeEnum value for accuracyMode.
-         * @param  cacheMode  CacheModeEnum value for cacheMode.
          * @param  deviceList  List of DeviceInfo value for deviceList.
          */
-        public Builder(String accountName, AccuracyModeEnum accuracyMode, CacheModeEnum cacheMode,
-                List<DeviceInfo> deviceList) {
+        public Builder(String accountName, List<DeviceInfo> deviceList) {
             this.accountName = accountName;
-            this.accuracyMode = accuracyMode;
-            this.cacheMode = cacheMode;
             this.deviceList = deviceList;
         }
 
@@ -180,6 +180,16 @@ public class LocationRequest {
          */
         public Builder accountName(String accountName) {
             this.accountName = accountName;
+            return this;
+        }
+
+        /**
+         * Setter for deviceList.
+         * @param  deviceList  List of DeviceInfo value for deviceList.
+         * @return Builder
+         */
+        public Builder deviceList(List<DeviceInfo> deviceList) {
+            this.deviceList = deviceList;
             return this;
         }
 
@@ -204,21 +214,11 @@ public class LocationRequest {
         }
 
         /**
-         * Setter for deviceList.
-         * @param  deviceList  List of DeviceInfo value for deviceList.
-         * @return Builder
-         */
-        public Builder deviceList(List<DeviceInfo> deviceList) {
-            this.deviceList = deviceList;
-            return this;
-        }
-
-        /**
          * Builds a new {@link LocationRequest} object using the set fields.
          * @return {@link LocationRequest}
          */
         public LocationRequest build() {
-            return new LocationRequest(accountName, accuracyMode, cacheMode, deviceList);
+            return new LocationRequest(accountName, deviceList, accuracyMode, cacheMode);
         }
     }
 }

@@ -12,9 +12,9 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 import java.util.List;
 
 /**
- * This is a model class for SecuritySubscrIpTion type.
+ * This is a model class for SecuritySubscription type.
  */
-public class SecuritySubscrIpTion {
+public class SecuritySubscription {
     private List<ExtendedAttributes> extendedAttributes;
     private Integer licenseAssigned;
     private Integer licenseAvailable;
@@ -25,7 +25,7 @@ public class SecuritySubscrIpTion {
     /**
      * Default constructor.
      */
-    public SecuritySubscrIpTion() {
+    public SecuritySubscription() {
     }
 
     /**
@@ -37,7 +37,7 @@ public class SecuritySubscrIpTion {
      * @param  licenseType  String value for licenseType.
      * @param  skuNumber  String value for skuNumber.
      */
-    public SecuritySubscrIpTion(
+    public SecuritySubscription(
             List<ExtendedAttributes> extendedAttributes,
             Integer licenseAssigned,
             Integer licenseAvailable,
@@ -181,21 +181,21 @@ public class SecuritySubscrIpTion {
     }
 
     /**
-     * Converts this SecuritySubscrIpTion into string format.
+     * Converts this SecuritySubscription into string format.
      * @return String representation of this class
      */
     @Override
     public String toString() {
-        return "SecuritySubscrIpTion [" + "extendedAttributes=" + extendedAttributes
+        return "SecuritySubscription [" + "extendedAttributes=" + extendedAttributes
                 + ", licenseAssigned=" + licenseAssigned + ", licenseAvailable=" + licenseAvailable
                 + ", licensePurchased=" + licensePurchased + ", licenseType=" + licenseType
                 + ", skuNumber=" + skuNumber + "]";
     }
 
     /**
-     * Builds a new {@link SecuritySubscrIpTion.Builder} object.
+     * Builds a new {@link SecuritySubscription.Builder} object.
      * Creates the instance with the state of the current model.
-     * @return a new {@link SecuritySubscrIpTion.Builder} object
+     * @return a new {@link SecuritySubscription.Builder} object
      */
     public Builder toBuilder() {
         Builder builder = new Builder()
@@ -209,7 +209,7 @@ public class SecuritySubscrIpTion {
     }
 
     /**
-     * Class to build instances of {@link SecuritySubscrIpTion}.
+     * Class to build instances of {@link SecuritySubscription}.
      */
     public static class Builder {
         private List<ExtendedAttributes> extendedAttributes;
@@ -282,11 +282,11 @@ public class SecuritySubscrIpTion {
         }
 
         /**
-         * Builds a new {@link SecuritySubscrIpTion} object using the set fields.
-         * @return {@link SecuritySubscrIpTion}
+         * Builds a new {@link SecuritySubscription} object using the set fields.
+         * @return {@link SecuritySubscription}
          */
-        public SecuritySubscrIpTion build() {
-            return new SecuritySubscrIpTion(extendedAttributes, licenseAssigned, licenseAvailable,
+        public SecuritySubscription build() {
+            return new SecuritySubscription(extendedAttributes, licenseAssigned, licenseAvailable,
                     licensePurchased, licenseType, skuNumber);
         }
     }

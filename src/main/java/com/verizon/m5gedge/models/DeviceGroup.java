@@ -15,7 +15,7 @@ import java.util.List;
  * This is a model class for DeviceGroup type.
  */
 public class DeviceGroup {
-    private String descrIpTion;
+    private String description;
     private List<CustomFields> extendedAttributes;
     private Boolean isDefaultGroup;
     private String name;
@@ -28,41 +28,41 @@ public class DeviceGroup {
 
     /**
      * Initialization constructor.
-     * @param  descrIpTion  String value for descrIpTion.
+     * @param  description  String value for description.
      * @param  extendedAttributes  List of CustomFields value for extendedAttributes.
      * @param  isDefaultGroup  Boolean value for isDefaultGroup.
      * @param  name  String value for name.
      */
     public DeviceGroup(
-            String descrIpTion,
+            String description,
             List<CustomFields> extendedAttributes,
             Boolean isDefaultGroup,
             String name) {
-        this.descrIpTion = descrIpTion;
+        this.description = description;
         this.extendedAttributes = extendedAttributes;
         this.isDefaultGroup = isDefaultGroup;
         this.name = name;
     }
 
     /**
-     * Getter for DescrIpTion.
+     * Getter for Description.
      * The description of the device group.
      * @return Returns the String
      */
     @JsonGetter("description")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getDescrIpTion() {
-        return descrIpTion;
+    public String getDescription() {
+        return description;
     }
 
     /**
-     * Setter for DescrIpTion.
+     * Setter for Description.
      * The description of the device group.
-     * @param descrIpTion Value for String
+     * @param description Value for String
      */
     @JsonSetter("description")
-    public void setDescrIpTion(String descrIpTion) {
-        this.descrIpTion = descrIpTion;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     /**
@@ -134,7 +134,7 @@ public class DeviceGroup {
      */
     @Override
     public String toString() {
-        return "DeviceGroup [" + "descrIpTion=" + descrIpTion + ", extendedAttributes="
+        return "DeviceGroup [" + "description=" + description + ", extendedAttributes="
                 + extendedAttributes + ", isDefaultGroup=" + isDefaultGroup + ", name=" + name
                 + "]";
     }
@@ -146,7 +146,7 @@ public class DeviceGroup {
      */
     public Builder toBuilder() {
         Builder builder = new Builder()
-                .descrIpTion(getDescrIpTion())
+                .description(getDescription())
                 .extendedAttributes(getExtendedAttributes())
                 .isDefaultGroup(getIsDefaultGroup())
                 .name(getName());
@@ -157,7 +157,7 @@ public class DeviceGroup {
      * Class to build instances of {@link DeviceGroup}.
      */
     public static class Builder {
-        private String descrIpTion;
+        private String description;
         private List<CustomFields> extendedAttributes;
         private Boolean isDefaultGroup;
         private String name;
@@ -165,12 +165,12 @@ public class DeviceGroup {
 
 
         /**
-         * Setter for descrIpTion.
-         * @param  descrIpTion  String value for descrIpTion.
+         * Setter for description.
+         * @param  description  String value for description.
          * @return Builder
          */
-        public Builder descrIpTion(String descrIpTion) {
-            this.descrIpTion = descrIpTion;
+        public Builder description(String description) {
+            this.description = description;
             return this;
         }
 
@@ -209,7 +209,7 @@ public class DeviceGroup {
          * @return {@link DeviceGroup}
          */
         public DeviceGroup build() {
-            return new DeviceGroup(descrIpTion, extendedAttributes, isDefaultGroup, name);
+            return new DeviceGroup(description, extendedAttributes, isDefaultGroup, name);
         }
     }
 }

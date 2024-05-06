@@ -9,7 +9,7 @@
 
 | Name | Type | Tags | Description | Getter | Setter |
 |  --- | --- | --- | --- | --- | --- |
-| `AccountName` | `String` | Optional | Account identifier in "##########-#####". | String getAccountName() | setAccountName(String accountName) |
+| `AccountName` | `String` | Required | Account identifier in "##########-#####". | String getAccountName() | setAccountName(String accountName) |
 | `AllDevice` | `Boolean` | Optional | Exclude all devices or not. | Boolean getAllDevice() | setAllDevice(Boolean allDevice) |
 | `Type` | `String` | Optional | The change to make: append or replace. | String getType() | setType(String type) |
 | `Exclusion` | `List<String>` | Optional | Device ID list. | List<String> getExclusion() | setExclusion(List<String> exclusion) |

@@ -11,11 +11,11 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonSetter;
 
 /**
- * This is a model class for CreateSubscrIpTionRequest type.
+ * This is a model class for CreateSubscriptionRequest type.
  */
-public class CreateSubscrIpTionRequest {
+public class CreateSubscriptionRequest {
     private AccountIdentifier accountidentifier;
-    private String descrIpTion;
+    private String description;
     private Boolean disabled;
     private String email;
     private String filter;
@@ -28,13 +28,13 @@ public class CreateSubscrIpTionRequest {
     /**
      * Default constructor.
      */
-    public CreateSubscrIpTionRequest() {
+    public CreateSubscriptionRequest() {
     }
 
     /**
      * Initialization constructor.
      * @param  accountidentifier  AccountIdentifier value for accountidentifier.
-     * @param  descrIpTion  String value for descrIpTion.
+     * @param  description  String value for description.
      * @param  disabled  Boolean value for disabled.
      * @param  email  String value for email.
      * @param  filter  String value for filter.
@@ -44,9 +44,9 @@ public class CreateSubscrIpTionRequest {
      * @param  name  String value for name.
      * @param  allowaggregation  Boolean value for allowaggregation.
      */
-    public CreateSubscrIpTionRequest(
+    public CreateSubscriptionRequest(
             AccountIdentifier accountidentifier,
-            String descrIpTion,
+            String description,
             Boolean disabled,
             String email,
             String filter,
@@ -56,7 +56,7 @@ public class CreateSubscrIpTionRequest {
             String name,
             Boolean allowaggregation) {
         this.accountidentifier = accountidentifier;
-        this.descrIpTion = descrIpTion;
+        this.description = description;
         this.disabled = disabled;
         this.email = email;
         this.filter = filter;
@@ -91,24 +91,24 @@ public class CreateSubscrIpTionRequest {
     }
 
     /**
-     * Getter for DescrIpTion.
+     * Getter for Description.
      * Descriptive information about the subscription.
      * @return Returns the String
      */
     @JsonGetter("description")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getDescrIpTion() {
-        return descrIpTion;
+    public String getDescription() {
+        return description;
     }
 
     /**
-     * Setter for DescrIpTion.
+     * Setter for Description.
      * Descriptive information about the subscription.
-     * @param descrIpTion Value for String
+     * @param description Value for String
      */
     @JsonSetter("description")
-    public void setDescrIpTion(String descrIpTion) {
-        this.descrIpTion = descrIpTion;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     /**
@@ -292,27 +292,27 @@ public class CreateSubscrIpTionRequest {
     }
 
     /**
-     * Converts this CreateSubscrIpTionRequest into string format.
+     * Converts this CreateSubscriptionRequest into string format.
      * @return String representation of this class
      */
     @Override
     public String toString() {
-        return "CreateSubscrIpTionRequest [" + "accountidentifier=" + accountidentifier
-                + ", descrIpTion=" + descrIpTion + ", disabled=" + disabled + ", email=" + email
+        return "CreateSubscriptionRequest [" + "accountidentifier=" + accountidentifier
+                + ", description=" + description + ", disabled=" + disabled + ", email=" + email
                 + ", filter=" + filter + ", billingaccountid=" + billingaccountid + ", streamkind="
                 + streamkind + ", targetid=" + targetid + ", name=" + name + ", allowaggregation="
                 + allowaggregation + "]";
     }
 
     /**
-     * Builds a new {@link CreateSubscrIpTionRequest.Builder} object.
+     * Builds a new {@link CreateSubscriptionRequest.Builder} object.
      * Creates the instance with the state of the current model.
-     * @return a new {@link CreateSubscrIpTionRequest.Builder} object
+     * @return a new {@link CreateSubscriptionRequest.Builder} object
      */
     public Builder toBuilder() {
         Builder builder = new Builder()
                 .accountidentifier(getAccountidentifier())
-                .descrIpTion(getDescrIpTion())
+                .description(getDescription())
                 .disabled(getDisabled())
                 .email(getEmail())
                 .filter(getFilter())
@@ -325,11 +325,11 @@ public class CreateSubscrIpTionRequest {
     }
 
     /**
-     * Class to build instances of {@link CreateSubscrIpTionRequest}.
+     * Class to build instances of {@link CreateSubscriptionRequest}.
      */
     public static class Builder {
         private AccountIdentifier accountidentifier;
-        private String descrIpTion;
+        private String description;
         private Boolean disabled;
         private String email;
         private String filter;
@@ -352,12 +352,12 @@ public class CreateSubscrIpTionRequest {
         }
 
         /**
-         * Setter for descrIpTion.
-         * @param  descrIpTion  String value for descrIpTion.
+         * Setter for description.
+         * @param  description  String value for description.
          * @return Builder
          */
-        public Builder descrIpTion(String descrIpTion) {
-            this.descrIpTion = descrIpTion;
+        public Builder description(String description) {
+            this.description = description;
             return this;
         }
 
@@ -442,11 +442,11 @@ public class CreateSubscrIpTionRequest {
         }
 
         /**
-         * Builds a new {@link CreateSubscrIpTionRequest} object using the set fields.
-         * @return {@link CreateSubscrIpTionRequest}
+         * Builds a new {@link CreateSubscriptionRequest} object using the set fields.
+         * @return {@link CreateSubscriptionRequest}
          */
-        public CreateSubscrIpTionRequest build() {
-            return new CreateSubscrIpTionRequest(accountidentifier, descrIpTion, disabled, email,
+        public CreateSubscriptionRequest build() {
+            return new CreateSubscriptionRequest(accountidentifier, description, disabled, email,
                     filter, billingaccountid, streamkind, targetid, name, allowaggregation);
         }
     }

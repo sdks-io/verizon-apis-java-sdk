@@ -15,10 +15,10 @@ import java.util.List;
  * This is a model class for DeactivateDeviceProfileRequest type.
  */
 public class DeactivateDeviceProfileRequest {
-    private List<DeactivateDeviceList> devices;
     private String accountName;
-    private String carrierName;
     private String reasonCode;
+    private List<DeactivateDeviceList> devices;
+    private String carrierName;
     private Boolean etfWaiver;
     private Boolean checkFallbackProfile;
 
@@ -32,26 +32,62 @@ public class DeactivateDeviceProfileRequest {
 
     /**
      * Initialization constructor.
-     * @param  devices  List of DeactivateDeviceList value for devices.
      * @param  accountName  String value for accountName.
-     * @param  carrierName  String value for carrierName.
      * @param  reasonCode  String value for reasonCode.
+     * @param  devices  List of DeactivateDeviceList value for devices.
+     * @param  carrierName  String value for carrierName.
      * @param  etfWaiver  Boolean value for etfWaiver.
      * @param  checkFallbackProfile  Boolean value for checkFallbackProfile.
      */
     public DeactivateDeviceProfileRequest(
-            List<DeactivateDeviceList> devices,
             String accountName,
-            String carrierName,
             String reasonCode,
+            List<DeactivateDeviceList> devices,
+            String carrierName,
             Boolean etfWaiver,
             Boolean checkFallbackProfile) {
-        this.devices = devices;
         this.accountName = accountName;
-        this.carrierName = carrierName;
         this.reasonCode = reasonCode;
+        this.devices = devices;
+        this.carrierName = carrierName;
         this.etfWaiver = etfWaiver;
         this.checkFallbackProfile = checkFallbackProfile;
+    }
+
+    /**
+     * Getter for AccountName.
+     * @return Returns the String
+     */
+    @JsonGetter("accountName")
+    public String getAccountName() {
+        return accountName;
+    }
+
+    /**
+     * Setter for AccountName.
+     * @param accountName Value for String
+     */
+    @JsonSetter("accountName")
+    public void setAccountName(String accountName) {
+        this.accountName = accountName;
+    }
+
+    /**
+     * Getter for ReasonCode.
+     * @return Returns the String
+     */
+    @JsonGetter("reasonCode")
+    public String getReasonCode() {
+        return reasonCode;
+    }
+
+    /**
+     * Setter for ReasonCode.
+     * @param reasonCode Value for String
+     */
+    @JsonSetter("reasonCode")
+    public void setReasonCode(String reasonCode) {
+        this.reasonCode = reasonCode;
     }
 
     /**
@@ -74,25 +110,6 @@ public class DeactivateDeviceProfileRequest {
     }
 
     /**
-     * Getter for AccountName.
-     * @return Returns the String
-     */
-    @JsonGetter("accountName")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getAccountName() {
-        return accountName;
-    }
-
-    /**
-     * Setter for AccountName.
-     * @param accountName Value for String
-     */
-    @JsonSetter("accountName")
-    public void setAccountName(String accountName) {
-        this.accountName = accountName;
-    }
-
-    /**
      * Getter for CarrierName.
      * @return Returns the String
      */
@@ -109,25 +126,6 @@ public class DeactivateDeviceProfileRequest {
     @JsonSetter("carrierName")
     public void setCarrierName(String carrierName) {
         this.carrierName = carrierName;
-    }
-
-    /**
-     * Getter for ReasonCode.
-     * @return Returns the String
-     */
-    @JsonGetter("reasonCode")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getReasonCode() {
-        return reasonCode;
-    }
-
-    /**
-     * Setter for ReasonCode.
-     * @param reasonCode Value for String
-     */
-    @JsonSetter("reasonCode")
-    public void setReasonCode(String reasonCode) {
-        this.reasonCode = reasonCode;
     }
 
     /**
@@ -174,8 +172,8 @@ public class DeactivateDeviceProfileRequest {
      */
     @Override
     public String toString() {
-        return "DeactivateDeviceProfileRequest [" + "devices=" + devices + ", accountName="
-                + accountName + ", carrierName=" + carrierName + ", reasonCode=" + reasonCode
+        return "DeactivateDeviceProfileRequest [" + "accountName=" + accountName + ", reasonCode="
+                + reasonCode + ", devices=" + devices + ", carrierName=" + carrierName
                 + ", etfWaiver=" + etfWaiver + ", checkFallbackProfile=" + checkFallbackProfile
                 + "]";
     }
@@ -186,11 +184,9 @@ public class DeactivateDeviceProfileRequest {
      * @return a new {@link DeactivateDeviceProfileRequest.Builder} object
      */
     public Builder toBuilder() {
-        Builder builder = new Builder()
+        Builder builder = new Builder(accountName, reasonCode)
                 .devices(getDevices())
-                .accountName(getAccountName())
                 .carrierName(getCarrierName())
-                .reasonCode(getReasonCode())
                 .etfWaiver(getEtfWaiver())
                 .checkFallbackProfile(getCheckFallbackProfile());
         return builder;
@@ -200,23 +196,27 @@ public class DeactivateDeviceProfileRequest {
      * Class to build instances of {@link DeactivateDeviceProfileRequest}.
      */
     public static class Builder {
-        private List<DeactivateDeviceList> devices;
         private String accountName;
-        private String carrierName;
         private String reasonCode;
+        private List<DeactivateDeviceList> devices;
+        private String carrierName;
         private Boolean etfWaiver = true;
         private Boolean checkFallbackProfile = false;
 
-
+        /**
+         * Initialization constructor.
+         */
+        public Builder() {
+        }
 
         /**
-         * Setter for devices.
-         * @param  devices  List of DeactivateDeviceList value for devices.
-         * @return Builder
+         * Initialization constructor.
+         * @param  accountName  String value for accountName.
+         * @param  reasonCode  String value for reasonCode.
          */
-        public Builder devices(List<DeactivateDeviceList> devices) {
-            this.devices = devices;
-            return this;
+        public Builder(String accountName, String reasonCode) {
+            this.accountName = accountName;
+            this.reasonCode = reasonCode;
         }
 
         /**
@@ -230,22 +230,32 @@ public class DeactivateDeviceProfileRequest {
         }
 
         /**
-         * Setter for carrierName.
-         * @param  carrierName  String value for carrierName.
-         * @return Builder
-         */
-        public Builder carrierName(String carrierName) {
-            this.carrierName = carrierName;
-            return this;
-        }
-
-        /**
          * Setter for reasonCode.
          * @param  reasonCode  String value for reasonCode.
          * @return Builder
          */
         public Builder reasonCode(String reasonCode) {
             this.reasonCode = reasonCode;
+            return this;
+        }
+
+        /**
+         * Setter for devices.
+         * @param  devices  List of DeactivateDeviceList value for devices.
+         * @return Builder
+         */
+        public Builder devices(List<DeactivateDeviceList> devices) {
+            this.devices = devices;
+            return this;
+        }
+
+        /**
+         * Setter for carrierName.
+         * @param  carrierName  String value for carrierName.
+         * @return Builder
+         */
+        public Builder carrierName(String carrierName) {
+            this.carrierName = carrierName;
             return this;
         }
 
@@ -274,7 +284,7 @@ public class DeactivateDeviceProfileRequest {
          * @return {@link DeactivateDeviceProfileRequest}
          */
         public DeactivateDeviceProfileRequest build() {
-            return new DeactivateDeviceProfileRequest(devices, accountName, carrierName, reasonCode,
+            return new DeactivateDeviceProfileRequest(accountName, reasonCode, devices, carrierName,
                     etfWaiver, checkFallbackProfile);
         }
     }

@@ -10,11 +10,140 @@ FirmwareV1Controller firmwareV1Controller = client.getFirmwareV1Controller();
 
 ## Methods
 
+* [List Firmware Upgrade Details](../../doc/controllers/firmware-v1.md#list-firmware-upgrade-details)
+* [Cancel Scheduled Firmware Upgrade](../../doc/controllers/firmware-v1.md#cancel-scheduled-firmware-upgrade)
 * [List Available Firmware](../../doc/controllers/firmware-v1.md#list-available-firmware)
 * [Schedule Firmware Upgrade](../../doc/controllers/firmware-v1.md#schedule-firmware-upgrade)
-* [List Firmware Upgrade Details](../../doc/controllers/firmware-v1.md#list-firmware-upgrade-details)
 * [Update Firmware Upgrade Devices](../../doc/controllers/firmware-v1.md#update-firmware-upgrade-devices)
-* [Cancel Scheduled Firmware Upgrade](../../doc/controllers/firmware-v1.md#cancel-scheduled-firmware-upgrade)
+
+
+# List Firmware Upgrade Details
+
+Returns information about a specified upgrade, include the target date of the upgrade, the list of devices in the upgrade, and the status of the upgrade for each device.
+
+```java
+CompletableFuture<ApiResponse<FirmwareUpgrade>> listFirmwareUpgradeDetailsAsync(
+    final String account,
+    final String upgradeId)
+```
+
+## Parameters
+
+| Parameter | Type | Tags | Description |
+|  --- | --- | --- | --- |
+| `account` | `String` | Template, Required | Account identifier in "##########-#####". |
+| `upgradeId` | `String` | Template, Required | The UUID of the upgrade, returned by POST /upgrades when the upgrade was scheduled. |
+
+## Server
+
+`Server.SOFTWARE_MANAGEMENT_V1`
+
+## Response Type
+
+[`FirmwareUpgrade`](../../doc/models/firmware-upgrade.md)
+
+## Example Usage
+
+```java
+String account = "0242078689-00001";
+String upgradeId = "e3a8d88a-04c6-4ef3-b039-89b62f91e962";
+
+firmwareV1Controller.listFirmwareUpgradeDetailsAsync(account, upgradeId).thenAccept(result -> {
+    // TODO success callback handler
+    System.out.println(result);
+}).exceptionally(exception -> {
+    // TODO failure callback handler
+    exception.printStackTrace();
+    return null;
+});
+```
+
+## Example Response *(as JSON)*
+
+```json
+{
+  "id": "60b5d639-ccdc-4db8-8824-069bd94c95bf",
+  "accountName": "0402196254-00001",
+  "firmwareName": "FOTA_Verizon_Model-A_01To02_HF",
+  "firmwareTo": "VerizonFirmwareVersion-02",
+  "startDate": "2018-04-01",
+  "status": "Queued",
+  "deviceList": [
+    {
+      "deviceId": "900000000000002",
+      "status": "Device Accepted",
+      "resultReason": "success"
+    },
+    {
+      "deviceId": "900000000000003",
+      "status": "Device Accepted",
+      "resultReason": "success"
+    }
+  ]
+}
+```
+
+## Errors
+
+| HTTP Status Code | Error Description | Exception Class |
+|  --- | --- | --- |
+| 400 | Unexpected error. | [`FotaV1ResultException`](../../doc/models/fota-v1-result-exception.md) |
+
+
+# Cancel Scheduled Firmware Upgrade
+
+Cancel a scheduled firmware upgrade.
+
+```java
+CompletableFuture<ApiResponse<FotaV1SuccessResult>> cancelScheduledFirmwareUpgradeAsync(
+    final String account,
+    final String upgradeId)
+```
+
+## Parameters
+
+| Parameter | Type | Tags | Description |
+|  --- | --- | --- | --- |
+| `account` | `String` | Template, Required | Account identifier in "##########-#####". |
+| `upgradeId` | `String` | Template, Required | The UUID of the scheduled upgrade that you want to cancel. |
+
+## Server
+
+`Server.SOFTWARE_MANAGEMENT_V1`
+
+## Response Type
+
+[`FotaV1SuccessResult`](../../doc/models/fota-v1-success-result.md)
+
+## Example Usage
+
+```java
+String account = "0242078689-00001";
+String upgradeId = "e3a8d88a-04c6-4ef3-b039-89b62f91e962";
+
+firmwareV1Controller.cancelScheduledFirmwareUpgradeAsync(account, upgradeId).thenAccept(result -> {
+    // TODO success callback handler
+    System.out.println(result);
+}).exceptionally(exception -> {
+    // TODO failure callback handler
+    exception.printStackTrace();
+    return null;
+});
+```
+
+## Example Response *(as JSON)*
+
+```json
+{
+  "success": true
+}
+```
+
+## Errors
+
+| HTTP Status Code | Error Description | Exception Class |
+|  --- | --- | --- |
+| 400 | Unexpected error. | [`FotaV1ResultException`](../../doc/models/fota-v1-result-exception.md) |
 
 
 # List Available Firmware
@@ -157,79 +286,6 @@ firmwareV1Controller.scheduleFirmwareUpgradeAsync(body).thenAccept(result -> {
 | 400 | Unexpected error. | [`FotaV1ResultException`](../../doc/models/fota-v1-result-exception.md) |
 
 
-# List Firmware Upgrade Details
-
-Returns information about a specified upgrade, include the target date of the upgrade, the list of devices in the upgrade, and the status of the upgrade for each device.
-
-```java
-CompletableFuture<ApiResponse<FirmwareUpgrade>> listFirmwareUpgradeDetailsAsync(
-    final String account,
-    final String upgradeId)
-```
-
-## Parameters
-
-| Parameter | Type | Tags | Description |
-|  --- | --- | --- | --- |
-| `account` | `String` | Template, Required | Account identifier in "##########-#####". |
-| `upgradeId` | `String` | Template, Required | The UUID of the upgrade, returned by POST /upgrades when the upgrade was scheduled. |
-
-## Server
-
-`Server.SOFTWARE_MANAGEMENT_V1`
-
-## Response Type
-
-[`FirmwareUpgrade`](../../doc/models/firmware-upgrade.md)
-
-## Example Usage
-
-```java
-String account = "0242078689-00001";
-String upgradeId = "e3a8d88a-04c6-4ef3-b039-89b62f91e962";
-
-firmwareV1Controller.listFirmwareUpgradeDetailsAsync(account, upgradeId).thenAccept(result -> {
-    // TODO success callback handler
-    System.out.println(result);
-}).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
-    return null;
-});
-```
-
-## Example Response *(as JSON)*
-
-```json
-{
-  "id": "60b5d639-ccdc-4db8-8824-069bd94c95bf",
-  "accountName": "0402196254-00001",
-  "firmwareName": "FOTA_Verizon_Model-A_01To02_HF",
-  "firmwareTo": "VerizonFirmwareVersion-02",
-  "startDate": "2018-04-01",
-  "status": "Queued",
-  "deviceList": [
-    {
-      "deviceId": "900000000000002",
-      "status": "Device Accepted",
-      "resultReason": "success"
-    },
-    {
-      "deviceId": "900000000000003",
-      "status": "Device Accepted",
-      "resultReason": "success"
-    }
-  ]
-}
-```
-
-## Errors
-
-| HTTP Status Code | Error Description | Exception Class |
-|  --- | --- | --- |
-| 400 | Unexpected error. | [`FotaV1ResultException`](../../doc/models/fota-v1-result-exception.md) |
-
-
 # Update Firmware Upgrade Devices
 
 Add or remove devices from a scheduled upgrade.
@@ -299,62 +355,6 @@ firmwareV1Controller.updateFirmwareUpgradeDevicesAsync(account, upgradeId, body)
       "Reason": "Device added Successfully"
     }
   ]
-}
-```
-
-## Errors
-
-| HTTP Status Code | Error Description | Exception Class |
-|  --- | --- | --- |
-| 400 | Unexpected error. | [`FotaV1ResultException`](../../doc/models/fota-v1-result-exception.md) |
-
-
-# Cancel Scheduled Firmware Upgrade
-
-Cancel a scheduled firmware upgrade.
-
-```java
-CompletableFuture<ApiResponse<FotaV1SuccessResult>> cancelScheduledFirmwareUpgradeAsync(
-    final String account,
-    final String upgradeId)
-```
-
-## Parameters
-
-| Parameter | Type | Tags | Description |
-|  --- | --- | --- | --- |
-| `account` | `String` | Template, Required | Account identifier in "##########-#####". |
-| `upgradeId` | `String` | Template, Required | The UUID of the scheduled upgrade that you want to cancel. |
-
-## Server
-
-`Server.SOFTWARE_MANAGEMENT_V1`
-
-## Response Type
-
-[`FotaV1SuccessResult`](../../doc/models/fota-v1-success-result.md)
-
-## Example Usage
-
-```java
-String account = "0242078689-00001";
-String upgradeId = "e3a8d88a-04c6-4ef3-b039-89b62f91e962";
-
-firmwareV1Controller.cancelScheduledFirmwareUpgradeAsync(account, upgradeId).thenAccept(result -> {
-    // TODO success callback handler
-    System.out.println(result);
-}).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
-    return null;
-});
-```
-
-## Example Response *(as JSON)*
-
-```json
-{
-  "success": true
 }
 ```
 

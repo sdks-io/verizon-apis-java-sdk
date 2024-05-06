@@ -7,7 +7,6 @@
 package com.verizon.m5gedge.models;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonSetter;
 
 /**
@@ -41,7 +40,6 @@ public class DateFilter {
      * @return Returns the String
      */
     @JsonGetter("earliest")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     public String getEarliest() {
         return earliest;
     }
@@ -62,7 +60,6 @@ public class DateFilter {
      * @return Returns the String
      */
     @JsonGetter("latest")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     public String getLatest() {
         return latest;
     }
@@ -92,9 +89,7 @@ public class DateFilter {
      * @return a new {@link DateFilter.Builder} object
      */
     public Builder toBuilder() {
-        Builder builder = new Builder()
-                .earliest(getEarliest())
-                .latest(getLatest());
+        Builder builder = new Builder(earliest, latest);
         return builder;
     }
 
@@ -105,7 +100,21 @@ public class DateFilter {
         private String earliest;
         private String latest;
 
+        /**
+         * Initialization constructor.
+         */
+        public Builder() {
+        }
 
+        /**
+         * Initialization constructor.
+         * @param  earliest  String value for earliest.
+         * @param  latest  String value for latest.
+         */
+        public Builder(String earliest, String latest) {
+            this.earliest = earliest;
+            this.latest = latest;
+        }
 
         /**
          * Setter for earliest.

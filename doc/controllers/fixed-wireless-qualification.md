@@ -46,7 +46,7 @@ GetWirelessCoverageRequestFWA body = new GetWirelessCoverageRequestFWA.Builder(
                 .city("city")
                 .state("LA")
                 .country("USA")
-                .zIp("00000")
+                .zip("00000")
                 .build()
         ))
         .build(),

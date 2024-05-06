@@ -83,7 +83,8 @@ public final class DiagnosticsSettingsController extends BaseController {
                         .queryParam(param -> param.key("devices")
                                 .value(devices))
                         .headerParam(param -> param.key("accept").value("application/json"))
-                        .authenticationKey(BaseController.AUTHENTICATION_KEY)
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
                         .httpMethod(HttpMethod.GET))
                 .responseHandler(responseHandler -> responseHandler
                         .responseClassType(ResponseClassType.API_RESPONSE)

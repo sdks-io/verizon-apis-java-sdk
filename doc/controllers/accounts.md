@@ -12,9 +12,78 @@ AccountsController accountsController = client.getAccountsController();
 
 ## Methods
 
+* [List Account Leads](../../doc/controllers/accounts.md#list-account-leads)
 * [Get Account Information](../../doc/controllers/accounts.md#get-account-information)
 * [List Account States and Services](../../doc/controllers/accounts.md#list-account-states-and-services)
-* [List Account Leads](../../doc/controllers/accounts.md#list-account-leads)
+
+
+# List Account Leads
+
+When HTTP status is 202, a URL will be returned in the Location header of the form /leads/{aname}?next={token}. This URL can be used to request the next set of leads.
+
+```java
+CompletableFuture<ApiResponse<AccountLeadsResult>> listAccountLeadsAsync(
+    final String aname,
+    final Long next)
+```
+
+## Parameters
+
+| Parameter | Type | Tags | Description |
+|  --- | --- | --- | --- |
+| `aname` | `String` | Template, Required | Account name. |
+| `next` | `Long` | Query, Optional | Continue the previous query from the pageUrl in Location Header. |
+
+## Server
+
+`Server.THINGSPACE`
+
+## Response Type
+
+[`AccountLeadsResult`](../../doc/models/account-leads-result.md)
+
+## Example Usage
+
+```java
+String aname = "0252012345-00001";
+
+accountsController.listAccountLeadsAsync(aname, null).thenAccept(result -> {
+    // TODO success callback handler
+    System.out.println(result);
+}).exceptionally(exception -> {
+    // TODO failure callback handler
+    exception.printStackTrace();
+    return null;
+});
+```
+
+## Example Response *(as JSON)*
+
+```json
+{
+  "leads": [
+    {
+      "leadId": "L-10001",
+      "leadState": "Qualified",
+      "address": {
+        "addressLine1": "1600 Pennsylvania Avenue",
+        "addressLine2": "",
+        "city": "Washington",
+        "state": "DC",
+        "zip": "20500",
+        "country": "USA"
+      }
+    }
+  ],
+  "hasMoreData": false
+}
+```
+
+## Errors
+
+| HTTP Status Code | Error Description | Exception Class |
+|  --- | --- | --- |
+| 400 | Error response. | [`ConnectivityManagementResultException`](../../doc/models/connectivity-management-result-exception.md) |
 
 
 # Get Account Information
@@ -223,75 +292,6 @@ accountsController.listAccountStatesAndServicesAsync(aname).thenAccept(result ->
       ]
     }
   ]
-}
-```
-
-## Errors
-
-| HTTP Status Code | Error Description | Exception Class |
-|  --- | --- | --- |
-| 400 | Error response. | [`ConnectivityManagementResultException`](../../doc/models/connectivity-management-result-exception.md) |
-
-
-# List Account Leads
-
-When HTTP status is 202, a URL will be returned in the Location header of the form /leads/{aname}?next={token}. This URL can be used to request the next set of leads.
-
-```java
-CompletableFuture<ApiResponse<AccountLeadsResult>> listAccountLeadsAsync(
-    final String aname,
-    final Long next)
-```
-
-## Parameters
-
-| Parameter | Type | Tags | Description |
-|  --- | --- | --- | --- |
-| `aname` | `String` | Template, Required | Account name. |
-| `next` | `Long` | Query, Optional | Continue the previous query from the pageUrl in Location Header. |
-
-## Server
-
-`Server.THINGSPACE`
-
-## Response Type
-
-[`AccountLeadsResult`](../../doc/models/account-leads-result.md)
-
-## Example Usage
-
-```java
-String aname = "0252012345-00001";
-
-accountsController.listAccountLeadsAsync(aname, null).thenAccept(result -> {
-    // TODO success callback handler
-    System.out.println(result);
-}).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
-    return null;
-});
-```
-
-## Example Response *(as JSON)*
-
-```json
-{
-  "leads": [
-    {
-      "leadId": "L-10001",
-      "leadState": "Qualified",
-      "address": {
-        "addressLine1": "1600 Pennsylvania Avenue",
-        "addressLine2": "",
-        "city": "Washington",
-        "state": "DC",
-        "zip": "20500",
-        "country": "USA"
-      }
-    }
-  ],
-  "hasMoreData": false
 }
 ```
 

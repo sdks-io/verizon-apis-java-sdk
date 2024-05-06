@@ -15,11 +15,11 @@ import java.util.List;
  * This is a model class for ProfileRequest type.
  */
 public class ProfileRequest {
+    private String accountName;
     private List<DeviceList> devices;
     private String carrierName;
-    private String accountName;
     private String servicePlan;
-    private String mdnZIpCode;
+    private String mdnZipCode;
     private List<PrimaryPlaceOfUse> primaryPlaceOfUse;
     private String smsrOid;
     private String carrierIpPoolName;
@@ -32,32 +32,50 @@ public class ProfileRequest {
 
     /**
      * Initialization constructor.
+     * @param  accountName  String value for accountName.
      * @param  devices  List of DeviceList value for devices.
      * @param  carrierName  String value for carrierName.
-     * @param  accountName  String value for accountName.
      * @param  servicePlan  String value for servicePlan.
-     * @param  mdnZIpCode  String value for mdnZIpCode.
+     * @param  mdnZipCode  String value for mdnZipCode.
      * @param  primaryPlaceOfUse  List of PrimaryPlaceOfUse value for primaryPlaceOfUse.
      * @param  smsrOid  String value for smsrOid.
      * @param  carrierIpPoolName  String value for carrierIpPoolName.
      */
     public ProfileRequest(
+            String accountName,
             List<DeviceList> devices,
             String carrierName,
-            String accountName,
             String servicePlan,
-            String mdnZIpCode,
+            String mdnZipCode,
             List<PrimaryPlaceOfUse> primaryPlaceOfUse,
             String smsrOid,
             String carrierIpPoolName) {
+        this.accountName = accountName;
         this.devices = devices;
         this.carrierName = carrierName;
-        this.accountName = accountName;
         this.servicePlan = servicePlan;
-        this.mdnZIpCode = mdnZIpCode;
+        this.mdnZipCode = mdnZipCode;
         this.primaryPlaceOfUse = primaryPlaceOfUse;
         this.smsrOid = smsrOid;
         this.carrierIpPoolName = carrierIpPoolName;
+    }
+
+    /**
+     * Getter for AccountName.
+     * @return Returns the String
+     */
+    @JsonGetter("accountName")
+    public String getAccountName() {
+        return accountName;
+    }
+
+    /**
+     * Setter for AccountName.
+     * @param accountName Value for String
+     */
+    @JsonSetter("accountName")
+    public void setAccountName(String accountName) {
+        this.accountName = accountName;
     }
 
     /**
@@ -65,7 +83,6 @@ public class ProfileRequest {
      * @return Returns the List of DeviceList
      */
     @JsonGetter("devices")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     public List<DeviceList> getDevices() {
         return devices;
     }
@@ -99,25 +116,6 @@ public class ProfileRequest {
     }
 
     /**
-     * Getter for AccountName.
-     * @return Returns the String
-     */
-    @JsonGetter("accountName")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getAccountName() {
-        return accountName;
-    }
-
-    /**
-     * Setter for AccountName.
-     * @param accountName Value for String
-     */
-    @JsonSetter("accountName")
-    public void setAccountName(String accountName) {
-        this.accountName = accountName;
-    }
-
-    /**
      * Getter for ServicePlan.
      * @return Returns the String
      */
@@ -137,22 +135,22 @@ public class ProfileRequest {
     }
 
     /**
-     * Getter for MdnZIpCode.
+     * Getter for MdnZipCode.
      * @return Returns the String
      */
     @JsonGetter("mdnZipCode")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getMdnZIpCode() {
-        return mdnZIpCode;
+    public String getMdnZipCode() {
+        return mdnZipCode;
     }
 
     /**
-     * Setter for MdnZIpCode.
-     * @param mdnZIpCode Value for String
+     * Setter for MdnZipCode.
+     * @param mdnZipCode Value for String
      */
     @JsonSetter("mdnZipCode")
-    public void setMdnZIpCode(String mdnZIpCode) {
-        this.mdnZIpCode = mdnZIpCode;
+    public void setMdnZipCode(String mdnZipCode) {
+        this.mdnZipCode = mdnZipCode;
     }
 
     /**
@@ -220,9 +218,9 @@ public class ProfileRequest {
      */
     @Override
     public String toString() {
-        return "ProfileRequest [" + "devices=" + devices + ", carrierName=" + carrierName
-                + ", accountName=" + accountName + ", servicePlan=" + servicePlan + ", mdnZIpCode="
-                + mdnZIpCode + ", primaryPlaceOfUse=" + primaryPlaceOfUse + ", smsrOid=" + smsrOid
+        return "ProfileRequest [" + "accountName=" + accountName + ", devices=" + devices
+                + ", carrierName=" + carrierName + ", servicePlan=" + servicePlan + ", mdnZipCode="
+                + mdnZipCode + ", primaryPlaceOfUse=" + primaryPlaceOfUse + ", smsrOid=" + smsrOid
                 + ", carrierIpPoolName=" + carrierIpPoolName + "]";
     }
 
@@ -232,12 +230,10 @@ public class ProfileRequest {
      * @return a new {@link ProfileRequest.Builder} object
      */
     public Builder toBuilder() {
-        Builder builder = new Builder()
-                .devices(getDevices())
+        Builder builder = new Builder(accountName, devices)
                 .carrierName(getCarrierName())
-                .accountName(getAccountName())
                 .servicePlan(getServicePlan())
-                .mdnZIpCode(getMdnZIpCode())
+                .mdnZipCode(getMdnZipCode())
                 .primaryPlaceOfUse(getPrimaryPlaceOfUse())
                 .smsrOid(getSmsrOid())
                 .carrierIpPoolName(getCarrierIpPoolName());
@@ -248,16 +244,40 @@ public class ProfileRequest {
      * Class to build instances of {@link ProfileRequest}.
      */
     public static class Builder {
+        private String accountName;
         private List<DeviceList> devices;
         private String carrierName;
-        private String accountName;
         private String servicePlan;
-        private String mdnZIpCode;
+        private String mdnZipCode;
         private List<PrimaryPlaceOfUse> primaryPlaceOfUse;
         private String smsrOid;
         private String carrierIpPoolName;
 
+        /**
+         * Initialization constructor.
+         */
+        public Builder() {
+        }
 
+        /**
+         * Initialization constructor.
+         * @param  accountName  String value for accountName.
+         * @param  devices  List of DeviceList value for devices.
+         */
+        public Builder(String accountName, List<DeviceList> devices) {
+            this.accountName = accountName;
+            this.devices = devices;
+        }
+
+        /**
+         * Setter for accountName.
+         * @param  accountName  String value for accountName.
+         * @return Builder
+         */
+        public Builder accountName(String accountName) {
+            this.accountName = accountName;
+            return this;
+        }
 
         /**
          * Setter for devices.
@@ -280,16 +300,6 @@ public class ProfileRequest {
         }
 
         /**
-         * Setter for accountName.
-         * @param  accountName  String value for accountName.
-         * @return Builder
-         */
-        public Builder accountName(String accountName) {
-            this.accountName = accountName;
-            return this;
-        }
-
-        /**
          * Setter for servicePlan.
          * @param  servicePlan  String value for servicePlan.
          * @return Builder
@@ -300,12 +310,12 @@ public class ProfileRequest {
         }
 
         /**
-         * Setter for mdnZIpCode.
-         * @param  mdnZIpCode  String value for mdnZIpCode.
+         * Setter for mdnZipCode.
+         * @param  mdnZipCode  String value for mdnZipCode.
          * @return Builder
          */
-        public Builder mdnZIpCode(String mdnZIpCode) {
-            this.mdnZIpCode = mdnZIpCode;
+        public Builder mdnZipCode(String mdnZipCode) {
+            this.mdnZipCode = mdnZipCode;
             return this;
         }
 
@@ -344,7 +354,7 @@ public class ProfileRequest {
          * @return {@link ProfileRequest}
          */
         public ProfileRequest build() {
-            return new ProfileRequest(devices, carrierName, accountName, servicePlan, mdnZIpCode,
+            return new ProfileRequest(accountName, devices, carrierName, servicePlan, mdnZipCode,
                     primaryPlaceOfUse, smsrOid, carrierIpPoolName);
         }
     }

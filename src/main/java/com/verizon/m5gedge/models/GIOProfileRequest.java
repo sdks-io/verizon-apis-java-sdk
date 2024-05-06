@@ -17,7 +17,7 @@ import java.util.List;
 public class GIOProfileRequest {
     private List<GIODeviceList> devices;
     private String accountName;
-    private String mdnZIpCode;
+    private String mdnZipCode;
     private String servicePlan;
 
     /**
@@ -30,17 +30,17 @@ public class GIOProfileRequest {
      * Initialization constructor.
      * @param  devices  List of GIODeviceList value for devices.
      * @param  accountName  String value for accountName.
-     * @param  mdnZIpCode  String value for mdnZIpCode.
+     * @param  mdnZipCode  String value for mdnZipCode.
      * @param  servicePlan  String value for servicePlan.
      */
     public GIOProfileRequest(
             List<GIODeviceList> devices,
             String accountName,
-            String mdnZIpCode,
+            String mdnZipCode,
             String servicePlan) {
         this.devices = devices;
         this.accountName = accountName;
-        this.mdnZIpCode = mdnZIpCode;
+        this.mdnZipCode = mdnZipCode;
         this.servicePlan = servicePlan;
     }
 
@@ -81,22 +81,22 @@ public class GIOProfileRequest {
     }
 
     /**
-     * Getter for MdnZIpCode.
+     * Getter for MdnZipCode.
      * @return Returns the String
      */
     @JsonGetter("mdnZipCode")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getMdnZIpCode() {
-        return mdnZIpCode;
+    public String getMdnZipCode() {
+        return mdnZipCode;
     }
 
     /**
-     * Setter for MdnZIpCode.
-     * @param mdnZIpCode Value for String
+     * Setter for MdnZipCode.
+     * @param mdnZipCode Value for String
      */
     @JsonSetter("mdnZipCode")
-    public void setMdnZIpCode(String mdnZIpCode) {
-        this.mdnZIpCode = mdnZIpCode;
+    public void setMdnZipCode(String mdnZipCode) {
+        this.mdnZipCode = mdnZipCode;
     }
 
     /**
@@ -125,7 +125,7 @@ public class GIOProfileRequest {
     @Override
     public String toString() {
         return "GIOProfileRequest [" + "devices=" + devices + ", accountName=" + accountName
-                + ", mdnZIpCode=" + mdnZIpCode + ", servicePlan=" + servicePlan + "]";
+                + ", mdnZipCode=" + mdnZipCode + ", servicePlan=" + servicePlan + "]";
     }
 
     /**
@@ -135,7 +135,7 @@ public class GIOProfileRequest {
      */
     public Builder toBuilder() {
         Builder builder = new Builder(devices, accountName)
-                .mdnZIpCode(getMdnZIpCode())
+                .mdnZipCode(getMdnZipCode())
                 .servicePlan(getServicePlan());
         return builder;
     }
@@ -146,7 +146,7 @@ public class GIOProfileRequest {
     public static class Builder {
         private List<GIODeviceList> devices;
         private String accountName;
-        private String mdnZIpCode;
+        private String mdnZipCode;
         private String servicePlan;
 
         /**
@@ -186,12 +186,12 @@ public class GIOProfileRequest {
         }
 
         /**
-         * Setter for mdnZIpCode.
-         * @param  mdnZIpCode  String value for mdnZIpCode.
+         * Setter for mdnZipCode.
+         * @param  mdnZipCode  String value for mdnZipCode.
          * @return Builder
          */
-        public Builder mdnZIpCode(String mdnZIpCode) {
-            this.mdnZIpCode = mdnZIpCode;
+        public Builder mdnZipCode(String mdnZipCode) {
+            this.mdnZipCode = mdnZipCode;
             return this;
         }
 
@@ -210,7 +210,7 @@ public class GIOProfileRequest {
          * @return {@link GIOProfileRequest}
          */
         public GIOProfileRequest build() {
-            return new GIOProfileRequest(devices, accountName, mdnZIpCode, servicePlan);
+            return new GIOProfileRequest(devices, accountName, mdnZipCode, servicePlan);
         }
     }
 }

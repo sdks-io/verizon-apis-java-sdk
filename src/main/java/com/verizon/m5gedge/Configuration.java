@@ -6,6 +6,7 @@
 
 package com.verizon.m5gedge;
 
+import com.verizon.m5gedge.authentication.ClientCredentialsAuthModel;
 import com.verizon.m5gedge.http.client.ReadonlyHttpClientConfiguration;
 
 /**
@@ -42,6 +43,12 @@ public interface Configuration {
      * @return clientCredentialsAuth
      */
     ClientCredentialsAuth getClientCredentialsAuth();
+
+    /**
+     * The auth credential model for ClientCredentialsAuth.
+     * @return the instance of ClientCredentialsAuthModel
+     */
+    ClientCredentialsAuthModel getClientCredentialsAuthModel();
 
     /**
      * Get base URI by current environment.

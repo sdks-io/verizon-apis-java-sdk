@@ -42,8 +42,7 @@ public enum CycleTypeEnum {
     @JsonCreator
     public static CycleTypeEnum constructFromString(String toConvert) throws IOException {
         CycleTypeEnum enumValue = fromString(toConvert);
-        if (enumValue == null)
-        {
+        if (enumValue == null) {
             throw new IOException("Unable to create enum instance with value: " + toConvert);
         }
         return enumValue;

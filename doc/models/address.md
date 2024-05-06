@@ -15,8 +15,8 @@ The customer address for the line's primary place of use, for line usage taxatio
 | `AddressLine2` | `String` | Optional | Optional additional street address information. | String getAddressLine2() | setAddressLine2(String addressLine2) |
 | `City` | `String` | Required | The city for the line's primary place of use. | String getCity() | setCity(String city) |
 | `State` | `String` | Required | The state for the line's primary place of use. | String getState() | setState(String state) |
-| `ZIp` | `String` | Required | The ZIP code for the line's primary place of use. | String getZIp() | setZIp(String zIp) |
-| `ZIp4` | `String` | Optional | The ZIP+4 for the line's primary place of use. | String getZIp4() | setZIp4(String zIp4) |
+| `Zip` | `String` | Required | The ZIP code for the line's primary place of use. | String getZip() | setZip(String zip) |
+| `Zip4` | `String` | Optional | The ZIP+4 for the line's primary place of use. | String getZip4() | setZip4(String zip4) |
 | `Country` | `String` | Required | Either “US” or “USA” for the country of the line's primary place of use. | String getCountry() | setCountry(String country) |
 | `Phone` | `String` | Optional | A phone number where the customer can be reached. | String getPhone() | setPhone(String phone) |
 | `PhoneType` | `String` | Optional | A single letter to indicate the customer phone type. | String getPhoneType() | setPhoneType(String phoneType) |

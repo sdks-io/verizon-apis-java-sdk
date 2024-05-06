@@ -1,11 +1,11 @@
 
-# Change Mec Device Ip Address Response
+# Change Mec Device IP Address Response
 
 Response to change mec device ip address.
 
 ## Structure
 
-`ChangeMecDeviceIpAddressResponse`
+`ChangeMecDeviceIPAddressResponse`
 
 ## Fields
 

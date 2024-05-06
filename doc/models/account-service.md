@@ -12,7 +12,7 @@ Service associated with the account.
 | Name | Type | Tags | Description | Getter | Setter |
 |  --- | --- | --- | --- | --- | --- |
 | `Name` | `String` | Optional | The name of the service plan. | String getName() | setName(String name) |
-| `DescrIpTion` | `String` | Optional | The description of the service plan. | String getDescrIpTion() | setDescrIpTion(String descrIpTion) |
+| `Description` | `String` | Optional | The description of the service plan. | String getDescription() | setDescription(String description) |
 | `States` | [`List<State>`](../../doc/models/state.md) | Optional | The state of the service plan. | List<State> getStates() | setStates(List<State> states) |
 
 ## Example (as JSON)

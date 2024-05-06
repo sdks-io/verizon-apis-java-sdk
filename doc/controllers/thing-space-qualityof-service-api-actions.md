@@ -10,16 +10,16 @@ ThingSpaceQualityofServiceAPIActionsController thingSpaceQualityofServiceAPIActi
 
 ## Methods
 
-* [Create a Thing Space Quality of Service API Subscr Ip Tion](../../doc/controllers/thing-space-qualityof-service-api-actions.md#create-a-thing-space-quality-of-service-api-subscr-ip-tion)
-* [Stop a Thing Space Quality of Service API Subscr Ip Tion](../../doc/controllers/thing-space-qualityof-service-api-actions.md#stop-a-thing-space-quality-of-service-api-subscr-ip-tion)
+* [Create a Thing Space Quality of Service API Subscription](../../doc/controllers/thing-space-qualityof-service-api-actions.md#create-a-thing-space-quality-of-service-api-subscription)
+* [Stop a Thing Space Quality of Service API Subscription](../../doc/controllers/thing-space-qualityof-service-api-actions.md#stop-a-thing-space-quality-of-service-api-subscription)
 
 
-# Create a Thing Space Quality of Service API Subscr Ip Tion
+# Create a Thing Space Quality of Service API Subscription
 
 Creates a QoS elevation subscription ID and activates the subscription.
 
 ```java
-CompletableFuture<ApiResponse<M201success>> createAThingSpaceQualityOfServiceAPISubscrIpTionAsync(
+CompletableFuture<ApiResponse<M201success>> createAThingSpaceQualityOfServiceAPISubscriptionAsync(
     final SubscribeRequest body)
 ```
 
@@ -58,13 +58,13 @@ SubscribeRequest body = new SubscribeRequest.Builder(
                     .build()
             )
         )
-        .deviceIpV6Addr("IPv6 address")
+        .deviceIPv6Addr("IPv6 address")
         .build()
     )
 )
 .build();
 
-thingSpaceQualityofServiceAPIActionsController.createAThingSpaceQualityOfServiceAPISubscrIpTionAsync(body).thenAccept(result -> {
+thingSpaceQualityofServiceAPIActionsController.createAThingSpaceQualityOfServiceAPISubscriptionAsync(body).thenAccept(result -> {
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
@@ -81,14 +81,14 @@ thingSpaceQualityofServiceAPIActionsController.createAThingSpaceQualityOfService
 | Default | Error Response | [`DefaultResponseException`](../../doc/models/default-response-exception.md) |
 
 
-# Stop a Thing Space Quality of Service API Subscr Ip Tion
+# Stop a Thing Space Quality of Service API Subscription
 
 Stops an active ThingSpace Quality of Service API subscription using the account name and the subscription ID.
 
 ```java
-CompletableFuture<ApiResponse<M201success>> stopAThingSpaceQualityOfServiceAPISubscrIpTionAsync(
+CompletableFuture<ApiResponse<M201success>> stopAThingSpaceQualityOfServiceAPISubscriptionAsync(
     final String accountName,
-    final String qosSubscrIpTionId)
+    final String qosSubscriptionId)
 ```
 
 ## Parameters
@@ -96,7 +96,7 @@ CompletableFuture<ApiResponse<M201success>> stopAThingSpaceQualityOfServiceAPISu
 | Parameter | Type | Tags | Description |
 |  --- | --- | --- | --- |
 | `accountName` | `String` | Query, Required | - |
-| `qosSubscrIpTionId` | `String` | Query, Required | - |
+| `qosSubscriptionId` | `String` | Query, Required | - |
 
 ## Server
 
@@ -110,9 +110,9 @@ CompletableFuture<ApiResponse<M201success>> stopAThingSpaceQualityOfServiceAPISu
 
 ```java
 String accountName = "0000123456-00001";
-String qosSubscrIpTionId = "QoS subscription ID";
+String qosSubscriptionId = "QoS subscription ID";
 
-thingSpaceQualityofServiceAPIActionsController.stopAThingSpaceQualityOfServiceAPISubscrIpTionAsync(accountName, qosSubscrIpTionId).thenAccept(result -> {
+thingSpaceQualityofServiceAPIActionsController.stopAThingSpaceQualityOfServiceAPISubscriptionAsync(accountName, qosSubscriptionId).thenAccept(result -> {
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {

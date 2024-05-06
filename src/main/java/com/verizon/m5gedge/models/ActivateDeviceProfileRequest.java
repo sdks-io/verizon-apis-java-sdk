@@ -18,7 +18,7 @@ public class ActivateDeviceProfileRequest {
     private List<DeviceList> devices;
     private String accountName;
     private String servicePlan;
-    private String mdnZIpCode;
+    private String mdnZipCode;
 
     /**
      * Default constructor.
@@ -31,17 +31,17 @@ public class ActivateDeviceProfileRequest {
      * @param  devices  List of DeviceList value for devices.
      * @param  accountName  String value for accountName.
      * @param  servicePlan  String value for servicePlan.
-     * @param  mdnZIpCode  String value for mdnZIpCode.
+     * @param  mdnZipCode  String value for mdnZipCode.
      */
     public ActivateDeviceProfileRequest(
             List<DeviceList> devices,
             String accountName,
             String servicePlan,
-            String mdnZIpCode) {
+            String mdnZipCode) {
         this.devices = devices;
         this.accountName = accountName;
         this.servicePlan = servicePlan;
-        this.mdnZIpCode = mdnZIpCode;
+        this.mdnZipCode = mdnZipCode;
     }
 
     /**
@@ -49,7 +49,6 @@ public class ActivateDeviceProfileRequest {
      * @return Returns the List of DeviceList
      */
     @JsonGetter("devices")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     public List<DeviceList> getDevices() {
         return devices;
     }
@@ -68,7 +67,6 @@ public class ActivateDeviceProfileRequest {
      * @return Returns the String
      */
     @JsonGetter("accountName")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     public String getAccountName() {
         return accountName;
     }
@@ -102,22 +100,22 @@ public class ActivateDeviceProfileRequest {
     }
 
     /**
-     * Getter for MdnZIpCode.
+     * Getter for MdnZipCode.
      * @return Returns the String
      */
     @JsonGetter("mdnZipCode")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getMdnZIpCode() {
-        return mdnZIpCode;
+    public String getMdnZipCode() {
+        return mdnZipCode;
     }
 
     /**
-     * Setter for MdnZIpCode.
-     * @param mdnZIpCode Value for String
+     * Setter for MdnZipCode.
+     * @param mdnZipCode Value for String
      */
     @JsonSetter("mdnZipCode")
-    public void setMdnZIpCode(String mdnZIpCode) {
-        this.mdnZIpCode = mdnZIpCode;
+    public void setMdnZipCode(String mdnZipCode) {
+        this.mdnZipCode = mdnZipCode;
     }
 
     /**
@@ -127,7 +125,7 @@ public class ActivateDeviceProfileRequest {
     @Override
     public String toString() {
         return "ActivateDeviceProfileRequest [" + "devices=" + devices + ", accountName="
-                + accountName + ", servicePlan=" + servicePlan + ", mdnZIpCode=" + mdnZIpCode + "]";
+                + accountName + ", servicePlan=" + servicePlan + ", mdnZipCode=" + mdnZipCode + "]";
     }
 
     /**
@@ -136,11 +134,9 @@ public class ActivateDeviceProfileRequest {
      * @return a new {@link ActivateDeviceProfileRequest.Builder} object
      */
     public Builder toBuilder() {
-        Builder builder = new Builder()
-                .devices(getDevices())
-                .accountName(getAccountName())
+        Builder builder = new Builder(devices, accountName)
                 .servicePlan(getServicePlan())
-                .mdnZIpCode(getMdnZIpCode());
+                .mdnZipCode(getMdnZipCode());
         return builder;
     }
 
@@ -151,9 +147,23 @@ public class ActivateDeviceProfileRequest {
         private List<DeviceList> devices;
         private String accountName;
         private String servicePlan;
-        private String mdnZIpCode;
+        private String mdnZipCode;
 
+        /**
+         * Initialization constructor.
+         */
+        public Builder() {
+        }
 
+        /**
+         * Initialization constructor.
+         * @param  devices  List of DeviceList value for devices.
+         * @param  accountName  String value for accountName.
+         */
+        public Builder(List<DeviceList> devices, String accountName) {
+            this.devices = devices;
+            this.accountName = accountName;
+        }
 
         /**
          * Setter for devices.
@@ -186,12 +196,12 @@ public class ActivateDeviceProfileRequest {
         }
 
         /**
-         * Setter for mdnZIpCode.
-         * @param  mdnZIpCode  String value for mdnZIpCode.
+         * Setter for mdnZipCode.
+         * @param  mdnZipCode  String value for mdnZipCode.
          * @return Builder
          */
-        public Builder mdnZIpCode(String mdnZIpCode) {
-            this.mdnZIpCode = mdnZIpCode;
+        public Builder mdnZipCode(String mdnZipCode) {
+            this.mdnZipCode = mdnZipCode;
             return this;
         }
 
@@ -200,7 +210,7 @@ public class ActivateDeviceProfileRequest {
          * @return {@link ActivateDeviceProfileRequest}
          */
         public ActivateDeviceProfileRequest build() {
-            return new ActivateDeviceProfileRequest(devices, accountName, servicePlan, mdnZIpCode);
+            return new ActivateDeviceProfileRequest(devices, accountName, servicePlan, mdnZipCode);
         }
     }
 }

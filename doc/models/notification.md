@@ -17,7 +17,7 @@ The notification details of the trigger.
 | `NotificationGroupName` | `String` | Optional | Name for the notification group. | String getNotificationGroupName() | setNotificationGroupName(String notificationGroupName) |
 | `NotificationFrequencyFactor` | `Integer` | Optional | Frequency factor for notification. | Integer getNotificationFrequencyFactor() | setNotificationFrequencyFactor(Integer notificationFrequencyFactor) |
 | `NotificationFrequencyInterval` | `String` | Optional | Frequency interval for notification. | String getNotificationFrequencyInterval() | setNotificationFrequencyInterval(String notificationFrequencyInterval) |
-| `ExternalEmailRecIpIents` | `String` | Optional | E-mail address(es) where the notification should be delivered. | String getExternalEmailRecIpIents() | setExternalEmailRecIpIents(String externalEmailRecIpIents) |
+| `ExternalEmailRecipients` | `String` | Optional | E-mail address(es) where the notification should be delivered. | String getExternalEmailRecipients() | setExternalEmailRecipients(String externalEmailRecipients) |
 | `SmsNotification` | `Boolean` | Optional | SMS notification. | Boolean getSmsNotification() | setSmsNotification(Boolean smsNotification) |
 | `SmsNumbers` | [`List<SMSNumber>`](../../doc/models/sms-number.md) | Optional | List of SMS numbers.<br>**Constraints**: *Maximum Items*: `10` | List<SMSNumber> getSmsNumbers() | setSmsNumbers(List<SMSNumber> smsNumbers) |
 | `Reminder` | `Boolean` | Optional | - | Boolean getReminder() | setReminder(Boolean reminder) |

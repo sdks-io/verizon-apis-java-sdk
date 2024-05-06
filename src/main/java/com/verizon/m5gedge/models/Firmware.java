@@ -19,7 +19,7 @@ import java.time.LocalDateTime;
  */
 public class Firmware {
     private String firmwareName;
-    private String particIpAntName;
+    private String participantName;
     private LocalDateTime launchDate;
     private String releaseNote;
     private String model;
@@ -36,7 +36,7 @@ public class Firmware {
     /**
      * Initialization constructor.
      * @param  firmwareName  String value for firmwareName.
-     * @param  particIpAntName  String value for particIpAntName.
+     * @param  participantName  String value for participantName.
      * @param  launchDate  LocalDateTime value for launchDate.
      * @param  releaseNote  String value for releaseNote.
      * @param  model  String value for model.
@@ -46,7 +46,7 @@ public class Firmware {
      */
     public Firmware(
             String firmwareName,
-            String particIpAntName,
+            String participantName,
             LocalDateTime launchDate,
             String releaseNote,
             String model,
@@ -54,7 +54,7 @@ public class Firmware {
             String fromVersion,
             String toVersion) {
         this.firmwareName = firmwareName;
-        this.particIpAntName = particIpAntName;
+        this.participantName = participantName;
         this.launchDate = launchDate;
         this.releaseNote = releaseNote;
         this.model = model;
@@ -85,24 +85,24 @@ public class Firmware {
     }
 
     /**
-     * Getter for ParticIpAntName.
+     * Getter for ParticipantName.
      * Internal reference; can be ignored.
      * @return Returns the String
      */
     @JsonGetter("participantName")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getParticIpAntName() {
-        return particIpAntName;
+    public String getParticipantName() {
+        return participantName;
     }
 
     /**
-     * Setter for ParticIpAntName.
+     * Setter for ParticipantName.
      * Internal reference; can be ignored.
-     * @param particIpAntName Value for String
+     * @param participantName Value for String
      */
     @JsonSetter("participantName")
-    public void setParticIpAntName(String particIpAntName) {
-        this.particIpAntName = particIpAntName;
+    public void setParticipantName(String participantName) {
+        this.participantName = participantName;
     }
 
     /**
@@ -239,8 +239,8 @@ public class Firmware {
      */
     @Override
     public String toString() {
-        return "Firmware [" + "firmwareName=" + firmwareName + ", particIpAntName="
-                + particIpAntName + ", launchDate=" + launchDate + ", releaseNote=" + releaseNote
+        return "Firmware [" + "firmwareName=" + firmwareName + ", participantName="
+                + participantName + ", launchDate=" + launchDate + ", releaseNote=" + releaseNote
                 + ", model=" + model + ", make=" + make + ", fromVersion=" + fromVersion
                 + ", toVersion=" + toVersion + "]";
     }
@@ -253,7 +253,7 @@ public class Firmware {
     public Builder toBuilder() {
         Builder builder = new Builder()
                 .firmwareName(getFirmwareName())
-                .particIpAntName(getParticIpAntName())
+                .participantName(getParticipantName())
                 .launchDate(getLaunchDate())
                 .releaseNote(getReleaseNote())
                 .model(getModel())
@@ -268,7 +268,7 @@ public class Firmware {
      */
     public static class Builder {
         private String firmwareName;
-        private String particIpAntName;
+        private String participantName;
         private LocalDateTime launchDate;
         private String releaseNote;
         private String model;
@@ -289,12 +289,12 @@ public class Firmware {
         }
 
         /**
-         * Setter for particIpAntName.
-         * @param  particIpAntName  String value for particIpAntName.
+         * Setter for participantName.
+         * @param  participantName  String value for participantName.
          * @return Builder
          */
-        public Builder particIpAntName(String particIpAntName) {
-            this.particIpAntName = particIpAntName;
+        public Builder participantName(String participantName) {
+            this.participantName = participantName;
             return this;
         }
 
@@ -363,7 +363,7 @@ public class Firmware {
          * @return {@link Firmware}
          */
         public Firmware build() {
-            return new Firmware(firmwareName, particIpAntName, launchDate, releaseNote, model, make,
+            return new Firmware(firmwareName, participantName, launchDate, releaseNote, model, make,
                     fromVersion, toVersion);
         }
     }

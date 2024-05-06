@@ -18,7 +18,7 @@ The request body must include the UUID of the subscription that you want to upda
 | `EmailIDs` | `String` | Optional | The “email IDs” to be added to/sent to with this API. | String getEmailIDs() | setEmailIDs(String emailIDs) |
 | `Resourcegroup` | `String` | Optional | The Azure Resource group of the associated Azure target account | String getResourcegroup() | setResourcegroup(String resourcegroup) |
 | `SampleIOTcApp` | `String` | Optional | This is the reference Azure IoT Central application developed by Verizon. | String getSampleIOTcApp() | setSampleIOTcApp(String sampleIOTcApp) |
-| `SubscrIpTionID` | `String` | Optional | The Azure Subscription ID of the associated Azure target account | String getSubscrIpTionID() | setSubscrIpTionID(String subscrIpTionID) |
+| `SubscriptionID` | `String` | Optional | The Azure Subscription ID of the associated Azure target account | String getSubscriptionID() | setSubscriptionID(String subscriptionID) |
 | `TenantID` | `String` | Optional | The Azure Tenant ID of the associated Azure target account | String getTenantID() | setTenantID(String tenantID) |
 
 ## Example (as JSON)

@@ -9,10 +9,10 @@
 
 | Name | Type | Tags | Description | Getter | Setter |
 |  --- | --- | --- | --- | --- | --- |
-| `AccountName` | `String` | Optional | The name of a billing account. | String getAccountName() | setAccountName(String accountName) |
-| `Device` | [`DeviceId`](../../doc/models/device-id.md) | Optional | An identifier for a single device. | DeviceId getDevice() | setDevice(DeviceId device) |
+| `AccountName` | `String` | Required | The name of a billing account. | String getAccountName() | setAccountName(String accountName) |
+| `Device` | [`DeviceId`](../../doc/models/device-id.md) | Required | An identifier for a single device. | DeviceId getDevice() | setDevice(DeviceId device) |
+| `RequestType` | `String` | Required | The type of request. | String getRequestType() | setRequestType(String requestType) |
 | `RequestExpirationTime` | `String` | Optional | The time at which the request expires. | String getRequestExpirationTime() | setRequestExpirationTime(String requestExpirationTime) |
-| `RequestType` | `String` | Optional | The type of request. | String getRequestType() | setRequestType(String requestType) |
 
 ## Example (as JSON)
 
@@ -23,8 +23,8 @@
     "kind": "imei",
     "id": "990013907835573"
   },
-  "requestExpirationTime": "requestExpirationTime6",
-  "requestType": "requestType8"
+  "requestType": "requestType8",
+  "requestExpirationTime": "requestExpirationTime6"
 }
 ```
 

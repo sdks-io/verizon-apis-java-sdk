@@ -14,7 +14,7 @@ import com.verizon.m5gedge.exceptions.DeviceLocationResultException;
 import com.verizon.m5gedge.http.request.HttpMethod;
 import com.verizon.m5gedge.http.response.ApiResponse;
 import com.verizon.m5gedge.models.BillUsageRequest;
-import com.verizon.m5gedge.models.DeviceLocationSubscrIpTion;
+import com.verizon.m5gedge.models.DeviceLocationSubscription;
 import io.apimatic.core.ApiCall;
 import io.apimatic.core.ErrorCase;
 import io.apimatic.core.GlobalConfiguration;
@@ -26,67 +26,14 @@ import java.util.concurrent.CompletionException;
 /**
  * This class lists all the endpoints of the groups.
  */
-public final class DevicesLocationSubscrIpTionsController extends BaseController {
+public final class DevicesLocationSubscriptionsController extends BaseController {
 
     /**
      * Initializes the controller.
      * @param globalConfig    Configurations added in client.
      */
-    public DevicesLocationSubscrIpTionsController(GlobalConfiguration globalConfig) {
+    public DevicesLocationSubscriptionsController(GlobalConfiguration globalConfig) {
         super(globalConfig);
-    }
-
-    /**
-     * This subscriptions endpoint retrieves an account's current location subscription status.
-     * @param  account  Required parameter: Account identifier in "##########-#####".
-     * @return    Returns the DeviceLocationSubscrIpTion wrapped in ApiResponse response from the API call
-     * @throws    ApiException    Represents error response from the server.
-     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
-     */
-    public ApiResponse<DeviceLocationSubscrIpTion> getLocationServiceSubscrIpTionStatus(
-            final String account) throws ApiException, IOException {
-        return prepareGetLocationServiceSubscrIpTionStatusRequest(account).execute();
-    }
-
-    /**
-     * This subscriptions endpoint retrieves an account's current location subscription status.
-     * @param  account  Required parameter: Account identifier in "##########-#####".
-     * @return    Returns the DeviceLocationSubscrIpTion wrapped in ApiResponse response from the API call
-     */
-    public CompletableFuture<ApiResponse<DeviceLocationSubscrIpTion>> getLocationServiceSubscrIpTionStatusAsync(
-            final String account) {
-        try { 
-            return prepareGetLocationServiceSubscrIpTionStatusRequest(account).executeAsync(); 
-        } catch (Exception e) {  
-            throw new CompletionException(e); 
-        }
-    }
-
-    /**
-     * Builds the ApiCall object for getLocationServiceSubscrIpTionStatus.
-     */
-    private ApiCall<ApiResponse<DeviceLocationSubscrIpTion>, ApiException> prepareGetLocationServiceSubscrIpTionStatusRequest(
-            final String account) throws IOException {
-        return new ApiCall.Builder<ApiResponse<DeviceLocationSubscrIpTion>, ApiException>()
-                .globalConfig(getGlobalConfiguration())
-                .requestBuilder(requestBuilder -> requestBuilder
-                        .server(Server.DEVICE_LOCATION.value())
-                        .path("/subscriptions/{account}")
-                        .templateParam(param -> param.key("account").value(account)
-                                .shouldEncode(true))
-                        .headerParam(param -> param.key("accept").value("application/json"))
-                        .authenticationKey(BaseController.AUTHENTICATION_KEY)
-                        .httpMethod(HttpMethod.GET))
-                .responseHandler(responseHandler -> responseHandler
-                        .responseClassType(ResponseClassType.API_RESPONSE)
-                        .apiResponseDeserializer(
-                                response -> ApiHelper.deserialize(response, DeviceLocationSubscrIpTion.class))
-                        .nullify404(false)
-                        .localErrorCase("400",
-                                 ErrorCase.setReason("Unexpected error.",
-                                (reason, context) -> new DeviceLocationResultException(reason, context)))
-                        .globalErrorCase(GLOBAL_ERROR_CASES))
-                .build();
     }
 
     /**
@@ -132,12 +79,67 @@ public final class DevicesLocationSubscrIpTionsController extends BaseController
                         .headerParam(param -> param.key("Content-Type")
                                 .value("*/*").isRequired(false))
                         .headerParam(param -> param.key("accept").value("application/json"))
-                        .authenticationKey(BaseController.AUTHENTICATION_KEY)
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
                         .httpMethod(HttpMethod.POST))
                 .responseHandler(responseHandler -> responseHandler
                         .responseClassType(ResponseClassType.API_RESPONSE)
                         .apiResponseDeserializer(
                                 response -> response)
+                        .nullify404(false)
+                        .localErrorCase("400",
+                                 ErrorCase.setReason("Unexpected error.",
+                                (reason, context) -> new DeviceLocationResultException(reason, context)))
+                        .globalErrorCase(GLOBAL_ERROR_CASES))
+                .build();
+    }
+
+    /**
+     * This subscriptions endpoint retrieves an account's current location subscription status.
+     * @param  account  Required parameter: Account identifier in "##########-#####".
+     * @return    Returns the DeviceLocationSubscription wrapped in ApiResponse response from the API call
+     * @throws    ApiException    Represents error response from the server.
+     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
+     */
+    public ApiResponse<DeviceLocationSubscription> getLocationServiceSubscriptionStatus(
+            final String account) throws ApiException, IOException {
+        return prepareGetLocationServiceSubscriptionStatusRequest(account).execute();
+    }
+
+    /**
+     * This subscriptions endpoint retrieves an account's current location subscription status.
+     * @param  account  Required parameter: Account identifier in "##########-#####".
+     * @return    Returns the DeviceLocationSubscription wrapped in ApiResponse response from the API call
+     */
+    public CompletableFuture<ApiResponse<DeviceLocationSubscription>> getLocationServiceSubscriptionStatusAsync(
+            final String account) {
+        try { 
+            return prepareGetLocationServiceSubscriptionStatusRequest(account).executeAsync(); 
+        } catch (Exception e) {  
+            throw new CompletionException(e); 
+        }
+    }
+
+    /**
+     * Builds the ApiCall object for getLocationServiceSubscriptionStatus.
+     */
+    private ApiCall<ApiResponse<DeviceLocationSubscription>, ApiException> prepareGetLocationServiceSubscriptionStatusRequest(
+            final String account) throws IOException {
+        return new ApiCall.Builder<ApiResponse<DeviceLocationSubscription>, ApiException>()
+                .globalConfig(getGlobalConfiguration())
+                .requestBuilder(requestBuilder -> requestBuilder
+                        .server(Server.DEVICE_LOCATION.value())
+                        .path("/subscriptions/{account}")
+                        .templateParam(param -> param.key("account").value(account)
+                                .shouldEncode(true))
+                        .headerParam(param -> param.key("accept").value("application/json"))
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
+                        .httpMethod(HttpMethod.GET))
+                .responseHandler(responseHandler -> responseHandler
+                        .responseClassType(ResponseClassType.API_RESPONSE)
+                        .apiResponseDeserializer(
+                                response -> ApiHelper.deserialize(response, DeviceLocationSubscription.class))
                         .nullify404(false)
                         .localErrorCase("400",
                                  ErrorCase.setReason("Unexpected error.",

@@ -37,7 +37,7 @@ public interface ClientCredentialsAuth {
     OauthToken getOauthToken();
 
     /**
-     * List<OauthScopeEnum> value for oauthScopes.
+     * List of OauthScopeEnum value for oauthScopes.
      * @return oauthScopes
      */
     List<OauthScopeEnum> getOauthScopes();
@@ -47,7 +47,7 @@ public interface ClientCredentialsAuth {
      * @param oauthClientId String value for credentials.
      * @param oauthClientSecret String value for credentials.
      * @param oauthToken OauthToken value for credentials.
-     * @param oauthScopes List<OauthScopeEnum> value for credentials.
+     * @param oauthScopes List of OauthScopeEnum value for credentials.
      * @return true if credentials matched.
      */
     boolean equals(String oauthClientId, String oauthClientSecret, OauthToken oauthToken,

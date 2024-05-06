@@ -50,8 +50,7 @@ public enum NumericalDataUnitEnum {
     @JsonCreator
     public static NumericalDataUnitEnum constructFromString(String toConvert) throws IOException {
         NumericalDataUnitEnum enumValue = fromString(toConvert);
-        if (enumValue == null)
-        {
+        if (enumValue == null) {
             throw new IOException("Unable to create enum instance with value: " + toConvert);
         }
         return enumValue;

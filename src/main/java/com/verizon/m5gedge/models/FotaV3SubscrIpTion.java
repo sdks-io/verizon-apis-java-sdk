@@ -11,9 +11,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonSetter;
 
 /**
- * This is a model class for FotaV3SubscrIpTion type.
+ * This is a model class for FotaV3Subscription type.
  */
-public class FotaV3SubscrIpTion {
+public class FotaV3Subscription {
     private String accountName;
     private String purchaseType;
     private Integer licenseCount;
@@ -23,7 +23,7 @@ public class FotaV3SubscrIpTion {
     /**
      * Default constructor.
      */
-    public FotaV3SubscrIpTion() {
+    public FotaV3Subscription() {
     }
 
     /**
@@ -34,7 +34,7 @@ public class FotaV3SubscrIpTion {
      * @param  licenseUsedCount  Integer value for licenseUsedCount.
      * @param  updateTime  String value for updateTime.
      */
-    public FotaV3SubscrIpTion(
+    public FotaV3Subscription(
             String accountName,
             String purchaseType,
             Integer licenseCount,
@@ -153,20 +153,20 @@ public class FotaV3SubscrIpTion {
     }
 
     /**
-     * Converts this FotaV3SubscrIpTion into string format.
+     * Converts this FotaV3Subscription into string format.
      * @return String representation of this class
      */
     @Override
     public String toString() {
-        return "FotaV3SubscrIpTion [" + "accountName=" + accountName + ", purchaseType="
+        return "FotaV3Subscription [" + "accountName=" + accountName + ", purchaseType="
                 + purchaseType + ", licenseCount=" + licenseCount + ", licenseUsedCount="
                 + licenseUsedCount + ", updateTime=" + updateTime + "]";
     }
 
     /**
-     * Builds a new {@link FotaV3SubscrIpTion.Builder} object.
+     * Builds a new {@link FotaV3Subscription.Builder} object.
      * Creates the instance with the state of the current model.
-     * @return a new {@link FotaV3SubscrIpTion.Builder} object
+     * @return a new {@link FotaV3Subscription.Builder} object
      */
     public Builder toBuilder() {
         Builder builder = new Builder()
@@ -179,7 +179,7 @@ public class FotaV3SubscrIpTion {
     }
 
     /**
-     * Class to build instances of {@link FotaV3SubscrIpTion}.
+     * Class to build instances of {@link FotaV3Subscription}.
      */
     public static class Builder {
         private String accountName;
@@ -241,11 +241,11 @@ public class FotaV3SubscrIpTion {
         }
 
         /**
-         * Builds a new {@link FotaV3SubscrIpTion} object using the set fields.
-         * @return {@link FotaV3SubscrIpTion}
+         * Builds a new {@link FotaV3Subscription} object using the set fields.
+         * @return {@link FotaV3Subscription}
          */
-        public FotaV3SubscrIpTion build() {
-            return new FotaV3SubscrIpTion(accountName, purchaseType, licenseCount, licenseUsedCount,
+        public FotaV3Subscription build() {
+            return new FotaV3Subscription(accountName, purchaseType, licenseCount, licenseUsedCount,
                     updateTime);
         }
     }

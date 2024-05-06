@@ -10,7 +10,7 @@
 | Name | Type | Tags | Description | Getter | Setter |
 |  --- | --- | --- | --- | --- | --- |
 | `DeviceId` | [`QosDeviceId`](../../doc/models/qos-device-id.md) | Required | - | QosDeviceId getDeviceId() | setDeviceId(QosDeviceId deviceId) |
-| `DeviceIpV6Addr` | `String` | Optional | - | String getDeviceIpV6Addr() | setDeviceIpV6Addr(String deviceIpV6Addr) |
+| `DeviceIPv6Addr` | `String` | Optional | - | String getDeviceIPv6Addr() | setDeviceIPv6Addr(String deviceIPv6Addr) |
 | `FlowInfo` | [`List<FlowInfo>`](../../doc/models/flow-info.md) | Required | - | List<FlowInfo> getFlowInfo() | setFlowInfo(List<FlowInfo> flowInfo) |
 
 ## Example (as JSON)

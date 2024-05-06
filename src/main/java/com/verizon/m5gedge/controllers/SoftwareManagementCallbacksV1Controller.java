@@ -41,62 +41,6 @@ public final class SoftwareManagementCallbacksV1Controller extends BaseControlle
     }
 
     /**
-     * Returns the name and endpoint URL of the callback listening services registered for a given
-     * account.
-     * @param  account  Required parameter: Account identifier in "##########-#####".
-     * @return    Returns the List of RegisteredCallbacks wrapped in ApiResponse response from the API call
-     * @throws    ApiException    Represents error response from the server.
-     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
-     */
-    public ApiResponse<List<RegisteredCallbacks>> listRegisteredCallbacks(
-            final String account) throws ApiException, IOException {
-        return prepareListRegisteredCallbacksRequest(account).execute();
-    }
-
-    /**
-     * Returns the name and endpoint URL of the callback listening services registered for a given
-     * account.
-     * @param  account  Required parameter: Account identifier in "##########-#####".
-     * @return    Returns the List of RegisteredCallbacks wrapped in ApiResponse response from the API call
-     */
-    public CompletableFuture<ApiResponse<List<RegisteredCallbacks>>> listRegisteredCallbacksAsync(
-            final String account) {
-        try { 
-            return prepareListRegisteredCallbacksRequest(account).executeAsync(); 
-        } catch (Exception e) {  
-            throw new CompletionException(e); 
-        }
-    }
-
-    /**
-     * Builds the ApiCall object for listRegisteredCallbacks.
-     */
-    private ApiCall<ApiResponse<List<RegisteredCallbacks>>, ApiException> prepareListRegisteredCallbacksRequest(
-            final String account) throws IOException {
-        return new ApiCall.Builder<ApiResponse<List<RegisteredCallbacks>>, ApiException>()
-                .globalConfig(getGlobalConfiguration())
-                .requestBuilder(requestBuilder -> requestBuilder
-                        .server(Server.SOFTWARE_MANAGEMENT_V1.value())
-                        .path("/callbacks/{account}")
-                        .templateParam(param -> param.key("account").value(account)
-                                .shouldEncode(true))
-                        .headerParam(param -> param.key("accept").value("application/json"))
-                        .authenticationKey(BaseController.AUTHENTICATION_KEY)
-                        .httpMethod(HttpMethod.GET))
-                .responseHandler(responseHandler -> responseHandler
-                        .responseClassType(ResponseClassType.API_RESPONSE)
-                        .apiResponseDeserializer(
-                                response -> ApiHelper.deserializeArray(response,
-                                        RegisteredCallbacks[].class))
-                        .nullify404(false)
-                        .localErrorCase("400",
-                                 ErrorCase.setReason("Unexpected error.",
-                                (reason, context) -> new FotaV1ResultException(reason, context)))
-                        .globalErrorCase(GLOBAL_ERROR_CASES))
-                .build();
-    }
-
-    /**
      * Registers a URL to receive RESTful messages from a callback service when new firmware
      * versions are available and when upgrades start and finish.
      * @param  account  Required parameter: Account identifier in "##########-#####".
@@ -146,7 +90,8 @@ public final class SoftwareManagementCallbacksV1Controller extends BaseControlle
                         .headerParam(param -> param.key("Content-Type")
                                 .value("application/json").isRequired(false))
                         .headerParam(param -> param.key("accept").value("application/json"))
-                        .authenticationKey(BaseController.AUTHENTICATION_KEY)
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
                         .httpMethod(HttpMethod.POST))
                 .responseHandler(responseHandler -> responseHandler
                         .responseClassType(ResponseClassType.API_RESPONSE)
@@ -210,12 +155,70 @@ public final class SoftwareManagementCallbacksV1Controller extends BaseControlle
                         .templateParam(param -> param.key("service").value((service != null) ? service.value() : null)
                                 .shouldEncode(true))
                         .headerParam(param -> param.key("accept").value("application/json"))
-                        .authenticationKey(BaseController.AUTHENTICATION_KEY)
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
                         .httpMethod(HttpMethod.DELETE))
                 .responseHandler(responseHandler -> responseHandler
                         .responseClassType(ResponseClassType.API_RESPONSE)
                         .apiResponseDeserializer(
                                 response -> ApiHelper.deserialize(response, FotaV1SuccessResult.class))
+                        .nullify404(false)
+                        .localErrorCase("400",
+                                 ErrorCase.setReason("Unexpected error.",
+                                (reason, context) -> new FotaV1ResultException(reason, context)))
+                        .globalErrorCase(GLOBAL_ERROR_CASES))
+                .build();
+    }
+
+    /**
+     * Returns the name and endpoint URL of the callback listening services registered for a given
+     * account.
+     * @param  account  Required parameter: Account identifier in "##########-#####".
+     * @return    Returns the List of RegisteredCallbacks wrapped in ApiResponse response from the API call
+     * @throws    ApiException    Represents error response from the server.
+     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
+     */
+    public ApiResponse<List<RegisteredCallbacks>> listRegisteredCallbacks(
+            final String account) throws ApiException, IOException {
+        return prepareListRegisteredCallbacksRequest(account).execute();
+    }
+
+    /**
+     * Returns the name and endpoint URL of the callback listening services registered for a given
+     * account.
+     * @param  account  Required parameter: Account identifier in "##########-#####".
+     * @return    Returns the List of RegisteredCallbacks wrapped in ApiResponse response from the API call
+     */
+    public CompletableFuture<ApiResponse<List<RegisteredCallbacks>>> listRegisteredCallbacksAsync(
+            final String account) {
+        try { 
+            return prepareListRegisteredCallbacksRequest(account).executeAsync(); 
+        } catch (Exception e) {  
+            throw new CompletionException(e); 
+        }
+    }
+
+    /**
+     * Builds the ApiCall object for listRegisteredCallbacks.
+     */
+    private ApiCall<ApiResponse<List<RegisteredCallbacks>>, ApiException> prepareListRegisteredCallbacksRequest(
+            final String account) throws IOException {
+        return new ApiCall.Builder<ApiResponse<List<RegisteredCallbacks>>, ApiException>()
+                .globalConfig(getGlobalConfiguration())
+                .requestBuilder(requestBuilder -> requestBuilder
+                        .server(Server.SOFTWARE_MANAGEMENT_V1.value())
+                        .path("/callbacks/{account}")
+                        .templateParam(param -> param.key("account").value(account)
+                                .shouldEncode(true))
+                        .headerParam(param -> param.key("accept").value("application/json"))
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
+                        .httpMethod(HttpMethod.GET))
+                .responseHandler(responseHandler -> responseHandler
+                        .responseClassType(ResponseClassType.API_RESPONSE)
+                        .apiResponseDeserializer(
+                                response -> ApiHelper.deserializeArray(response,
+                                        RegisteredCallbacks[].class))
                         .nullify404(false)
                         .localErrorCase("400",
                                  ErrorCase.setReason("Unexpected error.",

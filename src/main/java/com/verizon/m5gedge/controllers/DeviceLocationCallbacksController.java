@@ -40,60 +40,6 @@ public final class DeviceLocationCallbacksController extends BaseController {
     }
 
     /**
-     * Returns a list of all registered callback URLs for the account.
-     * @param  account  Required parameter: Account number.
-     * @return    Returns the List of DeviceLocationCallback wrapped in ApiResponse response from the API call
-     * @throws    ApiException    Represents error response from the server.
-     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
-     */
-    public ApiResponse<List<DeviceLocationCallback>> listRegisteredCallbacks(
-            final String account) throws ApiException, IOException {
-        return prepareListRegisteredCallbacksRequest(account).execute();
-    }
-
-    /**
-     * Returns a list of all registered callback URLs for the account.
-     * @param  account  Required parameter: Account number.
-     * @return    Returns the List of DeviceLocationCallback wrapped in ApiResponse response from the API call
-     */
-    public CompletableFuture<ApiResponse<List<DeviceLocationCallback>>> listRegisteredCallbacksAsync(
-            final String account) {
-        try { 
-            return prepareListRegisteredCallbacksRequest(account).executeAsync(); 
-        } catch (Exception e) {  
-            throw new CompletionException(e); 
-        }
-    }
-
-    /**
-     * Builds the ApiCall object for listRegisteredCallbacks.
-     */
-    private ApiCall<ApiResponse<List<DeviceLocationCallback>>, ApiException> prepareListRegisteredCallbacksRequest(
-            final String account) throws IOException {
-        return new ApiCall.Builder<ApiResponse<List<DeviceLocationCallback>>, ApiException>()
-                .globalConfig(getGlobalConfiguration())
-                .requestBuilder(requestBuilder -> requestBuilder
-                        .server(Server.DEVICE_LOCATION.value())
-                        .path("/callbacks/{account}")
-                        .templateParam(param -> param.key("account").value(account)
-                                .shouldEncode(true))
-                        .headerParam(param -> param.key("accept").value("application/json"))
-                        .authenticationKey(BaseController.AUTHENTICATION_KEY)
-                        .httpMethod(HttpMethod.GET))
-                .responseHandler(responseHandler -> responseHandler
-                        .responseClassType(ResponseClassType.API_RESPONSE)
-                        .apiResponseDeserializer(
-                                response -> ApiHelper.deserializeArray(response,
-                                        DeviceLocationCallback[].class))
-                        .nullify404(false)
-                        .localErrorCase("400",
-                                 ErrorCase.setReason("Error response.",
-                                (reason, context) -> new DeviceLocationResultException(reason, context)))
-                        .globalErrorCase(GLOBAL_ERROR_CASES))
-                .build();
-    }
-
-    /**
      * Provide a URL to receive messages from a ThingSpace callback service.
      * @param  account  Required parameter: Account number.
      * @param  body  Required parameter: Request to register a callback.
@@ -141,12 +87,68 @@ public final class DeviceLocationCallbacksController extends BaseController {
                         .headerParam(param -> param.key("Content-Type")
                                 .value("*/*").isRequired(false))
                         .headerParam(param -> param.key("accept").value("application/json"))
-                        .authenticationKey(BaseController.AUTHENTICATION_KEY)
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
                         .httpMethod(HttpMethod.POST))
                 .responseHandler(responseHandler -> responseHandler
                         .responseClassType(ResponseClassType.API_RESPONSE)
                         .apiResponseDeserializer(
                                 response -> ApiHelper.deserialize(response, CallbackRegistrationResult.class))
+                        .nullify404(false)
+                        .localErrorCase("400",
+                                 ErrorCase.setReason("Error response.",
+                                (reason, context) -> new DeviceLocationResultException(reason, context)))
+                        .globalErrorCase(GLOBAL_ERROR_CASES))
+                .build();
+    }
+
+    /**
+     * Returns a list of all registered callback URLs for the account.
+     * @param  account  Required parameter: Account number.
+     * @return    Returns the List of DeviceLocationCallback wrapped in ApiResponse response from the API call
+     * @throws    ApiException    Represents error response from the server.
+     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
+     */
+    public ApiResponse<List<DeviceLocationCallback>> listRegisteredCallbacks(
+            final String account) throws ApiException, IOException {
+        return prepareListRegisteredCallbacksRequest(account).execute();
+    }
+
+    /**
+     * Returns a list of all registered callback URLs for the account.
+     * @param  account  Required parameter: Account number.
+     * @return    Returns the List of DeviceLocationCallback wrapped in ApiResponse response from the API call
+     */
+    public CompletableFuture<ApiResponse<List<DeviceLocationCallback>>> listRegisteredCallbacksAsync(
+            final String account) {
+        try { 
+            return prepareListRegisteredCallbacksRequest(account).executeAsync(); 
+        } catch (Exception e) {  
+            throw new CompletionException(e); 
+        }
+    }
+
+    /**
+     * Builds the ApiCall object for listRegisteredCallbacks.
+     */
+    private ApiCall<ApiResponse<List<DeviceLocationCallback>>, ApiException> prepareListRegisteredCallbacksRequest(
+            final String account) throws IOException {
+        return new ApiCall.Builder<ApiResponse<List<DeviceLocationCallback>>, ApiException>()
+                .globalConfig(getGlobalConfiguration())
+                .requestBuilder(requestBuilder -> requestBuilder
+                        .server(Server.DEVICE_LOCATION.value())
+                        .path("/callbacks/{account}")
+                        .templateParam(param -> param.key("account").value(account)
+                                .shouldEncode(true))
+                        .headerParam(param -> param.key("accept").value("application/json"))
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
+                        .httpMethod(HttpMethod.GET))
+                .responseHandler(responseHandler -> responseHandler
+                        .responseClassType(ResponseClassType.API_RESPONSE)
+                        .apiResponseDeserializer(
+                                response -> ApiHelper.deserializeArray(response,
+                                        DeviceLocationCallback[].class))
                         .nullify404(false)
                         .localErrorCase("400",
                                  ErrorCase.setReason("Error response.",
@@ -201,7 +203,8 @@ public final class DeviceLocationCallbacksController extends BaseController {
                         .templateParam(param -> param.key("service").value((service != null) ? service.value() : null)
                                 .shouldEncode(true))
                         .headerParam(param -> param.key("accept").value("application/json"))
-                        .authenticationKey(BaseController.AUTHENTICATION_KEY)
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
                         .httpMethod(HttpMethod.DELETE))
                 .responseHandler(responseHandler -> responseHandler
                         .responseClassType(ResponseClassType.API_RESPONSE)

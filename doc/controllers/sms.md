@@ -13,8 +13,8 @@ SMSController sMSController = client.getSMSController();
 ## Methods
 
 * [Send SMS to Device](../../doc/controllers/sms.md#send-sms-to-device)
-* [List Devices SMS Messages](../../doc/controllers/sms.md#list-devices-sms-messages)
 * [Start Queued SMS Delivery](../../doc/controllers/sms.md#start-queued-sms-delivery)
+* [List Devices SMS Messages](../../doc/controllers/sms.md#list-devices-sms-messages)
 
 
 # Send SMS to Device
@@ -43,10 +43,12 @@ CompletableFuture<ApiResponse<DeviceManagementResult>> sendSMSToDeviceAsync(
 ## Example Usage
 
 ```java
-SMSSendRequest body = new SMSSendRequest.Builder()
-    .servicePlan("T Plan 2")
-    .smsMessage("The rain in Spain stays mainly in the plain.")
-    .build();
+SMSSendRequest body = new SMSSendRequest.Builder(
+    "accountName0",
+    "The rain in Spain stays mainly in the plain."
+)
+.servicePlan("T Plan 2")
+.build();
 
 sMSController.sendSMSToDeviceAsync(body).thenAccept(result -> {
     // TODO success callback handler
@@ -63,6 +65,59 @@ sMSController.sendSMSToDeviceAsync(body).thenAccept(result -> {
 ```json
 {
   "requestId": "595f5c44-c31c-4552-8670-020a1545a84d"
+}
+```
+
+## Errors
+
+| HTTP Status Code | Error Description | Exception Class |
+|  --- | --- | --- |
+| 400 | Error response. | [`ConnectivityManagementResultException`](../../doc/models/connectivity-management-result-exception.md) |
+
+
+# Start Queued SMS Delivery
+
+Tells the ThingSpace Platform to start sending mobile-originated SMS messages through the EnhancedConnectivityService callback service. SMS messages from devices are queued until they are retrieved by your application, either by callback or synchronously with GET /sms/{accountName}/history.
+
+```java
+CompletableFuture<ApiResponse<ConnectivityManagementSuccessResult>> startQueuedSMSDeliveryAsync(
+    final String aname)
+```
+
+## Parameters
+
+| Parameter | Type | Tags | Description |
+|  --- | --- | --- | --- |
+| `aname` | `String` | Template, Required | Account name. |
+
+## Server
+
+`Server.THINGSPACE`
+
+## Response Type
+
+[`ConnectivityManagementSuccessResult`](../../doc/models/connectivity-management-success-result.md)
+
+## Example Usage
+
+```java
+String aname = "0252012345-00001";
+
+sMSController.startQueuedSMSDeliveryAsync(aname).thenAccept(result -> {
+    // TODO success callback handler
+    System.out.println(result);
+}).exceptionally(exception -> {
+    // TODO failure callback handler
+    exception.printStackTrace();
+    return null;
+});
+```
+
+## Example Response *(as JSON)*
+
+```json
+{
+  "success": true
 }
 ```
 
@@ -140,59 +195,6 @@ sMSController.listDevicesSMSMessagesAsync(aname, null).thenAccept(result -> {
     }
   ],
   "hasMoreData": false
-}
-```
-
-## Errors
-
-| HTTP Status Code | Error Description | Exception Class |
-|  --- | --- | --- |
-| 400 | Error response. | [`ConnectivityManagementResultException`](../../doc/models/connectivity-management-result-exception.md) |
-
-
-# Start Queued SMS Delivery
-
-Tells the ThingSpace Platform to start sending mobile-originated SMS messages through the EnhancedConnectivityService callback service. SMS messages from devices are queued until they are retrieved by your application, either by callback or synchronously with GET /sms/{accountName}/history.
-
-```java
-CompletableFuture<ApiResponse<ConnectivityManagementSuccessResult>> startQueuedSMSDeliveryAsync(
-    final String aname)
-```
-
-## Parameters
-
-| Parameter | Type | Tags | Description |
-|  --- | --- | --- | --- |
-| `aname` | `String` | Template, Required | Account name. |
-
-## Server
-
-`Server.THINGSPACE`
-
-## Response Type
-
-[`ConnectivityManagementSuccessResult`](../../doc/models/connectivity-management-success-result.md)
-
-## Example Usage
-
-```java
-String aname = "0252012345-00001";
-
-sMSController.startQueuedSMSDeliveryAsync(aname).thenAccept(result -> {
-    // TODO success callback handler
-    System.out.println(result);
-}).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
-    return null;
-});
-```
-
-## Example Response *(as JSON)*
-
-```json
-{
-  "success": true
 }
 ```
 

@@ -21,7 +21,7 @@ public class Notification {
     private String notificationGroupName;
     private Integer notificationFrequencyFactor;
     private String notificationFrequencyInterval;
-    private String externalEmailRecIpIents;
+    private String externalEmailRecipients;
     private Boolean smsNotification;
     private List<SMSNumber> smsNumbers;
     private Boolean reminder;
@@ -41,7 +41,7 @@ public class Notification {
      * @param  notificationGroupName  String value for notificationGroupName.
      * @param  notificationFrequencyFactor  Integer value for notificationFrequencyFactor.
      * @param  notificationFrequencyInterval  String value for notificationFrequencyInterval.
-     * @param  externalEmailRecIpIents  String value for externalEmailRecIpIents.
+     * @param  externalEmailRecipients  String value for externalEmailRecipients.
      * @param  smsNotification  Boolean value for smsNotification.
      * @param  smsNumbers  List of SMSNumber value for smsNumbers.
      * @param  reminder  Boolean value for reminder.
@@ -54,7 +54,7 @@ public class Notification {
             String notificationGroupName,
             Integer notificationFrequencyFactor,
             String notificationFrequencyInterval,
-            String externalEmailRecIpIents,
+            String externalEmailRecipients,
             Boolean smsNotification,
             List<SMSNumber> smsNumbers,
             Boolean reminder,
@@ -65,7 +65,7 @@ public class Notification {
         this.notificationGroupName = notificationGroupName;
         this.notificationFrequencyFactor = notificationFrequencyFactor;
         this.notificationFrequencyInterval = notificationFrequencyInterval;
-        this.externalEmailRecIpIents = externalEmailRecIpIents;
+        this.externalEmailRecipients = externalEmailRecipients;
         this.smsNotification = smsNotification;
         this.smsNumbers = smsNumbers;
         this.reminder = reminder;
@@ -199,24 +199,24 @@ public class Notification {
     }
 
     /**
-     * Getter for ExternalEmailRecIpIents.
+     * Getter for ExternalEmailRecipients.
      * E-mail address(es) where the notification should be delivered.
      * @return Returns the String
      */
     @JsonGetter("externalEmailRecipients")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getExternalEmailRecIpIents() {
-        return externalEmailRecIpIents;
+    public String getExternalEmailRecipients() {
+        return externalEmailRecipients;
     }
 
     /**
-     * Setter for ExternalEmailRecIpIents.
+     * Setter for ExternalEmailRecipients.
      * E-mail address(es) where the notification should be delivered.
-     * @param externalEmailRecIpIents Value for String
+     * @param externalEmailRecipients Value for String
      */
     @JsonSetter("externalEmailRecipients")
-    public void setExternalEmailRecIpIents(String externalEmailRecIpIents) {
-        this.externalEmailRecIpIents = externalEmailRecIpIents;
+    public void setExternalEmailRecipients(String externalEmailRecipients) {
+        this.externalEmailRecipients = externalEmailRecipients;
     }
 
     /**
@@ -313,8 +313,8 @@ public class Notification {
                 + ", emailNotification=" + emailNotification + ", notificationGroupName="
                 + notificationGroupName + ", notificationFrequencyFactor="
                 + notificationFrequencyFactor + ", notificationFrequencyInterval="
-                + notificationFrequencyInterval + ", externalEmailRecIpIents="
-                + externalEmailRecIpIents + ", smsNotification=" + smsNotification + ", smsNumbers="
+                + notificationFrequencyInterval + ", externalEmailRecipients="
+                + externalEmailRecipients + ", smsNotification=" + smsNotification + ", smsNumbers="
                 + smsNumbers + ", reminder=" + reminder + ", severity=" + severity + "]";
     }
 
@@ -331,7 +331,7 @@ public class Notification {
                 .notificationGroupName(getNotificationGroupName())
                 .notificationFrequencyFactor(getNotificationFrequencyFactor())
                 .notificationFrequencyInterval(getNotificationFrequencyInterval())
-                .externalEmailRecIpIents(getExternalEmailRecIpIents())
+                .externalEmailRecipients(getExternalEmailRecipients())
                 .smsNotification(getSmsNotification())
                 .smsNumbers(getSmsNumbers())
                 .reminder(getReminder())
@@ -349,7 +349,7 @@ public class Notification {
         private String notificationGroupName;
         private Integer notificationFrequencyFactor;
         private String notificationFrequencyInterval;
-        private String externalEmailRecIpIents;
+        private String externalEmailRecipients;
         private Boolean smsNotification;
         private List<SMSNumber> smsNumbers;
         private Boolean reminder;
@@ -418,12 +418,12 @@ public class Notification {
         }
 
         /**
-         * Setter for externalEmailRecIpIents.
-         * @param  externalEmailRecIpIents  String value for externalEmailRecIpIents.
+         * Setter for externalEmailRecipients.
+         * @param  externalEmailRecipients  String value for externalEmailRecipients.
          * @return Builder
          */
-        public Builder externalEmailRecIpIents(String externalEmailRecIpIents) {
-            this.externalEmailRecIpIents = externalEmailRecIpIents;
+        public Builder externalEmailRecipients(String externalEmailRecipients) {
+            this.externalEmailRecipients = externalEmailRecipients;
             return this;
         }
 
@@ -474,7 +474,7 @@ public class Notification {
         public Notification build() {
             return new Notification(notificationType, callback, emailNotification,
                     notificationGroupName, notificationFrequencyFactor,
-                    notificationFrequencyInterval, externalEmailRecIpIents, smsNotification,
+                    notificationFrequencyInterval, externalEmailRecipients, smsNotification,
                     smsNumbers, reminder, severity);
         }
     }

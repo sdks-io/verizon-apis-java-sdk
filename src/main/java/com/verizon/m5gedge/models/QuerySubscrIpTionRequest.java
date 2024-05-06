@@ -12,9 +12,9 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 import java.util.Map;
 
 /**
- * This is a model class for QuerySubscrIpTionRequest type.
+ * This is a model class for QuerySubscriptionRequest type.
  */
-public class QuerySubscrIpTionRequest {
+public class QuerySubscriptionRequest {
     private AccountIdentifier accountidentifier;
     private Map<String, String> selection;
     private ResourceIdentifier resourceidentifier;
@@ -22,7 +22,7 @@ public class QuerySubscrIpTionRequest {
     /**
      * Default constructor.
      */
-    public QuerySubscrIpTionRequest() {
+    public QuerySubscriptionRequest() {
     }
 
     /**
@@ -31,7 +31,7 @@ public class QuerySubscrIpTionRequest {
      * @param  selection  Map of String, value for selection.
      * @param  resourceidentifier  ResourceIdentifier value for resourceidentifier.
      */
-    public QuerySubscrIpTionRequest(
+    public QuerySubscriptionRequest(
             AccountIdentifier accountidentifier,
             Map<String, String> selection,
             ResourceIdentifier resourceidentifier) {
@@ -112,19 +112,19 @@ public class QuerySubscrIpTionRequest {
     }
 
     /**
-     * Converts this QuerySubscrIpTionRequest into string format.
+     * Converts this QuerySubscriptionRequest into string format.
      * @return String representation of this class
      */
     @Override
     public String toString() {
-        return "QuerySubscrIpTionRequest [" + "accountidentifier=" + accountidentifier
+        return "QuerySubscriptionRequest [" + "accountidentifier=" + accountidentifier
                 + ", selection=" + selection + ", resourceidentifier=" + resourceidentifier + "]";
     }
 
     /**
-     * Builds a new {@link QuerySubscrIpTionRequest.Builder} object.
+     * Builds a new {@link QuerySubscriptionRequest.Builder} object.
      * Creates the instance with the state of the current model.
-     * @return a new {@link QuerySubscrIpTionRequest.Builder} object
+     * @return a new {@link QuerySubscriptionRequest.Builder} object
      */
     public Builder toBuilder() {
         Builder builder = new Builder()
@@ -135,7 +135,7 @@ public class QuerySubscrIpTionRequest {
     }
 
     /**
-     * Class to build instances of {@link QuerySubscrIpTionRequest}.
+     * Class to build instances of {@link QuerySubscriptionRequest}.
      */
     public static class Builder {
         private AccountIdentifier accountidentifier;
@@ -175,11 +175,11 @@ public class QuerySubscrIpTionRequest {
         }
 
         /**
-         * Builds a new {@link QuerySubscrIpTionRequest} object using the set fields.
-         * @return {@link QuerySubscrIpTionRequest}
+         * Builds a new {@link QuerySubscriptionRequest} object using the set fields.
+         * @return {@link QuerySubscriptionRequest}
          */
-        public QuerySubscrIpTionRequest build() {
-            return new QuerySubscrIpTionRequest(accountidentifier, selection, resourceidentifier);
+        public QuerySubscriptionRequest build() {
+            return new QuerySubscriptionRequest(accountidentifier, selection, resourceidentifier);
         }
     }
 }

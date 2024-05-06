@@ -16,7 +16,7 @@ import java.util.List;
  */
 public class AccountService {
     private String name;
-    private String descrIpTion;
+    private String description;
     private List<State> states;
 
     /**
@@ -28,15 +28,15 @@ public class AccountService {
     /**
      * Initialization constructor.
      * @param  name  String value for name.
-     * @param  descrIpTion  String value for descrIpTion.
+     * @param  description  String value for description.
      * @param  states  List of State value for states.
      */
     public AccountService(
             String name,
-            String descrIpTion,
+            String description,
             List<State> states) {
         this.name = name;
-        this.descrIpTion = descrIpTion;
+        this.description = description;
         this.states = states;
     }
 
@@ -62,24 +62,24 @@ public class AccountService {
     }
 
     /**
-     * Getter for DescrIpTion.
+     * Getter for Description.
      * The description of the service plan.
      * @return Returns the String
      */
     @JsonGetter("description")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getDescrIpTion() {
-        return descrIpTion;
+    public String getDescription() {
+        return description;
     }
 
     /**
-     * Setter for DescrIpTion.
+     * Setter for Description.
      * The description of the service plan.
-     * @param descrIpTion Value for String
+     * @param description Value for String
      */
     @JsonSetter("description")
-    public void setDescrIpTion(String descrIpTion) {
-        this.descrIpTion = descrIpTion;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     /**
@@ -109,7 +109,7 @@ public class AccountService {
      */
     @Override
     public String toString() {
-        return "AccountService [" + "name=" + name + ", descrIpTion=" + descrIpTion + ", states="
+        return "AccountService [" + "name=" + name + ", description=" + description + ", states="
                 + states + "]";
     }
 
@@ -121,7 +121,7 @@ public class AccountService {
     public Builder toBuilder() {
         Builder builder = new Builder()
                 .name(getName())
-                .descrIpTion(getDescrIpTion())
+                .description(getDescription())
                 .states(getStates());
         return builder;
     }
@@ -131,7 +131,7 @@ public class AccountService {
      */
     public static class Builder {
         private String name;
-        private String descrIpTion;
+        private String description;
         private List<State> states;
 
 
@@ -147,12 +147,12 @@ public class AccountService {
         }
 
         /**
-         * Setter for descrIpTion.
-         * @param  descrIpTion  String value for descrIpTion.
+         * Setter for description.
+         * @param  description  String value for description.
          * @return Builder
          */
-        public Builder descrIpTion(String descrIpTion) {
-            this.descrIpTion = descrIpTion;
+        public Builder description(String description) {
+            this.description = description;
             return this;
         }
 
@@ -171,7 +171,7 @@ public class AccountService {
          * @return {@link AccountService}
          */
         public AccountService build() {
-            return new AccountService(name, descrIpTion, states);
+            return new AccountService(name, description, states);
         }
     }
 }

@@ -11,7 +11,7 @@ Information required to associate a usage segmentation label with a device to re
 
 | Name | Type | Tags | Description | Getter | Setter |
 |  --- | --- | --- | --- | --- | --- |
-| `AccountName` | `String` | Optional | - | String getAccountName() | setAccountName(String accountName) |
+| `AccountName` | `String` | Required | - | String getAccountName() | setAccountName(String accountName) |
 | `Labels` | [`LabelsList`](../../doc/models/labels-list.md) | Optional | - | LabelsList getLabels() | setLabels(LabelsList labels) |
 | `DeviceIds` | [`List<DeviceList>`](../../doc/models/device-list.md) | Optional | - | List<DeviceList> getDeviceIds() | setDeviceIds(List<DeviceList> deviceIds) |
 | `BillingCycle` | [`BillingCycle`](../../doc/models/billing-cycle.md) | Optional | - | BillingCycle getBillingCycle() | setBillingCycle(BillingCycle billingCycle) |

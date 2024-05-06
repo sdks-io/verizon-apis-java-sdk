@@ -10,66 +10,9 @@ SoftwareManagementCallbacksV1Controller softwareManagementCallbacksV1Controller 
 
 ## Methods
 
-* [List Registered Callbacks](../../doc/controllers/software-management-callbacks-v1.md#list-registered-callbacks)
 * [Register Callback](../../doc/controllers/software-management-callbacks-v1.md#register-callback)
 * [Deregister Callback](../../doc/controllers/software-management-callbacks-v1.md#deregister-callback)
-
-
-# List Registered Callbacks
-
-Returns the name and endpoint URL of the callback listening services registered for a given account.
-
-```java
-CompletableFuture<ApiResponse<List<RegisteredCallbacks>>> listRegisteredCallbacksAsync(
-    final String account)
-```
-
-## Parameters
-
-| Parameter | Type | Tags | Description |
-|  --- | --- | --- | --- |
-| `account` | `String` | Template, Required | Account identifier in "##########-#####". |
-
-## Server
-
-`Server.SOFTWARE_MANAGEMENT_V1`
-
-## Response Type
-
-[`List<RegisteredCallbacks>`](../../doc/models/registered-callbacks.md)
-
-## Example Usage
-
-```java
-String account = "0242078689-00001";
-
-softwareManagementCallbacksV1Controller.listRegisteredCallbacksAsync(account).thenAccept(result -> {
-    // TODO success callback handler
-    System.out.println(result);
-}).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
-    return null;
-});
-```
-
-## Example Response *(as JSON)*
-
-```json
-[
-  {
-    "aname": "0252012345-00001",
-    "name": "Fota",
-    "url": "http://10.120.102.183:50559/CallbackListener/FirmwareServiceMessages.asmx"
-  }
-]
-```
-
-## Errors
-
-| HTTP Status Code | Error Description | Exception Class |
-|  --- | --- | --- |
-| 400 | Unexpected error. | [`FotaV1ResultException`](../../doc/models/fota-v1-result-exception.md) |
+* [List Registered Callbacks](../../doc/controllers/software-management-callbacks-v1.md#list-registered-callbacks)
 
 
 # Register Callback
@@ -180,6 +123,63 @@ softwareManagementCallbacksV1Controller.deregisterCallbackAsync(account, service
 {
   "success": true
 }
+```
+
+## Errors
+
+| HTTP Status Code | Error Description | Exception Class |
+|  --- | --- | --- |
+| 400 | Unexpected error. | [`FotaV1ResultException`](../../doc/models/fota-v1-result-exception.md) |
+
+
+# List Registered Callbacks
+
+Returns the name and endpoint URL of the callback listening services registered for a given account.
+
+```java
+CompletableFuture<ApiResponse<List<RegisteredCallbacks>>> listRegisteredCallbacksAsync(
+    final String account)
+```
+
+## Parameters
+
+| Parameter | Type | Tags | Description |
+|  --- | --- | --- | --- |
+| `account` | `String` | Template, Required | Account identifier in "##########-#####". |
+
+## Server
+
+`Server.SOFTWARE_MANAGEMENT_V1`
+
+## Response Type
+
+[`List<RegisteredCallbacks>`](../../doc/models/registered-callbacks.md)
+
+## Example Usage
+
+```java
+String account = "0242078689-00001";
+
+softwareManagementCallbacksV1Controller.listRegisteredCallbacksAsync(account).thenAccept(result -> {
+    // TODO success callback handler
+    System.out.println(result);
+}).exceptionally(exception -> {
+    // TODO failure callback handler
+    exception.printStackTrace();
+    return null;
+});
+```
+
+## Example Response *(as JSON)*
+
+```json
+[
+  {
+    "aname": "0252012345-00001",
+    "name": "Fota",
+    "url": "http://10.120.102.183:50559/CallbackListener/FirmwareServiceMessages.asmx"
+  }
+]
 ```
 
 ## Errors

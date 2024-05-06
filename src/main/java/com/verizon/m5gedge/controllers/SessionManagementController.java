@@ -40,6 +40,53 @@ public final class SessionManagementController extends BaseController {
     }
 
     /**
+     * Ends a Connectivity Management session.
+     * @return    Returns the LogOutRequest wrapped in ApiResponse response from the API call
+     * @throws    ApiException    Represents error response from the server.
+     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
+     */
+    public ApiResponse<LogOutRequest> endConnectivityManagementSession() throws ApiException, IOException {
+        return prepareEndConnectivityManagementSessionRequest().execute();
+    }
+
+    /**
+     * Ends a Connectivity Management session.
+     * @return    Returns the LogOutRequest wrapped in ApiResponse response from the API call
+     */
+    public CompletableFuture<ApiResponse<LogOutRequest>> endConnectivityManagementSessionAsync() {
+        try { 
+            return prepareEndConnectivityManagementSessionRequest().executeAsync(); 
+        } catch (Exception e) {  
+            throw new CompletionException(e); 
+        }
+    }
+
+    /**
+     * Builds the ApiCall object for endConnectivityManagementSession.
+     */
+    private ApiCall<ApiResponse<LogOutRequest>, ApiException> prepareEndConnectivityManagementSessionRequest() throws IOException {
+        return new ApiCall.Builder<ApiResponse<LogOutRequest>, ApiException>()
+                .globalConfig(getGlobalConfiguration())
+                .requestBuilder(requestBuilder -> requestBuilder
+                        .server(Server.THINGSPACE.value())
+                        .path("/m2m/v1/session/logout")
+                        .headerParam(param -> param.key("accept").value("application/json"))
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
+                        .httpMethod(HttpMethod.POST))
+                .responseHandler(responseHandler -> responseHandler
+                        .responseClassType(ResponseClassType.API_RESPONSE)
+                        .apiResponseDeserializer(
+                                response -> ApiHelper.deserialize(response, LogOutRequest.class))
+                        .nullify404(false)
+                        .localErrorCase("400",
+                                 ErrorCase.setReason("Error response.",
+                                (reason, context) -> new ConnectivityManagementResultException(reason, context)))
+                        .globalErrorCase(GLOBAL_ERROR_CASES))
+                .build();
+    }
+
+    /**
      * Initiates a Connectivity Management session and returns a VZ-M2M session token that is
      * required in subsequent API requests.
      * @param  body  Optional parameter: Request to initiate a session.
@@ -82,58 +129,13 @@ public final class SessionManagementController extends BaseController {
                         .headerParam(param -> param.key("Content-Type")
                                 .value("application/json").isRequired(false))
                         .headerParam(param -> param.key("accept").value("application/json"))
-                        .authenticationKey(BaseController.AUTHENTICATION_KEY)
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
                         .httpMethod(HttpMethod.POST))
                 .responseHandler(responseHandler -> responseHandler
                         .responseClassType(ResponseClassType.API_RESPONSE)
                         .apiResponseDeserializer(
                                 response -> ApiHelper.deserialize(response, LogInResult.class))
-                        .nullify404(false)
-                        .localErrorCase("400",
-                                 ErrorCase.setReason("Error response.",
-                                (reason, context) -> new ConnectivityManagementResultException(reason, context)))
-                        .globalErrorCase(GLOBAL_ERROR_CASES))
-                .build();
-    }
-
-    /**
-     * Ends a Connectivity Management session.
-     * @return    Returns the LogOutRequest wrapped in ApiResponse response from the API call
-     * @throws    ApiException    Represents error response from the server.
-     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
-     */
-    public ApiResponse<LogOutRequest> endConnectivityManagementSession() throws ApiException, IOException {
-        return prepareEndConnectivityManagementSessionRequest().execute();
-    }
-
-    /**
-     * Ends a Connectivity Management session.
-     * @return    Returns the LogOutRequest wrapped in ApiResponse response from the API call
-     */
-    public CompletableFuture<ApiResponse<LogOutRequest>> endConnectivityManagementSessionAsync() {
-        try { 
-            return prepareEndConnectivityManagementSessionRequest().executeAsync(); 
-        } catch (Exception e) {  
-            throw new CompletionException(e); 
-        }
-    }
-
-    /**
-     * Builds the ApiCall object for endConnectivityManagementSession.
-     */
-    private ApiCall<ApiResponse<LogOutRequest>, ApiException> prepareEndConnectivityManagementSessionRequest() throws IOException {
-        return new ApiCall.Builder<ApiResponse<LogOutRequest>, ApiException>()
-                .globalConfig(getGlobalConfiguration())
-                .requestBuilder(requestBuilder -> requestBuilder
-                        .server(Server.THINGSPACE.value())
-                        .path("/m2m/v1/session/logout")
-                        .headerParam(param -> param.key("accept").value("application/json"))
-                        .authenticationKey(BaseController.AUTHENTICATION_KEY)
-                        .httpMethod(HttpMethod.POST))
-                .responseHandler(responseHandler -> responseHandler
-                        .responseClassType(ResponseClassType.API_RESPONSE)
-                        .apiResponseDeserializer(
-                                response -> ApiHelper.deserialize(response, LogOutRequest.class))
                         .nullify404(false)
                         .localErrorCase("400",
                                  ErrorCase.setReason("Error response.",
@@ -185,7 +187,8 @@ public final class SessionManagementController extends BaseController {
                         .headerParam(param -> param.key("Content-Type")
                                 .value("application/json").isRequired(false))
                         .headerParam(param -> param.key("accept").value("application/json"))
-                        .authenticationKey(BaseController.AUTHENTICATION_KEY)
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
                         .httpMethod(HttpMethod.PUT))
                 .responseHandler(responseHandler -> responseHandler
                         .responseClassType(ResponseClassType.API_RESPONSE)

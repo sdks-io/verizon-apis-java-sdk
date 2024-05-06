@@ -46,7 +46,6 @@ public class RetrieveMonitorsRequest {
      * @return Returns the String
      */
     @JsonGetter("accountName")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     public String getAccountName() {
         return accountName;
     }
@@ -67,7 +66,6 @@ public class RetrieveMonitorsRequest {
      * @return Returns the List of AccountDeviceList
      */
     @JsonGetter("devices")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     public List<AccountDeviceList> getDevices() {
         return devices;
     }
@@ -119,9 +117,7 @@ public class RetrieveMonitorsRequest {
      * @return a new {@link RetrieveMonitorsRequest.Builder} object
      */
     public Builder toBuilder() {
-        Builder builder = new Builder()
-                .accountName(getAccountName())
-                .devices(getDevices())
+        Builder builder = new Builder(accountName, devices)
                 .monitorType(getMonitorType());
         return builder;
     }
@@ -134,7 +130,21 @@ public class RetrieveMonitorsRequest {
         private List<AccountDeviceList> devices;
         private String monitorType;
 
+        /**
+         * Initialization constructor.
+         */
+        public Builder() {
+        }
 
+        /**
+         * Initialization constructor.
+         * @param  accountName  String value for accountName.
+         * @param  devices  List of AccountDeviceList value for devices.
+         */
+        public Builder(String accountName, List<AccountDeviceList> devices) {
+            this.accountName = accountName;
+            this.devices = devices;
+        }
 
         /**
          * Setter for accountName.

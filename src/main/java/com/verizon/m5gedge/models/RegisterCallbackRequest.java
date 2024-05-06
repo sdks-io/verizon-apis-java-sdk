@@ -49,7 +49,6 @@ public class RegisterCallbackRequest {
      * @return Returns the String
      */
     @JsonGetter("name")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     public String getName() {
         return name;
     }
@@ -70,7 +69,6 @@ public class RegisterCallbackRequest {
      * @return Returns the String
      */
     @JsonGetter("url")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     public String getUrl() {
         return url;
     }
@@ -143,9 +141,7 @@ public class RegisterCallbackRequest {
      * @return a new {@link RegisterCallbackRequest.Builder} object
      */
     public Builder toBuilder() {
-        Builder builder = new Builder()
-                .name(getName())
-                .url(getUrl())
+        Builder builder = new Builder(name, url)
                 .username(getUsername())
                 .password(getPassword());
         return builder;
@@ -160,7 +156,21 @@ public class RegisterCallbackRequest {
         private String username;
         private String password;
 
+        /**
+         * Initialization constructor.
+         */
+        public Builder() {
+        }
 
+        /**
+         * Initialization constructor.
+         * @param  name  String value for name.
+         * @param  url  String value for url.
+         */
+        public Builder(String name, String url) {
+            this.name = name;
+            this.url = url;
+        }
 
         /**
          * Setter for name.

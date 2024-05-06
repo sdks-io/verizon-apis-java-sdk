@@ -40,13 +40,16 @@ CompletableFuture<ApiResponse<DeviceManagementResult>> deviceReachabilityStatusU
 ## Example Usage
 
 ```java
-NotificationReportStatusRequest body = new NotificationReportStatusRequest.Builder()
-    .accountName("0868924207-00001")
-    .device(new DeviceId.Builder()
-        .id("990013907835573")
-        .kind("imei")
-        .build())
-    .build();
+NotificationReportStatusRequest body = new NotificationReportStatusRequest.Builder(
+    "0868924207-00001",
+    new DeviceId.Builder(
+        "990013907835573",
+        "imei"
+    )
+    .build(),
+    "requestType6"
+)
+.build();
 
 deviceDiagnosticsController.deviceReachabilityStatusUsingPOSTAsync(body).thenAccept(result -> {
     // TODO success callback handler
@@ -99,36 +102,43 @@ CompletableFuture<ApiResponse<DeviceManagementResult>> retrieveActiveMonitorsUsi
 ## Example Usage
 
 ```java
-RetrieveMonitorsRequest body = new RetrieveMonitorsRequest.Builder()
-    .accountName("0868924207-00001")
-    .devices(Arrays.asList(
-        new AccountDeviceList.Builder()
-            .deviceIds(Arrays.asList(
-                new DeviceId.Builder()
-                    .id("990013907835573")
-                    .kind("imei")
-                    .build(),
-                new DeviceId.Builder()
-                    .id("89141390780800784259")
-                    .kind("iccid")
-                    .build()
-            ))
-            .build(),
-        new AccountDeviceList.Builder()
-            .deviceIds(Arrays.asList(
-                new DeviceId.Builder()
-                    .id("990013907884259")
-                    .kind("imei")
-                    .build(),
-                new DeviceId.Builder()
-                    .id("89141390780800735573")
-                    .kind("iccid")
-                    .build()
-            ))
-            .build()
-    ))
-    .monitorType("monitorType")
-    .build();
+RetrieveMonitorsRequest body = new RetrieveMonitorsRequest.Builder(
+    "0868924207-00001",
+    Arrays.asList(
+        new AccountDeviceList.Builder(
+            Arrays.asList(
+                new DeviceId.Builder(
+                    "990013907835573",
+                    "imei"
+                )
+                .build(),
+                new DeviceId.Builder(
+                    "89141390780800784259",
+                    "iccid"
+                )
+                .build()
+            )
+        )
+        .build(),
+        new AccountDeviceList.Builder(
+            Arrays.asList(
+                new DeviceId.Builder(
+                    "990013907884259",
+                    "imei"
+                )
+                .build(),
+                new DeviceId.Builder(
+                    "89141390780800735573",
+                    "iccid"
+                )
+                .build()
+            )
+        )
+        .build()
+    )
+)
+.monitorType("monitorType")
+.build();
 
 deviceDiagnosticsController.retrieveActiveMonitorsUsingPOSTAsync(body).thenAccept(result -> {
     // TODO success callback handler

@@ -12,28 +12,28 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 import java.util.List;
 
 /**
- * This is a model class for SecuritySubscrIpTionResult type.
+ * This is a model class for SecuritySubscriptionResult type.
  */
-public class SecuritySubscrIpTionResult {
+public class SecuritySubscriptionResult {
     private String accountName;
-    private List<SecuritySubscrIpTion> subscrIpTionList;
+    private List<SecuritySubscription> subscriptionList;
 
     /**
      * Default constructor.
      */
-    public SecuritySubscrIpTionResult() {
+    public SecuritySubscriptionResult() {
     }
 
     /**
      * Initialization constructor.
      * @param  accountName  String value for accountName.
-     * @param  subscrIpTionList  List of SecuritySubscrIpTion value for subscrIpTionList.
+     * @param  subscriptionList  List of SecuritySubscription value for subscriptionList.
      */
-    public SecuritySubscrIpTionResult(
+    public SecuritySubscriptionResult(
             String accountName,
-            List<SecuritySubscrIpTion> subscrIpTionList) {
+            List<SecuritySubscription> subscriptionList) {
         this.accountName = accountName;
-        this.subscrIpTionList = subscrIpTionList;
+        this.subscriptionList = subscriptionList;
     }
 
     /**
@@ -58,54 +58,54 @@ public class SecuritySubscrIpTionResult {
     }
 
     /**
-     * Getter for SubscrIpTionList.
+     * Getter for SubscriptionList.
      * The list of SKU numbers and counts for each license type specified in the request.
-     * @return Returns the List of SecuritySubscrIpTion
+     * @return Returns the List of SecuritySubscription
      */
     @JsonGetter("subscriptionList")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public List<SecuritySubscrIpTion> getSubscrIpTionList() {
-        return subscrIpTionList;
+    public List<SecuritySubscription> getSubscriptionList() {
+        return subscriptionList;
     }
 
     /**
-     * Setter for SubscrIpTionList.
+     * Setter for SubscriptionList.
      * The list of SKU numbers and counts for each license type specified in the request.
-     * @param subscrIpTionList Value for List of SecuritySubscrIpTion
+     * @param subscriptionList Value for List of SecuritySubscription
      */
     @JsonSetter("subscriptionList")
-    public void setSubscrIpTionList(List<SecuritySubscrIpTion> subscrIpTionList) {
-        this.subscrIpTionList = subscrIpTionList;
+    public void setSubscriptionList(List<SecuritySubscription> subscriptionList) {
+        this.subscriptionList = subscriptionList;
     }
 
     /**
-     * Converts this SecuritySubscrIpTionResult into string format.
+     * Converts this SecuritySubscriptionResult into string format.
      * @return String representation of this class
      */
     @Override
     public String toString() {
-        return "SecuritySubscrIpTionResult [" + "accountName=" + accountName + ", subscrIpTionList="
-                + subscrIpTionList + "]";
+        return "SecuritySubscriptionResult [" + "accountName=" + accountName + ", subscriptionList="
+                + subscriptionList + "]";
     }
 
     /**
-     * Builds a new {@link SecuritySubscrIpTionResult.Builder} object.
+     * Builds a new {@link SecuritySubscriptionResult.Builder} object.
      * Creates the instance with the state of the current model.
-     * @return a new {@link SecuritySubscrIpTionResult.Builder} object
+     * @return a new {@link SecuritySubscriptionResult.Builder} object
      */
     public Builder toBuilder() {
         Builder builder = new Builder()
                 .accountName(getAccountName())
-                .subscrIpTionList(getSubscrIpTionList());
+                .subscriptionList(getSubscriptionList());
         return builder;
     }
 
     /**
-     * Class to build instances of {@link SecuritySubscrIpTionResult}.
+     * Class to build instances of {@link SecuritySubscriptionResult}.
      */
     public static class Builder {
         private String accountName;
-        private List<SecuritySubscrIpTion> subscrIpTionList;
+        private List<SecuritySubscription> subscriptionList;
 
 
 
@@ -120,21 +120,21 @@ public class SecuritySubscrIpTionResult {
         }
 
         /**
-         * Setter for subscrIpTionList.
-         * @param  subscrIpTionList  List of SecuritySubscrIpTion value for subscrIpTionList.
+         * Setter for subscriptionList.
+         * @param  subscriptionList  List of SecuritySubscription value for subscriptionList.
          * @return Builder
          */
-        public Builder subscrIpTionList(List<SecuritySubscrIpTion> subscrIpTionList) {
-            this.subscrIpTionList = subscrIpTionList;
+        public Builder subscriptionList(List<SecuritySubscription> subscriptionList) {
+            this.subscriptionList = subscriptionList;
             return this;
         }
 
         /**
-         * Builds a new {@link SecuritySubscrIpTionResult} object using the set fields.
-         * @return {@link SecuritySubscrIpTionResult}
+         * Builds a new {@link SecuritySubscriptionResult} object using the set fields.
+         * @return {@link SecuritySubscriptionResult}
          */
-        public SecuritySubscrIpTionResult build() {
-            return new SecuritySubscrIpTionResult(accountName, subscrIpTionList);
+        public SecuritySubscriptionResult build() {
+            return new SecuritySubscriptionResult(accountName, subscriptionList);
         }
     }
 }

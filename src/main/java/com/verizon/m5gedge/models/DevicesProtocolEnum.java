@@ -46,8 +46,7 @@ public enum DevicesProtocolEnum {
     @JsonCreator
     public static DevicesProtocolEnum constructFromString(String toConvert) throws IOException {
         DevicesProtocolEnum enumValue = fromString(toConvert);
-        if (enumValue == null)
-        {
+        if (enumValue == null) {
             throw new IOException("Unable to create enum instance with value: " + toConvert);
         }
         return enumValue;

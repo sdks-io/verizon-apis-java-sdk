@@ -18,7 +18,7 @@ public class ResourcesEdgeHostedServiceWithProfileId {
     private ResourcesServiceEndpoint serviceEndpoint;
     private String applicationServerProviderId;
     private String applicationId;
-    private String serviceDescrIpTion;
+    private String serviceDescription;
     private String serviceProfileID;
 
     /**
@@ -33,7 +33,7 @@ public class ResourcesEdgeHostedServiceWithProfileId {
      * @param  serviceEndpoint  ResourcesServiceEndpoint value for serviceEndpoint.
      * @param  applicationServerProviderId  String value for applicationServerProviderId.
      * @param  applicationId  String value for applicationId.
-     * @param  serviceDescrIpTion  String value for serviceDescrIpTion.
+     * @param  serviceDescription  String value for serviceDescription.
      * @param  serviceProfileID  String value for serviceProfileID.
      */
     public ResourcesEdgeHostedServiceWithProfileId(
@@ -41,13 +41,13 @@ public class ResourcesEdgeHostedServiceWithProfileId {
             ResourcesServiceEndpoint serviceEndpoint,
             String applicationServerProviderId,
             String applicationId,
-            String serviceDescrIpTion,
+            String serviceDescription,
             String serviceProfileID) {
         this.ern = ern;
         this.serviceEndpoint = serviceEndpoint;
         this.applicationServerProviderId = applicationServerProviderId;
         this.applicationId = applicationId;
-        this.serviceDescrIpTion = serviceDescrIpTion;
+        this.serviceDescription = serviceDescription;
         this.serviceProfileID = serviceProfileID;
     }
 
@@ -136,22 +136,22 @@ public class ResourcesEdgeHostedServiceWithProfileId {
     }
 
     /**
-     * Getter for ServiceDescrIpTion.
+     * Getter for ServiceDescription.
      * @return Returns the String
      */
     @JsonGetter("serviceDescription")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getServiceDescrIpTion() {
-        return serviceDescrIpTion;
+    public String getServiceDescription() {
+        return serviceDescription;
     }
 
     /**
-     * Setter for ServiceDescrIpTion.
-     * @param serviceDescrIpTion Value for String
+     * Setter for ServiceDescription.
+     * @param serviceDescription Value for String
      */
     @JsonSetter("serviceDescription")
-    public void setServiceDescrIpTion(String serviceDescrIpTion) {
-        this.serviceDescrIpTion = serviceDescrIpTion;
+    public void setServiceDescription(String serviceDescription) {
+        this.serviceDescription = serviceDescription;
     }
 
     /**
@@ -183,7 +183,7 @@ public class ResourcesEdgeHostedServiceWithProfileId {
     public String toString() {
         return "ResourcesEdgeHostedServiceWithProfileId [" + "ern=" + ern + ", serviceEndpoint="
                 + serviceEndpoint + ", applicationServerProviderId=" + applicationServerProviderId
-                + ", applicationId=" + applicationId + ", serviceDescrIpTion=" + serviceDescrIpTion
+                + ", applicationId=" + applicationId + ", serviceDescription=" + serviceDescription
                 + ", serviceProfileID=" + serviceProfileID + "]";
     }
 
@@ -198,7 +198,7 @@ public class ResourcesEdgeHostedServiceWithProfileId {
                 .serviceEndpoint(getServiceEndpoint())
                 .applicationServerProviderId(getApplicationServerProviderId())
                 .applicationId(getApplicationId())
-                .serviceDescrIpTion(getServiceDescrIpTion())
+                .serviceDescription(getServiceDescription())
                 .serviceProfileID(getServiceProfileID());
         return builder;
     }
@@ -211,7 +211,7 @@ public class ResourcesEdgeHostedServiceWithProfileId {
         private ResourcesServiceEndpoint serviceEndpoint;
         private String applicationServerProviderId;
         private String applicationId;
-        private String serviceDescrIpTion;
+        private String serviceDescription;
         private String serviceProfileID;
 
 
@@ -257,12 +257,12 @@ public class ResourcesEdgeHostedServiceWithProfileId {
         }
 
         /**
-         * Setter for serviceDescrIpTion.
-         * @param  serviceDescrIpTion  String value for serviceDescrIpTion.
+         * Setter for serviceDescription.
+         * @param  serviceDescription  String value for serviceDescription.
          * @return Builder
          */
-        public Builder serviceDescrIpTion(String serviceDescrIpTion) {
-            this.serviceDescrIpTion = serviceDescrIpTion;
+        public Builder serviceDescription(String serviceDescription) {
+            this.serviceDescription = serviceDescription;
             return this;
         }
 
@@ -282,7 +282,7 @@ public class ResourcesEdgeHostedServiceWithProfileId {
          */
         public ResourcesEdgeHostedServiceWithProfileId build() {
             return new ResourcesEdgeHostedServiceWithProfileId(ern, serviceEndpoint,
-                    applicationServerProviderId, applicationId, serviceDescrIpTion,
+                    applicationServerProviderId, applicationId, serviceDescription,
                     serviceProfileID);
         }
     }

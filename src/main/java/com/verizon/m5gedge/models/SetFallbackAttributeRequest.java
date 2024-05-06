@@ -45,7 +45,6 @@ public class SetFallbackAttributeRequest {
      * @return Returns the List of DeviceList
      */
     @JsonGetter("devices")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     public List<DeviceList> getDevices() {
         return devices;
     }
@@ -64,7 +63,6 @@ public class SetFallbackAttributeRequest {
      * @return Returns the String
      */
     @JsonGetter("accountName")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     public String getAccountName() {
         return accountName;
     }
@@ -113,9 +111,7 @@ public class SetFallbackAttributeRequest {
      * @return a new {@link SetFallbackAttributeRequest.Builder} object
      */
     public Builder toBuilder() {
-        Builder builder = new Builder()
-                .devices(getDevices())
-                .accountName(getAccountName())
+        Builder builder = new Builder(devices, accountName)
                 .carrierName(getCarrierName());
         return builder;
     }
@@ -128,7 +124,21 @@ public class SetFallbackAttributeRequest {
         private String accountName;
         private String carrierName;
 
+        /**
+         * Initialization constructor.
+         */
+        public Builder() {
+        }
 
+        /**
+         * Initialization constructor.
+         * @param  devices  List of DeviceList value for devices.
+         * @param  accountName  String value for accountName.
+         */
+        public Builder(List<DeviceList> devices, String accountName) {
+            this.devices = devices;
+            this.accountName = accountName;
+        }
 
         /**
          * Setter for devices.

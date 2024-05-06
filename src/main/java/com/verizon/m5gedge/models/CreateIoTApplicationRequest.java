@@ -21,7 +21,7 @@ public class CreateIoTApplicationRequest {
     private String emailIDs;
     private String resourcegroup;
     private String sampleIOTcApp;
-    private String subscrIpTionID;
+    private String subscriptionID;
     private String tenantID;
 
     /**
@@ -39,7 +39,7 @@ public class CreateIoTApplicationRequest {
      * @param  emailIDs  String value for emailIDs.
      * @param  resourcegroup  String value for resourcegroup.
      * @param  sampleIOTcApp  String value for sampleIOTcApp.
-     * @param  subscrIpTionID  String value for subscrIpTionID.
+     * @param  subscriptionID  String value for subscriptionID.
      * @param  tenantID  String value for tenantID.
      */
     public CreateIoTApplicationRequest(
@@ -50,7 +50,7 @@ public class CreateIoTApplicationRequest {
             String emailIDs,
             String resourcegroup,
             String sampleIOTcApp,
-            String subscrIpTionID,
+            String subscriptionID,
             String tenantID) {
         this.appName = appName;
         this.billingAccountID = billingAccountID;
@@ -59,7 +59,7 @@ public class CreateIoTApplicationRequest {
         this.emailIDs = emailIDs;
         this.resourcegroup = resourcegroup;
         this.sampleIOTcApp = sampleIOTcApp;
-        this.subscrIpTionID = subscrIpTionID;
+        this.subscriptionID = subscriptionID;
         this.tenantID = tenantID;
     }
 
@@ -211,24 +211,24 @@ public class CreateIoTApplicationRequest {
     }
 
     /**
-     * Getter for SubscrIpTionID.
+     * Getter for SubscriptionID.
      * The Azure Subscription ID of the associated Azure target account
      * @return Returns the String
      */
     @JsonGetter("subscriptionID")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getSubscrIpTionID() {
-        return subscrIpTionID;
+    public String getSubscriptionID() {
+        return subscriptionID;
     }
 
     /**
-     * Setter for SubscrIpTionID.
+     * Setter for SubscriptionID.
      * The Azure Subscription ID of the associated Azure target account
-     * @param subscrIpTionID Value for String
+     * @param subscriptionID Value for String
      */
     @JsonSetter("subscriptionID")
-    public void setSubscrIpTionID(String subscrIpTionID) {
-        this.subscrIpTionID = subscrIpTionID;
+    public void setSubscriptionID(String subscriptionID) {
+        this.subscriptionID = subscriptionID;
     }
 
     /**
@@ -261,7 +261,7 @@ public class CreateIoTApplicationRequest {
         return "CreateIoTApplicationRequest [" + "appName=" + appName + ", billingAccountID="
                 + billingAccountID + ", clientID=" + clientID + ", clientSecret=" + clientSecret
                 + ", emailIDs=" + emailIDs + ", resourcegroup=" + resourcegroup + ", sampleIOTcApp="
-                + sampleIOTcApp + ", subscrIpTionID=" + subscrIpTionID + ", tenantID=" + tenantID
+                + sampleIOTcApp + ", subscriptionID=" + subscriptionID + ", tenantID=" + tenantID
                 + "]";
     }
 
@@ -279,7 +279,7 @@ public class CreateIoTApplicationRequest {
                 .emailIDs(getEmailIDs())
                 .resourcegroup(getResourcegroup())
                 .sampleIOTcApp(getSampleIOTcApp())
-                .subscrIpTionID(getSubscrIpTionID())
+                .subscriptionID(getSubscriptionID())
                 .tenantID(getTenantID());
         return builder;
     }
@@ -295,7 +295,7 @@ public class CreateIoTApplicationRequest {
         private String emailIDs;
         private String resourcegroup;
         private String sampleIOTcApp;
-        private String subscrIpTionID;
+        private String subscriptionID;
         private String tenantID;
 
 
@@ -371,12 +371,12 @@ public class CreateIoTApplicationRequest {
         }
 
         /**
-         * Setter for subscrIpTionID.
-         * @param  subscrIpTionID  String value for subscrIpTionID.
+         * Setter for subscriptionID.
+         * @param  subscriptionID  String value for subscriptionID.
          * @return Builder
          */
-        public Builder subscrIpTionID(String subscrIpTionID) {
-            this.subscrIpTionID = subscrIpTionID;
+        public Builder subscriptionID(String subscriptionID) {
+            this.subscriptionID = subscriptionID;
             return this;
         }
 
@@ -396,7 +396,7 @@ public class CreateIoTApplicationRequest {
          */
         public CreateIoTApplicationRequest build() {
             return new CreateIoTApplicationRequest(appName, billingAccountID, clientID,
-                    clientSecret, emailIDs, resourcegroup, sampleIOTcApp, subscrIpTionID, tenantID);
+                    clientSecret, emailIDs, resourcegroup, sampleIOTcApp, subscriptionID, tenantID);
         }
     }
 }

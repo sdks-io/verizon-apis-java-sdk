@@ -81,12 +81,73 @@ public final class SMSController extends BaseController {
                         .headerParam(param -> param.key("Content-Type")
                                 .value("application/json").isRequired(false))
                         .headerParam(param -> param.key("accept").value("application/json"))
-                        .authenticationKey(BaseController.AUTHENTICATION_KEY)
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
                         .httpMethod(HttpMethod.POST))
                 .responseHandler(responseHandler -> responseHandler
                         .responseClassType(ResponseClassType.API_RESPONSE)
                         .apiResponseDeserializer(
                                 response -> ApiHelper.deserialize(response, DeviceManagementResult.class))
+                        .nullify404(false)
+                        .localErrorCase("400",
+                                 ErrorCase.setReason("Error response.",
+                                (reason, context) -> new ConnectivityManagementResultException(reason, context)))
+                        .globalErrorCase(GLOBAL_ERROR_CASES))
+                .build();
+    }
+
+    /**
+     * Tells the ThingSpace Platform to start sending mobile-originated SMS messages through the
+     * EnhancedConnectivityService callback service. SMS messages from devices are queued until they
+     * are retrieved by your application, either by callback or synchronously with GET
+     * /sms/{accountName}/history.
+     * @param  aname  Required parameter: Account name.
+     * @return    Returns the ConnectivityManagementSuccessResult wrapped in ApiResponse response from the API call
+     * @throws    ApiException    Represents error response from the server.
+     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
+     */
+    public ApiResponse<ConnectivityManagementSuccessResult> startQueuedSMSDelivery(
+            final String aname) throws ApiException, IOException {
+        return prepareStartQueuedSMSDeliveryRequest(aname).execute();
+    }
+
+    /**
+     * Tells the ThingSpace Platform to start sending mobile-originated SMS messages through the
+     * EnhancedConnectivityService callback service. SMS messages from devices are queued until they
+     * are retrieved by your application, either by callback or synchronously with GET
+     * /sms/{accountName}/history.
+     * @param  aname  Required parameter: Account name.
+     * @return    Returns the ConnectivityManagementSuccessResult wrapped in ApiResponse response from the API call
+     */
+    public CompletableFuture<ApiResponse<ConnectivityManagementSuccessResult>> startQueuedSMSDeliveryAsync(
+            final String aname) {
+        try { 
+            return prepareStartQueuedSMSDeliveryRequest(aname).executeAsync(); 
+        } catch (Exception e) {  
+            throw new CompletionException(e); 
+        }
+    }
+
+    /**
+     * Builds the ApiCall object for startQueuedSMSDelivery.
+     */
+    private ApiCall<ApiResponse<ConnectivityManagementSuccessResult>, ApiException> prepareStartQueuedSMSDeliveryRequest(
+            final String aname) throws IOException {
+        return new ApiCall.Builder<ApiResponse<ConnectivityManagementSuccessResult>, ApiException>()
+                .globalConfig(getGlobalConfiguration())
+                .requestBuilder(requestBuilder -> requestBuilder
+                        .server(Server.THINGSPACE.value())
+                        .path("/m2m/v1/sms/{aname}/startCallbacks")
+                        .templateParam(param -> param.key("aname").value(aname)
+                                .shouldEncode(true))
+                        .headerParam(param -> param.key("accept").value("application/json"))
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
+                        .httpMethod(HttpMethod.PUT))
+                .responseHandler(responseHandler -> responseHandler
+                        .responseClassType(ResponseClassType.API_RESPONSE)
+                        .apiResponseDeserializer(
+                                response -> ApiHelper.deserialize(response, ConnectivityManagementSuccessResult.class))
                         .nullify404(false)
                         .localErrorCase("400",
                                  ErrorCase.setReason("Error response.",
@@ -145,71 +206,13 @@ public final class SMSController extends BaseController {
                         .templateParam(param -> param.key("aname").value(aname)
                                 .shouldEncode(true))
                         .headerParam(param -> param.key("accept").value("application/json"))
-                        .authenticationKey(BaseController.AUTHENTICATION_KEY)
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
                         .httpMethod(HttpMethod.GET))
                 .responseHandler(responseHandler -> responseHandler
                         .responseClassType(ResponseClassType.API_RESPONSE)
                         .apiResponseDeserializer(
                                 response -> ApiHelper.deserialize(response, SMSMessagesQueryResult.class))
-                        .nullify404(false)
-                        .localErrorCase("400",
-                                 ErrorCase.setReason("Error response.",
-                                (reason, context) -> new ConnectivityManagementResultException(reason, context)))
-                        .globalErrorCase(GLOBAL_ERROR_CASES))
-                .build();
-    }
-
-    /**
-     * Tells the ThingSpace Platform to start sending mobile-originated SMS messages through the
-     * EnhancedConnectivityService callback service. SMS messages from devices are queued until they
-     * are retrieved by your application, either by callback or synchronously with GET
-     * /sms/{accountName}/history.
-     * @param  aname  Required parameter: Account name.
-     * @return    Returns the ConnectivityManagementSuccessResult wrapped in ApiResponse response from the API call
-     * @throws    ApiException    Represents error response from the server.
-     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
-     */
-    public ApiResponse<ConnectivityManagementSuccessResult> startQueuedSMSDelivery(
-            final String aname) throws ApiException, IOException {
-        return prepareStartQueuedSMSDeliveryRequest(aname).execute();
-    }
-
-    /**
-     * Tells the ThingSpace Platform to start sending mobile-originated SMS messages through the
-     * EnhancedConnectivityService callback service. SMS messages from devices are queued until they
-     * are retrieved by your application, either by callback or synchronously with GET
-     * /sms/{accountName}/history.
-     * @param  aname  Required parameter: Account name.
-     * @return    Returns the ConnectivityManagementSuccessResult wrapped in ApiResponse response from the API call
-     */
-    public CompletableFuture<ApiResponse<ConnectivityManagementSuccessResult>> startQueuedSMSDeliveryAsync(
-            final String aname) {
-        try { 
-            return prepareStartQueuedSMSDeliveryRequest(aname).executeAsync(); 
-        } catch (Exception e) {  
-            throw new CompletionException(e); 
-        }
-    }
-
-    /**
-     * Builds the ApiCall object for startQueuedSMSDelivery.
-     */
-    private ApiCall<ApiResponse<ConnectivityManagementSuccessResult>, ApiException> prepareStartQueuedSMSDeliveryRequest(
-            final String aname) throws IOException {
-        return new ApiCall.Builder<ApiResponse<ConnectivityManagementSuccessResult>, ApiException>()
-                .globalConfig(getGlobalConfiguration())
-                .requestBuilder(requestBuilder -> requestBuilder
-                        .server(Server.THINGSPACE.value())
-                        .path("/m2m/v1/sms/{aname}/startCallbacks")
-                        .templateParam(param -> param.key("aname").value(aname)
-                                .shouldEncode(true))
-                        .headerParam(param -> param.key("accept").value("application/json"))
-                        .authenticationKey(BaseController.AUTHENTICATION_KEY)
-                        .httpMethod(HttpMethod.PUT))
-                .responseHandler(responseHandler -> responseHandler
-                        .responseClassType(ResponseClassType.API_RESPONSE)
-                        .apiResponseDeserializer(
-                                response -> ApiHelper.deserialize(response, ConnectivityManagementSuccessResult.class))
                         .nullify404(false)
                         .localErrorCase("400",
                                  ErrorCase.setReason("Error response.",

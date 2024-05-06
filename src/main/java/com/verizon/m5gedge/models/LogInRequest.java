@@ -7,7 +7,6 @@
 package com.verizon.m5gedge.models;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonSetter;
 
 /**
@@ -41,7 +40,6 @@ public class LogInRequest {
      * @return Returns the String
      */
     @JsonGetter("username")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     public String getUsername() {
         return username;
     }
@@ -62,7 +60,6 @@ public class LogInRequest {
      * @return Returns the String
      */
     @JsonGetter("password")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     public String getPassword() {
         return password;
     }
@@ -92,9 +89,7 @@ public class LogInRequest {
      * @return a new {@link LogInRequest.Builder} object
      */
     public Builder toBuilder() {
-        Builder builder = new Builder()
-                .username(getUsername())
-                .password(getPassword());
+        Builder builder = new Builder(username, password);
         return builder;
     }
 
@@ -105,7 +100,21 @@ public class LogInRequest {
         private String username;
         private String password;
 
+        /**
+         * Initialization constructor.
+         */
+        public Builder() {
+        }
 
+        /**
+         * Initialization constructor.
+         * @param  username  String value for username.
+         * @param  password  String value for password.
+         */
+        public Builder(String username, String password) {
+            this.username = username;
+            this.password = password;
+        }
 
         /**
          * Setter for username.

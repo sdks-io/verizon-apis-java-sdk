@@ -15,12 +15,12 @@ import java.util.List;
  * This is a model class for AddDevicesRequest type.
  */
 public class AddDevicesRequest {
+    private String state;
+    private List<AccountDeviceList> devicesToAdd;
     private String accountName;
     private List<CustomFields> customFields;
-    private List<AccountDeviceList> devicesToAdd;
     private String groupName;
     private String skuNumber;
-    private String state;
     private String smsrOid;
 
     /**
@@ -31,29 +31,69 @@ public class AddDevicesRequest {
 
     /**
      * Initialization constructor.
+     * @param  state  String value for state.
+     * @param  devicesToAdd  List of AccountDeviceList value for devicesToAdd.
      * @param  accountName  String value for accountName.
      * @param  customFields  List of CustomFields value for customFields.
-     * @param  devicesToAdd  List of AccountDeviceList value for devicesToAdd.
      * @param  groupName  String value for groupName.
      * @param  skuNumber  String value for skuNumber.
-     * @param  state  String value for state.
      * @param  smsrOid  String value for smsrOid.
      */
     public AddDevicesRequest(
+            String state,
+            List<AccountDeviceList> devicesToAdd,
             String accountName,
             List<CustomFields> customFields,
-            List<AccountDeviceList> devicesToAdd,
             String groupName,
             String skuNumber,
-            String state,
             String smsrOid) {
+        this.state = state;
+        this.devicesToAdd = devicesToAdd;
         this.accountName = accountName;
         this.customFields = customFields;
-        this.devicesToAdd = devicesToAdd;
         this.groupName = groupName;
         this.skuNumber = skuNumber;
-        this.state = state;
         this.smsrOid = smsrOid;
+    }
+
+    /**
+     * Getter for State.
+     * The initial service state for the devices. The only valid state is “Preactive.”
+     * @return Returns the String
+     */
+    @JsonGetter("state")
+    public String getState() {
+        return state;
+    }
+
+    /**
+     * Setter for State.
+     * The initial service state for the devices. The only valid state is “Preactive.”
+     * @param state Value for String
+     */
+    @JsonSetter("state")
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    /**
+     * Getter for DevicesToAdd.
+     * The devices that you want to add.
+     * @return Returns the List of AccountDeviceList
+     */
+    @JsonGetter("devicesToAdd")
+    public List<AccountDeviceList> getDevicesToAdd() {
+        return devicesToAdd;
+    }
+
+    /**
+     * Setter for DevicesToAdd.
+     * The devices that you want to add.
+     * @param devicesToAdd Value for List of AccountDeviceList
+     */
+    @JsonSetter("devicesToAdd")
+    public void setDevicesToAdd(List<AccountDeviceList> devicesToAdd) {
+        this.devicesToAdd = devicesToAdd;
     }
 
     /**
@@ -101,27 +141,6 @@ public class AddDevicesRequest {
     }
 
     /**
-     * Getter for DevicesToAdd.
-     * The devices that you want to add.
-     * @return Returns the List of AccountDeviceList
-     */
-    @JsonGetter("devicesToAdd")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public List<AccountDeviceList> getDevicesToAdd() {
-        return devicesToAdd;
-    }
-
-    /**
-     * Setter for DevicesToAdd.
-     * The devices that you want to add.
-     * @param devicesToAdd Value for List of AccountDeviceList
-     */
-    @JsonSetter("devicesToAdd")
-    public void setDevicesToAdd(List<AccountDeviceList> devicesToAdd) {
-        this.devicesToAdd = devicesToAdd;
-    }
-
-    /**
      * Getter for GroupName.
      * The name of a device group to add the devices to. They are added to the default device group
      * if you don't include this parameter.
@@ -166,27 +185,6 @@ public class AddDevicesRequest {
     }
 
     /**
-     * Getter for State.
-     * The initial service state for the devices. The only valid state is “Preactive.”
-     * @return Returns the String
-     */
-    @JsonGetter("state")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getState() {
-        return state;
-    }
-
-    /**
-     * Setter for State.
-     * The initial service state for the devices. The only valid state is “Preactive.”
-     * @param state Value for String
-     */
-    @JsonSetter("state")
-    public void setState(String state) {
-        this.state = state;
-    }
-
-    /**
      * Getter for SmsrOid.
      * @return Returns the String
      */
@@ -211,9 +209,9 @@ public class AddDevicesRequest {
      */
     @Override
     public String toString() {
-        return "AddDevicesRequest [" + "accountName=" + accountName + ", customFields="
-                + customFields + ", devicesToAdd=" + devicesToAdd + ", groupName=" + groupName
-                + ", skuNumber=" + skuNumber + ", state=" + state + ", smsrOid=" + smsrOid + "]";
+        return "AddDevicesRequest [" + "state=" + state + ", devicesToAdd=" + devicesToAdd
+                + ", accountName=" + accountName + ", customFields=" + customFields + ", groupName="
+                + groupName + ", skuNumber=" + skuNumber + ", smsrOid=" + smsrOid + "]";
     }
 
     /**
@@ -222,13 +220,11 @@ public class AddDevicesRequest {
      * @return a new {@link AddDevicesRequest.Builder} object
      */
     public Builder toBuilder() {
-        Builder builder = new Builder()
+        Builder builder = new Builder(state, devicesToAdd)
                 .accountName(getAccountName())
                 .customFields(getCustomFields())
-                .devicesToAdd(getDevicesToAdd())
                 .groupName(getGroupName())
                 .skuNumber(getSkuNumber())
-                .state(getState())
                 .smsrOid(getSmsrOid());
         return builder;
     }
@@ -237,15 +233,49 @@ public class AddDevicesRequest {
      * Class to build instances of {@link AddDevicesRequest}.
      */
     public static class Builder {
+        private String state;
+        private List<AccountDeviceList> devicesToAdd;
         private String accountName;
         private List<CustomFields> customFields;
-        private List<AccountDeviceList> devicesToAdd;
         private String groupName;
         private String skuNumber;
-        private String state;
         private String smsrOid;
 
+        /**
+         * Initialization constructor.
+         */
+        public Builder() {
+        }
 
+        /**
+         * Initialization constructor.
+         * @param  state  String value for state.
+         * @param  devicesToAdd  List of AccountDeviceList value for devicesToAdd.
+         */
+        public Builder(String state, List<AccountDeviceList> devicesToAdd) {
+            this.state = state;
+            this.devicesToAdd = devicesToAdd;
+        }
+
+        /**
+         * Setter for state.
+         * @param  state  String value for state.
+         * @return Builder
+         */
+        public Builder state(String state) {
+            this.state = state;
+            return this;
+        }
+
+        /**
+         * Setter for devicesToAdd.
+         * @param  devicesToAdd  List of AccountDeviceList value for devicesToAdd.
+         * @return Builder
+         */
+        public Builder devicesToAdd(List<AccountDeviceList> devicesToAdd) {
+            this.devicesToAdd = devicesToAdd;
+            return this;
+        }
 
         /**
          * Setter for accountName.
@@ -264,16 +294,6 @@ public class AddDevicesRequest {
          */
         public Builder customFields(List<CustomFields> customFields) {
             this.customFields = customFields;
-            return this;
-        }
-
-        /**
-         * Setter for devicesToAdd.
-         * @param  devicesToAdd  List of AccountDeviceList value for devicesToAdd.
-         * @return Builder
-         */
-        public Builder devicesToAdd(List<AccountDeviceList> devicesToAdd) {
-            this.devicesToAdd = devicesToAdd;
             return this;
         }
 
@@ -298,16 +318,6 @@ public class AddDevicesRequest {
         }
 
         /**
-         * Setter for state.
-         * @param  state  String value for state.
-         * @return Builder
-         */
-        public Builder state(String state) {
-            this.state = state;
-            return this;
-        }
-
-        /**
          * Setter for smsrOid.
          * @param  smsrOid  String value for smsrOid.
          * @return Builder
@@ -322,8 +332,8 @@ public class AddDevicesRequest {
          * @return {@link AddDevicesRequest}
          */
         public AddDevicesRequest build() {
-            return new AddDevicesRequest(accountName, customFields, devicesToAdd, groupName,
-                    skuNumber, state, smsrOid);
+            return new AddDevicesRequest(state, devicesToAdd, accountName, customFields, groupName,
+                    skuNumber, smsrOid);
         }
     }
 }

@@ -27,7 +27,7 @@ public enum Server {
 
     DEVICE_LOCATION,
 
-    SUBSCR_IP_TION_SERVER,
+    SUBSCRIPTION_SERVER,
 
     SOFTWARE_MANAGEMENT_V1,
 
@@ -57,7 +57,7 @@ public enum Server {
         OAUTH_SERVER.value = "OAuth Server";
         M2M.value = "M2M";
         DEVICE_LOCATION.value = "Device Location";
-        SUBSCR_IP_TION_SERVER.value = "Subscription Server";
+        SUBSCRIPTION_SERVER.value = "Subscription Server";
         SOFTWARE_MANAGEMENT_V1.value = "Software Management V1";
         SOFTWARE_MANAGEMENT_V2.value = "Software Management V2";
         SOFTWARE_MANAGEMENT_V3.value = "Software Management V3";
@@ -73,7 +73,7 @@ public enum Server {
         valueMap.put("OAuth Server", OAUTH_SERVER);
         valueMap.put("M2M", M2M);
         valueMap.put("Device Location", DEVICE_LOCATION);
-        valueMap.put("Subscription Server", SUBSCR_IP_TION_SERVER);
+        valueMap.put("Subscription Server", SUBSCRIPTION_SERVER);
         valueMap.put("Software Management V1", SOFTWARE_MANAGEMENT_V1);
         valueMap.put("Software Management V2", SOFTWARE_MANAGEMENT_V2);
         valueMap.put("Software Management V3", SOFTWARE_MANAGEMENT_V3);
@@ -94,8 +94,7 @@ public enum Server {
     @JsonCreator
     public static Server constructFromString(String toConvert) throws IOException {
         Server enumValue = fromString(toConvert);
-        if (enumValue == null)
-        {
+        if (enumValue == null) {
             throw new IOException("Unable to create enum instance with value: " + toConvert);
         }
         return enumValue;

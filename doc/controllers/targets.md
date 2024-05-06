@@ -10,134 +10,11 @@ TargetsController targetsController = client.getTargetsController();
 
 ## Methods
 
-* [Query Target](../../doc/controllers/targets.md#query-target)
-* [Delete Target](../../doc/controllers/targets.md#delete-target)
 * [Create Target](../../doc/controllers/targets.md#create-target)
+* [Delete Target](../../doc/controllers/targets.md#delete-target)
 * [Generate Target External ID](../../doc/controllers/targets.md#generate-target-external-id)
+* [Query Target](../../doc/controllers/targets.md#query-target)
 * [Create Azure Central Io T Application](../../doc/controllers/targets.md#create-azure-central-io-t-application)
-
-
-# Query Target
-
-Search for targets by property values. Returns an array of all matching target resources.
-
-```java
-CompletableFuture<ApiResponse<List<Target>>> queryTargetAsync(
-    final QueryTargetRequest body)
-```
-
-## Parameters
-
-| Parameter | Type | Tags | Description |
-|  --- | --- | --- | --- |
-| `body` | [`QueryTargetRequest`](../../doc/models/query-target-request.md) | Body, Required | Search for targets by property values. |
-
-## Server
-
-`Server.CLOUD_CONNECTOR`
-
-## Response Type
-
-[`List<Target>`](../../doc/models/target.md)
-
-## Example Usage
-
-```java
-QueryTargetRequest body = new QueryTargetRequest.Builder()
-    .accountidentifier(new AccountIdentifier.Builder()
-        .billingaccountid("1223334444-00001")
-        .build())
-    .resourceidentifier(new ResourceIdentifier.Builder()
-        .id("dd1682d3-2d80-cefc-f3ee-25154800beff")
-        .build())
-    .build();
-
-targetsController.queryTargetAsync(body).thenAccept(result -> {
-    // TODO success callback handler
-    System.out.println(result);
-}).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
-    return null;
-});
-```
-
-## Example Response *(as JSON)*
-
-```json
-[
-  {
-    "address": "https://myhost.com:1825",
-    "addressscheme": "streamrest",
-    "createdon": "2018-12-22T03:59:18.563Z",
-    "id": "cee10900-f54e-6eef-e455-bd7f15c4be32",
-    "kind": "ts.target",
-    "lastupdated": "2018-12-22T03:59:18.563Z",
-    "name": "host:port target",
-    "version": "1.0",
-    "versionid": "f4be7c2b-059d-11e9-bec6-02420a4e1b0a"
-  },
-  {
-    "address": "arn:aws:iam::252156542789:role/ThingSpace",
-    "addressscheme": "streamawsiot",
-    "createdon": "2019-01-24T19:06:43.577Z",
-    "externalid": "lJZnih8BfqsosZrEEkfPuR3aGOk2i-HIr6tXN275ioJF6bezIrQB9EbzpTRep8J7RmV7QH==",
-    "id": "cea170cc-a58f-6531-fc4b-fae1ceb1a6c8",
-    "kind": "ts.target",
-    "lastupdated": "2019-01-24T19:32:31.841Z",
-    "name": "AWS Target",
-    "region": "us-east-1",
-    "version": "1.0",
-    "versionid": "caf85ff7-200e-11e9-a85b-02420a621e0a"
-  }
-]
-```
-
-
-# Delete Target
-
-Remove a target from a ThingSpace account.
-
-```java
-CompletableFuture<ApiResponse<Void>> deleteTargetAsync(
-    final DeleteTargetRequest body)
-```
-
-## Parameters
-
-| Parameter | Type | Tags | Description |
-|  --- | --- | --- | --- |
-| `body` | [`DeleteTargetRequest`](../../doc/models/delete-target-request.md) | Body, Required | The request body identifies the target to delete. |
-
-## Server
-
-`Server.CLOUD_CONNECTOR`
-
-## Response Type
-
-`void`
-
-## Example Usage
-
-```java
-DeleteTargetRequest body = new DeleteTargetRequest.Builder()
-    .accountidentifier(new AccountIdentifier.Builder()
-        .billingaccountid("0000000000-00001")
-        .build())
-    .resourceidentifier(new ResourceIdentifier.Builder()
-        .id("2e61a17d-8fd1-6816-e995-e4c2528bf535")
-        .build())
-    .build();
-
-targetsController.deleteTargetAsync(body).thenAccept(result -> {
-    // TODO success callback handler
-    System.out.println(result);
-}).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
-    return null;
-});
-```
 
 
 # Create Target
@@ -217,6 +94,52 @@ targetsController.createTargetAsync(body).thenAccept(result -> {
 ```
 
 
+# Delete Target
+
+Remove a target from a ThingSpace account.
+
+```java
+CompletableFuture<ApiResponse<Void>> deleteTargetAsync(
+    final DeleteTargetRequest body)
+```
+
+## Parameters
+
+| Parameter | Type | Tags | Description |
+|  --- | --- | --- | --- |
+| `body` | [`DeleteTargetRequest`](../../doc/models/delete-target-request.md) | Body, Required | The request body identifies the target to delete. |
+
+## Server
+
+`Server.CLOUD_CONNECTOR`
+
+## Response Type
+
+`void`
+
+## Example Usage
+
+```java
+DeleteTargetRequest body = new DeleteTargetRequest.Builder()
+    .accountidentifier(new AccountIdentifier.Builder()
+        .billingaccountid("0000000000-00001")
+        .build())
+    .resourceidentifier(new ResourceIdentifier.Builder()
+        .id("2e61a17d-8fd1-6816-e995-e4c2528bf535")
+        .build())
+    .build();
+
+targetsController.deleteTargetAsync(body).thenAccept(result -> {
+    // TODO success callback handler
+    System.out.println(result);
+}).exceptionally(exception -> {
+    // TODO failure callback handler
+    exception.printStackTrace();
+    return null;
+});
+```
+
+
 # Generate Target External ID
 
 Create a unique string that ThingSpace will pass to AWS for increased security.
@@ -270,6 +193,83 @@ targetsController.generateTargetExternalIDAsync(body).thenAccept(result -> {
 ```
 
 
+# Query Target
+
+Search for targets by property values. Returns an array of all matching target resources.
+
+```java
+CompletableFuture<ApiResponse<List<Target>>> queryTargetAsync(
+    final QueryTargetRequest body)
+```
+
+## Parameters
+
+| Parameter | Type | Tags | Description |
+|  --- | --- | --- | --- |
+| `body` | [`QueryTargetRequest`](../../doc/models/query-target-request.md) | Body, Required | Search for targets by property values. |
+
+## Server
+
+`Server.CLOUD_CONNECTOR`
+
+## Response Type
+
+[`List<Target>`](../../doc/models/target.md)
+
+## Example Usage
+
+```java
+QueryTargetRequest body = new QueryTargetRequest.Builder()
+    .accountidentifier(new AccountIdentifier.Builder()
+        .billingaccountid("1223334444-00001")
+        .build())
+    .resourceidentifier(new ResourceIdentifier.Builder()
+        .id("dd1682d3-2d80-cefc-f3ee-25154800beff")
+        .build())
+    .build();
+
+targetsController.queryTargetAsync(body).thenAccept(result -> {
+    // TODO success callback handler
+    System.out.println(result);
+}).exceptionally(exception -> {
+    // TODO failure callback handler
+    exception.printStackTrace();
+    return null;
+});
+```
+
+## Example Response *(as JSON)*
+
+```json
+[
+  {
+    "address": "https://myhost.com:1825",
+    "addressscheme": "streamrest",
+    "createdon": "2018-12-22T03:59:18.563Z",
+    "id": "cee10900-f54e-6eef-e455-bd7f15c4be32",
+    "kind": "ts.target",
+    "lastupdated": "2018-12-22T03:59:18.563Z",
+    "name": "host:port target",
+    "version": "1.0",
+    "versionid": "f4be7c2b-059d-11e9-bec6-02420a4e1b0a"
+  },
+  {
+    "address": "arn:aws:iam::252156542789:role/ThingSpace",
+    "addressscheme": "streamawsiot",
+    "createdon": "2019-01-24T19:06:43.577Z",
+    "externalid": "lJZnih8BfqsosZrEEkfPuR3aGOk2i-HIr6tXN275ioJF6bezIrQB9EbzpTRep8J7RmV7QH==",
+    "id": "cea170cc-a58f-6531-fc4b-fae1ceb1a6c8",
+    "kind": "ts.target",
+    "lastupdated": "2019-01-24T19:32:31.841Z",
+    "name": "AWS Target",
+    "region": "us-east-1",
+    "version": "1.0",
+    "versionid": "caf85ff7-200e-11e9-a85b-02420a621e0a"
+  }
+]
+```
+
+
 # Create Azure Central Io T Application
 
 Deploy a new Azure IoT Central application based on the Verizon ARM template within the specified Azure Active Directory account.
@@ -307,7 +307,7 @@ CreateIoTApplicationRequest body = new CreateIoTApplicationRequest.Builder()
     .emailIDs("email@domain.com")
     .resourcegroup("Myresourcegroup")
     .sampleIOTcApp("{app ID}")
-    .subscrIpTionID("{subscription ID}")
+    .subscriptionID("{subscription ID}")
     .tenantID("{tenant ID}")
     .build();
 

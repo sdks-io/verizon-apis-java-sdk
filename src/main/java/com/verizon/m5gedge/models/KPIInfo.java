@@ -18,7 +18,7 @@ public class KPIInfo {
     private String value;
     private String nodeName;
     private String nodeType;
-    private String descrIpTion;
+    private String description;
     private String unit;
     private String category;
     private String timeOfLastUpdate;
@@ -35,7 +35,7 @@ public class KPIInfo {
      * @param  value  String value for value.
      * @param  nodeName  String value for nodeName.
      * @param  nodeType  String value for nodeType.
-     * @param  descrIpTion  String value for descrIpTion.
+     * @param  description  String value for description.
      * @param  unit  String value for unit.
      * @param  category  String value for category.
      * @param  timeOfLastUpdate  String value for timeOfLastUpdate.
@@ -45,7 +45,7 @@ public class KPIInfo {
             String value,
             String nodeName,
             String nodeType,
-            String descrIpTion,
+            String description,
             String unit,
             String category,
             String timeOfLastUpdate) {
@@ -53,7 +53,7 @@ public class KPIInfo {
         this.value = value;
         this.nodeName = nodeName;
         this.nodeType = nodeType;
-        this.descrIpTion = descrIpTion;
+        this.description = description;
         this.unit = unit;
         this.category = category;
         this.timeOfLastUpdate = timeOfLastUpdate;
@@ -136,22 +136,22 @@ public class KPIInfo {
     }
 
     /**
-     * Getter for DescrIpTion.
+     * Getter for Description.
      * @return Returns the String
      */
     @JsonGetter("description")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getDescrIpTion() {
-        return descrIpTion;
+    public String getDescription() {
+        return description;
     }
 
     /**
-     * Setter for DescrIpTion.
-     * @param descrIpTion Value for String
+     * Setter for Description.
+     * @param description Value for String
      */
     @JsonSetter("description")
-    public void setDescrIpTion(String descrIpTion) {
-        this.descrIpTion = descrIpTion;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     /**
@@ -218,7 +218,7 @@ public class KPIInfo {
     @Override
     public String toString() {
         return "KPIInfo [" + "name=" + name + ", value=" + value + ", nodeName=" + nodeName
-                + ", nodeType=" + nodeType + ", descrIpTion=" + descrIpTion + ", unit=" + unit
+                + ", nodeType=" + nodeType + ", description=" + description + ", unit=" + unit
                 + ", category=" + category + ", timeOfLastUpdate=" + timeOfLastUpdate + "]";
     }
 
@@ -233,7 +233,7 @@ public class KPIInfo {
                 .value(getValue())
                 .nodeName(getNodeName())
                 .nodeType(getNodeType())
-                .descrIpTion(getDescrIpTion())
+                .description(getDescription())
                 .unit(getUnit())
                 .category(getCategory())
                 .timeOfLastUpdate(getTimeOfLastUpdate());
@@ -248,7 +248,7 @@ public class KPIInfo {
         private String value;
         private String nodeName;
         private String nodeType;
-        private String descrIpTion;
+        private String description;
         private String unit;
         private String category;
         private String timeOfLastUpdate;
@@ -296,12 +296,12 @@ public class KPIInfo {
         }
 
         /**
-         * Setter for descrIpTion.
-         * @param  descrIpTion  String value for descrIpTion.
+         * Setter for description.
+         * @param  description  String value for description.
          * @return Builder
          */
-        public Builder descrIpTion(String descrIpTion) {
-            this.descrIpTion = descrIpTion;
+        public Builder description(String description) {
+            this.description = description;
             return this;
         }
 
@@ -340,7 +340,7 @@ public class KPIInfo {
          * @return {@link KPIInfo}
          */
         public KPIInfo build() {
-            return new KPIInfo(name, value, nodeName, nodeType, descrIpTion, unit, category,
+            return new KPIInfo(name, value, nodeName, nodeType, description, unit, category,
                     timeOfLastUpdate);
         }
     }

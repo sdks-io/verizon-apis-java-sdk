@@ -117,70 +117,13 @@ public final class DeviceManagementController extends BaseController {
                         .headerParam(param -> param.key("Content-Type")
                                 .value("application/json").isRequired(false))
                         .headerParam(param -> param.key("accept").value("application/json"))
-                        .authenticationKey(BaseController.AUTHENTICATION_KEY)
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
                         .httpMethod(HttpMethod.POST))
                 .responseHandler(responseHandler -> responseHandler
                         .responseClassType(ResponseClassType.API_RESPONSE)
                         .apiResponseDeserializer(
                                 response -> ApiHelper.deserialize(response, DeviceManagementResult.class))
-                        .nullify404(false)
-                        .localErrorCase("400",
-                                 ErrorCase.setReason("Error response.",
-                                (reason, context) -> new ConnectivityManagementResultException(reason, context)))
-                        .globalErrorCase(GLOBAL_ERROR_CASES))
-                .build();
-    }
-
-    /**
-     * Use this API if you want to manage some device settings before you are ready to activate
-     * service for the devices.
-     * @param  body  Required parameter: Devices to add.
-     * @return    Returns the List of AddDevicesResult wrapped in ApiResponse response from the API call
-     * @throws    ApiException    Represents error response from the server.
-     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
-     */
-    public ApiResponse<List<AddDevicesResult>> addDevices(
-            final AddDevicesRequest body) throws ApiException, IOException {
-        return prepareAddDevicesRequest(body).execute();
-    }
-
-    /**
-     * Use this API if you want to manage some device settings before you are ready to activate
-     * service for the devices.
-     * @param  body  Required parameter: Devices to add.
-     * @return    Returns the List of AddDevicesResult wrapped in ApiResponse response from the API call
-     */
-    public CompletableFuture<ApiResponse<List<AddDevicesResult>>> addDevicesAsync(
-            final AddDevicesRequest body) {
-        try { 
-            return prepareAddDevicesRequest(body).executeAsync(); 
-        } catch (Exception e) {  
-            throw new CompletionException(e); 
-        }
-    }
-
-    /**
-     * Builds the ApiCall object for addDevices.
-     */
-    private ApiCall<ApiResponse<List<AddDevicesResult>>, ApiException> prepareAddDevicesRequest(
-            final AddDevicesRequest body) throws JsonProcessingException, IOException {
-        return new ApiCall.Builder<ApiResponse<List<AddDevicesResult>>, ApiException>()
-                .globalConfig(getGlobalConfiguration())
-                .requestBuilder(requestBuilder -> requestBuilder
-                        .server(Server.THINGSPACE.value())
-                        .path("/m2m/v1/devices/actions/add")
-                        .bodyParam(param -> param.value(body))
-                        .bodySerializer(() ->  ApiHelper.serialize(body))
-                        .headerParam(param -> param.key("Content-Type")
-                                .value("application/json").isRequired(false))
-                        .headerParam(param -> param.key("accept").value("application/json"))
-                        .authenticationKey(BaseController.AUTHENTICATION_KEY)
-                        .httpMethod(HttpMethod.POST))
-                .responseHandler(responseHandler -> responseHandler
-                        .responseClassType(ResponseClassType.API_RESPONSE)
-                        .apiResponseDeserializer(
-                                response -> ApiHelper.deserializeArray(response,
-                                        AddDevicesResult[].class))
                         .nullify404(false)
                         .localErrorCase("400",
                                  ErrorCase.setReason("Error response.",
@@ -234,186 +177,13 @@ public final class DeviceManagementController extends BaseController {
                         .headerParam(param -> param.key("Content-Type")
                                 .value("application/json").isRequired(false))
                         .headerParam(param -> param.key("accept").value("application/json"))
-                        .authenticationKey(BaseController.AUTHENTICATION_KEY)
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
                         .httpMethod(HttpMethod.PUT))
                 .responseHandler(responseHandler -> responseHandler
                         .responseClassType(ResponseClassType.API_RESPONSE)
                         .apiResponseDeserializer(
                                 response -> ApiHelper.deserialize(response, DeviceManagementResult.class))
-                        .nullify404(false)
-                        .localErrorCase("400",
-                                 ErrorCase.setReason("Error response.",
-                                (reason, context) -> new ConnectivityManagementResultException(reason, context)))
-                        .globalErrorCase(GLOBAL_ERROR_CASES))
-                .build();
-    }
-
-    /**
-     * Sends a CarrierService callback message for each device in the request when the custom fields
-     * have been changed, or if there was a problem and the change could not be completed.
-     * @param  body  Required parameter: Request to update custom field of devices.
-     * @return    Returns the DeviceManagementResult wrapped in ApiResponse response from the API call
-     * @throws    ApiException    Represents error response from the server.
-     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
-     */
-    public ApiResponse<DeviceManagementResult> updateDevicesCustomFields(
-            final CustomFieldsUpdateRequest body) throws ApiException, IOException {
-        return prepareUpdateDevicesCustomFieldsRequest(body).execute();
-    }
-
-    /**
-     * Sends a CarrierService callback message for each device in the request when the custom fields
-     * have been changed, or if there was a problem and the change could not be completed.
-     * @param  body  Required parameter: Request to update custom field of devices.
-     * @return    Returns the DeviceManagementResult wrapped in ApiResponse response from the API call
-     */
-    public CompletableFuture<ApiResponse<DeviceManagementResult>> updateDevicesCustomFieldsAsync(
-            final CustomFieldsUpdateRequest body) {
-        try { 
-            return prepareUpdateDevicesCustomFieldsRequest(body).executeAsync(); 
-        } catch (Exception e) {  
-            throw new CompletionException(e); 
-        }
-    }
-
-    /**
-     * Builds the ApiCall object for updateDevicesCustomFields.
-     */
-    private ApiCall<ApiResponse<DeviceManagementResult>, ApiException> prepareUpdateDevicesCustomFieldsRequest(
-            final CustomFieldsUpdateRequest body) throws JsonProcessingException, IOException {
-        return new ApiCall.Builder<ApiResponse<DeviceManagementResult>, ApiException>()
-                .globalConfig(getGlobalConfiguration())
-                .requestBuilder(requestBuilder -> requestBuilder
-                        .server(Server.THINGSPACE.value())
-                        .path("/m2m/v1/devices/actions/customFields")
-                        .bodyParam(param -> param.value(body))
-                        .bodySerializer(() ->  ApiHelper.serialize(body))
-                        .headerParam(param -> param.key("Content-Type")
-                                .value("application/json").isRequired(false))
-                        .headerParam(param -> param.key("accept").value("application/json"))
-                        .authenticationKey(BaseController.AUTHENTICATION_KEY)
-                        .httpMethod(HttpMethod.PUT))
-                .responseHandler(responseHandler -> responseHandler
-                        .responseClassType(ResponseClassType.API_RESPONSE)
-                        .apiResponseDeserializer(
-                                response -> ApiHelper.deserialize(response, DeviceManagementResult.class))
-                        .nullify404(false)
-                        .localErrorCase("400",
-                                 ErrorCase.setReason("Error response.",
-                                (reason, context) -> new ConnectivityManagementResultException(reason, context)))
-                        .globalErrorCase(GLOBAL_ERROR_CASES))
-                .build();
-    }
-
-    /**
-     * Deactivating service for a device may result in an early termination fee (ETF) being charged
-     * to the account, depending on the terms of the contract with Verizon. If your contract allows
-     * ETF waivers and if you want to use one for a particular deactivation, set the etfWaiver value
-     * to True.
-     * @param  body  Required parameter: Request to deactivate service for one or more devices.
-     * @return    Returns the DeviceManagementResult wrapped in ApiResponse response from the API call
-     * @throws    ApiException    Represents error response from the server.
-     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
-     */
-    public ApiResponse<DeviceManagementResult> deactivateServiceForDevices(
-            final CarrierDeactivateRequest body) throws ApiException, IOException {
-        return prepareDeactivateServiceForDevicesRequest(body).execute();
-    }
-
-    /**
-     * Deactivating service for a device may result in an early termination fee (ETF) being charged
-     * to the account, depending on the terms of the contract with Verizon. If your contract allows
-     * ETF waivers and if you want to use one for a particular deactivation, set the etfWaiver value
-     * to True.
-     * @param  body  Required parameter: Request to deactivate service for one or more devices.
-     * @return    Returns the DeviceManagementResult wrapped in ApiResponse response from the API call
-     */
-    public CompletableFuture<ApiResponse<DeviceManagementResult>> deactivateServiceForDevicesAsync(
-            final CarrierDeactivateRequest body) {
-        try { 
-            return prepareDeactivateServiceForDevicesRequest(body).executeAsync(); 
-        } catch (Exception e) {  
-            throw new CompletionException(e); 
-        }
-    }
-
-    /**
-     * Builds the ApiCall object for deactivateServiceForDevices.
-     */
-    private ApiCall<ApiResponse<DeviceManagementResult>, ApiException> prepareDeactivateServiceForDevicesRequest(
-            final CarrierDeactivateRequest body) throws JsonProcessingException, IOException {
-        return new ApiCall.Builder<ApiResponse<DeviceManagementResult>, ApiException>()
-                .globalConfig(getGlobalConfiguration())
-                .requestBuilder(requestBuilder -> requestBuilder
-                        .server(Server.THINGSPACE.value())
-                        .path("/m2m/v1/devices/actions/deactivate")
-                        .bodyParam(param -> param.value(body))
-                        .bodySerializer(() ->  ApiHelper.serialize(body))
-                        .headerParam(param -> param.key("Content-Type")
-                                .value("application/json").isRequired(false))
-                        .headerParam(param -> param.key("accept").value("application/json"))
-                        .authenticationKey(BaseController.AUTHENTICATION_KEY)
-                        .httpMethod(HttpMethod.POST))
-                .responseHandler(responseHandler -> responseHandler
-                        .responseClassType(ResponseClassType.API_RESPONSE)
-                        .apiResponseDeserializer(
-                                response -> ApiHelper.deserialize(response, DeviceManagementResult.class))
-                        .nullify404(false)
-                        .localErrorCase("400",
-                                 ErrorCase.setReason("Error response.",
-                                (reason, context) -> new ConnectivityManagementResultException(reason, context)))
-                        .globalErrorCase(GLOBAL_ERROR_CASES))
-                .build();
-    }
-
-    /**
-     * Use this API to remove unneeded devices from an account.
-     * @param  body  Required parameter: Devices to delete.
-     * @return    Returns the List of DeleteDevicesResult wrapped in ApiResponse response from the API call
-     * @throws    ApiException    Represents error response from the server.
-     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
-     */
-    public ApiResponse<List<DeleteDevicesResult>> deleteDeactivatedDevices(
-            final DeleteDevicesRequest body) throws ApiException, IOException {
-        return prepareDeleteDeactivatedDevicesRequest(body).execute();
-    }
-
-    /**
-     * Use this API to remove unneeded devices from an account.
-     * @param  body  Required parameter: Devices to delete.
-     * @return    Returns the List of DeleteDevicesResult wrapped in ApiResponse response from the API call
-     */
-    public CompletableFuture<ApiResponse<List<DeleteDevicesResult>>> deleteDeactivatedDevicesAsync(
-            final DeleteDevicesRequest body) {
-        try { 
-            return prepareDeleteDeactivatedDevicesRequest(body).executeAsync(); 
-        } catch (Exception e) {  
-            throw new CompletionException(e); 
-        }
-    }
-
-    /**
-     * Builds the ApiCall object for deleteDeactivatedDevices.
-     */
-    private ApiCall<ApiResponse<List<DeleteDevicesResult>>, ApiException> prepareDeleteDeactivatedDevicesRequest(
-            final DeleteDevicesRequest body) throws JsonProcessingException, IOException {
-        return new ApiCall.Builder<ApiResponse<List<DeleteDevicesResult>>, ApiException>()
-                .globalConfig(getGlobalConfiguration())
-                .requestBuilder(requestBuilder -> requestBuilder
-                        .server(Server.THINGSPACE.value())
-                        .path("/m2m/v1/devices/actions/delete")
-                        .bodyParam(param -> param.value(body))
-                        .bodySerializer(() ->  ApiHelper.serialize(body))
-                        .headerParam(param -> param.key("Content-Type")
-                                .value("application/json").isRequired(false))
-                        .headerParam(param -> param.key("accept").value("application/json"))
-                        .authenticationKey(BaseController.AUTHENTICATION_KEY)
-                        .httpMethod(HttpMethod.POST))
-                .responseHandler(responseHandler -> responseHandler
-                        .responseClassType(ResponseClassType.API_RESPONSE)
-                        .apiResponseDeserializer(
-                                response -> ApiHelper.deserializeArray(response,
-                                        DeleteDevicesResult[].class))
                         .nullify404(false)
                         .localErrorCase("400",
                                  ErrorCase.setReason("Error response.",
@@ -467,236 +237,13 @@ public final class DeviceManagementController extends BaseController {
                         .headerParam(param -> param.key("Content-Type")
                                 .value("application/json").isRequired(false))
                         .headerParam(param -> param.key("accept").value("application/json"))
-                        .authenticationKey(BaseController.AUTHENTICATION_KEY)
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
                         .httpMethod(HttpMethod.POST))
                 .responseHandler(responseHandler -> responseHandler
                         .responseClassType(ResponseClassType.API_RESPONSE)
                         .apiResponseDeserializer(
                                 response -> ApiHelper.deserialize(response, AccountDeviceListResult.class))
-                        .nullify404(false)
-                        .localErrorCase("400",
-                                 ErrorCase.setReason("Error response.",
-                                (reason, context) -> new ConnectivityManagementResultException(reason, context)))
-                        .globalErrorCase(GLOBAL_ERROR_CASES))
-                .build();
-    }
-
-    /**
-     * Returns a list of all 4G devices with an ICCID (SIM) that was not activated with the expected
-     * IMEI (hardware) during a specified time frame.
-     * @param  body  Required parameter: Request to list devices with mismatched IMEIs and ICCIDs.
-     * @return    Returns the DeviceMismatchListResult wrapped in ApiResponse response from the API call
-     * @throws    ApiException    Represents error response from the server.
-     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
-     */
-    public ApiResponse<DeviceMismatchListResult> listDevicesWithImeiIccidMismatch(
-            final DeviceMismatchListRequest body) throws ApiException, IOException {
-        return prepareListDevicesWithImeiIccidMismatchRequest(body).execute();
-    }
-
-    /**
-     * Returns a list of all 4G devices with an ICCID (SIM) that was not activated with the expected
-     * IMEI (hardware) during a specified time frame.
-     * @param  body  Required parameter: Request to list devices with mismatched IMEIs and ICCIDs.
-     * @return    Returns the DeviceMismatchListResult wrapped in ApiResponse response from the API call
-     */
-    public CompletableFuture<ApiResponse<DeviceMismatchListResult>> listDevicesWithImeiIccidMismatchAsync(
-            final DeviceMismatchListRequest body) {
-        try { 
-            return prepareListDevicesWithImeiIccidMismatchRequest(body).executeAsync(); 
-        } catch (Exception e) {  
-            throw new CompletionException(e); 
-        }
-    }
-
-    /**
-     * Builds the ApiCall object for listDevicesWithImeiIccidMismatch.
-     */
-    private ApiCall<ApiResponse<DeviceMismatchListResult>, ApiException> prepareListDevicesWithImeiIccidMismatchRequest(
-            final DeviceMismatchListRequest body) throws JsonProcessingException, IOException {
-        return new ApiCall.Builder<ApiResponse<DeviceMismatchListResult>, ApiException>()
-                .globalConfig(getGlobalConfiguration())
-                .requestBuilder(requestBuilder -> requestBuilder
-                        .server(Server.THINGSPACE.value())
-                        .path("/m2m/v1/devices/actions/list/imeiiccidmismatch")
-                        .bodyParam(param -> param.value(body))
-                        .bodySerializer(() ->  ApiHelper.serialize(body))
-                        .headerParam(param -> param.key("Content-Type")
-                                .value("application/json").isRequired(false))
-                        .headerParam(param -> param.key("accept").value("application/json"))
-                        .authenticationKey(BaseController.AUTHENTICATION_KEY)
-                        .httpMethod(HttpMethod.POST))
-                .responseHandler(responseHandler -> responseHandler
-                        .responseClassType(ResponseClassType.API_RESPONSE)
-                        .apiResponseDeserializer(
-                                response -> ApiHelper.deserialize(response, DeviceMismatchListResult.class))
-                        .nullify404(false)
-                        .localErrorCase("400",
-                                 ErrorCase.setReason("Error response.",
-                                (reason, context) -> new ConnectivityManagementResultException(reason, context)))
-                        .globalErrorCase(GLOBAL_ERROR_CASES))
-                .build();
-    }
-
-    /**
-     * Move active devices from one billing account to another within a customer profile.
-     * @param  body  Required parameter: Request to move devices between accounts.
-     * @return    Returns the DeviceManagementResult wrapped in ApiResponse response from the API call
-     * @throws    ApiException    Represents error response from the server.
-     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
-     */
-    public ApiResponse<DeviceManagementResult> moveDevicesWithinAccountsOfProfile(
-            final MoveDeviceRequest body) throws ApiException, IOException {
-        return prepareMoveDevicesWithinAccountsOfProfileRequest(body).execute();
-    }
-
-    /**
-     * Move active devices from one billing account to another within a customer profile.
-     * @param  body  Required parameter: Request to move devices between accounts.
-     * @return    Returns the DeviceManagementResult wrapped in ApiResponse response from the API call
-     */
-    public CompletableFuture<ApiResponse<DeviceManagementResult>> moveDevicesWithinAccountsOfProfileAsync(
-            final MoveDeviceRequest body) {
-        try { 
-            return prepareMoveDevicesWithinAccountsOfProfileRequest(body).executeAsync(); 
-        } catch (Exception e) {  
-            throw new CompletionException(e); 
-        }
-    }
-
-    /**
-     * Builds the ApiCall object for moveDevicesWithinAccountsOfProfile.
-     */
-    private ApiCall<ApiResponse<DeviceManagementResult>, ApiException> prepareMoveDevicesWithinAccountsOfProfileRequest(
-            final MoveDeviceRequest body) throws JsonProcessingException, IOException {
-        return new ApiCall.Builder<ApiResponse<DeviceManagementResult>, ApiException>()
-                .globalConfig(getGlobalConfiguration())
-                .requestBuilder(requestBuilder -> requestBuilder
-                        .server(Server.THINGSPACE.value())
-                        .path("/m2m/v1/devices/actions/move")
-                        .bodyParam(param -> param.value(body))
-                        .bodySerializer(() ->  ApiHelper.serialize(body))
-                        .headerParam(param -> param.key("Content-Type")
-                                .value("application/json").isRequired(false))
-                        .headerParam(param -> param.key("accept").value("application/json"))
-                        .authenticationKey(BaseController.AUTHENTICATION_KEY)
-                        .httpMethod(HttpMethod.PUT))
-                .responseHandler(responseHandler -> responseHandler
-                        .responseClassType(ResponseClassType.API_RESPONSE)
-                        .apiResponseDeserializer(
-                                response -> ApiHelper.deserialize(response, DeviceManagementResult.class))
-                        .nullify404(false)
-                        .localErrorCase("400",
-                                 ErrorCase.setReason("Error response.",
-                                (reason, context) -> new ConnectivityManagementResultException(reason, context)))
-                        .globalErrorCase(GLOBAL_ERROR_CASES))
-                .build();
-    }
-
-    /**
-     * Changes the provisioning state of one or more devices to a specified customer-defined service
-     * and state.
-     * @param  body  Required parameter: Request to change device state to one defined by the user.
-     * @return    Returns the DeviceManagementResult wrapped in ApiResponse response from the API call
-     * @throws    ApiException    Represents error response from the server.
-     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
-     */
-    public ApiResponse<DeviceManagementResult> updateDevicesState(
-            final GoToStateRequest body) throws ApiException, IOException {
-        return prepareUpdateDevicesStateRequest(body).execute();
-    }
-
-    /**
-     * Changes the provisioning state of one or more devices to a specified customer-defined service
-     * and state.
-     * @param  body  Required parameter: Request to change device state to one defined by the user.
-     * @return    Returns the DeviceManagementResult wrapped in ApiResponse response from the API call
-     */
-    public CompletableFuture<ApiResponse<DeviceManagementResult>> updateDevicesStateAsync(
-            final GoToStateRequest body) {
-        try { 
-            return prepareUpdateDevicesStateRequest(body).executeAsync(); 
-        } catch (Exception e) {  
-            throw new CompletionException(e); 
-        }
-    }
-
-    /**
-     * Builds the ApiCall object for updateDevicesState.
-     */
-    private ApiCall<ApiResponse<DeviceManagementResult>, ApiException> prepareUpdateDevicesStateRequest(
-            final GoToStateRequest body) throws JsonProcessingException, IOException {
-        return new ApiCall.Builder<ApiResponse<DeviceManagementResult>, ApiException>()
-                .globalConfig(getGlobalConfiguration())
-                .requestBuilder(requestBuilder -> requestBuilder
-                        .server(Server.THINGSPACE.value())
-                        .path("/m2m/v1/devices/actions/gotostate")
-                        .bodyParam(param -> param.value(body))
-                        .bodySerializer(() ->  ApiHelper.serialize(body))
-                        .headerParam(param -> param.key("Content-Type")
-                                .value("application/json").isRequired(false))
-                        .headerParam(param -> param.key("accept").value("application/json"))
-                        .authenticationKey(BaseController.AUTHENTICATION_KEY)
-                        .httpMethod(HttpMethod.PUT))
-                .responseHandler(responseHandler -> responseHandler
-                        .responseClassType(ResponseClassType.API_RESPONSE)
-                        .apiResponseDeserializer(
-                                response -> ApiHelper.deserialize(response, DeviceManagementResult.class))
-                        .nullify404(false)
-                        .localErrorCase("400",
-                                 ErrorCase.setReason("Error response.",
-                                (reason, context) -> new ConnectivityManagementResultException(reason, context)))
-                        .globalErrorCase(GLOBAL_ERROR_CASES))
-                .build();
-    }
-
-    /**
-     * Changes the service plan for one or more devices.
-     * @param  body  Required parameter: Request to change device service plan.
-     * @return    Returns the DeviceManagementResult wrapped in ApiResponse response from the API call
-     * @throws    ApiException    Represents error response from the server.
-     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
-     */
-    public ApiResponse<DeviceManagementResult> changeDevicesServicePlan(
-            final ServicePlanUpdateRequest body) throws ApiException, IOException {
-        return prepareChangeDevicesServicePlanRequest(body).execute();
-    }
-
-    /**
-     * Changes the service plan for one or more devices.
-     * @param  body  Required parameter: Request to change device service plan.
-     * @return    Returns the DeviceManagementResult wrapped in ApiResponse response from the API call
-     */
-    public CompletableFuture<ApiResponse<DeviceManagementResult>> changeDevicesServicePlanAsync(
-            final ServicePlanUpdateRequest body) {
-        try { 
-            return prepareChangeDevicesServicePlanRequest(body).executeAsync(); 
-        } catch (Exception e) {  
-            throw new CompletionException(e); 
-        }
-    }
-
-    /**
-     * Builds the ApiCall object for changeDevicesServicePlan.
-     */
-    private ApiCall<ApiResponse<DeviceManagementResult>, ApiException> prepareChangeDevicesServicePlanRequest(
-            final ServicePlanUpdateRequest body) throws JsonProcessingException, IOException {
-        return new ApiCall.Builder<ApiResponse<DeviceManagementResult>, ApiException>()
-                .globalConfig(getGlobalConfiguration())
-                .requestBuilder(requestBuilder -> requestBuilder
-                        .server(Server.THINGSPACE.value())
-                        .path("/m2m/v1/devices/actions/plan")
-                        .bodyParam(param -> param.value(body))
-                        .bodySerializer(() ->  ApiHelper.serialize(body))
-                        .headerParam(param -> param.key("Content-Type")
-                                .value("application/json").isRequired(false))
-                        .headerParam(param -> param.key("accept").value("application/json"))
-                        .authenticationKey(BaseController.AUTHENTICATION_KEY)
-                        .httpMethod(HttpMethod.PUT))
-                .responseHandler(responseHandler -> responseHandler
-                        .responseClassType(ResponseClassType.API_RESPONSE)
-                        .apiResponseDeserializer(
-                                response -> ApiHelper.deserialize(response, DeviceManagementResult.class))
                         .nullify404(false)
                         .localErrorCase("400",
                                  ErrorCase.setReason("Error response.",
@@ -746,526 +293,13 @@ public final class DeviceManagementController extends BaseController {
                         .headerParam(param -> param.key("Content-Type")
                                 .value("application/json").isRequired(false))
                         .headerParam(param -> param.key("accept").value("application/json"))
-                        .authenticationKey(BaseController.AUTHENTICATION_KEY)
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
                         .httpMethod(HttpMethod.POST))
                 .responseHandler(responseHandler -> responseHandler
                         .responseClassType(ResponseClassType.API_RESPONSE)
                         .apiResponseDeserializer(
                                 response -> ApiHelper.deserialize(response, DeviceManagementResult.class))
-                        .nullify404(false)
-                        .localErrorCase("400",
-                                 ErrorCase.setReason("Error response.",
-                                (reason, context) -> new ConnectivityManagementResultException(reason, context)))
-                        .globalErrorCase(GLOBAL_ERROR_CASES))
-                .build();
-    }
-
-    /**
-     * Restores service to one or more suspended devices.
-     * @param  body  Required parameter: Request to restore services of one or more suspended
-     *         devices.
-     * @return    Returns the DeviceManagementResult wrapped in ApiResponse response from the API call
-     * @throws    ApiException    Represents error response from the server.
-     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
-     */
-    public ApiResponse<DeviceManagementResult> restoreServiceForSuspendedDevices(
-            final CarrierActionsRequest body) throws ApiException, IOException {
-        return prepareRestoreServiceForSuspendedDevicesRequest(body).execute();
-    }
-
-    /**
-     * Restores service to one or more suspended devices.
-     * @param  body  Required parameter: Request to restore services of one or more suspended
-     *         devices.
-     * @return    Returns the DeviceManagementResult wrapped in ApiResponse response from the API call
-     */
-    public CompletableFuture<ApiResponse<DeviceManagementResult>> restoreServiceForSuspendedDevicesAsync(
-            final CarrierActionsRequest body) {
-        try { 
-            return prepareRestoreServiceForSuspendedDevicesRequest(body).executeAsync(); 
-        } catch (Exception e) {  
-            throw new CompletionException(e); 
-        }
-    }
-
-    /**
-     * Builds the ApiCall object for restoreServiceForSuspendedDevices.
-     */
-    private ApiCall<ApiResponse<DeviceManagementResult>, ApiException> prepareRestoreServiceForSuspendedDevicesRequest(
-            final CarrierActionsRequest body) throws JsonProcessingException, IOException {
-        return new ApiCall.Builder<ApiResponse<DeviceManagementResult>, ApiException>()
-                .globalConfig(getGlobalConfiguration())
-                .requestBuilder(requestBuilder -> requestBuilder
-                        .server(Server.THINGSPACE.value())
-                        .path("/m2m/v1/devices/actions/restore")
-                        .bodyParam(param -> param.value(body))
-                        .bodySerializer(() ->  ApiHelper.serialize(body))
-                        .headerParam(param -> param.key("Content-Type")
-                                .value("application/json").isRequired(false))
-                        .headerParam(param -> param.key("accept").value("application/json"))
-                        .authenticationKey(BaseController.AUTHENTICATION_KEY)
-                        .httpMethod(HttpMethod.POST))
-                .responseHandler(responseHandler -> responseHandler
-                        .responseClassType(ResponseClassType.API_RESPONSE)
-                        .apiResponseDeserializer(
-                                response -> ApiHelper.deserialize(response, DeviceManagementResult.class))
-                        .nullify404(false)
-                        .localErrorCase("400",
-                                 ErrorCase.setReason("Error response.",
-                                (reason, context) -> new ConnectivityManagementResultException(reason, context)))
-                        .globalErrorCase(GLOBAL_ERROR_CASES))
-                .build();
-    }
-
-    /**
-     * Checks whether specified devices are registered by the manufacturer with the Verizon network
-     * and are available to be activated.
-     * @param  body  Required parameter: Request to check if devices can be activated or not.
-     * @return    Returns the DeviceManagementResult wrapped in ApiResponse response from the API call
-     * @throws    ApiException    Represents error response from the server.
-     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
-     */
-    public ApiResponse<DeviceManagementResult> checkDevicesAvailabilityForActivation(
-            final DeviceActivationRequest body) throws ApiException, IOException {
-        return prepareCheckDevicesAvailabilityForActivationRequest(body).execute();
-    }
-
-    /**
-     * Checks whether specified devices are registered by the manufacturer with the Verizon network
-     * and are available to be activated.
-     * @param  body  Required parameter: Request to check if devices can be activated or not.
-     * @return    Returns the DeviceManagementResult wrapped in ApiResponse response from the API call
-     */
-    public CompletableFuture<ApiResponse<DeviceManagementResult>> checkDevicesAvailabilityForActivationAsync(
-            final DeviceActivationRequest body) {
-        try { 
-            return prepareCheckDevicesAvailabilityForActivationRequest(body).executeAsync(); 
-        } catch (Exception e) {  
-            throw new CompletionException(e); 
-        }
-    }
-
-    /**
-     * Builds the ApiCall object for checkDevicesAvailabilityForActivation.
-     */
-    private ApiCall<ApiResponse<DeviceManagementResult>, ApiException> prepareCheckDevicesAvailabilityForActivationRequest(
-            final DeviceActivationRequest body) throws JsonProcessingException, IOException {
-        return new ApiCall.Builder<ApiResponse<DeviceManagementResult>, ApiException>()
-                .globalConfig(getGlobalConfiguration())
-                .requestBuilder(requestBuilder -> requestBuilder
-                        .server(Server.THINGSPACE.value())
-                        .path("/m2m/v1/devices/availability/actions/list")
-                        .bodyParam(param -> param.value(body))
-                        .bodySerializer(() ->  ApiHelper.serialize(body))
-                        .headerParam(param -> param.key("Content-Type")
-                                .value("application/json").isRequired(false))
-                        .headerParam(param -> param.key("accept").value("application/json"))
-                        .authenticationKey(BaseController.AUTHENTICATION_KEY)
-                        .httpMethod(HttpMethod.POST))
-                .responseHandler(responseHandler -> responseHandler
-                        .responseClassType(ResponseClassType.API_RESPONSE)
-                        .apiResponseDeserializer(
-                                response -> ApiHelper.deserialize(response, DeviceManagementResult.class))
-                        .nullify404(false)
-                        .localErrorCase("400",
-                                 ErrorCase.setReason("Error response.",
-                                (reason, context) -> new ConnectivityManagementResultException(reason, context)))
-                        .globalErrorCase(GLOBAL_ERROR_CASES))
-                .build();
-    }
-
-    /**
-     * Each response includes a maximum of 500 records. To obtain more records, you can call the API
-     * multiple times, adjusting the earliest value each time to start where the previous request
-     * finished.
-     * @param  body  Required parameter: Query to retrieve device connection history.
-     * @return    Returns the ConnectionHistoryResult wrapped in ApiResponse response from the API call
-     * @throws    ApiException    Represents error response from the server.
-     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
-     */
-    public ApiResponse<ConnectionHistoryResult> retrieveDeviceConnectionHistory(
-            final DeviceConnectionListRequest body) throws ApiException, IOException {
-        return prepareRetrieveDeviceConnectionHistoryRequest(body).execute();
-    }
-
-    /**
-     * Each response includes a maximum of 500 records. To obtain more records, you can call the API
-     * multiple times, adjusting the earliest value each time to start where the previous request
-     * finished.
-     * @param  body  Required parameter: Query to retrieve device connection history.
-     * @return    Returns the ConnectionHistoryResult wrapped in ApiResponse response from the API call
-     */
-    public CompletableFuture<ApiResponse<ConnectionHistoryResult>> retrieveDeviceConnectionHistoryAsync(
-            final DeviceConnectionListRequest body) {
-        try { 
-            return prepareRetrieveDeviceConnectionHistoryRequest(body).executeAsync(); 
-        } catch (Exception e) {  
-            throw new CompletionException(e); 
-        }
-    }
-
-    /**
-     * Builds the ApiCall object for retrieveDeviceConnectionHistory.
-     */
-    private ApiCall<ApiResponse<ConnectionHistoryResult>, ApiException> prepareRetrieveDeviceConnectionHistoryRequest(
-            final DeviceConnectionListRequest body) throws JsonProcessingException, IOException {
-        return new ApiCall.Builder<ApiResponse<ConnectionHistoryResult>, ApiException>()
-                .globalConfig(getGlobalConfiguration())
-                .requestBuilder(requestBuilder -> requestBuilder
-                        .server(Server.THINGSPACE.value())
-                        .path("/m2m/v1/devices/connections/actions/listHistory")
-                        .bodyParam(param -> param.value(body))
-                        .bodySerializer(() ->  ApiHelper.serialize(body))
-                        .headerParam(param -> param.key("Content-Type")
-                                .value("application/json").isRequired(false))
-                        .headerParam(param -> param.key("accept").value("application/json"))
-                        .authenticationKey(BaseController.AUTHENTICATION_KEY)
-                        .httpMethod(HttpMethod.POST))
-                .responseHandler(responseHandler -> responseHandler
-                        .responseClassType(ResponseClassType.API_RESPONSE)
-                        .apiResponseDeserializer(
-                                response -> ApiHelper.deserialize(response, ConnectionHistoryResult.class))
-                        .nullify404(false)
-                        .localErrorCase("400",
-                                 ErrorCase.setReason("Error response.",
-                                (reason, context) -> new ConnectivityManagementResultException(reason, context)))
-                        .globalErrorCase(GLOBAL_ERROR_CASES))
-                .build();
-    }
-
-    /**
-     * Changes or removes the CostCenterCode value or customer name and address (Primary Place of
-     * Use) for one or more devices.
-     * @param  body  Required parameter: Request to update cost center code value for one or more
-     *         devices.
-     * @return    Returns the DeviceManagementResult wrapped in ApiResponse response from the API call
-     * @throws    ApiException    Represents error response from the server.
-     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
-     */
-    public ApiResponse<DeviceManagementResult> updateDevicesCostCenterCode(
-            final DeviceCostCenterRequest body) throws ApiException, IOException {
-        return prepareUpdateDevicesCostCenterCodeRequest(body).execute();
-    }
-
-    /**
-     * Changes or removes the CostCenterCode value or customer name and address (Primary Place of
-     * Use) for one or more devices.
-     * @param  body  Required parameter: Request to update cost center code value for one or more
-     *         devices.
-     * @return    Returns the DeviceManagementResult wrapped in ApiResponse response from the API call
-     */
-    public CompletableFuture<ApiResponse<DeviceManagementResult>> updateDevicesCostCenterCodeAsync(
-            final DeviceCostCenterRequest body) {
-        try { 
-            return prepareUpdateDevicesCostCenterCodeRequest(body).executeAsync(); 
-        } catch (Exception e) {  
-            throw new CompletionException(e); 
-        }
-    }
-
-    /**
-     * Builds the ApiCall object for updateDevicesCostCenterCode.
-     */
-    private ApiCall<ApiResponse<DeviceManagementResult>, ApiException> prepareUpdateDevicesCostCenterCodeRequest(
-            final DeviceCostCenterRequest body) throws JsonProcessingException, IOException {
-        return new ApiCall.Builder<ApiResponse<DeviceManagementResult>, ApiException>()
-                .globalConfig(getGlobalConfiguration())
-                .requestBuilder(requestBuilder -> requestBuilder
-                        .server(Server.THINGSPACE.value())
-                        .path("/m2m/v1/devices/costCenter")
-                        .bodyParam(param -> param.value(body))
-                        .bodySerializer(() ->  ApiHelper.serialize(body))
-                        .headerParam(param -> param.key("Content-Type")
-                                .value("application/json").isRequired(false))
-                        .headerParam(param -> param.key("accept").value("application/json"))
-                        .authenticationKey(BaseController.AUTHENTICATION_KEY)
-                        .httpMethod(HttpMethod.PUT))
-                .responseHandler(responseHandler -> responseHandler
-                        .responseClassType(ResponseClassType.API_RESPONSE)
-                        .apiResponseDeserializer(
-                                response -> ApiHelper.deserialize(response, DeviceManagementResult.class))
-                        .nullify404(false)
-                        .localErrorCase("400",
-                                 ErrorCase.setReason("Error response.",
-                                (reason, context) -> new ConnectivityManagementResultException(reason, context)))
-                        .globalErrorCase(GLOBAL_ERROR_CASES))
-                .build();
-    }
-
-    /**
-     * Returns extended diagnostic information about a specified device, including connectivity,
-     * provisioning, billing and location status.
-     * @param  body  Required parameter: Request to query extended diagnostics information for a
-     *         device.
-     * @return    Returns the DeviceExtendedDiagnosticsResult wrapped in ApiResponse response from the API call
-     * @throws    ApiException    Represents error response from the server.
-     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
-     */
-    public ApiResponse<DeviceExtendedDiagnosticsResult> getDeviceExtendedDiagnosticInformation(
-            final DeviceExtendedDiagnosticsRequest body) throws ApiException, IOException {
-        return prepareGetDeviceExtendedDiagnosticInformationRequest(body).execute();
-    }
-
-    /**
-     * Returns extended diagnostic information about a specified device, including connectivity,
-     * provisioning, billing and location status.
-     * @param  body  Required parameter: Request to query extended diagnostics information for a
-     *         device.
-     * @return    Returns the DeviceExtendedDiagnosticsResult wrapped in ApiResponse response from the API call
-     */
-    public CompletableFuture<ApiResponse<DeviceExtendedDiagnosticsResult>> getDeviceExtendedDiagnosticInformationAsync(
-            final DeviceExtendedDiagnosticsRequest body) {
-        try { 
-            return prepareGetDeviceExtendedDiagnosticInformationRequest(body).executeAsync(); 
-        } catch (Exception e) {  
-            throw new CompletionException(e); 
-        }
-    }
-
-    /**
-     * Builds the ApiCall object for getDeviceExtendedDiagnosticInformation.
-     */
-    private ApiCall<ApiResponse<DeviceExtendedDiagnosticsResult>, ApiException> prepareGetDeviceExtendedDiagnosticInformationRequest(
-            final DeviceExtendedDiagnosticsRequest body) throws JsonProcessingException, IOException {
-        return new ApiCall.Builder<ApiResponse<DeviceExtendedDiagnosticsResult>, ApiException>()
-                .globalConfig(getGlobalConfiguration())
-                .requestBuilder(requestBuilder -> requestBuilder
-                        .server(Server.THINGSPACE.value())
-                        .path("/m2m/v1/devices/extendeddiagnostics/actions/list")
-                        .bodyParam(param -> param.value(body))
-                        .bodySerializer(() ->  ApiHelper.serialize(body))
-                        .headerParam(param -> param.key("Content-Type")
-                                .value("application/json").isRequired(false))
-                        .headerParam(param -> param.key("accept").value("application/json"))
-                        .authenticationKey(BaseController.AUTHENTICATION_KEY)
-                        .httpMethod(HttpMethod.POST))
-                .responseHandler(responseHandler -> responseHandler
-                        .responseClassType(ResponseClassType.API_RESPONSE)
-                        .apiResponseDeserializer(
-                                response -> ApiHelper.deserialize(response, DeviceExtendedDiagnosticsResult.class))
-                        .nullify404(false)
-                        .localErrorCase("400",
-                                 ErrorCase.setReason("Error response.",
-                                (reason, context) -> new ConnectivityManagementResultException(reason, context)))
-                        .globalErrorCase(GLOBAL_ERROR_CASES))
-                .build();
-    }
-
-    /**
-     * Returns the provisioning history of a specified device during a specified time period.
-     * @param  body  Required parameter: Query to obtain device provisioning history.
-     * @return    Returns the List of DeviceProvisioningHistoryListResult wrapped in ApiResponse response from the API call
-     * @throws    ApiException    Represents error response from the server.
-     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
-     */
-    public ApiResponse<List<DeviceProvisioningHistoryListResult>> listDevicesProvisioningHistory(
-            final DeviceProvisioningHistoryListRequest body) throws ApiException, IOException {
-        return prepareListDevicesProvisioningHistoryRequest(body).execute();
-    }
-
-    /**
-     * Returns the provisioning history of a specified device during a specified time period.
-     * @param  body  Required parameter: Query to obtain device provisioning history.
-     * @return    Returns the List of DeviceProvisioningHistoryListResult wrapped in ApiResponse response from the API call
-     */
-    public CompletableFuture<ApiResponse<List<DeviceProvisioningHistoryListResult>>> listDevicesProvisioningHistoryAsync(
-            final DeviceProvisioningHistoryListRequest body) {
-        try { 
-            return prepareListDevicesProvisioningHistoryRequest(body).executeAsync(); 
-        } catch (Exception e) {  
-            throw new CompletionException(e); 
-        }
-    }
-
-    /**
-     * Builds the ApiCall object for listDevicesProvisioningHistory.
-     */
-    private ApiCall<ApiResponse<List<DeviceProvisioningHistoryListResult>>, ApiException> prepareListDevicesProvisioningHistoryRequest(
-            final DeviceProvisioningHistoryListRequest body) throws JsonProcessingException, IOException {
-        return new ApiCall.Builder<ApiResponse<List<DeviceProvisioningHistoryListResult>>, ApiException>()
-                .globalConfig(getGlobalConfiguration())
-                .requestBuilder(requestBuilder -> requestBuilder
-                        .server(Server.THINGSPACE.value())
-                        .path("/m2m/v1/devices/history/actions/list")
-                        .bodyParam(param -> param.value(body))
-                        .bodySerializer(() ->  ApiHelper.serialize(body))
-                        .headerParam(param -> param.key("Content-Type")
-                                .value("application/json").isRequired(false))
-                        .headerParam(param -> param.key("accept").value("application/json"))
-                        .authenticationKey(BaseController.AUTHENTICATION_KEY)
-                        .httpMethod(HttpMethod.POST))
-                .responseHandler(responseHandler -> responseHandler
-                        .responseClassType(ResponseClassType.API_RESPONSE)
-                        .apiResponseDeserializer(
-                                response -> ApiHelper.deserializeArray(response,
-                                        DeviceProvisioningHistoryListResult[].class))
-                        .nullify404(false)
-                        .localErrorCase("400",
-                                 ErrorCase.setReason("Error response.",
-                                (reason, context) -> new ConnectivityManagementResultException(reason, context)))
-                        .globalErrorCase(GLOBAL_ERROR_CASES))
-                .build();
-    }
-
-    /**
-     * 4G and GSM devices do not have a PRL.
-     * @param  body  Required parameter: Request to query device PRL.
-     * @return    Returns the DeviceManagementResult wrapped in ApiResponse response from the API call
-     * @throws    ApiException    Represents error response from the server.
-     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
-     */
-    public ApiResponse<DeviceManagementResult> listCurrentDevicesPRLVersion(
-            final DevicePrlListRequest body) throws ApiException, IOException {
-        return prepareListCurrentDevicesPRLVersionRequest(body).execute();
-    }
-
-    /**
-     * 4G and GSM devices do not have a PRL.
-     * @param  body  Required parameter: Request to query device PRL.
-     * @return    Returns the DeviceManagementResult wrapped in ApiResponse response from the API call
-     */
-    public CompletableFuture<ApiResponse<DeviceManagementResult>> listCurrentDevicesPRLVersionAsync(
-            final DevicePrlListRequest body) {
-        try { 
-            return prepareListCurrentDevicesPRLVersionRequest(body).executeAsync(); 
-        } catch (Exception e) {  
-            throw new CompletionException(e); 
-        }
-    }
-
-    /**
-     * Builds the ApiCall object for listCurrentDevicesPRLVersion.
-     */
-    private ApiCall<ApiResponse<DeviceManagementResult>, ApiException> prepareListCurrentDevicesPRLVersionRequest(
-            final DevicePrlListRequest body) throws JsonProcessingException, IOException {
-        return new ApiCall.Builder<ApiResponse<DeviceManagementResult>, ApiException>()
-                .globalConfig(getGlobalConfiguration())
-                .requestBuilder(requestBuilder -> requestBuilder
-                        .server(Server.THINGSPACE.value())
-                        .path("/m2m/v1/devices/prl/actions/list")
-                        .bodyParam(param -> param.value(body))
-                        .bodySerializer(() ->  ApiHelper.serialize(body))
-                        .headerParam(param -> param.key("Content-Type")
-                                .value("application/json").isRequired(false))
-                        .headerParam(param -> param.key("accept").value("application/json"))
-                        .authenticationKey(BaseController.AUTHENTICATION_KEY)
-                        .httpMethod(HttpMethod.POST))
-                .responseHandler(responseHandler -> responseHandler
-                        .responseClassType(ResponseClassType.API_RESPONSE)
-                        .apiResponseDeserializer(
-                                response -> ApiHelper.deserialize(response, DeviceManagementResult.class))
-                        .nullify404(false)
-                        .localErrorCase("400",
-                                 ErrorCase.setReason("Error response.",
-                                (reason, context) -> new ConnectivityManagementResultException(reason, context)))
-                        .globalErrorCase(GLOBAL_ERROR_CASES))
-                .build();
-    }
-
-    /**
-     * Returns DeviceSuspensionStatus callback messages containing the current device state and
-     * information on how many days a device has been suspended and can continue to be suspended.
-     * @param  body  Required parameter: Request to obtain service suspenstion status for a device.
-     * @return    Returns the DeviceManagementResult wrapped in ApiResponse response from the API call
-     * @throws    ApiException    Represents error response from the server.
-     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
-     */
-    public ApiResponse<DeviceManagementResult> getDeviceServiceSuspensionStatus(
-            final DeviceSuspensionStatusRequest body) throws ApiException, IOException {
-        return prepareGetDeviceServiceSuspensionStatusRequest(body).execute();
-    }
-
-    /**
-     * Returns DeviceSuspensionStatus callback messages containing the current device state and
-     * information on how many days a device has been suspended and can continue to be suspended.
-     * @param  body  Required parameter: Request to obtain service suspenstion status for a device.
-     * @return    Returns the DeviceManagementResult wrapped in ApiResponse response from the API call
-     */
-    public CompletableFuture<ApiResponse<DeviceManagementResult>> getDeviceServiceSuspensionStatusAsync(
-            final DeviceSuspensionStatusRequest body) {
-        try { 
-            return prepareGetDeviceServiceSuspensionStatusRequest(body).executeAsync(); 
-        } catch (Exception e) {  
-            throw new CompletionException(e); 
-        }
-    }
-
-    /**
-     * Builds the ApiCall object for getDeviceServiceSuspensionStatus.
-     */
-    private ApiCall<ApiResponse<DeviceManagementResult>, ApiException> prepareGetDeviceServiceSuspensionStatusRequest(
-            final DeviceSuspensionStatusRequest body) throws JsonProcessingException, IOException {
-        return new ApiCall.Builder<ApiResponse<DeviceManagementResult>, ApiException>()
-                .globalConfig(getGlobalConfiguration())
-                .requestBuilder(requestBuilder -> requestBuilder
-                        .server(Server.THINGSPACE.value())
-                        .path("/m2m/v1/devices/suspension/status")
-                        .bodyParam(param -> param.value(body))
-                        .bodySerializer(() ->  ApiHelper.serialize(body))
-                        .headerParam(param -> param.key("Content-Type")
-                                .value("application/json").isRequired(false))
-                        .headerParam(param -> param.key("accept").value("application/json"))
-                        .authenticationKey(BaseController.AUTHENTICATION_KEY)
-                        .httpMethod(HttpMethod.POST))
-                .responseHandler(responseHandler -> responseHandler
-                        .responseClassType(ResponseClassType.API_RESPONSE)
-                        .apiResponseDeserializer(
-                                response -> ApiHelper.deserialize(response, DeviceManagementResult.class))
-                        .nullify404(false)
-                        .localErrorCase("400",
-                                 ErrorCase.setReason("Error response.",
-                                (reason, context) -> new ConnectivityManagementResultException(reason, context)))
-                        .globalErrorCase(GLOBAL_ERROR_CASES))
-                .build();
-    }
-
-    /**
-     * Returns the network data usage history of a device during a specified time period.
-     * @param  body  Required parameter: Request to obtain usage history for a specific device.
-     * @return    Returns the DeviceUsageListResult wrapped in ApiResponse response from the API call
-     * @throws    ApiException    Represents error response from the server.
-     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
-     */
-    public ApiResponse<DeviceUsageListResult> listDevicesUsageHistory(
-            final DeviceUsageListRequest body) throws ApiException, IOException {
-        return prepareListDevicesUsageHistoryRequest(body).execute();
-    }
-
-    /**
-     * Returns the network data usage history of a device during a specified time period.
-     * @param  body  Required parameter: Request to obtain usage history for a specific device.
-     * @return    Returns the DeviceUsageListResult wrapped in ApiResponse response from the API call
-     */
-    public CompletableFuture<ApiResponse<DeviceUsageListResult>> listDevicesUsageHistoryAsync(
-            final DeviceUsageListRequest body) {
-        try { 
-            return prepareListDevicesUsageHistoryRequest(body).executeAsync(); 
-        } catch (Exception e) {  
-            throw new CompletionException(e); 
-        }
-    }
-
-    /**
-     * Builds the ApiCall object for listDevicesUsageHistory.
-     */
-    private ApiCall<ApiResponse<DeviceUsageListResult>, ApiException> prepareListDevicesUsageHistoryRequest(
-            final DeviceUsageListRequest body) throws JsonProcessingException, IOException {
-        return new ApiCall.Builder<ApiResponse<DeviceUsageListResult>, ApiException>()
-                .globalConfig(getGlobalConfiguration())
-                .requestBuilder(requestBuilder -> requestBuilder
-                        .server(Server.THINGSPACE.value())
-                        .path("/m2m/v1/devices/usage/actions/list")
-                        .bodyParam(param -> param.value(body))
-                        .bodySerializer(() ->  ApiHelper.serialize(body))
-                        .headerParam(param -> param.key("Content-Type")
-                                .value("application/json").isRequired(false))
-                        .headerParam(param -> param.key("accept").value("application/json"))
-                        .authenticationKey(BaseController.AUTHENTICATION_KEY)
-                        .httpMethod(HttpMethod.POST))
-                .responseHandler(responseHandler -> responseHandler
-                        .responseClassType(ResponseClassType.API_RESPONSE)
-                        .apiResponseDeserializer(
-                                response -> ApiHelper.deserialize(response, DeviceUsageListResult.class))
                         .nullify404(false)
                         .localErrorCase("400",
                                  ErrorCase.setReason("Error response.",
@@ -1319,7 +353,8 @@ public final class DeviceManagementController extends BaseController {
                         .headerParam(param -> param.key("Content-Type")
                                 .value("application/json").isRequired(false))
                         .headerParam(param -> param.key("accept").value("application/json"))
-                        .authenticationKey(BaseController.AUTHENTICATION_KEY)
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
                         .httpMethod(HttpMethod.POST))
                 .responseHandler(responseHandler -> responseHandler
                         .responseClassType(ResponseClassType.API_RESPONSE)
@@ -1385,8 +420,703 @@ public final class DeviceManagementController extends BaseController {
                         .headerParam(param -> param.key("Content-Type")
                                 .value("application/json").isRequired(false))
                         .headerParam(param -> param.key("accept").value("application/json"))
-                        .authenticationKey(BaseController.AUTHENTICATION_KEY)
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
                         .httpMethod(HttpMethod.PUT))
+                .responseHandler(responseHandler -> responseHandler
+                        .responseClassType(ResponseClassType.API_RESPONSE)
+                        .apiResponseDeserializer(
+                                response -> ApiHelper.deserialize(response, DeviceManagementResult.class))
+                        .nullify404(false)
+                        .localErrorCase("400",
+                                 ErrorCase.setReason("Error response.",
+                                (reason, context) -> new ConnectivityManagementResultException(reason, context)))
+                        .globalErrorCase(GLOBAL_ERROR_CASES))
+                .build();
+    }
+
+    /**
+     * Use this API if you want to manage some device settings before you are ready to activate
+     * service for the devices.
+     * @param  body  Required parameter: Devices to add.
+     * @return    Returns the List of AddDevicesResult wrapped in ApiResponse response from the API call
+     * @throws    ApiException    Represents error response from the server.
+     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
+     */
+    public ApiResponse<List<AddDevicesResult>> addDevices(
+            final AddDevicesRequest body) throws ApiException, IOException {
+        return prepareAddDevicesRequest(body).execute();
+    }
+
+    /**
+     * Use this API if you want to manage some device settings before you are ready to activate
+     * service for the devices.
+     * @param  body  Required parameter: Devices to add.
+     * @return    Returns the List of AddDevicesResult wrapped in ApiResponse response from the API call
+     */
+    public CompletableFuture<ApiResponse<List<AddDevicesResult>>> addDevicesAsync(
+            final AddDevicesRequest body) {
+        try { 
+            return prepareAddDevicesRequest(body).executeAsync(); 
+        } catch (Exception e) {  
+            throw new CompletionException(e); 
+        }
+    }
+
+    /**
+     * Builds the ApiCall object for addDevices.
+     */
+    private ApiCall<ApiResponse<List<AddDevicesResult>>, ApiException> prepareAddDevicesRequest(
+            final AddDevicesRequest body) throws JsonProcessingException, IOException {
+        return new ApiCall.Builder<ApiResponse<List<AddDevicesResult>>, ApiException>()
+                .globalConfig(getGlobalConfiguration())
+                .requestBuilder(requestBuilder -> requestBuilder
+                        .server(Server.THINGSPACE.value())
+                        .path("/m2m/v1/devices/actions/add")
+                        .bodyParam(param -> param.value(body))
+                        .bodySerializer(() ->  ApiHelper.serialize(body))
+                        .headerParam(param -> param.key("Content-Type")
+                                .value("application/json").isRequired(false))
+                        .headerParam(param -> param.key("accept").value("application/json"))
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
+                        .httpMethod(HttpMethod.POST))
+                .responseHandler(responseHandler -> responseHandler
+                        .responseClassType(ResponseClassType.API_RESPONSE)
+                        .apiResponseDeserializer(
+                                response -> ApiHelper.deserializeArray(response,
+                                        AddDevicesResult[].class))
+                        .nullify404(false)
+                        .localErrorCase("400",
+                                 ErrorCase.setReason("Error response.",
+                                (reason, context) -> new ConnectivityManagementResultException(reason, context)))
+                        .globalErrorCase(GLOBAL_ERROR_CASES))
+                .build();
+    }
+
+    /**
+     * Sends a CarrierService callback message for each device in the request when the custom fields
+     * have been changed, or if there was a problem and the change could not be completed.
+     * @param  body  Required parameter: Request to update custom field of devices.
+     * @return    Returns the DeviceManagementResult wrapped in ApiResponse response from the API call
+     * @throws    ApiException    Represents error response from the server.
+     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
+     */
+    public ApiResponse<DeviceManagementResult> updateDevicesCustomFields(
+            final CustomFieldsUpdateRequest body) throws ApiException, IOException {
+        return prepareUpdateDevicesCustomFieldsRequest(body).execute();
+    }
+
+    /**
+     * Sends a CarrierService callback message for each device in the request when the custom fields
+     * have been changed, or if there was a problem and the change could not be completed.
+     * @param  body  Required parameter: Request to update custom field of devices.
+     * @return    Returns the DeviceManagementResult wrapped in ApiResponse response from the API call
+     */
+    public CompletableFuture<ApiResponse<DeviceManagementResult>> updateDevicesCustomFieldsAsync(
+            final CustomFieldsUpdateRequest body) {
+        try { 
+            return prepareUpdateDevicesCustomFieldsRequest(body).executeAsync(); 
+        } catch (Exception e) {  
+            throw new CompletionException(e); 
+        }
+    }
+
+    /**
+     * Builds the ApiCall object for updateDevicesCustomFields.
+     */
+    private ApiCall<ApiResponse<DeviceManagementResult>, ApiException> prepareUpdateDevicesCustomFieldsRequest(
+            final CustomFieldsUpdateRequest body) throws JsonProcessingException, IOException {
+        return new ApiCall.Builder<ApiResponse<DeviceManagementResult>, ApiException>()
+                .globalConfig(getGlobalConfiguration())
+                .requestBuilder(requestBuilder -> requestBuilder
+                        .server(Server.THINGSPACE.value())
+                        .path("/m2m/v1/devices/actions/customFields")
+                        .bodyParam(param -> param.value(body))
+                        .bodySerializer(() ->  ApiHelper.serialize(body))
+                        .headerParam(param -> param.key("Content-Type")
+                                .value("application/json").isRequired(false))
+                        .headerParam(param -> param.key("accept").value("application/json"))
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
+                        .httpMethod(HttpMethod.PUT))
+                .responseHandler(responseHandler -> responseHandler
+                        .responseClassType(ResponseClassType.API_RESPONSE)
+                        .apiResponseDeserializer(
+                                response -> ApiHelper.deserialize(response, DeviceManagementResult.class))
+                        .nullify404(false)
+                        .localErrorCase("400",
+                                 ErrorCase.setReason("Error response.",
+                                (reason, context) -> new ConnectivityManagementResultException(reason, context)))
+                        .globalErrorCase(GLOBAL_ERROR_CASES))
+                .build();
+    }
+
+    /**
+     * Changes the service plan for one or more devices.
+     * @param  body  Required parameter: Request to change device service plan.
+     * @return    Returns the DeviceManagementResult wrapped in ApiResponse response from the API call
+     * @throws    ApiException    Represents error response from the server.
+     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
+     */
+    public ApiResponse<DeviceManagementResult> changeDevicesServicePlan(
+            final ServicePlanUpdateRequest body) throws ApiException, IOException {
+        return prepareChangeDevicesServicePlanRequest(body).execute();
+    }
+
+    /**
+     * Changes the service plan for one or more devices.
+     * @param  body  Required parameter: Request to change device service plan.
+     * @return    Returns the DeviceManagementResult wrapped in ApiResponse response from the API call
+     */
+    public CompletableFuture<ApiResponse<DeviceManagementResult>> changeDevicesServicePlanAsync(
+            final ServicePlanUpdateRequest body) {
+        try { 
+            return prepareChangeDevicesServicePlanRequest(body).executeAsync(); 
+        } catch (Exception e) {  
+            throw new CompletionException(e); 
+        }
+    }
+
+    /**
+     * Builds the ApiCall object for changeDevicesServicePlan.
+     */
+    private ApiCall<ApiResponse<DeviceManagementResult>, ApiException> prepareChangeDevicesServicePlanRequest(
+            final ServicePlanUpdateRequest body) throws JsonProcessingException, IOException {
+        return new ApiCall.Builder<ApiResponse<DeviceManagementResult>, ApiException>()
+                .globalConfig(getGlobalConfiguration())
+                .requestBuilder(requestBuilder -> requestBuilder
+                        .server(Server.THINGSPACE.value())
+                        .path("/m2m/v1/devices/actions/plan")
+                        .bodyParam(param -> param.value(body))
+                        .bodySerializer(() ->  ApiHelper.serialize(body))
+                        .headerParam(param -> param.key("Content-Type")
+                                .value("application/json").isRequired(false))
+                        .headerParam(param -> param.key("accept").value("application/json"))
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
+                        .httpMethod(HttpMethod.PUT))
+                .responseHandler(responseHandler -> responseHandler
+                        .responseClassType(ResponseClassType.API_RESPONSE)
+                        .apiResponseDeserializer(
+                                response -> ApiHelper.deserialize(response, DeviceManagementResult.class))
+                        .nullify404(false)
+                        .localErrorCase("400",
+                                 ErrorCase.setReason("Error response.",
+                                (reason, context) -> new ConnectivityManagementResultException(reason, context)))
+                        .globalErrorCase(GLOBAL_ERROR_CASES))
+                .build();
+    }
+
+    /**
+     * Returns extended diagnostic information about a specified device, including connectivity,
+     * provisioning, billing and location status.
+     * @param  body  Required parameter: Request to query extended diagnostics information for a
+     *         device.
+     * @return    Returns the DeviceExtendedDiagnosticsResult wrapped in ApiResponse response from the API call
+     * @throws    ApiException    Represents error response from the server.
+     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
+     */
+    public ApiResponse<DeviceExtendedDiagnosticsResult> getDeviceExtendedDiagnosticInformation(
+            final DeviceExtendedDiagnosticsRequest body) throws ApiException, IOException {
+        return prepareGetDeviceExtendedDiagnosticInformationRequest(body).execute();
+    }
+
+    /**
+     * Returns extended diagnostic information about a specified device, including connectivity,
+     * provisioning, billing and location status.
+     * @param  body  Required parameter: Request to query extended diagnostics information for a
+     *         device.
+     * @return    Returns the DeviceExtendedDiagnosticsResult wrapped in ApiResponse response from the API call
+     */
+    public CompletableFuture<ApiResponse<DeviceExtendedDiagnosticsResult>> getDeviceExtendedDiagnosticInformationAsync(
+            final DeviceExtendedDiagnosticsRequest body) {
+        try { 
+            return prepareGetDeviceExtendedDiagnosticInformationRequest(body).executeAsync(); 
+        } catch (Exception e) {  
+            throw new CompletionException(e); 
+        }
+    }
+
+    /**
+     * Builds the ApiCall object for getDeviceExtendedDiagnosticInformation.
+     */
+    private ApiCall<ApiResponse<DeviceExtendedDiagnosticsResult>, ApiException> prepareGetDeviceExtendedDiagnosticInformationRequest(
+            final DeviceExtendedDiagnosticsRequest body) throws JsonProcessingException, IOException {
+        return new ApiCall.Builder<ApiResponse<DeviceExtendedDiagnosticsResult>, ApiException>()
+                .globalConfig(getGlobalConfiguration())
+                .requestBuilder(requestBuilder -> requestBuilder
+                        .server(Server.THINGSPACE.value())
+                        .path("/m2m/v1/devices/extendeddiagnostics/actions/list")
+                        .bodyParam(param -> param.value(body))
+                        .bodySerializer(() ->  ApiHelper.serialize(body))
+                        .headerParam(param -> param.key("Content-Type")
+                                .value("application/json").isRequired(false))
+                        .headerParam(param -> param.key("accept").value("application/json"))
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
+                        .httpMethod(HttpMethod.POST))
+                .responseHandler(responseHandler -> responseHandler
+                        .responseClassType(ResponseClassType.API_RESPONSE)
+                        .apiResponseDeserializer(
+                                response -> ApiHelper.deserialize(response, DeviceExtendedDiagnosticsResult.class))
+                        .nullify404(false)
+                        .localErrorCase("400",
+                                 ErrorCase.setReason("Error response.",
+                                (reason, context) -> new ConnectivityManagementResultException(reason, context)))
+                        .globalErrorCase(GLOBAL_ERROR_CASES))
+                .build();
+    }
+
+    /**
+     * 4G and GSM devices do not have a PRL.
+     * @param  body  Required parameter: Request to query device PRL.
+     * @return    Returns the DeviceManagementResult wrapped in ApiResponse response from the API call
+     * @throws    ApiException    Represents error response from the server.
+     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
+     */
+    public ApiResponse<DeviceManagementResult> listCurrentDevicesPRLVersion(
+            final DevicePrlListRequest body) throws ApiException, IOException {
+        return prepareListCurrentDevicesPRLVersionRequest(body).execute();
+    }
+
+    /**
+     * 4G and GSM devices do not have a PRL.
+     * @param  body  Required parameter: Request to query device PRL.
+     * @return    Returns the DeviceManagementResult wrapped in ApiResponse response from the API call
+     */
+    public CompletableFuture<ApiResponse<DeviceManagementResult>> listCurrentDevicesPRLVersionAsync(
+            final DevicePrlListRequest body) {
+        try { 
+            return prepareListCurrentDevicesPRLVersionRequest(body).executeAsync(); 
+        } catch (Exception e) {  
+            throw new CompletionException(e); 
+        }
+    }
+
+    /**
+     * Builds the ApiCall object for listCurrentDevicesPRLVersion.
+     */
+    private ApiCall<ApiResponse<DeviceManagementResult>, ApiException> prepareListCurrentDevicesPRLVersionRequest(
+            final DevicePrlListRequest body) throws JsonProcessingException, IOException {
+        return new ApiCall.Builder<ApiResponse<DeviceManagementResult>, ApiException>()
+                .globalConfig(getGlobalConfiguration())
+                .requestBuilder(requestBuilder -> requestBuilder
+                        .server(Server.THINGSPACE.value())
+                        .path("/m2m/v1/devices/prl/actions/list")
+                        .bodyParam(param -> param.value(body))
+                        .bodySerializer(() ->  ApiHelper.serialize(body))
+                        .headerParam(param -> param.key("Content-Type")
+                                .value("application/json").isRequired(false))
+                        .headerParam(param -> param.key("accept").value("application/json"))
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
+                        .httpMethod(HttpMethod.POST))
+                .responseHandler(responseHandler -> responseHandler
+                        .responseClassType(ResponseClassType.API_RESPONSE)
+                        .apiResponseDeserializer(
+                                response -> ApiHelper.deserialize(response, DeviceManagementResult.class))
+                        .nullify404(false)
+                        .localErrorCase("400",
+                                 ErrorCase.setReason("Error response.",
+                                (reason, context) -> new ConnectivityManagementResultException(reason, context)))
+                        .globalErrorCase(GLOBAL_ERROR_CASES))
+                .build();
+    }
+
+    /**
+     * Use this API to remove unneeded devices from an account.
+     * @param  body  Required parameter: Devices to delete.
+     * @return    Returns the List of DeleteDevicesResult wrapped in ApiResponse response from the API call
+     * @throws    ApiException    Represents error response from the server.
+     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
+     */
+    public ApiResponse<List<DeleteDevicesResult>> deleteDeactivatedDevices(
+            final DeleteDevicesRequest body) throws ApiException, IOException {
+        return prepareDeleteDeactivatedDevicesRequest(body).execute();
+    }
+
+    /**
+     * Use this API to remove unneeded devices from an account.
+     * @param  body  Required parameter: Devices to delete.
+     * @return    Returns the List of DeleteDevicesResult wrapped in ApiResponse response from the API call
+     */
+    public CompletableFuture<ApiResponse<List<DeleteDevicesResult>>> deleteDeactivatedDevicesAsync(
+            final DeleteDevicesRequest body) {
+        try { 
+            return prepareDeleteDeactivatedDevicesRequest(body).executeAsync(); 
+        } catch (Exception e) {  
+            throw new CompletionException(e); 
+        }
+    }
+
+    /**
+     * Builds the ApiCall object for deleteDeactivatedDevices.
+     */
+    private ApiCall<ApiResponse<List<DeleteDevicesResult>>, ApiException> prepareDeleteDeactivatedDevicesRequest(
+            final DeleteDevicesRequest body) throws JsonProcessingException, IOException {
+        return new ApiCall.Builder<ApiResponse<List<DeleteDevicesResult>>, ApiException>()
+                .globalConfig(getGlobalConfiguration())
+                .requestBuilder(requestBuilder -> requestBuilder
+                        .server(Server.THINGSPACE.value())
+                        .path("/m2m/v1/devices/actions/delete")
+                        .bodyParam(param -> param.value(body))
+                        .bodySerializer(() ->  ApiHelper.serialize(body))
+                        .headerParam(param -> param.key("Content-Type")
+                                .value("application/json").isRequired(false))
+                        .headerParam(param -> param.key("accept").value("application/json"))
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
+                        .httpMethod(HttpMethod.POST))
+                .responseHandler(responseHandler -> responseHandler
+                        .responseClassType(ResponseClassType.API_RESPONSE)
+                        .apiResponseDeserializer(
+                                response -> ApiHelper.deserializeArray(response,
+                                        DeleteDevicesResult[].class))
+                        .nullify404(false)
+                        .localErrorCase("400",
+                                 ErrorCase.setReason("Error response.",
+                                (reason, context) -> new ConnectivityManagementResultException(reason, context)))
+                        .globalErrorCase(GLOBAL_ERROR_CASES))
+                .build();
+    }
+
+    /**
+     * Move active devices from one billing account to another within a customer profile.
+     * @param  body  Required parameter: Request to move devices between accounts.
+     * @return    Returns the DeviceManagementResult wrapped in ApiResponse response from the API call
+     * @throws    ApiException    Represents error response from the server.
+     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
+     */
+    public ApiResponse<DeviceManagementResult> moveDevicesWithinAccountsOfProfile(
+            final MoveDeviceRequest body) throws ApiException, IOException {
+        return prepareMoveDevicesWithinAccountsOfProfileRequest(body).execute();
+    }
+
+    /**
+     * Move active devices from one billing account to another within a customer profile.
+     * @param  body  Required parameter: Request to move devices between accounts.
+     * @return    Returns the DeviceManagementResult wrapped in ApiResponse response from the API call
+     */
+    public CompletableFuture<ApiResponse<DeviceManagementResult>> moveDevicesWithinAccountsOfProfileAsync(
+            final MoveDeviceRequest body) {
+        try { 
+            return prepareMoveDevicesWithinAccountsOfProfileRequest(body).executeAsync(); 
+        } catch (Exception e) {  
+            throw new CompletionException(e); 
+        }
+    }
+
+    /**
+     * Builds the ApiCall object for moveDevicesWithinAccountsOfProfile.
+     */
+    private ApiCall<ApiResponse<DeviceManagementResult>, ApiException> prepareMoveDevicesWithinAccountsOfProfileRequest(
+            final MoveDeviceRequest body) throws JsonProcessingException, IOException {
+        return new ApiCall.Builder<ApiResponse<DeviceManagementResult>, ApiException>()
+                .globalConfig(getGlobalConfiguration())
+                .requestBuilder(requestBuilder -> requestBuilder
+                        .server(Server.THINGSPACE.value())
+                        .path("/m2m/v1/devices/actions/move")
+                        .bodyParam(param -> param.value(body))
+                        .bodySerializer(() ->  ApiHelper.serialize(body))
+                        .headerParam(param -> param.key("Content-Type")
+                                .value("application/json").isRequired(false))
+                        .headerParam(param -> param.key("accept").value("application/json"))
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
+                        .httpMethod(HttpMethod.PUT))
+                .responseHandler(responseHandler -> responseHandler
+                        .responseClassType(ResponseClassType.API_RESPONSE)
+                        .apiResponseDeserializer(
+                                response -> ApiHelper.deserialize(response, DeviceManagementResult.class))
+                        .nullify404(false)
+                        .localErrorCase("400",
+                                 ErrorCase.setReason("Error response.",
+                                (reason, context) -> new ConnectivityManagementResultException(reason, context)))
+                        .globalErrorCase(GLOBAL_ERROR_CASES))
+                .build();
+    }
+
+    /**
+     * Changes the provisioning state of one or more devices to a specified customer-defined service
+     * and state.
+     * @param  body  Required parameter: Request to change device state to one defined by the user.
+     * @return    Returns the DeviceManagementResult wrapped in ApiResponse response from the API call
+     * @throws    ApiException    Represents error response from the server.
+     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
+     */
+    public ApiResponse<DeviceManagementResult> updateDevicesState(
+            final GoToStateRequest body) throws ApiException, IOException {
+        return prepareUpdateDevicesStateRequest(body).execute();
+    }
+
+    /**
+     * Changes the provisioning state of one or more devices to a specified customer-defined service
+     * and state.
+     * @param  body  Required parameter: Request to change device state to one defined by the user.
+     * @return    Returns the DeviceManagementResult wrapped in ApiResponse response from the API call
+     */
+    public CompletableFuture<ApiResponse<DeviceManagementResult>> updateDevicesStateAsync(
+            final GoToStateRequest body) {
+        try { 
+            return prepareUpdateDevicesStateRequest(body).executeAsync(); 
+        } catch (Exception e) {  
+            throw new CompletionException(e); 
+        }
+    }
+
+    /**
+     * Builds the ApiCall object for updateDevicesState.
+     */
+    private ApiCall<ApiResponse<DeviceManagementResult>, ApiException> prepareUpdateDevicesStateRequest(
+            final GoToStateRequest body) throws JsonProcessingException, IOException {
+        return new ApiCall.Builder<ApiResponse<DeviceManagementResult>, ApiException>()
+                .globalConfig(getGlobalConfiguration())
+                .requestBuilder(requestBuilder -> requestBuilder
+                        .server(Server.THINGSPACE.value())
+                        .path("/m2m/v1/devices/actions/gotostate")
+                        .bodyParam(param -> param.value(body))
+                        .bodySerializer(() ->  ApiHelper.serialize(body))
+                        .headerParam(param -> param.key("Content-Type")
+                                .value("application/json").isRequired(false))
+                        .headerParam(param -> param.key("accept").value("application/json"))
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
+                        .httpMethod(HttpMethod.PUT))
+                .responseHandler(responseHandler -> responseHandler
+                        .responseClassType(ResponseClassType.API_RESPONSE)
+                        .apiResponseDeserializer(
+                                response -> ApiHelper.deserialize(response, DeviceManagementResult.class))
+                        .nullify404(false)
+                        .localErrorCase("400",
+                                 ErrorCase.setReason("Error response.",
+                                (reason, context) -> new ConnectivityManagementResultException(reason, context)))
+                        .globalErrorCase(GLOBAL_ERROR_CASES))
+                .build();
+    }
+
+    /**
+     * Restores service to one or more suspended devices.
+     * @param  body  Required parameter: Request to restore services of one or more suspended
+     *         devices.
+     * @return    Returns the DeviceManagementResult wrapped in ApiResponse response from the API call
+     * @throws    ApiException    Represents error response from the server.
+     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
+     */
+    public ApiResponse<DeviceManagementResult> restoreServiceForSuspendedDevices(
+            final CarrierActionsRequest body) throws ApiException, IOException {
+        return prepareRestoreServiceForSuspendedDevicesRequest(body).execute();
+    }
+
+    /**
+     * Restores service to one or more suspended devices.
+     * @param  body  Required parameter: Request to restore services of one or more suspended
+     *         devices.
+     * @return    Returns the DeviceManagementResult wrapped in ApiResponse response from the API call
+     */
+    public CompletableFuture<ApiResponse<DeviceManagementResult>> restoreServiceForSuspendedDevicesAsync(
+            final CarrierActionsRequest body) {
+        try { 
+            return prepareRestoreServiceForSuspendedDevicesRequest(body).executeAsync(); 
+        } catch (Exception e) {  
+            throw new CompletionException(e); 
+        }
+    }
+
+    /**
+     * Builds the ApiCall object for restoreServiceForSuspendedDevices.
+     */
+    private ApiCall<ApiResponse<DeviceManagementResult>, ApiException> prepareRestoreServiceForSuspendedDevicesRequest(
+            final CarrierActionsRequest body) throws JsonProcessingException, IOException {
+        return new ApiCall.Builder<ApiResponse<DeviceManagementResult>, ApiException>()
+                .globalConfig(getGlobalConfiguration())
+                .requestBuilder(requestBuilder -> requestBuilder
+                        .server(Server.THINGSPACE.value())
+                        .path("/m2m/v1/devices/actions/restore")
+                        .bodyParam(param -> param.value(body))
+                        .bodySerializer(() ->  ApiHelper.serialize(body))
+                        .headerParam(param -> param.key("Content-Type")
+                                .value("application/json").isRequired(false))
+                        .headerParam(param -> param.key("accept").value("application/json"))
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
+                        .httpMethod(HttpMethod.POST))
+                .responseHandler(responseHandler -> responseHandler
+                        .responseClassType(ResponseClassType.API_RESPONSE)
+                        .apiResponseDeserializer(
+                                response -> ApiHelper.deserialize(response, DeviceManagementResult.class))
+                        .nullify404(false)
+                        .localErrorCase("400",
+                                 ErrorCase.setReason("Error response.",
+                                (reason, context) -> new ConnectivityManagementResultException(reason, context)))
+                        .globalErrorCase(GLOBAL_ERROR_CASES))
+                .build();
+    }
+
+    /**
+     * Checks whether specified devices are registered by the manufacturer with the Verizon network
+     * and are available to be activated.
+     * @param  body  Required parameter: Request to check if devices can be activated or not.
+     * @return    Returns the DeviceManagementResult wrapped in ApiResponse response from the API call
+     * @throws    ApiException    Represents error response from the server.
+     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
+     */
+    public ApiResponse<DeviceManagementResult> checkDevicesAvailabilityForActivation(
+            final DeviceActivationRequest body) throws ApiException, IOException {
+        return prepareCheckDevicesAvailabilityForActivationRequest(body).execute();
+    }
+
+    /**
+     * Checks whether specified devices are registered by the manufacturer with the Verizon network
+     * and are available to be activated.
+     * @param  body  Required parameter: Request to check if devices can be activated or not.
+     * @return    Returns the DeviceManagementResult wrapped in ApiResponse response from the API call
+     */
+    public CompletableFuture<ApiResponse<DeviceManagementResult>> checkDevicesAvailabilityForActivationAsync(
+            final DeviceActivationRequest body) {
+        try { 
+            return prepareCheckDevicesAvailabilityForActivationRequest(body).executeAsync(); 
+        } catch (Exception e) {  
+            throw new CompletionException(e); 
+        }
+    }
+
+    /**
+     * Builds the ApiCall object for checkDevicesAvailabilityForActivation.
+     */
+    private ApiCall<ApiResponse<DeviceManagementResult>, ApiException> prepareCheckDevicesAvailabilityForActivationRequest(
+            final DeviceActivationRequest body) throws JsonProcessingException, IOException {
+        return new ApiCall.Builder<ApiResponse<DeviceManagementResult>, ApiException>()
+                .globalConfig(getGlobalConfiguration())
+                .requestBuilder(requestBuilder -> requestBuilder
+                        .server(Server.THINGSPACE.value())
+                        .path("/m2m/v1/devices/availability/actions/list")
+                        .bodyParam(param -> param.value(body))
+                        .bodySerializer(() ->  ApiHelper.serialize(body))
+                        .headerParam(param -> param.key("Content-Type")
+                                .value("application/json").isRequired(false))
+                        .headerParam(param -> param.key("accept").value("application/json"))
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
+                        .httpMethod(HttpMethod.POST))
+                .responseHandler(responseHandler -> responseHandler
+                        .responseClassType(ResponseClassType.API_RESPONSE)
+                        .apiResponseDeserializer(
+                                response -> ApiHelper.deserialize(response, DeviceManagementResult.class))
+                        .nullify404(false)
+                        .localErrorCase("400",
+                                 ErrorCase.setReason("Error response.",
+                                (reason, context) -> new ConnectivityManagementResultException(reason, context)))
+                        .globalErrorCase(GLOBAL_ERROR_CASES))
+                .build();
+    }
+
+    /**
+     * Changes or removes the CostCenterCode value or customer name and address (Primary Place of
+     * Use) for one or more devices.
+     * @param  body  Required parameter: Request to update cost center code value for one or more
+     *         devices.
+     * @return    Returns the DeviceManagementResult wrapped in ApiResponse response from the API call
+     * @throws    ApiException    Represents error response from the server.
+     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
+     */
+    public ApiResponse<DeviceManagementResult> updateDevicesCostCenterCode(
+            final DeviceCostCenterRequest body) throws ApiException, IOException {
+        return prepareUpdateDevicesCostCenterCodeRequest(body).execute();
+    }
+
+    /**
+     * Changes or removes the CostCenterCode value or customer name and address (Primary Place of
+     * Use) for one or more devices.
+     * @param  body  Required parameter: Request to update cost center code value for one or more
+     *         devices.
+     * @return    Returns the DeviceManagementResult wrapped in ApiResponse response from the API call
+     */
+    public CompletableFuture<ApiResponse<DeviceManagementResult>> updateDevicesCostCenterCodeAsync(
+            final DeviceCostCenterRequest body) {
+        try { 
+            return prepareUpdateDevicesCostCenterCodeRequest(body).executeAsync(); 
+        } catch (Exception e) {  
+            throw new CompletionException(e); 
+        }
+    }
+
+    /**
+     * Builds the ApiCall object for updateDevicesCostCenterCode.
+     */
+    private ApiCall<ApiResponse<DeviceManagementResult>, ApiException> prepareUpdateDevicesCostCenterCodeRequest(
+            final DeviceCostCenterRequest body) throws JsonProcessingException, IOException {
+        return new ApiCall.Builder<ApiResponse<DeviceManagementResult>, ApiException>()
+                .globalConfig(getGlobalConfiguration())
+                .requestBuilder(requestBuilder -> requestBuilder
+                        .server(Server.THINGSPACE.value())
+                        .path("/m2m/v1/devices/costCenter")
+                        .bodyParam(param -> param.value(body))
+                        .bodySerializer(() ->  ApiHelper.serialize(body))
+                        .headerParam(param -> param.key("Content-Type")
+                                .value("application/json").isRequired(false))
+                        .headerParam(param -> param.key("accept").value("application/json"))
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
+                        .httpMethod(HttpMethod.PUT))
+                .responseHandler(responseHandler -> responseHandler
+                        .responseClassType(ResponseClassType.API_RESPONSE)
+                        .apiResponseDeserializer(
+                                response -> ApiHelper.deserialize(response, DeviceManagementResult.class))
+                        .nullify404(false)
+                        .localErrorCase("400",
+                                 ErrorCase.setReason("Error response.",
+                                (reason, context) -> new ConnectivityManagementResultException(reason, context)))
+                        .globalErrorCase(GLOBAL_ERROR_CASES))
+                .build();
+    }
+
+    /**
+     * Returns DeviceSuspensionStatus callback messages containing the current device state and
+     * information on how many days a device has been suspended and can continue to be suspended.
+     * @param  body  Required parameter: Request to obtain service suspenstion status for a device.
+     * @return    Returns the DeviceManagementResult wrapped in ApiResponse response from the API call
+     * @throws    ApiException    Represents error response from the server.
+     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
+     */
+    public ApiResponse<DeviceManagementResult> getDeviceServiceSuspensionStatus(
+            final DeviceSuspensionStatusRequest body) throws ApiException, IOException {
+        return prepareGetDeviceServiceSuspensionStatusRequest(body).execute();
+    }
+
+    /**
+     * Returns DeviceSuspensionStatus callback messages containing the current device state and
+     * information on how many days a device has been suspended and can continue to be suspended.
+     * @param  body  Required parameter: Request to obtain service suspenstion status for a device.
+     * @return    Returns the DeviceManagementResult wrapped in ApiResponse response from the API call
+     */
+    public CompletableFuture<ApiResponse<DeviceManagementResult>> getDeviceServiceSuspensionStatusAsync(
+            final DeviceSuspensionStatusRequest body) {
+        try { 
+            return prepareGetDeviceServiceSuspensionStatusRequest(body).executeAsync(); 
+        } catch (Exception e) {  
+            throw new CompletionException(e); 
+        }
+    }
+
+    /**
+     * Builds the ApiCall object for getDeviceServiceSuspensionStatus.
+     */
+    private ApiCall<ApiResponse<DeviceManagementResult>, ApiException> prepareGetDeviceServiceSuspensionStatusRequest(
+            final DeviceSuspensionStatusRequest body) throws JsonProcessingException, IOException {
+        return new ApiCall.Builder<ApiResponse<DeviceManagementResult>, ApiException>()
+                .globalConfig(getGlobalConfiguration())
+                .requestBuilder(requestBuilder -> requestBuilder
+                        .server(Server.THINGSPACE.value())
+                        .path("/m2m/v1/devices/suspension/status")
+                        .bodyParam(param -> param.value(body))
+                        .bodySerializer(() ->  ApiHelper.serialize(body))
+                        .headerParam(param -> param.key("Content-Type")
+                                .value("application/json").isRequired(false))
+                        .headerParam(param -> param.key("accept").value("application/json"))
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
+                        .httpMethod(HttpMethod.POST))
                 .responseHandler(responseHandler -> responseHandler
                         .responseClassType(ResponseClassType.API_RESPONSE)
                         .apiResponseDeserializer(
@@ -1440,7 +1170,8 @@ public final class DeviceManagementController extends BaseController {
                         .headerParam(param -> param.key("Content-Type")
                                 .value("application/json").isRequired(false))
                         .headerParam(param -> param.key("accept").value("application/json"))
-                        .authenticationKey(BaseController.AUTHENTICATION_KEY)
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
                         .httpMethod(HttpMethod.POST))
                 .responseHandler(responseHandler -> responseHandler
                         .responseClassType(ResponseClassType.API_RESPONSE)
@@ -1450,6 +1181,299 @@ public final class DeviceManagementController extends BaseController {
                         .localErrorCase("400",
                                  ErrorCase.setReason("Error Response",
                                 (reason, context) -> new RestErrorResponseException(reason, context)))
+                        .globalErrorCase(GLOBAL_ERROR_CASES))
+                .build();
+    }
+
+    /**
+     * Deactivating service for a device may result in an early termination fee (ETF) being charged
+     * to the account, depending on the terms of the contract with Verizon. If your contract allows
+     * ETF waivers and if you want to use one for a particular deactivation, set the etfWaiver value
+     * to True.
+     * @param  body  Required parameter: Request to deactivate service for one or more devices.
+     * @return    Returns the DeviceManagementResult wrapped in ApiResponse response from the API call
+     * @throws    ApiException    Represents error response from the server.
+     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
+     */
+    public ApiResponse<DeviceManagementResult> deactivateServiceForDevices(
+            final CarrierDeactivateRequest body) throws ApiException, IOException {
+        return prepareDeactivateServiceForDevicesRequest(body).execute();
+    }
+
+    /**
+     * Deactivating service for a device may result in an early termination fee (ETF) being charged
+     * to the account, depending on the terms of the contract with Verizon. If your contract allows
+     * ETF waivers and if you want to use one for a particular deactivation, set the etfWaiver value
+     * to True.
+     * @param  body  Required parameter: Request to deactivate service for one or more devices.
+     * @return    Returns the DeviceManagementResult wrapped in ApiResponse response from the API call
+     */
+    public CompletableFuture<ApiResponse<DeviceManagementResult>> deactivateServiceForDevicesAsync(
+            final CarrierDeactivateRequest body) {
+        try { 
+            return prepareDeactivateServiceForDevicesRequest(body).executeAsync(); 
+        } catch (Exception e) {  
+            throw new CompletionException(e); 
+        }
+    }
+
+    /**
+     * Builds the ApiCall object for deactivateServiceForDevices.
+     */
+    private ApiCall<ApiResponse<DeviceManagementResult>, ApiException> prepareDeactivateServiceForDevicesRequest(
+            final CarrierDeactivateRequest body) throws JsonProcessingException, IOException {
+        return new ApiCall.Builder<ApiResponse<DeviceManagementResult>, ApiException>()
+                .globalConfig(getGlobalConfiguration())
+                .requestBuilder(requestBuilder -> requestBuilder
+                        .server(Server.THINGSPACE.value())
+                        .path("/m2m/v1/devices/actions/deactivate")
+                        .bodyParam(param -> param.value(body))
+                        .bodySerializer(() ->  ApiHelper.serialize(body))
+                        .headerParam(param -> param.key("Content-Type")
+                                .value("application/json").isRequired(false))
+                        .headerParam(param -> param.key("accept").value("application/json"))
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
+                        .httpMethod(HttpMethod.POST))
+                .responseHandler(responseHandler -> responseHandler
+                        .responseClassType(ResponseClassType.API_RESPONSE)
+                        .apiResponseDeserializer(
+                                response -> ApiHelper.deserialize(response, DeviceManagementResult.class))
+                        .nullify404(false)
+                        .localErrorCase("400",
+                                 ErrorCase.setReason("Error response.",
+                                (reason, context) -> new ConnectivityManagementResultException(reason, context)))
+                        .globalErrorCase(GLOBAL_ERROR_CASES))
+                .build();
+    }
+
+    /**
+     * Returns a list of all 4G devices with an ICCID (SIM) that was not activated with the expected
+     * IMEI (hardware) during a specified time frame.
+     * @param  body  Required parameter: Request to list devices with mismatched IMEIs and ICCIDs.
+     * @return    Returns the DeviceMismatchListResult wrapped in ApiResponse response from the API call
+     * @throws    ApiException    Represents error response from the server.
+     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
+     */
+    public ApiResponse<DeviceMismatchListResult> listDevicesWithImeiIccidMismatch(
+            final DeviceMismatchListRequest body) throws ApiException, IOException {
+        return prepareListDevicesWithImeiIccidMismatchRequest(body).execute();
+    }
+
+    /**
+     * Returns a list of all 4G devices with an ICCID (SIM) that was not activated with the expected
+     * IMEI (hardware) during a specified time frame.
+     * @param  body  Required parameter: Request to list devices with mismatched IMEIs and ICCIDs.
+     * @return    Returns the DeviceMismatchListResult wrapped in ApiResponse response from the API call
+     */
+    public CompletableFuture<ApiResponse<DeviceMismatchListResult>> listDevicesWithImeiIccidMismatchAsync(
+            final DeviceMismatchListRequest body) {
+        try { 
+            return prepareListDevicesWithImeiIccidMismatchRequest(body).executeAsync(); 
+        } catch (Exception e) {  
+            throw new CompletionException(e); 
+        }
+    }
+
+    /**
+     * Builds the ApiCall object for listDevicesWithImeiIccidMismatch.
+     */
+    private ApiCall<ApiResponse<DeviceMismatchListResult>, ApiException> prepareListDevicesWithImeiIccidMismatchRequest(
+            final DeviceMismatchListRequest body) throws JsonProcessingException, IOException {
+        return new ApiCall.Builder<ApiResponse<DeviceMismatchListResult>, ApiException>()
+                .globalConfig(getGlobalConfiguration())
+                .requestBuilder(requestBuilder -> requestBuilder
+                        .server(Server.THINGSPACE.value())
+                        .path("/m2m/v1/devices/actions/list/imeiiccidmismatch")
+                        .bodyParam(param -> param.value(body))
+                        .bodySerializer(() ->  ApiHelper.serialize(body))
+                        .headerParam(param -> param.key("Content-Type")
+                                .value("application/json").isRequired(false))
+                        .headerParam(param -> param.key("accept").value("application/json"))
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
+                        .httpMethod(HttpMethod.POST))
+                .responseHandler(responseHandler -> responseHandler
+                        .responseClassType(ResponseClassType.API_RESPONSE)
+                        .apiResponseDeserializer(
+                                response -> ApiHelper.deserialize(response, DeviceMismatchListResult.class))
+                        .nullify404(false)
+                        .localErrorCase("400",
+                                 ErrorCase.setReason("Error response.",
+                                (reason, context) -> new ConnectivityManagementResultException(reason, context)))
+                        .globalErrorCase(GLOBAL_ERROR_CASES))
+                .build();
+    }
+
+    /**
+     * Each response includes a maximum of 500 records. To obtain more records, you can call the API
+     * multiple times, adjusting the earliest value each time to start where the previous request
+     * finished.
+     * @param  body  Required parameter: Query to retrieve device connection history.
+     * @return    Returns the ConnectionHistoryResult wrapped in ApiResponse response from the API call
+     * @throws    ApiException    Represents error response from the server.
+     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
+     */
+    public ApiResponse<ConnectionHistoryResult> retrieveDeviceConnectionHistory(
+            final DeviceConnectionListRequest body) throws ApiException, IOException {
+        return prepareRetrieveDeviceConnectionHistoryRequest(body).execute();
+    }
+
+    /**
+     * Each response includes a maximum of 500 records. To obtain more records, you can call the API
+     * multiple times, adjusting the earliest value each time to start where the previous request
+     * finished.
+     * @param  body  Required parameter: Query to retrieve device connection history.
+     * @return    Returns the ConnectionHistoryResult wrapped in ApiResponse response from the API call
+     */
+    public CompletableFuture<ApiResponse<ConnectionHistoryResult>> retrieveDeviceConnectionHistoryAsync(
+            final DeviceConnectionListRequest body) {
+        try { 
+            return prepareRetrieveDeviceConnectionHistoryRequest(body).executeAsync(); 
+        } catch (Exception e) {  
+            throw new CompletionException(e); 
+        }
+    }
+
+    /**
+     * Builds the ApiCall object for retrieveDeviceConnectionHistory.
+     */
+    private ApiCall<ApiResponse<ConnectionHistoryResult>, ApiException> prepareRetrieveDeviceConnectionHistoryRequest(
+            final DeviceConnectionListRequest body) throws JsonProcessingException, IOException {
+        return new ApiCall.Builder<ApiResponse<ConnectionHistoryResult>, ApiException>()
+                .globalConfig(getGlobalConfiguration())
+                .requestBuilder(requestBuilder -> requestBuilder
+                        .server(Server.THINGSPACE.value())
+                        .path("/m2m/v1/devices/connections/actions/listHistory")
+                        .bodyParam(param -> param.value(body))
+                        .bodySerializer(() ->  ApiHelper.serialize(body))
+                        .headerParam(param -> param.key("Content-Type")
+                                .value("application/json").isRequired(false))
+                        .headerParam(param -> param.key("accept").value("application/json"))
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
+                        .httpMethod(HttpMethod.POST))
+                .responseHandler(responseHandler -> responseHandler
+                        .responseClassType(ResponseClassType.API_RESPONSE)
+                        .apiResponseDeserializer(
+                                response -> ApiHelper.deserialize(response, ConnectionHistoryResult.class))
+                        .nullify404(false)
+                        .localErrorCase("400",
+                                 ErrorCase.setReason("Error response.",
+                                (reason, context) -> new ConnectivityManagementResultException(reason, context)))
+                        .globalErrorCase(GLOBAL_ERROR_CASES))
+                .build();
+    }
+
+    /**
+     * Returns the provisioning history of a specified device during a specified time period.
+     * @param  body  Required parameter: Query to obtain device provisioning history.
+     * @return    Returns the List of DeviceProvisioningHistoryListResult wrapped in ApiResponse response from the API call
+     * @throws    ApiException    Represents error response from the server.
+     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
+     */
+    public ApiResponse<List<DeviceProvisioningHistoryListResult>> listDevicesProvisioningHistory(
+            final DeviceProvisioningHistoryListRequest body) throws ApiException, IOException {
+        return prepareListDevicesProvisioningHistoryRequest(body).execute();
+    }
+
+    /**
+     * Returns the provisioning history of a specified device during a specified time period.
+     * @param  body  Required parameter: Query to obtain device provisioning history.
+     * @return    Returns the List of DeviceProvisioningHistoryListResult wrapped in ApiResponse response from the API call
+     */
+    public CompletableFuture<ApiResponse<List<DeviceProvisioningHistoryListResult>>> listDevicesProvisioningHistoryAsync(
+            final DeviceProvisioningHistoryListRequest body) {
+        try { 
+            return prepareListDevicesProvisioningHistoryRequest(body).executeAsync(); 
+        } catch (Exception e) {  
+            throw new CompletionException(e); 
+        }
+    }
+
+    /**
+     * Builds the ApiCall object for listDevicesProvisioningHistory.
+     */
+    private ApiCall<ApiResponse<List<DeviceProvisioningHistoryListResult>>, ApiException> prepareListDevicesProvisioningHistoryRequest(
+            final DeviceProvisioningHistoryListRequest body) throws JsonProcessingException, IOException {
+        return new ApiCall.Builder<ApiResponse<List<DeviceProvisioningHistoryListResult>>, ApiException>()
+                .globalConfig(getGlobalConfiguration())
+                .requestBuilder(requestBuilder -> requestBuilder
+                        .server(Server.THINGSPACE.value())
+                        .path("/m2m/v1/devices/history/actions/list")
+                        .bodyParam(param -> param.value(body))
+                        .bodySerializer(() ->  ApiHelper.serialize(body))
+                        .headerParam(param -> param.key("Content-Type")
+                                .value("application/json").isRequired(false))
+                        .headerParam(param -> param.key("accept").value("application/json"))
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
+                        .httpMethod(HttpMethod.POST))
+                .responseHandler(responseHandler -> responseHandler
+                        .responseClassType(ResponseClassType.API_RESPONSE)
+                        .apiResponseDeserializer(
+                                response -> ApiHelper.deserializeArray(response,
+                                        DeviceProvisioningHistoryListResult[].class))
+                        .nullify404(false)
+                        .localErrorCase("400",
+                                 ErrorCase.setReason("Error response.",
+                                (reason, context) -> new ConnectivityManagementResultException(reason, context)))
+                        .globalErrorCase(GLOBAL_ERROR_CASES))
+                .build();
+    }
+
+    /**
+     * Returns the network data usage history of a device during a specified time period.
+     * @param  body  Required parameter: Request to obtain usage history for a specific device.
+     * @return    Returns the DeviceUsageListResult wrapped in ApiResponse response from the API call
+     * @throws    ApiException    Represents error response from the server.
+     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
+     */
+    public ApiResponse<DeviceUsageListResult> listDevicesUsageHistory(
+            final DeviceUsageListRequest body) throws ApiException, IOException {
+        return prepareListDevicesUsageHistoryRequest(body).execute();
+    }
+
+    /**
+     * Returns the network data usage history of a device during a specified time period.
+     * @param  body  Required parameter: Request to obtain usage history for a specific device.
+     * @return    Returns the DeviceUsageListResult wrapped in ApiResponse response from the API call
+     */
+    public CompletableFuture<ApiResponse<DeviceUsageListResult>> listDevicesUsageHistoryAsync(
+            final DeviceUsageListRequest body) {
+        try { 
+            return prepareListDevicesUsageHistoryRequest(body).executeAsync(); 
+        } catch (Exception e) {  
+            throw new CompletionException(e); 
+        }
+    }
+
+    /**
+     * Builds the ApiCall object for listDevicesUsageHistory.
+     */
+    private ApiCall<ApiResponse<DeviceUsageListResult>, ApiException> prepareListDevicesUsageHistoryRequest(
+            final DeviceUsageListRequest body) throws JsonProcessingException, IOException {
+        return new ApiCall.Builder<ApiResponse<DeviceUsageListResult>, ApiException>()
+                .globalConfig(getGlobalConfiguration())
+                .requestBuilder(requestBuilder -> requestBuilder
+                        .server(Server.THINGSPACE.value())
+                        .path("/m2m/v1/devices/usage/actions/list")
+                        .bodyParam(param -> param.value(body))
+                        .bodySerializer(() ->  ApiHelper.serialize(body))
+                        .headerParam(param -> param.key("Content-Type")
+                                .value("application/json").isRequired(false))
+                        .headerParam(param -> param.key("accept").value("application/json"))
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
+                        .httpMethod(HttpMethod.POST))
+                .responseHandler(responseHandler -> responseHandler
+                        .responseClassType(ResponseClassType.API_RESPONSE)
+                        .apiResponseDeserializer(
+                                response -> ApiHelper.deserialize(response, DeviceUsageListResult.class))
+                        .nullify404(false)
+                        .localErrorCase("400",
+                                 ErrorCase.setReason("Error response.",
+                                (reason, context) -> new ConnectivityManagementResultException(reason, context)))
                         .globalErrorCase(GLOBAL_ERROR_CASES))
                 .build();
     }
@@ -1495,7 +1519,8 @@ public final class DeviceManagementController extends BaseController {
                         .headerParam(param -> param.key("Content-Type")
                                 .value("application/json").isRequired(false))
                         .headerParam(param -> param.key("accept").value("application/json"))
-                        .authenticationKey(BaseController.AUTHENTICATION_KEY)
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
                         .httpMethod(HttpMethod.POST))
                 .responseHandler(responseHandler -> responseHandler
                         .responseClassType(ResponseClassType.API_RESPONSE)
@@ -1550,7 +1575,64 @@ public final class DeviceManagementController extends BaseController {
                         .headerParam(param -> param.key("Content-Type")
                                 .value("application/json").isRequired(false))
                         .headerParam(param -> param.key("accept").value("application/json"))
-                        .authenticationKey(BaseController.AUTHENTICATION_KEY)
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
+                        .httpMethod(HttpMethod.POST))
+                .responseHandler(responseHandler -> responseHandler
+                        .responseClassType(ResponseClassType.API_RESPONSE)
+                        .apiResponseDeserializer(
+                                response -> ApiHelper.deserialize(response, DeviceManagementResult.class))
+                        .nullify404(false)
+                        .localErrorCase("400",
+                                 ErrorCase.setReason("Error response.",
+                                (reason, context) -> new ConnectivityManagementResultException(reason, context)))
+                        .globalErrorCase(GLOBAL_ERROR_CASES))
+                .build();
+    }
+
+    /**
+     * Uploads and activates device identifiers and SKUs for new devices from OEMs to Verizon.
+     * @param  body  Required parameter: Request to Uploads and activates device.
+     * @return    Returns the DeviceManagementResult wrapped in ApiResponse response from the API call
+     * @throws    ApiException    Represents error response from the server.
+     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
+     */
+    public ApiResponse<DeviceManagementResult> activationOrderStatus(
+            final UploadsActivatesDeviceRequest body) throws ApiException, IOException {
+        return prepareActivationOrderStatusRequest(body).execute();
+    }
+
+    /**
+     * Uploads and activates device identifiers and SKUs for new devices from OEMs to Verizon.
+     * @param  body  Required parameter: Request to Uploads and activates device.
+     * @return    Returns the DeviceManagementResult wrapped in ApiResponse response from the API call
+     */
+    public CompletableFuture<ApiResponse<DeviceManagementResult>> activationOrderStatusAsync(
+            final UploadsActivatesDeviceRequest body) {
+        try { 
+            return prepareActivationOrderStatusRequest(body).executeAsync(); 
+        } catch (Exception e) {  
+            throw new CompletionException(e); 
+        }
+    }
+
+    /**
+     * Builds the ApiCall object for activationOrderStatus.
+     */
+    private ApiCall<ApiResponse<DeviceManagementResult>, ApiException> prepareActivationOrderStatusRequest(
+            final UploadsActivatesDeviceRequest body) throws JsonProcessingException, IOException {
+        return new ApiCall.Builder<ApiResponse<DeviceManagementResult>, ApiException>()
+                .globalConfig(getGlobalConfiguration())
+                .requestBuilder(requestBuilder -> requestBuilder
+                        .server(Server.THINGSPACE.value())
+                        .path("/m2m/v1/devices/actions/uploadactivate")
+                        .bodyParam(param -> param.value(body))
+                        .bodySerializer(() ->  ApiHelper.serialize(body))
+                        .headerParam(param -> param.key("Content-Type")
+                                .value("application/json").isRequired(false))
+                        .headerParam(param -> param.key("accept").value("application/json"))
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
                         .httpMethod(HttpMethod.POST))
                 .responseHandler(responseHandler -> responseHandler
                         .responseClassType(ResponseClassType.API_RESPONSE)
@@ -1612,63 +1694,9 @@ public final class DeviceManagementController extends BaseController {
                         .queryParam(param -> param.key("LabelList")
                                 .value(labelList))
                         .headerParam(param -> param.key("accept").value("application/json"))
-                        .authenticationKey(BaseController.AUTHENTICATION_KEY)
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
                         .httpMethod(HttpMethod.DELETE))
-                .responseHandler(responseHandler -> responseHandler
-                        .responseClassType(ResponseClassType.API_RESPONSE)
-                        .apiResponseDeserializer(
-                                response -> ApiHelper.deserialize(response, DeviceManagementResult.class))
-                        .nullify404(false)
-                        .localErrorCase("400",
-                                 ErrorCase.setReason("Error response.",
-                                (reason, context) -> new ConnectivityManagementResultException(reason, context)))
-                        .globalErrorCase(GLOBAL_ERROR_CASES))
-                .build();
-    }
-
-    /**
-     * Uploads and activates device identifiers and SKUs for new devices from OEMs to Verizon.
-     * @param  body  Required parameter: Request to Uploads and activates device.
-     * @return    Returns the DeviceManagementResult wrapped in ApiResponse response from the API call
-     * @throws    ApiException    Represents error response from the server.
-     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
-     */
-    public ApiResponse<DeviceManagementResult> activationOrderStatus(
-            final UploadsActivatesDeviceRequest body) throws ApiException, IOException {
-        return prepareActivationOrderStatusRequest(body).execute();
-    }
-
-    /**
-     * Uploads and activates device identifiers and SKUs for new devices from OEMs to Verizon.
-     * @param  body  Required parameter: Request to Uploads and activates device.
-     * @return    Returns the DeviceManagementResult wrapped in ApiResponse response from the API call
-     */
-    public CompletableFuture<ApiResponse<DeviceManagementResult>> activationOrderStatusAsync(
-            final UploadsActivatesDeviceRequest body) {
-        try { 
-            return prepareActivationOrderStatusRequest(body).executeAsync(); 
-        } catch (Exception e) {  
-            throw new CompletionException(e); 
-        }
-    }
-
-    /**
-     * Builds the ApiCall object for activationOrderStatus.
-     */
-    private ApiCall<ApiResponse<DeviceManagementResult>, ApiException> prepareActivationOrderStatusRequest(
-            final UploadsActivatesDeviceRequest body) throws JsonProcessingException, IOException {
-        return new ApiCall.Builder<ApiResponse<DeviceManagementResult>, ApiException>()
-                .globalConfig(getGlobalConfiguration())
-                .requestBuilder(requestBuilder -> requestBuilder
-                        .server(Server.THINGSPACE.value())
-                        .path("/m2m/v1/devices/actions/uploadactivate")
-                        .bodyParam(param -> param.value(body))
-                        .bodySerializer(() ->  ApiHelper.serialize(body))
-                        .headerParam(param -> param.key("Content-Type")
-                                .value("application/json").isRequired(false))
-                        .headerParam(param -> param.key("accept").value("application/json"))
-                        .authenticationKey(BaseController.AUTHENTICATION_KEY)
-                        .httpMethod(HttpMethod.POST))
                 .responseHandler(responseHandler -> responseHandler
                         .responseClassType(ResponseClassType.API_RESPONSE)
                         .apiResponseDeserializer(
@@ -1726,7 +1754,8 @@ public final class DeviceManagementController extends BaseController {
                         .headerParam(param -> param.key("Content-Type")
                                 .value("application/json").isRequired(false))
                         .headerParam(param -> param.key("accept").value("application/json"))
-                        .authenticationKey(BaseController.AUTHENTICATION_KEY)
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
                         .httpMethod(HttpMethod.POST))
                 .responseHandler(responseHandler -> responseHandler
                         .responseClassType(ResponseClassType.API_RESPONSE)

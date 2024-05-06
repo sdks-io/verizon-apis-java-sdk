@@ -15,11 +15,11 @@ import java.util.List;
  * This is a model class for DeviceAggregateUsageListRequest type.
  */
 public class DeviceAggregateUsageListRequest {
+    private String startTime;
+    private String endTime;
     private List<DeviceId> deviceIds;
     private String accountName;
     private String groupName;
-    private String startTime;
-    private String endTime;
     private List<Label> label;
 
     /**
@@ -30,26 +30,70 @@ public class DeviceAggregateUsageListRequest {
 
     /**
      * Initialization constructor.
+     * @param  startTime  String value for startTime.
+     * @param  endTime  String value for endTime.
      * @param  deviceIds  List of DeviceId value for deviceIds.
      * @param  accountName  String value for accountName.
      * @param  groupName  String value for groupName.
-     * @param  startTime  String value for startTime.
-     * @param  endTime  String value for endTime.
      * @param  label  List of Label value for label.
      */
     public DeviceAggregateUsageListRequest(
+            String startTime,
+            String endTime,
             List<DeviceId> deviceIds,
             String accountName,
             String groupName,
-            String startTime,
-            String endTime,
             List<Label> label) {
+        this.startTime = startTime;
+        this.endTime = endTime;
         this.deviceIds = deviceIds;
         this.accountName = accountName;
         this.groupName = groupName;
-        this.startTime = startTime;
-        this.endTime = endTime;
         this.label = label;
+    }
+
+    /**
+     * Getter for StartTime.
+     * The beginning of the reporting period. The startTime cannot be more than 6 months before the
+     * current date.
+     * @return Returns the String
+     */
+    @JsonGetter("startTime")
+    public String getStartTime() {
+        return startTime;
+    }
+
+    /**
+     * Setter for StartTime.
+     * The beginning of the reporting period. The startTime cannot be more than 6 months before the
+     * current date.
+     * @param startTime Value for String
+     */
+    @JsonSetter("startTime")
+    public void setStartTime(String startTime) {
+        this.startTime = startTime;
+    }
+
+    /**
+     * Getter for EndTime.
+     * The end of the reporting period. The endTime date must be within on month of the startTime
+     * date.
+     * @return Returns the String
+     */
+    @JsonGetter("endTime")
+    public String getEndTime() {
+        return endTime;
+    }
+
+    /**
+     * Setter for EndTime.
+     * The end of the reporting period. The endTime date must be within on month of the startTime
+     * date.
+     * @param endTime Value for String
+     */
+    @JsonSetter("endTime")
+    public void setEndTime(String endTime) {
+        this.endTime = endTime;
     }
 
     /**
@@ -116,52 +160,6 @@ public class DeviceAggregateUsageListRequest {
     }
 
     /**
-     * Getter for StartTime.
-     * The beginning of the reporting period. The startTime cannot be more than 6 months before the
-     * current date.
-     * @return Returns the String
-     */
-    @JsonGetter("startTime")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getStartTime() {
-        return startTime;
-    }
-
-    /**
-     * Setter for StartTime.
-     * The beginning of the reporting period. The startTime cannot be more than 6 months before the
-     * current date.
-     * @param startTime Value for String
-     */
-    @JsonSetter("startTime")
-    public void setStartTime(String startTime) {
-        this.startTime = startTime;
-    }
-
-    /**
-     * Getter for EndTime.
-     * The end of the reporting period. The endTime date must be within on month of the startTime
-     * date.
-     * @return Returns the String
-     */
-    @JsonGetter("endTime")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getEndTime() {
-        return endTime;
-    }
-
-    /**
-     * Setter for EndTime.
-     * The end of the reporting period. The endTime date must be within on month of the startTime
-     * date.
-     * @param endTime Value for String
-     */
-    @JsonSetter("endTime")
-    public void setEndTime(String endTime) {
-        this.endTime = endTime;
-    }
-
-    /**
      * Getter for Label.
      * @return Returns the List of Label
      */
@@ -186,9 +184,9 @@ public class DeviceAggregateUsageListRequest {
      */
     @Override
     public String toString() {
-        return "DeviceAggregateUsageListRequest [" + "deviceIds=" + deviceIds + ", accountName="
-                + accountName + ", groupName=" + groupName + ", startTime=" + startTime
-                + ", endTime=" + endTime + ", label=" + label + "]";
+        return "DeviceAggregateUsageListRequest [" + "startTime=" + startTime + ", endTime="
+                + endTime + ", deviceIds=" + deviceIds + ", accountName=" + accountName
+                + ", groupName=" + groupName + ", label=" + label + "]";
     }
 
     /**
@@ -197,12 +195,10 @@ public class DeviceAggregateUsageListRequest {
      * @return a new {@link DeviceAggregateUsageListRequest.Builder} object
      */
     public Builder toBuilder() {
-        Builder builder = new Builder()
+        Builder builder = new Builder(startTime, endTime)
                 .deviceIds(getDeviceIds())
                 .accountName(getAccountName())
                 .groupName(getGroupName())
-                .startTime(getStartTime())
-                .endTime(getEndTime())
                 .label(getLabel());
         return builder;
     }
@@ -211,14 +207,48 @@ public class DeviceAggregateUsageListRequest {
      * Class to build instances of {@link DeviceAggregateUsageListRequest}.
      */
     public static class Builder {
+        private String startTime;
+        private String endTime;
         private List<DeviceId> deviceIds;
         private String accountName;
         private String groupName;
-        private String startTime;
-        private String endTime;
         private List<Label> label;
 
+        /**
+         * Initialization constructor.
+         */
+        public Builder() {
+        }
 
+        /**
+         * Initialization constructor.
+         * @param  startTime  String value for startTime.
+         * @param  endTime  String value for endTime.
+         */
+        public Builder(String startTime, String endTime) {
+            this.startTime = startTime;
+            this.endTime = endTime;
+        }
+
+        /**
+         * Setter for startTime.
+         * @param  startTime  String value for startTime.
+         * @return Builder
+         */
+        public Builder startTime(String startTime) {
+            this.startTime = startTime;
+            return this;
+        }
+
+        /**
+         * Setter for endTime.
+         * @param  endTime  String value for endTime.
+         * @return Builder
+         */
+        public Builder endTime(String endTime) {
+            this.endTime = endTime;
+            return this;
+        }
 
         /**
          * Setter for deviceIds.
@@ -251,26 +281,6 @@ public class DeviceAggregateUsageListRequest {
         }
 
         /**
-         * Setter for startTime.
-         * @param  startTime  String value for startTime.
-         * @return Builder
-         */
-        public Builder startTime(String startTime) {
-            this.startTime = startTime;
-            return this;
-        }
-
-        /**
-         * Setter for endTime.
-         * @param  endTime  String value for endTime.
-         * @return Builder
-         */
-        public Builder endTime(String endTime) {
-            this.endTime = endTime;
-            return this;
-        }
-
-        /**
          * Setter for label.
          * @param  label  List of Label value for label.
          * @return Builder
@@ -285,8 +295,8 @@ public class DeviceAggregateUsageListRequest {
          * @return {@link DeviceAggregateUsageListRequest}
          */
         public DeviceAggregateUsageListRequest build() {
-            return new DeviceAggregateUsageListRequest(deviceIds, accountName, groupName, startTime,
-                    endTime, label);
+            return new DeviceAggregateUsageListRequest(startTime, endTime, deviceIds, accountName,
+                    groupName, label);
         }
     }
 }

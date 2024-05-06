@@ -17,7 +17,7 @@ The request body identifies the devices to upload.
 | `UploadType` | `String` | Required | The format of the device identifiers in the upload and activation. | String getUploadType() | setUploadType(String uploadType) |
 | `ServicePlan` | `String` | Required | The service plan code that you want to assign to all specified devices. | String getServicePlan() | setServicePlan(String servicePlan) |
 | `CarrierIpPoolName` | `String` | Optional | The pool from which your device IP addresses is derived. | String getCarrierIpPoolName() | setCarrierIpPoolName(String carrierIpPoolName) |
-| `MdnZIpCode` | `String` | Required | The Zip code of the location where the line of service is primarily used, or a Zip code that you have been told to use with these devices. | String getMdnZIpCode() | setMdnZIpCode(String mdnZIpCode) |
+| `MdnZipCode` | `String` | Required | The Zip code of the location where the line of service is primarily used, or a Zip code that you have been told to use with these devices. | String getMdnZipCode() | setMdnZipCode(String mdnZipCode) |
 | `Devices` | [`List<DeviceList>`](../../doc/models/device-list.md) | Required | The devices to upload, specified by device IDs in a format matching uploadType. | List<DeviceList> getDevices() | setDevices(List<DeviceList> devices) |
 
 ## Example (as JSON)

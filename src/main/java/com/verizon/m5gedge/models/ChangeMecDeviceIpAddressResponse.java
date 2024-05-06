@@ -11,22 +11,22 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonSetter;
 
 /**
- * This is a model class for ChangeMecDeviceIpAddressResponse type.
+ * This is a model class for ChangeMecDeviceIPAddressResponse type.
  */
-public class ChangeMecDeviceIpAddressResponse {
+public class ChangeMecDeviceIPAddressResponse {
     private String requestId;
 
     /**
      * Default constructor.
      */
-    public ChangeMecDeviceIpAddressResponse() {
+    public ChangeMecDeviceIPAddressResponse() {
     }
 
     /**
      * Initialization constructor.
      * @param  requestId  String value for requestId.
      */
-    public ChangeMecDeviceIpAddressResponse(
+    public ChangeMecDeviceIPAddressResponse(
             String requestId) {
         this.requestId = requestId;
     }
@@ -55,18 +55,18 @@ public class ChangeMecDeviceIpAddressResponse {
     }
 
     /**
-     * Converts this ChangeMecDeviceIpAddressResponse into string format.
+     * Converts this ChangeMecDeviceIPAddressResponse into string format.
      * @return String representation of this class
      */
     @Override
     public String toString() {
-        return "ChangeMecDeviceIpAddressResponse [" + "requestId=" + requestId + "]";
+        return "ChangeMecDeviceIPAddressResponse [" + "requestId=" + requestId + "]";
     }
 
     /**
-     * Builds a new {@link ChangeMecDeviceIpAddressResponse.Builder} object.
+     * Builds a new {@link ChangeMecDeviceIPAddressResponse.Builder} object.
      * Creates the instance with the state of the current model.
-     * @return a new {@link ChangeMecDeviceIpAddressResponse.Builder} object
+     * @return a new {@link ChangeMecDeviceIPAddressResponse.Builder} object
      */
     public Builder toBuilder() {
         Builder builder = new Builder()
@@ -75,7 +75,7 @@ public class ChangeMecDeviceIpAddressResponse {
     }
 
     /**
-     * Class to build instances of {@link ChangeMecDeviceIpAddressResponse}.
+     * Class to build instances of {@link ChangeMecDeviceIPAddressResponse}.
      */
     public static class Builder {
         private String requestId;
@@ -93,11 +93,11 @@ public class ChangeMecDeviceIpAddressResponse {
         }
 
         /**
-         * Builds a new {@link ChangeMecDeviceIpAddressResponse} object using the set fields.
-         * @return {@link ChangeMecDeviceIpAddressResponse}
+         * Builds a new {@link ChangeMecDeviceIPAddressResponse} object using the set fields.
+         * @return {@link ChangeMecDeviceIPAddressResponse}
          */
-        public ChangeMecDeviceIpAddressResponse build() {
-            return new ChangeMecDeviceIpAddressResponse(requestId);
+        public ChangeMecDeviceIPAddressResponse build() {
+            return new ChangeMecDeviceIPAddressResponse(requestId);
         }
     }
 }

@@ -10,18 +10,18 @@ SoftwareManagementCallbacksV3Controller softwareManagementCallbacksV3Controller 
 
 ## Methods
 
-* [List Registered Callbacks](../../doc/controllers/software-management-callbacks-v3.md#list-registered-callbacks)
+* [Deregister Callback](../../doc/controllers/software-management-callbacks-v3.md#deregister-callback)
 * [Update Callback](../../doc/controllers/software-management-callbacks-v3.md#update-callback)
 * [Register Callback](../../doc/controllers/software-management-callbacks-v3.md#register-callback)
-* [Deregister Callback](../../doc/controllers/software-management-callbacks-v3.md#deregister-callback)
+* [List Registered Callbacks](../../doc/controllers/software-management-callbacks-v3.md#list-registered-callbacks)
 
 
-# List Registered Callbacks
+# Deregister Callback
 
-This endpoint allows user to get the registered callback information.
+This endpoint allows user to delete a previously registered callback URL.
 
 ```java
-CompletableFuture<ApiResponse<FotaV3CallbackSummary>> listRegisteredCallbacksAsync(
+CompletableFuture<ApiResponse<FotaV3SuccessResult>> deregisterCallbackAsync(
     final String acc)
 ```
 
@@ -37,14 +37,14 @@ CompletableFuture<ApiResponse<FotaV3CallbackSummary>> listRegisteredCallbacksAsy
 
 ## Response Type
 
-[`FotaV3CallbackSummary`](../../doc/models/fota-v3-callback-summary.md)
+[`FotaV3SuccessResult`](../../doc/models/fota-v3-success-result.md)
 
 ## Example Usage
 
 ```java
 String acc = "0000123456-00001";
 
-softwareManagementCallbacksV3Controller.listRegisteredCallbacksAsync(acc).thenAccept(result -> {
+softwareManagementCallbacksV3Controller.deregisterCallbackAsync(acc).thenAccept(result -> {
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
@@ -58,7 +58,7 @@ softwareManagementCallbacksV3Controller.listRegisteredCallbacksAsync(acc).thenAc
 
 ```json
 {
-  "url": "http://10.120.102.183:50559/CallbackListener/FirmwareServiceMessages.asmx"
+  "success": true
 }
 ```
 
@@ -185,12 +185,12 @@ softwareManagementCallbacksV3Controller.registerCallbackAsync(acc, body).thenAcc
 | 400 | Unexpected error. | [`FotaV3ResultException`](../../doc/models/fota-v3-result-exception.md) |
 
 
-# Deregister Callback
+# List Registered Callbacks
 
-This endpoint allows user to delete a previously registered callback URL.
+This endpoint allows user to get the registered callback information.
 
 ```java
-CompletableFuture<ApiResponse<FotaV3SuccessResult>> deregisterCallbackAsync(
+CompletableFuture<ApiResponse<FotaV3CallbackSummary>> listRegisteredCallbacksAsync(
     final String acc)
 ```
 
@@ -206,14 +206,14 @@ CompletableFuture<ApiResponse<FotaV3SuccessResult>> deregisterCallbackAsync(
 
 ## Response Type
 
-[`FotaV3SuccessResult`](../../doc/models/fota-v3-success-result.md)
+[`FotaV3CallbackSummary`](../../doc/models/fota-v3-callback-summary.md)
 
 ## Example Usage
 
 ```java
 String acc = "0000123456-00001";
 
-softwareManagementCallbacksV3Controller.deregisterCallbackAsync(acc).thenAccept(result -> {
+softwareManagementCallbacksV3Controller.listRegisteredCallbacksAsync(acc).thenAccept(result -> {
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
@@ -227,7 +227,7 @@ softwareManagementCallbacksV3Controller.deregisterCallbackAsync(acc).thenAccept(
 
 ```json
 {
-  "success": true
+  "url": "http://10.120.102.183:50559/CallbackListener/FirmwareServiceMessages.asmx"
 }
 ```
 

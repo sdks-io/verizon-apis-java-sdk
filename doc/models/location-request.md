@@ -12,9 +12,9 @@ The body contains the the account name and list of devices that you want to loca
 | Name | Type | Tags | Description | Getter | Setter |
 |  --- | --- | --- | --- | --- | --- |
 | `AccountName` | `String` | Required | Account identifier in "##########-#####". | String getAccountName() | setAccountName(String accountName) |
-| `AccuracyMode` | [`AccuracyModeEnum`](../../doc/models/accuracy-mode-enum.md) | Required | Accurary, currently only 0-coarse supported. | AccuracyModeEnum getAccuracyMode() | setAccuracyMode(AccuracyModeEnum accuracyMode) |
-| `CacheMode` | [`CacheModeEnum`](../../doc/models/cache-mode-enum.md) | Required | Location cache mode. | CacheModeEnum getCacheMode() | setCacheMode(CacheModeEnum cacheMode) |
 | `DeviceList` | [`List<DeviceInfo>`](../../doc/models/device-info.md) | Required | Device list. | List<DeviceInfo> getDeviceList() | setDeviceList(List<DeviceInfo> deviceList) |
+| `AccuracyMode` | [`AccuracyModeEnum`](../../doc/models/accuracy-mode-enum.md) | Optional | Accurary, currently only 0-coarse supported. | AccuracyModeEnum getAccuracyMode() | setAccuracyMode(AccuracyModeEnum accuracyMode) |
+| `CacheMode` | [`CacheModeEnum`](../../doc/models/cache-mode-enum.md) | Optional | Location cache mode. | CacheModeEnum getCacheMode() | setCacheMode(CacheModeEnum cacheMode) |
 
 ## Example (as JSON)
 

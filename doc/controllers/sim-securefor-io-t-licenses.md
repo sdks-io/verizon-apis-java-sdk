@@ -29,7 +29,7 @@ CompletableFuture<ApiResponse<SecuritySuccessResult>> assignLicenseToDevicesAsyn
 | Parameter | Type | Tags | Description |
 |  --- | --- | --- | --- |
 | `body` | [`AssignLicenseRequest`](../../doc/models/assign-license-request.md) | Body, Required | Request to assign license to devices. |
-| `xRequestID` | `String` | Header, Optional | Transaction Id.<br>**Constraints**: *Minimum Length*: `3`, *Maximum Length*: `32`, *Pattern*: `^[0-9]-[0-9]{3,32}$` |
+| `xRequestID` | `String` | Header, Optional | Transaction Id. |
 
 ## Server
 
@@ -102,7 +102,7 @@ CompletableFuture<ApiResponse<SecuritySuccessResult>> unassignLicenseToDevicesAs
 
 | Parameter | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `xRequestID` | `String` | Header, Required | Transaction Id.<br>**Constraints**: *Minimum Length*: `3`, *Maximum Length*: `32`, *Pattern*: `^[0-9]-[0-9]{3,32}$` |
+| `xRequestID` | `String` | Header, Required | Transaction Id. |
 
 ## Server
 

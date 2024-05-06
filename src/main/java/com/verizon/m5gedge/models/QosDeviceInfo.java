@@ -16,7 +16,7 @@ import java.util.List;
  */
 public class QosDeviceInfo {
     private QosDeviceId deviceId;
-    private String deviceIpV6Addr;
+    private String deviceIPv6Addr;
     private List<FlowInfo> flowInfo;
 
     /**
@@ -29,14 +29,14 @@ public class QosDeviceInfo {
      * Initialization constructor.
      * @param  deviceId  QosDeviceId value for deviceId.
      * @param  flowInfo  List of FlowInfo value for flowInfo.
-     * @param  deviceIpV6Addr  String value for deviceIpV6Addr.
+     * @param  deviceIPv6Addr  String value for deviceIPv6Addr.
      */
     public QosDeviceInfo(
             QosDeviceId deviceId,
             List<FlowInfo> flowInfo,
-            String deviceIpV6Addr) {
+            String deviceIPv6Addr) {
         this.deviceId = deviceId;
-        this.deviceIpV6Addr = deviceIpV6Addr;
+        this.deviceIPv6Addr = deviceIPv6Addr;
         this.flowInfo = flowInfo;
     }
 
@@ -59,22 +59,22 @@ public class QosDeviceInfo {
     }
 
     /**
-     * Getter for DeviceIpV6Addr.
+     * Getter for DeviceIPv6Addr.
      * @return Returns the String
      */
     @JsonGetter("deviceIPv6Addr")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getDeviceIpV6Addr() {
-        return deviceIpV6Addr;
+    public String getDeviceIPv6Addr() {
+        return deviceIPv6Addr;
     }
 
     /**
-     * Setter for DeviceIpV6Addr.
-     * @param deviceIpV6Addr Value for String
+     * Setter for DeviceIPv6Addr.
+     * @param deviceIPv6Addr Value for String
      */
     @JsonSetter("deviceIPv6Addr")
-    public void setDeviceIpV6Addr(String deviceIpV6Addr) {
-        this.deviceIpV6Addr = deviceIpV6Addr;
+    public void setDeviceIPv6Addr(String deviceIPv6Addr) {
+        this.deviceIPv6Addr = deviceIPv6Addr;
     }
 
     /**
@@ -102,7 +102,7 @@ public class QosDeviceInfo {
     @Override
     public String toString() {
         return "QosDeviceInfo [" + "deviceId=" + deviceId + ", flowInfo=" + flowInfo
-                + ", deviceIpV6Addr=" + deviceIpV6Addr + "]";
+                + ", deviceIPv6Addr=" + deviceIPv6Addr + "]";
     }
 
     /**
@@ -112,7 +112,7 @@ public class QosDeviceInfo {
      */
     public Builder toBuilder() {
         Builder builder = new Builder(deviceId, flowInfo)
-                .deviceIpV6Addr(getDeviceIpV6Addr());
+                .deviceIPv6Addr(getDeviceIPv6Addr());
         return builder;
     }
 
@@ -122,7 +122,7 @@ public class QosDeviceInfo {
     public static class Builder {
         private QosDeviceId deviceId;
         private List<FlowInfo> flowInfo;
-        private String deviceIpV6Addr;
+        private String deviceIPv6Addr;
 
         /**
          * Initialization constructor.
@@ -161,12 +161,12 @@ public class QosDeviceInfo {
         }
 
         /**
-         * Setter for deviceIpV6Addr.
-         * @param  deviceIpV6Addr  String value for deviceIpV6Addr.
+         * Setter for deviceIPv6Addr.
+         * @param  deviceIPv6Addr  String value for deviceIPv6Addr.
          * @return Builder
          */
-        public Builder deviceIpV6Addr(String deviceIpV6Addr) {
-            this.deviceIpV6Addr = deviceIpV6Addr;
+        public Builder deviceIPv6Addr(String deviceIPv6Addr) {
+            this.deviceIPv6Addr = deviceIPv6Addr;
             return this;
         }
 
@@ -175,7 +175,7 @@ public class QosDeviceInfo {
          * @return {@link QosDeviceInfo}
          */
         public QosDeviceInfo build() {
-            return new QosDeviceInfo(deviceId, flowInfo, deviceIpV6Addr);
+            return new QosDeviceInfo(deviceId, flowInfo, deviceIPv6Addr);
         }
     }
 }

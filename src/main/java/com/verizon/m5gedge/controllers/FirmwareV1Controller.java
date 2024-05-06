@@ -42,6 +42,134 @@ public final class FirmwareV1Controller extends BaseController {
     }
 
     /**
+     * Returns information about a specified upgrade, include the target date of the upgrade, the
+     * list of devices in the upgrade, and the status of the upgrade for each device.
+     * @param  account  Required parameter: Account identifier in "##########-#####".
+     * @param  upgradeId  Required parameter: The UUID of the upgrade, returned by POST /upgrades
+     *         when the upgrade was scheduled.
+     * @return    Returns the FirmwareUpgrade wrapped in ApiResponse response from the API call
+     * @throws    ApiException    Represents error response from the server.
+     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
+     */
+    public ApiResponse<FirmwareUpgrade> listFirmwareUpgradeDetails(
+            final String account,
+            final String upgradeId) throws ApiException, IOException {
+        return prepareListFirmwareUpgradeDetailsRequest(account, upgradeId).execute();
+    }
+
+    /**
+     * Returns information about a specified upgrade, include the target date of the upgrade, the
+     * list of devices in the upgrade, and the status of the upgrade for each device.
+     * @param  account  Required parameter: Account identifier in "##########-#####".
+     * @param  upgradeId  Required parameter: The UUID of the upgrade, returned by POST /upgrades
+     *         when the upgrade was scheduled.
+     * @return    Returns the FirmwareUpgrade wrapped in ApiResponse response from the API call
+     */
+    public CompletableFuture<ApiResponse<FirmwareUpgrade>> listFirmwareUpgradeDetailsAsync(
+            final String account,
+            final String upgradeId) {
+        try { 
+            return prepareListFirmwareUpgradeDetailsRequest(account, upgradeId).executeAsync(); 
+        } catch (Exception e) {  
+            throw new CompletionException(e); 
+        }
+    }
+
+    /**
+     * Builds the ApiCall object for listFirmwareUpgradeDetails.
+     */
+    private ApiCall<ApiResponse<FirmwareUpgrade>, ApiException> prepareListFirmwareUpgradeDetailsRequest(
+            final String account,
+            final String upgradeId) throws IOException {
+        return new ApiCall.Builder<ApiResponse<FirmwareUpgrade>, ApiException>()
+                .globalConfig(getGlobalConfiguration())
+                .requestBuilder(requestBuilder -> requestBuilder
+                        .server(Server.SOFTWARE_MANAGEMENT_V1.value())
+                        .path("/upgrades/{account}/upgrade/{upgradeId}")
+                        .templateParam(param -> param.key("account").value(account)
+                                .shouldEncode(true))
+                        .templateParam(param -> param.key("upgradeId").value(upgradeId)
+                                .shouldEncode(true))
+                        .headerParam(param -> param.key("accept").value("application/json"))
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
+                        .httpMethod(HttpMethod.GET))
+                .responseHandler(responseHandler -> responseHandler
+                        .responseClassType(ResponseClassType.API_RESPONSE)
+                        .apiResponseDeserializer(
+                                response -> ApiHelper.deserialize(response, FirmwareUpgrade.class))
+                        .nullify404(false)
+                        .localErrorCase("400",
+                                 ErrorCase.setReason("Unexpected error.",
+                                (reason, context) -> new FotaV1ResultException(reason, context)))
+                        .globalErrorCase(GLOBAL_ERROR_CASES))
+                .build();
+    }
+
+    /**
+     * Cancel a scheduled firmware upgrade.
+     * @param  account  Required parameter: Account identifier in "##########-#####".
+     * @param  upgradeId  Required parameter: The UUID of the scheduled upgrade that you want to
+     *         cancel.
+     * @return    Returns the FotaV1SuccessResult wrapped in ApiResponse response from the API call
+     * @throws    ApiException    Represents error response from the server.
+     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
+     */
+    public ApiResponse<FotaV1SuccessResult> cancelScheduledFirmwareUpgrade(
+            final String account,
+            final String upgradeId) throws ApiException, IOException {
+        return prepareCancelScheduledFirmwareUpgradeRequest(account, upgradeId).execute();
+    }
+
+    /**
+     * Cancel a scheduled firmware upgrade.
+     * @param  account  Required parameter: Account identifier in "##########-#####".
+     * @param  upgradeId  Required parameter: The UUID of the scheduled upgrade that you want to
+     *         cancel.
+     * @return    Returns the FotaV1SuccessResult wrapped in ApiResponse response from the API call
+     */
+    public CompletableFuture<ApiResponse<FotaV1SuccessResult>> cancelScheduledFirmwareUpgradeAsync(
+            final String account,
+            final String upgradeId) {
+        try { 
+            return prepareCancelScheduledFirmwareUpgradeRequest(account, upgradeId).executeAsync(); 
+        } catch (Exception e) {  
+            throw new CompletionException(e); 
+        }
+    }
+
+    /**
+     * Builds the ApiCall object for cancelScheduledFirmwareUpgrade.
+     */
+    private ApiCall<ApiResponse<FotaV1SuccessResult>, ApiException> prepareCancelScheduledFirmwareUpgradeRequest(
+            final String account,
+            final String upgradeId) throws IOException {
+        return new ApiCall.Builder<ApiResponse<FotaV1SuccessResult>, ApiException>()
+                .globalConfig(getGlobalConfiguration())
+                .requestBuilder(requestBuilder -> requestBuilder
+                        .server(Server.SOFTWARE_MANAGEMENT_V1.value())
+                        .path("/upgrades/{account}/upgrade/{upgradeId}")
+                        .templateParam(param -> param.key("account").value(account)
+                                .shouldEncode(true))
+                        .templateParam(param -> param.key("upgradeId").value(upgradeId)
+                                .shouldEncode(true))
+                        .headerParam(param -> param.key("accept").value("application/json"))
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
+                        .httpMethod(HttpMethod.DELETE))
+                .responseHandler(responseHandler -> responseHandler
+                        .responseClassType(ResponseClassType.API_RESPONSE)
+                        .apiResponseDeserializer(
+                                response -> ApiHelper.deserialize(response, FotaV1SuccessResult.class))
+                        .nullify404(false)
+                        .localErrorCase("400",
+                                 ErrorCase.setReason("Unexpected error.",
+                                (reason, context) -> new FotaV1ResultException(reason, context)))
+                        .globalErrorCase(GLOBAL_ERROR_CASES))
+                .build();
+    }
+
+    /**
      * Lists all device firmware images available for an account, based on the devices registered to
      * that account.
      * @param  account  Required parameter: Account identifier in "##########-#####".
@@ -82,7 +210,8 @@ public final class FirmwareV1Controller extends BaseController {
                         .templateParam(param -> param.key("account").value(account)
                                 .shouldEncode(true))
                         .headerParam(param -> param.key("accept").value("application/json"))
-                        .authenticationKey(BaseController.AUTHENTICATION_KEY)
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
                         .httpMethod(HttpMethod.GET))
                 .responseHandler(responseHandler -> responseHandler
                         .responseClassType(ResponseClassType.API_RESPONSE)
@@ -138,72 +267,9 @@ public final class FirmwareV1Controller extends BaseController {
                         .headerParam(param -> param.key("Content-Type")
                                 .value("application/json").isRequired(false))
                         .headerParam(param -> param.key("accept").value("application/json"))
-                        .authenticationKey(BaseController.AUTHENTICATION_KEY)
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
                         .httpMethod(HttpMethod.POST))
-                .responseHandler(responseHandler -> responseHandler
-                        .responseClassType(ResponseClassType.API_RESPONSE)
-                        .apiResponseDeserializer(
-                                response -> ApiHelper.deserialize(response, FirmwareUpgrade.class))
-                        .nullify404(false)
-                        .localErrorCase("400",
-                                 ErrorCase.setReason("Unexpected error.",
-                                (reason, context) -> new FotaV1ResultException(reason, context)))
-                        .globalErrorCase(GLOBAL_ERROR_CASES))
-                .build();
-    }
-
-    /**
-     * Returns information about a specified upgrade, include the target date of the upgrade, the
-     * list of devices in the upgrade, and the status of the upgrade for each device.
-     * @param  account  Required parameter: Account identifier in "##########-#####".
-     * @param  upgradeId  Required parameter: The UUID of the upgrade, returned by POST /upgrades
-     *         when the upgrade was scheduled.
-     * @return    Returns the FirmwareUpgrade wrapped in ApiResponse response from the API call
-     * @throws    ApiException    Represents error response from the server.
-     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
-     */
-    public ApiResponse<FirmwareUpgrade> listFirmwareUpgradeDetails(
-            final String account,
-            final String upgradeId) throws ApiException, IOException {
-        return prepareListFirmwareUpgradeDetailsRequest(account, upgradeId).execute();
-    }
-
-    /**
-     * Returns information about a specified upgrade, include the target date of the upgrade, the
-     * list of devices in the upgrade, and the status of the upgrade for each device.
-     * @param  account  Required parameter: Account identifier in "##########-#####".
-     * @param  upgradeId  Required parameter: The UUID of the upgrade, returned by POST /upgrades
-     *         when the upgrade was scheduled.
-     * @return    Returns the FirmwareUpgrade wrapped in ApiResponse response from the API call
-     */
-    public CompletableFuture<ApiResponse<FirmwareUpgrade>> listFirmwareUpgradeDetailsAsync(
-            final String account,
-            final String upgradeId) {
-        try { 
-            return prepareListFirmwareUpgradeDetailsRequest(account, upgradeId).executeAsync(); 
-        } catch (Exception e) {  
-            throw new CompletionException(e); 
-        }
-    }
-
-    /**
-     * Builds the ApiCall object for listFirmwareUpgradeDetails.
-     */
-    private ApiCall<ApiResponse<FirmwareUpgrade>, ApiException> prepareListFirmwareUpgradeDetailsRequest(
-            final String account,
-            final String upgradeId) throws IOException {
-        return new ApiCall.Builder<ApiResponse<FirmwareUpgrade>, ApiException>()
-                .globalConfig(getGlobalConfiguration())
-                .requestBuilder(requestBuilder -> requestBuilder
-                        .server(Server.SOFTWARE_MANAGEMENT_V1.value())
-                        .path("/upgrades/{account}/upgrade/{upgradeId}")
-                        .templateParam(param -> param.key("account").value(account)
-                                .shouldEncode(true))
-                        .templateParam(param -> param.key("upgradeId").value(upgradeId)
-                                .shouldEncode(true))
-                        .headerParam(param -> param.key("accept").value("application/json"))
-                        .authenticationKey(BaseController.AUTHENTICATION_KEY)
-                        .httpMethod(HttpMethod.GET))
                 .responseHandler(responseHandler -> responseHandler
                         .responseClassType(ResponseClassType.API_RESPONSE)
                         .apiResponseDeserializer(
@@ -273,74 +339,13 @@ public final class FirmwareV1Controller extends BaseController {
                         .headerParam(param -> param.key("Content-Type")
                                 .value("*/*").isRequired(false))
                         .headerParam(param -> param.key("accept").value("application/json"))
-                        .authenticationKey(BaseController.AUTHENTICATION_KEY)
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
                         .httpMethod(HttpMethod.PUT))
                 .responseHandler(responseHandler -> responseHandler
                         .responseClassType(ResponseClassType.API_RESPONSE)
                         .apiResponseDeserializer(
                                 response -> ApiHelper.deserialize(response, FirmwareUpgradeChangeResult.class))
-                        .nullify404(false)
-                        .localErrorCase("400",
-                                 ErrorCase.setReason("Unexpected error.",
-                                (reason, context) -> new FotaV1ResultException(reason, context)))
-                        .globalErrorCase(GLOBAL_ERROR_CASES))
-                .build();
-    }
-
-    /**
-     * Cancel a scheduled firmware upgrade.
-     * @param  account  Required parameter: Account identifier in "##########-#####".
-     * @param  upgradeId  Required parameter: The UUID of the scheduled upgrade that you want to
-     *         cancel.
-     * @return    Returns the FotaV1SuccessResult wrapped in ApiResponse response from the API call
-     * @throws    ApiException    Represents error response from the server.
-     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
-     */
-    public ApiResponse<FotaV1SuccessResult> cancelScheduledFirmwareUpgrade(
-            final String account,
-            final String upgradeId) throws ApiException, IOException {
-        return prepareCancelScheduledFirmwareUpgradeRequest(account, upgradeId).execute();
-    }
-
-    /**
-     * Cancel a scheduled firmware upgrade.
-     * @param  account  Required parameter: Account identifier in "##########-#####".
-     * @param  upgradeId  Required parameter: The UUID of the scheduled upgrade that you want to
-     *         cancel.
-     * @return    Returns the FotaV1SuccessResult wrapped in ApiResponse response from the API call
-     */
-    public CompletableFuture<ApiResponse<FotaV1SuccessResult>> cancelScheduledFirmwareUpgradeAsync(
-            final String account,
-            final String upgradeId) {
-        try { 
-            return prepareCancelScheduledFirmwareUpgradeRequest(account, upgradeId).executeAsync(); 
-        } catch (Exception e) {  
-            throw new CompletionException(e); 
-        }
-    }
-
-    /**
-     * Builds the ApiCall object for cancelScheduledFirmwareUpgrade.
-     */
-    private ApiCall<ApiResponse<FotaV1SuccessResult>, ApiException> prepareCancelScheduledFirmwareUpgradeRequest(
-            final String account,
-            final String upgradeId) throws IOException {
-        return new ApiCall.Builder<ApiResponse<FotaV1SuccessResult>, ApiException>()
-                .globalConfig(getGlobalConfiguration())
-                .requestBuilder(requestBuilder -> requestBuilder
-                        .server(Server.SOFTWARE_MANAGEMENT_V1.value())
-                        .path("/upgrades/{account}/upgrade/{upgradeId}")
-                        .templateParam(param -> param.key("account").value(account)
-                                .shouldEncode(true))
-                        .templateParam(param -> param.key("upgradeId").value(upgradeId)
-                                .shouldEncode(true))
-                        .headerParam(param -> param.key("accept").value("application/json"))
-                        .authenticationKey(BaseController.AUTHENTICATION_KEY)
-                        .httpMethod(HttpMethod.DELETE))
-                .responseHandler(responseHandler -> responseHandler
-                        .responseClassType(ResponseClassType.API_RESPONSE)
-                        .apiResponseDeserializer(
-                                response -> ApiHelper.deserialize(response, FotaV1SuccessResult.class))
                         .nullify404(false)
                         .localErrorCase("400",
                                  ErrorCase.setReason("Unexpected error.",

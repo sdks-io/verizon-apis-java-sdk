@@ -50,8 +50,7 @@ public enum ResponseCodeEnum {
     @JsonCreator
     public static ResponseCodeEnum constructFromString(String toConvert) throws IOException {
         ResponseCodeEnum enumValue = fromString(toConvert);
-        if (enumValue == null)
-        {
+        if (enumValue == null) {
             throw new IOException("Unable to create enum instance with value: " + toConvert);
         }
         return enumValue;

@@ -10,9 +10,70 @@ ConnectivityCallbacksController connectivityCallbacksController = client.getConn
 
 ## Methods
 
-* [List Registered Callbacks](../../doc/controllers/connectivity-callbacks.md#list-registered-callbacks)
 * [Register Callback](../../doc/controllers/connectivity-callbacks.md#register-callback)
+* [List Registered Callbacks](../../doc/controllers/connectivity-callbacks.md#list-registered-callbacks)
 * [Deregister Callback](../../doc/controllers/connectivity-callbacks.md#deregister-callback)
+
+
+# Register Callback
+
+You are responsible for creating and running a listening process on your server at that URL.
+
+```java
+CompletableFuture<ApiResponse<CallbackActionResult>> registerCallbackAsync(
+    final String aname,
+    final RegisterCallbackRequest body)
+```
+
+## Parameters
+
+| Parameter | Type | Tags | Description |
+|  --- | --- | --- | --- |
+| `aname` | `String` | Template, Required | Account name. |
+| `body` | [`RegisterCallbackRequest`](../../doc/models/register-callback-request.md) | Body, Required | Request to register a callback. |
+
+## Server
+
+`Server.THINGSPACE`
+
+## Response Type
+
+[`CallbackActionResult`](../../doc/models/callback-action-result.md)
+
+## Example Usage
+
+```java
+String aname = "TestAccount-2";
+RegisterCallbackRequest body = new RegisterCallbackRequest.Builder(
+    "CarrierService",
+    "https://mock.thingspace.verizon.com/webhook"
+)
+.build();
+
+connectivityCallbacksController.registerCallbackAsync(aname, body).thenAccept(result -> {
+    // TODO success callback handler
+    System.out.println(result);
+}).exceptionally(exception -> {
+    // TODO failure callback handler
+    exception.printStackTrace();
+    return null;
+});
+```
+
+## Example Response *(as JSON)*
+
+```json
+{
+  "accountName": "122333444-00002",
+  "serviceName": "CarrierService"
+}
+```
+
+## Errors
+
+| HTTP Status Code | Error Description | Exception Class |
+|  --- | --- | --- |
+| 400 | Error response. | [`ConnectivityManagementResultException`](../../doc/models/connectivity-management-result-exception.md) |
 
 
 # List Registered Callbacks
@@ -70,66 +131,6 @@ connectivityCallbacksController.listRegisteredCallbacksAsync(aname).thenAccept(r
     "username": "zaffod"
   }
 ]
-```
-
-## Errors
-
-| HTTP Status Code | Error Description | Exception Class |
-|  --- | --- | --- |
-| 400 | Error response. | [`ConnectivityManagementResultException`](../../doc/models/connectivity-management-result-exception.md) |
-
-
-# Register Callback
-
-You are responsible for creating and running a listening process on your server at that URL.
-
-```java
-CompletableFuture<ApiResponse<CallbackActionResult>> registerCallbackAsync(
-    final String aname,
-    final RegisterCallbackRequest body)
-```
-
-## Parameters
-
-| Parameter | Type | Tags | Description |
-|  --- | --- | --- | --- |
-| `aname` | `String` | Template, Required | Account name. |
-| `body` | [`RegisterCallbackRequest`](../../doc/models/register-callback-request.md) | Body, Required | Request to register a callback. |
-
-## Server
-
-`Server.THINGSPACE`
-
-## Response Type
-
-[`CallbackActionResult`](../../doc/models/callback-action-result.md)
-
-## Example Usage
-
-```java
-String aname = "TestAccount-2";
-RegisterCallbackRequest body = new RegisterCallbackRequest.Builder()
-    .name("CarrierService")
-    .url("http://10.120.102.183:50559/CallbackListener/CarrierServiceMessages.asmx")
-    .build();
-
-connectivityCallbacksController.registerCallbackAsync(aname, body).thenAccept(result -> {
-    // TODO success callback handler
-    System.out.println(result);
-}).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
-    return null;
-});
-```
-
-## Example Response *(as JSON)*
-
-```json
-{
-  "accountName": "122333444-00002",
-  "serviceName": "CarrierService"
-}
 ```
 
 ## Errors

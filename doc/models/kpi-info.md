@@ -15,7 +15,7 @@ KPI Info Object
 | `Value` | `String` | Optional | - | String getValue() | setValue(String value) |
 | `NodeName` | `String` | Optional | - | String getNodeName() | setNodeName(String nodeName) |
 | `NodeType` | `String` | Optional | - | String getNodeType() | setNodeType(String nodeType) |
-| `DescrIpTion` | `String` | Optional | - | String getDescrIpTion() | setDescrIpTion(String descrIpTion) |
+| `Description` | `String` | Optional | - | String getDescription() | setDescription(String description) |
 | `Unit` | `String` | Optional | - | String getUnit() | setUnit(String unit) |
 | `Category` | `String` | Optional | - | String getCategory() | setCategory(String category) |
 | `TimeOfLastUpdate` | `String` | Optional | - | String getTimeOfLastUpdate() | setTimeOfLastUpdate(String timeOfLastUpdate) |

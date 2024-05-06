@@ -13,8 +13,8 @@ Service Endpoint path, address, and port.
 |  --- | --- | --- | --- | --- | --- |
 | `URI` | `String` | Optional | URI of Service Endpoint if available.<br>**Constraints**: *Maximum Length*: `32`, *Pattern*: `\w+:(/?/?)[^\s]+` | String getURI() | setURI(String uRI) |
 | `FQDN` | `String` | Optional | FQDN of Service Endpoint if available.<br>**Constraints**: *Maximum Length*: `32`, *Pattern*: `^[A-Za-z0-9.]{3,32}$` | String getFQDN() | setFQDN(String fQDN) |
-| `IpV4Address` | `String` | Optional | IPv4 Address of Service Endpoint if available.<br>**Constraints**: *Maximum Length*: `32` | String getIpV4Address() | setIpV4Address(String ipV4Address) |
-| `IpV6Address` | `String` | Optional | IPv6 Address of Service Endpoint if available.<br>**Constraints**: *Maximum Length*: `64` | String getIpV6Address() | setIpV6Address(String ipV6Address) |
+| `IPv4Address` | `String` | Optional | IPv4 Address of Service Endpoint if available.<br>**Constraints**: *Maximum Length*: `32` | String getIPv4Address() | setIPv4Address(String iPv4Address) |
+| `IPv6Address` | `String` | Optional | IPv6 Address of Service Endpoint if available.<br>**Constraints**: *Maximum Length*: `64` | String getIPv6Address() | setIPv6Address(String iPv6Address) |
 | `Port` | `Integer` | Optional | Port information of Service Endpoint if IPv4 or IPv6 is mentioned.<br>**Constraints**: `>= 1`, `<= 10000` | Integer getPort() | setPort(Integer port) |
 
 ## Example (as JSON)

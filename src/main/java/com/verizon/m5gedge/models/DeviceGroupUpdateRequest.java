@@ -17,7 +17,7 @@ import java.util.List;
 public class DeviceGroupUpdateRequest {
     private List<DeviceId> devicesToAdd;
     private List<DeviceId> devicesToRemove;
-    private String newGroupDescrIpTion;
+    private String newGroupDescription;
     private String newGroupName;
 
     /**
@@ -30,17 +30,17 @@ public class DeviceGroupUpdateRequest {
      * Initialization constructor.
      * @param  devicesToAdd  List of DeviceId value for devicesToAdd.
      * @param  devicesToRemove  List of DeviceId value for devicesToRemove.
-     * @param  newGroupDescrIpTion  String value for newGroupDescrIpTion.
+     * @param  newGroupDescription  String value for newGroupDescription.
      * @param  newGroupName  String value for newGroupName.
      */
     public DeviceGroupUpdateRequest(
             List<DeviceId> devicesToAdd,
             List<DeviceId> devicesToRemove,
-            String newGroupDescrIpTion,
+            String newGroupDescription,
             String newGroupName) {
         this.devicesToAdd = devicesToAdd;
         this.devicesToRemove = devicesToRemove;
-        this.newGroupDescrIpTion = newGroupDescrIpTion;
+        this.newGroupDescription = newGroupDescription;
         this.newGroupName = newGroupName;
     }
 
@@ -93,26 +93,26 @@ public class DeviceGroupUpdateRequest {
     }
 
     /**
-     * Getter for NewGroupDescrIpTion.
+     * Getter for NewGroupDescription.
      * A new description for the device group. Do not include this parameter to leave the group
      * description unchanged.
      * @return Returns the String
      */
     @JsonGetter("newGroupDescription")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getNewGroupDescrIpTion() {
-        return newGroupDescrIpTion;
+    public String getNewGroupDescription() {
+        return newGroupDescription;
     }
 
     /**
-     * Setter for NewGroupDescrIpTion.
+     * Setter for NewGroupDescription.
      * A new description for the device group. Do not include this parameter to leave the group
      * description unchanged.
-     * @param newGroupDescrIpTion Value for String
+     * @param newGroupDescription Value for String
      */
     @JsonSetter("newGroupDescription")
-    public void setNewGroupDescrIpTion(String newGroupDescrIpTion) {
-        this.newGroupDescrIpTion = newGroupDescrIpTion;
+    public void setNewGroupDescription(String newGroupDescription) {
+        this.newGroupDescription = newGroupDescription;
     }
 
     /**
@@ -145,7 +145,7 @@ public class DeviceGroupUpdateRequest {
     @Override
     public String toString() {
         return "DeviceGroupUpdateRequest [" + "devicesToAdd=" + devicesToAdd + ", devicesToRemove="
-                + devicesToRemove + ", newGroupDescrIpTion=" + newGroupDescrIpTion
+                + devicesToRemove + ", newGroupDescription=" + newGroupDescription
                 + ", newGroupName=" + newGroupName + "]";
     }
 
@@ -158,7 +158,7 @@ public class DeviceGroupUpdateRequest {
         Builder builder = new Builder()
                 .devicesToAdd(getDevicesToAdd())
                 .devicesToRemove(getDevicesToRemove())
-                .newGroupDescrIpTion(getNewGroupDescrIpTion())
+                .newGroupDescription(getNewGroupDescription())
                 .newGroupName(getNewGroupName());
         return builder;
     }
@@ -169,7 +169,7 @@ public class DeviceGroupUpdateRequest {
     public static class Builder {
         private List<DeviceId> devicesToAdd;
         private List<DeviceId> devicesToRemove;
-        private String newGroupDescrIpTion;
+        private String newGroupDescription;
         private String newGroupName;
 
 
@@ -195,12 +195,12 @@ public class DeviceGroupUpdateRequest {
         }
 
         /**
-         * Setter for newGroupDescrIpTion.
-         * @param  newGroupDescrIpTion  String value for newGroupDescrIpTion.
+         * Setter for newGroupDescription.
+         * @param  newGroupDescription  String value for newGroupDescription.
          * @return Builder
          */
-        public Builder newGroupDescrIpTion(String newGroupDescrIpTion) {
-            this.newGroupDescrIpTion = newGroupDescrIpTion;
+        public Builder newGroupDescription(String newGroupDescription) {
+            this.newGroupDescription = newGroupDescription;
             return this;
         }
 
@@ -219,7 +219,7 @@ public class DeviceGroupUpdateRequest {
          * @return {@link DeviceGroupUpdateRequest}
          */
         public DeviceGroupUpdateRequest build() {
-            return new DeviceGroupUpdateRequest(devicesToAdd, devicesToRemove, newGroupDescrIpTion,
+            return new DeviceGroupUpdateRequest(devicesToAdd, devicesToRemove, newGroupDescription,
                     newGroupName);
         }
     }

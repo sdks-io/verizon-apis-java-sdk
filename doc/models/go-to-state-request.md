@@ -11,16 +11,18 @@ Changes the provisioning state of one or more devices to a specified customer-de
 
 | Name | Type | Tags | Description | Getter | Setter |
 |  --- | --- | --- | --- | --- | --- |
+| `ServiceName` | `String` | Required | The name of a customer-defined service to push the devices to. | String getServiceName() | setServiceName(String serviceName) |
+| `StateName` | `String` | Required | The name of a customer-defined stage state to push the devices to. | String getStateName() | setStateName(String stateName) |
+| `ServicePlan` | `String` | Required | The service plan code that you want to assign to all specified devices in the new state. | String getServicePlan() | setServicePlan(String servicePlan) |
+| `MdnZipCode` | `String` | Required | The Zip code of the location where the line of service will primarily be used, or a Zip code that you have been told to use with these devices. For accounts that are configured for geographic numbering, this is the ZIP code from which the MDN will be derived. | String getMdnZipCode() | setMdnZipCode(String mdnZipCode) |
 | `Devices` | [`List<AccountDeviceList>`](../../doc/models/account-device-list.md) | Optional | Up to 10,000 devices that you want to push to a different state, specified by device identifier. | List<AccountDeviceList> getDevices() | setDevices(List<AccountDeviceList> devices) |
 | `Filter` | [`DeviceFilter`](../../doc/models/device-filter.md) | Optional | Specify the kind of the device identifier, the type of match, and the string that you want to match. | DeviceFilter getFilter() | setFilter(DeviceFilter filter) |
-| `ServiceName` | `String` | Optional | The name of a customer-defined service to push the devices to. | String getServiceName() | setServiceName(String serviceName) |
-| `StateName` | `String` | Optional | The name of a customer-defined stage state to push the devices to. | String getStateName() | setStateName(String stateName) |
-| `ServicePlan` | `String` | Optional | The service plan code that you want to assign to all specified devices in the new state. | String getServicePlan() | setServicePlan(String servicePlan) |
-| `MdnZIpCode` | `String` | Optional | The Zip code of the location where the line of service will primarily be used, or a Zip code that you have been told to use with these devices. For accounts that are configured for geographic numbering, this is the ZIP code from which the MDN will be derived. | String getMdnZIpCode() | setMdnZIpCode(String mdnZIpCode) |
 | `CarrierIpPoolName` | `String` | Optional | The pool from which your device IP addresses will be derived if the service or state change requires new IP addresses.If you do not include this element, the default pool will be used. | String getCarrierIpPoolName() | setCarrierIpPoolName(String carrierIpPoolName) |
 | `PublicIpRestriction` | `String` | Optional | For devices with static IP addresses on the public network, this specifies whether the devices have general access to the Internet. Valid values are “restricted” or “unrestricted”. | String getPublicIpRestriction() | setPublicIpRestriction(String publicIpRestriction) |
 | `SkuNumber` | `String` | Optional | The Stock Keeping Unit (SKU) number of a 4G device type with an embedded SIM. Can be used with ICCID or EID device identifiers in lieu of an IMEI when activating 4G devices. The SkuNumber will be used with all devices in the request, so all devices must be of the same type. | String getSkuNumber() | setSkuNumber(String skuNumber) |
 | `CustomFields` | [`List<CustomFields>`](../../doc/models/custom-fields.md) | Optional | The names and values of any custom fields that you want to set for the devices. | List<CustomFields> getCustomFields() | setCustomFields(List<CustomFields> customFields) |
+| `DevicesWithServiceAddress` | `List<Object>` | Optional | This is an array that associates an IP address with a device identifier. This variable is only relevant for Business Internet/Fixed Wireless Access | List<Object> getDevicesWithServiceAddress() | setDevicesWithServiceAddress(List<Object> devicesWithServiceAddress) |
+| `IpAddress` | `String` | Optional | The IP address of the device. | String getIpAddress() | setIpAddress(String ipAddress) |
 | `GroupName` | `String` | Optional | The name of a device group that the devices should be added to. | String getGroupName() | setGroupName(String groupName) |
 | `PrimaryPlaceOfUse` | [`PlaceOfUse`](../../doc/models/place-of-use.md) | Optional | The customer name and the address of the device's primary place of use. Leave these fields empty to use the account profile address as the primary place of use. These values will be applied to all devices in the request.If the account is enabled for non-geographic MDNs and the device supports it, the primaryPlaceOfUse address will also be used to derive the MDN for the device. | PlaceOfUse getPrimaryPlaceOfUse() | setPrimaryPlaceOfUse(PlaceOfUse primaryPlaceOfUse) |
 
@@ -94,7 +96,9 @@ Changes the provisioning state of one or more devices to a specified customer-de
         "value": "value2"
       }
     ]
-  }
+  },
+  "carrierIpPoolName": "carrierIpPoolName8",
+  "skuNumber": "skuNumber6"
 }
 ```
 

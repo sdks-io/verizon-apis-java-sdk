@@ -70,8 +70,7 @@ public enum ClientTypeEnum {
     @JsonCreator
     public static ClientTypeEnum constructFromString(String toConvert) throws IOException {
         ClientTypeEnum enumValue = fromString(toConvert);
-        if (enumValue == null)
-        {
+        if (enumValue == null) {
             throw new IOException("Unable to create enum instance with value: " + toConvert);
         }
         return enumValue;

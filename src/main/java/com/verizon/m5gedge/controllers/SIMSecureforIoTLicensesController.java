@@ -84,7 +84,8 @@ public final class SIMSecureforIoTLicensesController extends BaseController {
                         .headerParam(param -> param.key("X-Request-ID")
                                 .value(xRequestID).isRequired(false))
                         .headerParam(param -> param.key("accept").value("application/json"))
-                        .authenticationKey(BaseController.AUTHENTICATION_KEY)
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
                         .httpMethod(HttpMethod.POST))
                 .responseHandler(responseHandler -> responseHandler
                         .responseClassType(ResponseClassType.API_RESPONSE)
@@ -155,7 +156,8 @@ public final class SIMSecureforIoTLicensesController extends BaseController {
                         .headerParam(param -> param.key("X-Request-ID")
                                 .value(xRequestID).isRequired(false))
                         .headerParam(param -> param.key("accept").value("application/json"))
-                        .authenticationKey(BaseController.AUTHENTICATION_KEY)
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
                         .httpMethod(HttpMethod.DELETE))
                 .responseHandler(responseHandler -> responseHandler
                         .responseClassType(ResponseClassType.API_RESPONSE)

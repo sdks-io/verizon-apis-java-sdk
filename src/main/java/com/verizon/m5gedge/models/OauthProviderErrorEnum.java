@@ -76,8 +76,7 @@ public enum OauthProviderErrorEnum {
     @JsonCreator
     public static OauthProviderErrorEnum constructFromString(String toConvert) throws IOException {
         OauthProviderErrorEnum enumValue = fromString(toConvert);
-        if (enumValue == null)
-        {
+        if (enumValue == null) {
             throw new IOException("Unable to create enum instance with value: " + toConvert);
         }
         return enumValue;

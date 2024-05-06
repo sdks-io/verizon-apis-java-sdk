@@ -10,9 +10,88 @@ SoftwareManagementReportsV3Controller softwareManagementReportsV3Controller = cl
 
 ## Methods
 
-* [Get Campaign History by Status](../../doc/controllers/software-management-reports-v3.md#get-campaign-history-by-status)
 * [Get Device Firmware Upgrade History](../../doc/controllers/software-management-reports-v3.md#get-device-firmware-upgrade-history)
+* [Get Campaign History by Status](../../doc/controllers/software-management-reports-v3.md#get-campaign-history-by-status)
 * [Get Campaign Device Status](../../doc/controllers/software-management-reports-v3.md#get-campaign-device-status)
+
+
+# Get Device Firmware Upgrade History
+
+Retrieve campaign history for a specific device.
+
+```java
+CompletableFuture<ApiResponse<List<DeviceFirmwareUpgrade>>> getDeviceFirmwareUpgradeHistoryAsync(
+    final String acc,
+    final String deviceId)
+```
+
+## Parameters
+
+| Parameter | Type | Tags | Description |
+|  --- | --- | --- | --- |
+| `acc` | `String` | Template, Required | Account identifier. |
+| `deviceId` | `String` | Template, Required | Device IMEI identifier. |
+
+## Server
+
+`Server.SOFTWARE_MANAGEMENT_V3`
+
+## Response Type
+
+[`List<DeviceFirmwareUpgrade>`](../../doc/models/device-firmware-upgrade.md)
+
+## Example Usage
+
+```java
+String acc = "0000123456-00001";
+String deviceId = "15-digit IMEI";
+
+softwareManagementReportsV3Controller.getDeviceFirmwareUpgradeHistoryAsync(acc, deviceId).thenAccept(result -> {
+    // TODO success callback handler
+    System.out.println(result);
+}).exceptionally(exception -> {
+    // TODO failure callback handler
+    exception.printStackTrace();
+    return null;
+});
+```
+
+## Example Response *(as JSON)*
+
+```json
+[
+  {
+    "deviceId": "15-digit IMEI",
+    "campaignId": "252d7ffc-7e35-11ec-931d-76f56843c393",
+    "accountName": "0000123456-00001",
+    "firmwareName": "SEQUANSCommunications_GM01Q_SR1.2.0.0-10657_SR1.2.0.0-10512",
+    "firmwareFrom": "SR1.2.0.0-10657",
+    "firmwareTo": "SR1.2.0.0-10512",
+    "startDate": "2022-01-25",
+    "reportUpdatedTime": "2022-01-26 03:45:01.608 +0000 UTC",
+    "status": "UpgradeSuccess",
+    "reason": "Upgrade completed successfully"
+  },
+  {
+    "deviceId": "15-digit IMEI",
+    "campaignId": "8f5e9a4a-6ce2-11ec-ace7-3ea293843397",
+    "accountName": "0000123456-00001",
+    "firmwareName": "SEQUANSCommunications_GM01Q_SR1.2.0.0-10512_SR1.2.0.0-10657",
+    "firmwareFrom": "SR1.2.0.0-10512",
+    "firmwareTo": "SR1.2.0.0-10657",
+    "startDate": "2022-01-03",
+    "reportUpdatedTime": "2022-01-04 02:45:00.67 +0000 UTC",
+    "status": "UpgradeSuccess",
+    "reason": "Upgrade completed successfully"
+  }
+]
+```
+
+## Errors
+
+| HTTP Status Code | Error Description | Exception Class |
+|  --- | --- | --- |
+| 400 | Unexpected error. | [`FotaV3ResultException`](../../doc/models/fota-v3-result-exception.md) |
 
 
 # Get Campaign History by Status
@@ -87,85 +166,6 @@ softwareManagementReportsV3Controller.getCampaignHistoryByStatusAsync(acc, campa
     }
   ]
 }
-```
-
-## Errors
-
-| HTTP Status Code | Error Description | Exception Class |
-|  --- | --- | --- |
-| 400 | Unexpected error. | [`FotaV3ResultException`](../../doc/models/fota-v3-result-exception.md) |
-
-
-# Get Device Firmware Upgrade History
-
-Retrieve campaign history for a specific device.
-
-```java
-CompletableFuture<ApiResponse<List<DeviceFirmwareUpgrade>>> getDeviceFirmwareUpgradeHistoryAsync(
-    final String acc,
-    final String deviceId)
-```
-
-## Parameters
-
-| Parameter | Type | Tags | Description |
-|  --- | --- | --- | --- |
-| `acc` | `String` | Template, Required | Account identifier. |
-| `deviceId` | `String` | Template, Required | Device IMEI identifier. |
-
-## Server
-
-`Server.SOFTWARE_MANAGEMENT_V3`
-
-## Response Type
-
-[`List<DeviceFirmwareUpgrade>`](../../doc/models/device-firmware-upgrade.md)
-
-## Example Usage
-
-```java
-String acc = "0000123456-00001";
-String deviceId = "15-digit IMEI";
-
-softwareManagementReportsV3Controller.getDeviceFirmwareUpgradeHistoryAsync(acc, deviceId).thenAccept(result -> {
-    // TODO success callback handler
-    System.out.println(result);
-}).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
-    return null;
-});
-```
-
-## Example Response *(as JSON)*
-
-```json
-[
-  {
-    "deviceId": "15-digit IMEI",
-    "campaignId": "252d7ffc-7e35-11ec-931d-76f56843c393",
-    "accountName": "0000123456-00001",
-    "firmwareName": "SEQUANSCommunications_GM01Q_SR1.2.0.0-10657_SR1.2.0.0-10512",
-    "firmwareFrom": "SR1.2.0.0-10657",
-    "firmwareTo": "SR1.2.0.0-10512",
-    "startDate": "2022-01-25",
-    "reportUpdatedTime": "2022-01-26 03:45:01.608 +0000 UTC",
-    "status": "UpgradeSuccess",
-    "reason": "Upgrade completed successfully"
-  },
-  {
-    "deviceId": "15-digit IMEI",
-    "campaignId": "8f5e9a4a-6ce2-11ec-ace7-3ea293843397",
-    "accountName": "0000123456-00001",
-    "firmwareName": "SEQUANSCommunications_GM01Q_SR1.2.0.0-10512_SR1.2.0.0-10657",
-    "firmwareFrom": "SR1.2.0.0-10512",
-    "firmwareTo": "SR1.2.0.0-10657",
-    "startDate": "2022-01-03",
-    "reportUpdatedTime": "2022-01-04 02:45:00.67 +0000 UTC",
-    "status": "UpgradeSuccess",
-    "reason": "Upgrade completed successfully"
-  }
-]
 ```
 
 ## Errors

@@ -49,7 +49,6 @@ public class BillUsageRequest {
      * @return Returns the String
      */
     @JsonGetter("accountName")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     public String getAccountName() {
         return accountName;
     }
@@ -70,7 +69,6 @@ public class BillUsageRequest {
      * @return Returns the String
      */
     @JsonGetter("startDate")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     public String getStartDate() {
         return startDate;
     }
@@ -91,7 +89,6 @@ public class BillUsageRequest {
      * @return Returns the String
      */
     @JsonGetter("endDate")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     public String getEndDate() {
         return endDate;
     }
@@ -143,10 +140,7 @@ public class BillUsageRequest {
      * @return a new {@link BillUsageRequest.Builder} object
      */
     public Builder toBuilder() {
-        Builder builder = new Builder()
-                .accountName(getAccountName())
-                .startDate(getStartDate())
-                .endDate(getEndDate())
+        Builder builder = new Builder(accountName, startDate, endDate)
                 .usageForAllAccounts(getUsageForAllAccounts());
         return builder;
     }
@@ -160,7 +154,23 @@ public class BillUsageRequest {
         private String endDate;
         private Boolean usageForAllAccounts;
 
+        /**
+         * Initialization constructor.
+         */
+        public Builder() {
+        }
 
+        /**
+         * Initialization constructor.
+         * @param  accountName  String value for accountName.
+         * @param  startDate  String value for startDate.
+         * @param  endDate  String value for endDate.
+         */
+        public Builder(String accountName, String startDate, String endDate) {
+            this.accountName = accountName;
+            this.startDate = startDate;
+            this.endDate = endDate;
+        }
 
         /**
          * Setter for accountName.

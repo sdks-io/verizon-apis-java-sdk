@@ -40,54 +40,51 @@ public final class DeviceSMSMessagingController extends BaseController {
     }
 
     /**
-     * Sends an SMS message to one device. Messages are queued on the M2M MC Platform and sent as
-     * soon as possible, but they may be delayed due to traffic and routing considerations.
-     * @param  body  Required parameter: SMS message to an indiividual device.
-     * @return    Returns the GIORequestResponse wrapped in ApiResponse response from the API call
+     * Starts delivery of SMS messages for the specified account.
+     * @param  accountName  Required parameter: Numeric account name
+     * @return    Returns the SuccessResponse wrapped in ApiResponse response from the API call
      * @throws    ApiException    Represents error response from the server.
      * @throws    IOException    Signals that an I/O exception of some sort has occurred.
      */
-    public ApiResponse<GIORequestResponse> sendAnSmsMessage(
-            final GIOSMSSendRequest body) throws ApiException, IOException {
-        return prepareSendAnSmsMessageRequest(body).execute();
+    public ApiResponse<SuccessResponse> startSmsMessageDelivery(
+            final String accountName) throws ApiException, IOException {
+        return prepareStartSmsMessageDeliveryRequest(accountName).execute();
     }
 
     /**
-     * Sends an SMS message to one device. Messages are queued on the M2M MC Platform and sent as
-     * soon as possible, but they may be delayed due to traffic and routing considerations.
-     * @param  body  Required parameter: SMS message to an indiividual device.
-     * @return    Returns the GIORequestResponse wrapped in ApiResponse response from the API call
+     * Starts delivery of SMS messages for the specified account.
+     * @param  accountName  Required parameter: Numeric account name
+     * @return    Returns the SuccessResponse wrapped in ApiResponse response from the API call
      */
-    public CompletableFuture<ApiResponse<GIORequestResponse>> sendAnSmsMessageAsync(
-            final GIOSMSSendRequest body) {
+    public CompletableFuture<ApiResponse<SuccessResponse>> startSmsMessageDeliveryAsync(
+            final String accountName) {
         try { 
-            return prepareSendAnSmsMessageRequest(body).executeAsync(); 
+            return prepareStartSmsMessageDeliveryRequest(accountName).executeAsync(); 
         } catch (Exception e) {  
             throw new CompletionException(e); 
         }
     }
 
     /**
-     * Builds the ApiCall object for sendAnSmsMessage.
+     * Builds the ApiCall object for startSmsMessageDelivery.
      */
-    private ApiCall<ApiResponse<GIORequestResponse>, ApiException> prepareSendAnSmsMessageRequest(
-            final GIOSMSSendRequest body) throws JsonProcessingException, IOException {
-        return new ApiCall.Builder<ApiResponse<GIORequestResponse>, ApiException>()
+    private ApiCall<ApiResponse<SuccessResponse>, ApiException> prepareStartSmsMessageDeliveryRequest(
+            final String accountName) throws IOException {
+        return new ApiCall.Builder<ApiResponse<SuccessResponse>, ApiException>()
                 .globalConfig(getGlobalConfiguration())
                 .requestBuilder(requestBuilder -> requestBuilder
                         .server(Server.THINGSPACE.value())
-                        .path("/m2m/v1/sms")
-                        .bodyParam(param -> param.value(body))
-                        .bodySerializer(() ->  ApiHelper.serialize(body))
-                        .headerParam(param -> param.key("Content-Type")
-                                .value("application/json").isRequired(false))
+                        .path("/m2m/v1/sms/{accountName}/startCallbacks")
+                        .templateParam(param -> param.key("accountName").value(accountName)
+                                .shouldEncode(true))
                         .headerParam(param -> param.key("accept").value("application/json"))
-                        .authenticationKey(BaseController.AUTHENTICATION_KEY)
-                        .httpMethod(HttpMethod.POST))
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
+                        .httpMethod(HttpMethod.PUT))
                 .responseHandler(responseHandler -> responseHandler
                         .responseClassType(ResponseClassType.API_RESPONSE)
                         .apiResponseDeserializer(
-                                response -> ApiHelper.deserialize(response, GIORequestResponse.class))
+                                response -> ApiHelper.deserialize(response, SuccessResponse.class))
                         .nullify404(false)
                         .localErrorCase(ErrorCase.DEFAULT,
                                  ErrorCase.setReason("Error response",
@@ -144,7 +141,8 @@ public final class DeviceSMSMessagingController extends BaseController {
                         .templateParam(param -> param.key("accountName").value(accountName)
                                 .shouldEncode(true))
                         .headerParam(param -> param.key("accept").value("application/json"))
-                        .authenticationKey(BaseController.AUTHENTICATION_KEY)
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
                         .httpMethod(HttpMethod.GET))
                 .responseHandler(responseHandler -> responseHandler
                         .responseClassType(ResponseClassType.API_RESPONSE)
@@ -159,50 +157,55 @@ public final class DeviceSMSMessagingController extends BaseController {
     }
 
     /**
-     * Starts delivery of SMS messages for the specified account.
-     * @param  accountName  Required parameter: Numeric account name
-     * @return    Returns the SuccessResponse wrapped in ApiResponse response from the API call
+     * Sends an SMS message to one device. Messages are queued on the M2M MC Platform and sent as
+     * soon as possible, but they may be delayed due to traffic and routing considerations.
+     * @param  body  Required parameter: SMS message to an indiividual device.
+     * @return    Returns the GIORequestResponse wrapped in ApiResponse response from the API call
      * @throws    ApiException    Represents error response from the server.
      * @throws    IOException    Signals that an I/O exception of some sort has occurred.
      */
-    public ApiResponse<SuccessResponse> startSmsMessageDelivery(
-            final String accountName) throws ApiException, IOException {
-        return prepareStartSmsMessageDeliveryRequest(accountName).execute();
+    public ApiResponse<GIORequestResponse> sendAnSmsMessage(
+            final GIOSMSSendRequest body) throws ApiException, IOException {
+        return prepareSendAnSmsMessageRequest(body).execute();
     }
 
     /**
-     * Starts delivery of SMS messages for the specified account.
-     * @param  accountName  Required parameter: Numeric account name
-     * @return    Returns the SuccessResponse wrapped in ApiResponse response from the API call
+     * Sends an SMS message to one device. Messages are queued on the M2M MC Platform and sent as
+     * soon as possible, but they may be delayed due to traffic and routing considerations.
+     * @param  body  Required parameter: SMS message to an indiividual device.
+     * @return    Returns the GIORequestResponse wrapped in ApiResponse response from the API call
      */
-    public CompletableFuture<ApiResponse<SuccessResponse>> startSmsMessageDeliveryAsync(
-            final String accountName) {
+    public CompletableFuture<ApiResponse<GIORequestResponse>> sendAnSmsMessageAsync(
+            final GIOSMSSendRequest body) {
         try { 
-            return prepareStartSmsMessageDeliveryRequest(accountName).executeAsync(); 
+            return prepareSendAnSmsMessageRequest(body).executeAsync(); 
         } catch (Exception e) {  
             throw new CompletionException(e); 
         }
     }
 
     /**
-     * Builds the ApiCall object for startSmsMessageDelivery.
+     * Builds the ApiCall object for sendAnSmsMessage.
      */
-    private ApiCall<ApiResponse<SuccessResponse>, ApiException> prepareStartSmsMessageDeliveryRequest(
-            final String accountName) throws IOException {
-        return new ApiCall.Builder<ApiResponse<SuccessResponse>, ApiException>()
+    private ApiCall<ApiResponse<GIORequestResponse>, ApiException> prepareSendAnSmsMessageRequest(
+            final GIOSMSSendRequest body) throws JsonProcessingException, IOException {
+        return new ApiCall.Builder<ApiResponse<GIORequestResponse>, ApiException>()
                 .globalConfig(getGlobalConfiguration())
                 .requestBuilder(requestBuilder -> requestBuilder
                         .server(Server.THINGSPACE.value())
-                        .path("/m2m/v1/sms/{accountName}/startCallbacks")
-                        .templateParam(param -> param.key("accountName").value(accountName)
-                                .shouldEncode(true))
+                        .path("/m2m/v1/sms")
+                        .bodyParam(param -> param.value(body))
+                        .bodySerializer(() ->  ApiHelper.serialize(body))
+                        .headerParam(param -> param.key("Content-Type")
+                                .value("application/json").isRequired(false))
                         .headerParam(param -> param.key("accept").value("application/json"))
-                        .authenticationKey(BaseController.AUTHENTICATION_KEY)
-                        .httpMethod(HttpMethod.PUT))
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
+                        .httpMethod(HttpMethod.POST))
                 .responseHandler(responseHandler -> responseHandler
                         .responseClassType(ResponseClassType.API_RESPONSE)
                         .apiResponseDeserializer(
-                                response -> ApiHelper.deserialize(response, SuccessResponse.class))
+                                response -> ApiHelper.deserialize(response, GIORequestResponse.class))
                         .nullify404(false)
                         .localErrorCase(ErrorCase.DEFAULT,
                                  ErrorCase.setReason("Error response",
@@ -252,7 +255,8 @@ public final class DeviceSMSMessagingController extends BaseController {
                         .headerParam(param -> param.key("Content-Type")
                                 .value("application/json").isRequired(false))
                         .headerParam(param -> param.key("accept").value("application/json"))
-                        .authenticationKey(BaseController.AUTHENTICATION_KEY)
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
                         .httpMethod(HttpMethod.POST))
                 .responseHandler(responseHandler -> responseHandler
                         .responseClassType(ResponseClassType.API_RESPONSE)

@@ -19,8 +19,8 @@ public class AddressItem {
     private String city;
     private String state;
     private String country;
-    private String zIp;
-    private String zIp4;
+    private String zip;
+    private String zip4;
 
     /**
      * Default constructor.
@@ -35,8 +35,8 @@ public class AddressItem {
      * @param  city  String value for city.
      * @param  state  String value for state.
      * @param  country  String value for country.
-     * @param  zIp  String value for zIp.
-     * @param  zIp4  String value for zIp4.
+     * @param  zip  String value for zip.
+     * @param  zip4  String value for zip4.
      */
     public AddressItem(
             String addressLine1,
@@ -44,15 +44,15 @@ public class AddressItem {
             String city,
             String state,
             String country,
-            String zIp,
-            String zIp4) {
+            String zip,
+            String zip4) {
         this.addressLine1 = addressLine1;
         this.addressLine2 = addressLine2;
         this.city = city;
         this.state = state;
         this.country = country;
-        this.zIp = zIp;
-        this.zIp4 = zIp4;
+        this.zip = zip;
+        this.zip4 = zip4;
     }
 
     /**
@@ -161,45 +161,45 @@ public class AddressItem {
     }
 
     /**
-     * Getter for ZIp.
+     * Getter for Zip.
      * Five digit zipcode.
      * @return Returns the String
      */
     @JsonGetter("zip")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getZIp() {
-        return zIp;
+    public String getZip() {
+        return zip;
     }
 
     /**
-     * Setter for ZIp.
+     * Setter for Zip.
      * Five digit zipcode.
-     * @param zIp Value for String
+     * @param zip Value for String
      */
     @JsonSetter("zip")
-    public void setZIp(String zIp) {
-        this.zIp = zIp;
+    public void setZip(String zip) {
+        this.zip = zip;
     }
 
     /**
-     * Getter for ZIp4.
+     * Getter for Zip4.
      * Four digit zip code.
      * @return Returns the String
      */
     @JsonGetter("zip4")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getZIp4() {
-        return zIp4;
+    public String getZip4() {
+        return zip4;
     }
 
     /**
-     * Setter for ZIp4.
+     * Setter for Zip4.
      * Four digit zip code.
-     * @param zIp4 Value for String
+     * @param zip4 Value for String
      */
     @JsonSetter("zip4")
-    public void setZIp4(String zIp4) {
-        this.zIp4 = zIp4;
+    public void setZip4(String zip4) {
+        this.zip4 = zip4;
     }
 
     /**
@@ -209,8 +209,8 @@ public class AddressItem {
     @Override
     public String toString() {
         return "AddressItem [" + "addressLine1=" + addressLine1 + ", addressLine2=" + addressLine2
-                + ", city=" + city + ", state=" + state + ", country=" + country + ", zIp=" + zIp
-                + ", zIp4=" + zIp4 + "]";
+                + ", city=" + city + ", state=" + state + ", country=" + country + ", zip=" + zip
+                + ", zip4=" + zip4 + "]";
     }
 
     /**
@@ -225,8 +225,8 @@ public class AddressItem {
                 .city(getCity())
                 .state(getState())
                 .country(getCountry())
-                .zIp(getZIp())
-                .zIp4(getZIp4());
+                .zip(getZip())
+                .zip4(getZip4());
         return builder;
     }
 
@@ -239,8 +239,8 @@ public class AddressItem {
         private String city;
         private String state;
         private String country;
-        private String zIp;
-        private String zIp4;
+        private String zip;
+        private String zip4;
 
 
 
@@ -295,22 +295,22 @@ public class AddressItem {
         }
 
         /**
-         * Setter for zIp.
-         * @param  zIp  String value for zIp.
+         * Setter for zip.
+         * @param  zip  String value for zip.
          * @return Builder
          */
-        public Builder zIp(String zIp) {
-            this.zIp = zIp;
+        public Builder zip(String zip) {
+            this.zip = zip;
             return this;
         }
 
         /**
-         * Setter for zIp4.
-         * @param  zIp4  String value for zIp4.
+         * Setter for zip4.
+         * @param  zip4  String value for zip4.
          * @return Builder
          */
-        public Builder zIp4(String zIp4) {
-            this.zIp4 = zIp4;
+        public Builder zip4(String zip4) {
+            this.zip4 = zip4;
             return this;
         }
 
@@ -319,7 +319,7 @@ public class AddressItem {
          * @return {@link AddressItem}
          */
         public AddressItem build() {
-            return new AddressItem(addressLine1, addressLine2, city, state, country, zIp, zIp4);
+            return new AddressItem(addressLine1, addressLine2, city, state, country, zip, zip4);
         }
     }
 }

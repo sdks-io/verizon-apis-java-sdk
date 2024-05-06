@@ -15,18 +15,18 @@ import java.util.List;
  * This is a model class for CarrierActivateRequest type.
  */
 public class CarrierActivateRequest {
+    private List<AccountDeviceList> devices;
+    private String servicePlan;
+    private String mdnZipCode;
     private String accountName;
     private String carrierIpPoolName;
     private String carrierName;
     private String costCenterCode;
     private List<CustomFields> customFields;
-    private List<AccountDeviceList> devices;
     private String groupName;
     private String leadId;
-    private String mdnZIpCode;
     private PlaceOfUse primaryPlaceOfUse;
     private String publicIpRestriction;
-    private String servicePlan;
     private String skuNumber;
 
     /**
@@ -37,47 +37,111 @@ public class CarrierActivateRequest {
 
     /**
      * Initialization constructor.
+     * @param  devices  List of AccountDeviceList value for devices.
+     * @param  servicePlan  String value for servicePlan.
+     * @param  mdnZipCode  String value for mdnZipCode.
      * @param  accountName  String value for accountName.
      * @param  carrierIpPoolName  String value for carrierIpPoolName.
      * @param  carrierName  String value for carrierName.
      * @param  costCenterCode  String value for costCenterCode.
      * @param  customFields  List of CustomFields value for customFields.
-     * @param  devices  List of AccountDeviceList value for devices.
      * @param  groupName  String value for groupName.
      * @param  leadId  String value for leadId.
-     * @param  mdnZIpCode  String value for mdnZIpCode.
      * @param  primaryPlaceOfUse  PlaceOfUse value for primaryPlaceOfUse.
      * @param  publicIpRestriction  String value for publicIpRestriction.
-     * @param  servicePlan  String value for servicePlan.
      * @param  skuNumber  String value for skuNumber.
      */
     public CarrierActivateRequest(
+            List<AccountDeviceList> devices,
+            String servicePlan,
+            String mdnZipCode,
             String accountName,
             String carrierIpPoolName,
             String carrierName,
             String costCenterCode,
             List<CustomFields> customFields,
-            List<AccountDeviceList> devices,
             String groupName,
             String leadId,
-            String mdnZIpCode,
             PlaceOfUse primaryPlaceOfUse,
             String publicIpRestriction,
-            String servicePlan,
             String skuNumber) {
+        this.devices = devices;
+        this.servicePlan = servicePlan;
+        this.mdnZipCode = mdnZipCode;
         this.accountName = accountName;
         this.carrierIpPoolName = carrierIpPoolName;
         this.carrierName = carrierName;
         this.costCenterCode = costCenterCode;
         this.customFields = customFields;
-        this.devices = devices;
         this.groupName = groupName;
         this.leadId = leadId;
-        this.mdnZIpCode = mdnZIpCode;
         this.primaryPlaceOfUse = primaryPlaceOfUse;
         this.publicIpRestriction = publicIpRestriction;
-        this.servicePlan = servicePlan;
         this.skuNumber = skuNumber;
+    }
+
+    /**
+     * Getter for Devices.
+     * Up to 10,000 devices for which you want to activate service, specified by device identifier.
+     * @return Returns the List of AccountDeviceList
+     */
+    @JsonGetter("devices")
+    public List<AccountDeviceList> getDevices() {
+        return devices;
+    }
+
+    /**
+     * Setter for Devices.
+     * Up to 10,000 devices for which you want to activate service, specified by device identifier.
+     * @param devices Value for List of AccountDeviceList
+     */
+    @JsonSetter("devices")
+    public void setDevices(List<AccountDeviceList> devices) {
+        this.devices = devices;
+    }
+
+    /**
+     * Getter for ServicePlan.
+     * The service plan code that you want to assign to all specified devices.
+     * @return Returns the String
+     */
+    @JsonGetter("servicePlan")
+    public String getServicePlan() {
+        return servicePlan;
+    }
+
+    /**
+     * Setter for ServicePlan.
+     * The service plan code that you want to assign to all specified devices.
+     * @param servicePlan Value for String
+     */
+    @JsonSetter("servicePlan")
+    public void setServicePlan(String servicePlan) {
+        this.servicePlan = servicePlan;
+    }
+
+    /**
+     * Getter for MdnZipCode.
+     * The Zip code of the location where the line of service will primarily be used, or a Zip code
+     * that you have been told to use with these devices. For accounts that are configured for
+     * geographic numbering, this is the ZIP code from which the MDN will be derived.
+     * @return Returns the String
+     */
+    @JsonGetter("mdnZipCode")
+    public String getMdnZipCode() {
+        return mdnZipCode;
+    }
+
+    /**
+     * Setter for MdnZipCode.
+     * The Zip code of the location where the line of service will primarily be used, or a Zip code
+     * that you have been told to use with these devices. For accounts that are configured for
+     * geographic numbering, this is the ZIP code from which the MDN will be derived.
+     * @param mdnZipCode Value for String
+     */
+    @JsonSetter("mdnZipCode")
+    public void setMdnZipCode(String mdnZipCode) {
+        this.mdnZipCode = mdnZipCode;
     }
 
     /**
@@ -186,27 +250,6 @@ public class CarrierActivateRequest {
     }
 
     /**
-     * Getter for Devices.
-     * Up to 10,000 devices for which you want to activate service, specified by device identifier.
-     * @return Returns the List of AccountDeviceList
-     */
-    @JsonGetter("devices")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public List<AccountDeviceList> getDevices() {
-        return devices;
-    }
-
-    /**
-     * Setter for Devices.
-     * Up to 10,000 devices for which you want to activate service, specified by device identifier.
-     * @param devices Value for List of AccountDeviceList
-     */
-    @JsonSetter("devices")
-    public void setDevices(List<AccountDeviceList> devices) {
-        this.devices = devices;
-    }
-
-    /**
      * Getter for GroupName.
      * If you specify devices by ID in the devices parameters, this is the name of a device group
      * that the devices should be added to.If you don't specify individual devices with the devices
@@ -252,31 +295,6 @@ public class CarrierActivateRequest {
     @JsonSetter("leadId")
     public void setLeadId(String leadId) {
         this.leadId = leadId;
-    }
-
-    /**
-     * Getter for MdnZIpCode.
-     * The Zip code of the location where the line of service will primarily be used, or a Zip code
-     * that you have been told to use with these devices. For accounts that are configured for
-     * geographic numbering, this is the ZIP code from which the MDN will be derived.
-     * @return Returns the String
-     */
-    @JsonGetter("mdnZipCode")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getMdnZIpCode() {
-        return mdnZIpCode;
-    }
-
-    /**
-     * Setter for MdnZIpCode.
-     * The Zip code of the location where the line of service will primarily be used, or a Zip code
-     * that you have been told to use with these devices. For accounts that are configured for
-     * geographic numbering, this is the ZIP code from which the MDN will be derived.
-     * @param mdnZIpCode Value for String
-     */
-    @JsonSetter("mdnZipCode")
-    public void setMdnZIpCode(String mdnZIpCode) {
-        this.mdnZIpCode = mdnZIpCode;
     }
 
     /**
@@ -332,27 +350,6 @@ public class CarrierActivateRequest {
     }
 
     /**
-     * Getter for ServicePlan.
-     * The service plan code that you want to assign to all specified devices.
-     * @return Returns the String
-     */
-    @JsonGetter("servicePlan")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getServicePlan() {
-        return servicePlan;
-    }
-
-    /**
-     * Setter for ServicePlan.
-     * The service plan code that you want to assign to all specified devices.
-     * @param servicePlan Value for String
-     */
-    @JsonSetter("servicePlan")
-    public void setServicePlan(String servicePlan) {
-        this.servicePlan = servicePlan;
-    }
-
-    /**
      * Getter for SkuNumber.
      * The Stock Keeping Unit (SKU) of a 4G device type can be used with ICCID device identifiers in
      * lieu of an IMEI when activating 4G devices. The SkuNumber will be used with all devices in
@@ -383,13 +380,13 @@ public class CarrierActivateRequest {
      */
     @Override
     public String toString() {
-        return "CarrierActivateRequest [" + "accountName=" + accountName + ", carrierIpPoolName="
-                + carrierIpPoolName + ", carrierName=" + carrierName + ", costCenterCode="
-                + costCenterCode + ", customFields=" + customFields + ", devices=" + devices
-                + ", groupName=" + groupName + ", leadId=" + leadId + ", mdnZIpCode=" + mdnZIpCode
-                + ", primaryPlaceOfUse=" + primaryPlaceOfUse + ", publicIpRestriction="
-                + publicIpRestriction + ", servicePlan=" + servicePlan + ", skuNumber=" + skuNumber
-                + "]";
+        return "CarrierActivateRequest [" + "devices=" + devices + ", servicePlan=" + servicePlan
+                + ", mdnZipCode=" + mdnZipCode + ", accountName=" + accountName
+                + ", carrierIpPoolName=" + carrierIpPoolName + ", carrierName=" + carrierName
+                + ", costCenterCode=" + costCenterCode + ", customFields=" + customFields
+                + ", groupName=" + groupName + ", leadId=" + leadId + ", primaryPlaceOfUse="
+                + primaryPlaceOfUse + ", publicIpRestriction=" + publicIpRestriction
+                + ", skuNumber=" + skuNumber + "]";
     }
 
     /**
@@ -398,19 +395,16 @@ public class CarrierActivateRequest {
      * @return a new {@link CarrierActivateRequest.Builder} object
      */
     public Builder toBuilder() {
-        Builder builder = new Builder()
+        Builder builder = new Builder(devices, servicePlan, mdnZipCode)
                 .accountName(getAccountName())
                 .carrierIpPoolName(getCarrierIpPoolName())
                 .carrierName(getCarrierName())
                 .costCenterCode(getCostCenterCode())
                 .customFields(getCustomFields())
-                .devices(getDevices())
                 .groupName(getGroupName())
                 .leadId(getLeadId())
-                .mdnZIpCode(getMdnZIpCode())
                 .primaryPlaceOfUse(getPrimaryPlaceOfUse())
                 .publicIpRestriction(getPublicIpRestriction())
-                .servicePlan(getServicePlan())
                 .skuNumber(getSkuNumber());
         return builder;
     }
@@ -419,21 +413,67 @@ public class CarrierActivateRequest {
      * Class to build instances of {@link CarrierActivateRequest}.
      */
     public static class Builder {
+        private List<AccountDeviceList> devices;
+        private String servicePlan;
+        private String mdnZipCode;
         private String accountName;
         private String carrierIpPoolName;
         private String carrierName;
         private String costCenterCode;
         private List<CustomFields> customFields;
-        private List<AccountDeviceList> devices;
         private String groupName;
         private String leadId;
-        private String mdnZIpCode;
         private PlaceOfUse primaryPlaceOfUse;
         private String publicIpRestriction;
-        private String servicePlan;
         private String skuNumber;
 
+        /**
+         * Initialization constructor.
+         */
+        public Builder() {
+        }
 
+        /**
+         * Initialization constructor.
+         * @param  devices  List of AccountDeviceList value for devices.
+         * @param  servicePlan  String value for servicePlan.
+         * @param  mdnZipCode  String value for mdnZipCode.
+         */
+        public Builder(List<AccountDeviceList> devices, String servicePlan, String mdnZipCode) {
+            this.devices = devices;
+            this.servicePlan = servicePlan;
+            this.mdnZipCode = mdnZipCode;
+        }
+
+        /**
+         * Setter for devices.
+         * @param  devices  List of AccountDeviceList value for devices.
+         * @return Builder
+         */
+        public Builder devices(List<AccountDeviceList> devices) {
+            this.devices = devices;
+            return this;
+        }
+
+        /**
+         * Setter for servicePlan.
+         * @param  servicePlan  String value for servicePlan.
+         * @return Builder
+         */
+        public Builder servicePlan(String servicePlan) {
+            this.servicePlan = servicePlan;
+            return this;
+        }
+
+        /**
+         * Setter for mdnZipCode.
+         * @param  mdnZipCode  String value for mdnZipCode.
+         * @return Builder
+         */
+        public Builder mdnZipCode(String mdnZipCode) {
+            this.mdnZipCode = mdnZipCode;
+            return this;
+        }
 
         /**
          * Setter for accountName.
@@ -486,16 +526,6 @@ public class CarrierActivateRequest {
         }
 
         /**
-         * Setter for devices.
-         * @param  devices  List of AccountDeviceList value for devices.
-         * @return Builder
-         */
-        public Builder devices(List<AccountDeviceList> devices) {
-            this.devices = devices;
-            return this;
-        }
-
-        /**
          * Setter for groupName.
          * @param  groupName  String value for groupName.
          * @return Builder
@@ -512,16 +542,6 @@ public class CarrierActivateRequest {
          */
         public Builder leadId(String leadId) {
             this.leadId = leadId;
-            return this;
-        }
-
-        /**
-         * Setter for mdnZIpCode.
-         * @param  mdnZIpCode  String value for mdnZIpCode.
-         * @return Builder
-         */
-        public Builder mdnZIpCode(String mdnZIpCode) {
-            this.mdnZIpCode = mdnZIpCode;
             return this;
         }
 
@@ -546,16 +566,6 @@ public class CarrierActivateRequest {
         }
 
         /**
-         * Setter for servicePlan.
-         * @param  servicePlan  String value for servicePlan.
-         * @return Builder
-         */
-        public Builder servicePlan(String servicePlan) {
-            this.servicePlan = servicePlan;
-            return this;
-        }
-
-        /**
          * Setter for skuNumber.
          * @param  skuNumber  String value for skuNumber.
          * @return Builder
@@ -570,9 +580,9 @@ public class CarrierActivateRequest {
          * @return {@link CarrierActivateRequest}
          */
         public CarrierActivateRequest build() {
-            return new CarrierActivateRequest(accountName, carrierIpPoolName, carrierName,
-                    costCenterCode, customFields, devices, groupName, leadId, mdnZIpCode,
-                    primaryPlaceOfUse, publicIpRestriction, servicePlan, skuNumber);
+            return new CarrierActivateRequest(devices, servicePlan, mdnZipCode, accountName,
+                    carrierIpPoolName, carrierName, costCenterCode, customFields, groupName, leadId,
+                    primaryPlaceOfUse, publicIpRestriction, skuNumber);
         }
     }
 }

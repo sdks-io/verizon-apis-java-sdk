@@ -13,8 +13,8 @@ import com.verizon.m5gedge.exceptions.ApiException;
 import com.verizon.m5gedge.exceptions.SecurityResultException;
 import com.verizon.m5gedge.http.request.HttpMethod;
 import com.verizon.m5gedge.http.response.ApiResponse;
-import com.verizon.m5gedge.models.SecuritySubscrIpTionRequest;
-import com.verizon.m5gedge.models.SecuritySubscrIpTionResult;
+import com.verizon.m5gedge.models.SecuritySubscriptionRequest;
+import com.verizon.m5gedge.models.SecuritySubscriptionResult;
 import io.apimatic.core.ApiCall;
 import io.apimatic.core.ErrorCase;
 import io.apimatic.core.GlobalConfiguration;
@@ -26,13 +26,13 @@ import java.util.concurrent.CompletionException;
 /**
  * This class lists all the endpoints of the groups.
  */
-public final class AccountSubscrIpTionsController extends BaseController {
+public final class AccountSubscriptionsController extends BaseController {
 
     /**
      * Initializes the controller.
      * @param globalConfig    Configurations added in client.
      */
-    public AccountSubscrIpTionsController(GlobalConfiguration globalConfig) {
+    public AccountSubscriptionsController(GlobalConfiguration globalConfig) {
         super(globalConfig);
     }
 
@@ -42,14 +42,14 @@ public final class AccountSubscrIpTionsController extends BaseController {
      * license type.
      * @param  body  Required parameter: Request for account subscription.
      * @param  xRequestID  Optional parameter: Transaction Id.
-     * @return    Returns the SecuritySubscrIpTionResult wrapped in ApiResponse response from the API call
+     * @return    Returns the SecuritySubscriptionResult wrapped in ApiResponse response from the API call
      * @throws    ApiException    Represents error response from the server.
      * @throws    IOException    Signals that an I/O exception of some sort has occurred.
      */
-    public ApiResponse<SecuritySubscrIpTionResult> listAccountSubscrIpTions(
-            final SecuritySubscrIpTionRequest body,
+    public ApiResponse<SecuritySubscriptionResult> listAccountSubscriptions(
+            final SecuritySubscriptionRequest body,
             final String xRequestID) throws ApiException, IOException {
-        return prepareListAccountSubscrIpTionsRequest(body, xRequestID).execute();
+        return prepareListAccountSubscriptionsRequest(body, xRequestID).execute();
     }
 
     /**
@@ -58,25 +58,25 @@ public final class AccountSubscrIpTionsController extends BaseController {
      * license type.
      * @param  body  Required parameter: Request for account subscription.
      * @param  xRequestID  Optional parameter: Transaction Id.
-     * @return    Returns the SecuritySubscrIpTionResult wrapped in ApiResponse response from the API call
+     * @return    Returns the SecuritySubscriptionResult wrapped in ApiResponse response from the API call
      */
-    public CompletableFuture<ApiResponse<SecuritySubscrIpTionResult>> listAccountSubscrIpTionsAsync(
-            final SecuritySubscrIpTionRequest body,
+    public CompletableFuture<ApiResponse<SecuritySubscriptionResult>> listAccountSubscriptionsAsync(
+            final SecuritySubscriptionRequest body,
             final String xRequestID) {
         try { 
-            return prepareListAccountSubscrIpTionsRequest(body, xRequestID).executeAsync(); 
+            return prepareListAccountSubscriptionsRequest(body, xRequestID).executeAsync(); 
         } catch (Exception e) {  
             throw new CompletionException(e); 
         }
     }
 
     /**
-     * Builds the ApiCall object for listAccountSubscrIpTions.
+     * Builds the ApiCall object for listAccountSubscriptions.
      */
-    private ApiCall<ApiResponse<SecuritySubscrIpTionResult>, ApiException> prepareListAccountSubscrIpTionsRequest(
-            final SecuritySubscrIpTionRequest body,
+    private ApiCall<ApiResponse<SecuritySubscriptionResult>, ApiException> prepareListAccountSubscriptionsRequest(
+            final SecuritySubscriptionRequest body,
             final String xRequestID) throws JsonProcessingException, IOException {
-        return new ApiCall.Builder<ApiResponse<SecuritySubscrIpTionResult>, ApiException>()
+        return new ApiCall.Builder<ApiResponse<SecuritySubscriptionResult>, ApiException>()
                 .globalConfig(getGlobalConfiguration())
                 .requestBuilder(requestBuilder -> requestBuilder
                         .server(Server.M2M.value())
@@ -88,12 +88,13 @@ public final class AccountSubscrIpTionsController extends BaseController {
                         .headerParam(param -> param.key("X-Request-ID")
                                 .value(xRequestID).isRequired(false))
                         .headerParam(param -> param.key("accept").value("application/json"))
-                        .authenticationKey(BaseController.AUTHENTICATION_KEY)
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
                         .httpMethod(HttpMethod.POST))
                 .responseHandler(responseHandler -> responseHandler
                         .responseClassType(ResponseClassType.API_RESPONSE)
                         .apiResponseDeserializer(
-                                response -> ApiHelper.deserialize(response, SecuritySubscrIpTionResult.class))
+                                response -> ApiHelper.deserialize(response, SecuritySubscriptionResult.class))
                         .nullify404(false)
                         .localErrorCase("400",
                                  ErrorCase.setReason("Bad request.",

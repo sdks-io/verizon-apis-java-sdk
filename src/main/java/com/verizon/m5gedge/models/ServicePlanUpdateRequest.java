@@ -19,12 +19,12 @@ import java.util.List;
  * This is a model class for ServicePlanUpdateRequest type.
  */
 public class ServicePlanUpdateRequest {
+    private String servicePlan;
     private String accountName;
     private String currentServicePlan;
     private List<CustomFields> customFields;
     private List<AccountDeviceList> devices;
     private String groupName;
-    private String servicePlan;
     private String carrierIpPoolName;
     private LocalDateTime takeEffect;
 
@@ -36,32 +36,52 @@ public class ServicePlanUpdateRequest {
 
     /**
      * Initialization constructor.
+     * @param  servicePlan  String value for servicePlan.
      * @param  accountName  String value for accountName.
      * @param  currentServicePlan  String value for currentServicePlan.
      * @param  customFields  List of CustomFields value for customFields.
      * @param  devices  List of AccountDeviceList value for devices.
      * @param  groupName  String value for groupName.
-     * @param  servicePlan  String value for servicePlan.
      * @param  carrierIpPoolName  String value for carrierIpPoolName.
      * @param  takeEffect  LocalDateTime value for takeEffect.
      */
     public ServicePlanUpdateRequest(
+            String servicePlan,
             String accountName,
             String currentServicePlan,
             List<CustomFields> customFields,
             List<AccountDeviceList> devices,
             String groupName,
-            String servicePlan,
             String carrierIpPoolName,
             LocalDateTime takeEffect) {
+        this.servicePlan = servicePlan;
         this.accountName = accountName;
         this.currentServicePlan = currentServicePlan;
         this.customFields = customFields;
         this.devices = devices;
         this.groupName = groupName;
-        this.servicePlan = servicePlan;
         this.carrierIpPoolName = carrierIpPoolName;
         this.takeEffect = takeEffect;
+    }
+
+    /**
+     * Getter for ServicePlan.
+     * The service plan code that you want to assign to all specified devices.
+     * @return Returns the String
+     */
+    @JsonGetter("servicePlan")
+    public String getServicePlan() {
+        return servicePlan;
+    }
+
+    /**
+     * Setter for ServicePlan.
+     * The service plan code that you want to assign to all specified devices.
+     * @param servicePlan Value for String
+     */
+    @JsonSetter("servicePlan")
+    public void setServicePlan(String servicePlan) {
+        this.servicePlan = servicePlan;
     }
 
     /**
@@ -170,27 +190,6 @@ public class ServicePlanUpdateRequest {
     }
 
     /**
-     * Getter for ServicePlan.
-     * The service plan code that you want to assign to all specified devices.
-     * @return Returns the String
-     */
-    @JsonGetter("servicePlan")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getServicePlan() {
-        return servicePlan;
-    }
-
-    /**
-     * Setter for ServicePlan.
-     * The service plan code that you want to assign to all specified devices.
-     * @param servicePlan Value for String
-     */
-    @JsonSetter("servicePlan")
-    public void setServicePlan(String servicePlan) {
-        this.servicePlan = servicePlan;
-    }
-
-    /**
      * Getter for CarrierIpPoolName.
      * @return Returns the String
      */
@@ -236,9 +235,9 @@ public class ServicePlanUpdateRequest {
      */
     @Override
     public String toString() {
-        return "ServicePlanUpdateRequest [" + "accountName=" + accountName + ", currentServicePlan="
-                + currentServicePlan + ", customFields=" + customFields + ", devices=" + devices
-                + ", groupName=" + groupName + ", servicePlan=" + servicePlan
+        return "ServicePlanUpdateRequest [" + "servicePlan=" + servicePlan + ", accountName="
+                + accountName + ", currentServicePlan=" + currentServicePlan + ", customFields="
+                + customFields + ", devices=" + devices + ", groupName=" + groupName
                 + ", carrierIpPoolName=" + carrierIpPoolName + ", takeEffect=" + takeEffect + "]";
     }
 
@@ -248,13 +247,12 @@ public class ServicePlanUpdateRequest {
      * @return a new {@link ServicePlanUpdateRequest.Builder} object
      */
     public Builder toBuilder() {
-        Builder builder = new Builder()
+        Builder builder = new Builder(servicePlan)
                 .accountName(getAccountName())
                 .currentServicePlan(getCurrentServicePlan())
                 .customFields(getCustomFields())
                 .devices(getDevices())
                 .groupName(getGroupName())
-                .servicePlan(getServicePlan())
                 .carrierIpPoolName(getCarrierIpPoolName())
                 .takeEffect(getTakeEffect());
         return builder;
@@ -264,16 +262,38 @@ public class ServicePlanUpdateRequest {
      * Class to build instances of {@link ServicePlanUpdateRequest}.
      */
     public static class Builder {
+        private String servicePlan;
         private String accountName;
         private String currentServicePlan;
         private List<CustomFields> customFields;
         private List<AccountDeviceList> devices;
         private String groupName;
-        private String servicePlan;
         private String carrierIpPoolName;
         private LocalDateTime takeEffect;
 
+        /**
+         * Initialization constructor.
+         */
+        public Builder() {
+        }
 
+        /**
+         * Initialization constructor.
+         * @param  servicePlan  String value for servicePlan.
+         */
+        public Builder(String servicePlan) {
+            this.servicePlan = servicePlan;
+        }
+
+        /**
+         * Setter for servicePlan.
+         * @param  servicePlan  String value for servicePlan.
+         * @return Builder
+         */
+        public Builder servicePlan(String servicePlan) {
+            this.servicePlan = servicePlan;
+            return this;
+        }
 
         /**
          * Setter for accountName.
@@ -326,16 +346,6 @@ public class ServicePlanUpdateRequest {
         }
 
         /**
-         * Setter for servicePlan.
-         * @param  servicePlan  String value for servicePlan.
-         * @return Builder
-         */
-        public Builder servicePlan(String servicePlan) {
-            this.servicePlan = servicePlan;
-            return this;
-        }
-
-        /**
          * Setter for carrierIpPoolName.
          * @param  carrierIpPoolName  String value for carrierIpPoolName.
          * @return Builder
@@ -360,8 +370,8 @@ public class ServicePlanUpdateRequest {
          * @return {@link ServicePlanUpdateRequest}
          */
         public ServicePlanUpdateRequest build() {
-            return new ServicePlanUpdateRequest(accountName, currentServicePlan, customFields,
-                    devices, groupName, servicePlan, carrierIpPoolName, takeEffect);
+            return new ServicePlanUpdateRequest(servicePlan, accountName, currentServicePlan,
+                    customFields, devices, groupName, carrierIpPoolName, takeEffect);
         }
     }
 }

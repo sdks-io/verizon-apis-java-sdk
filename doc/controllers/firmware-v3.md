@@ -11,8 +11,8 @@ FirmwareV3Controller firmwareV3Controller = client.getFirmwareV3Controller();
 ## Methods
 
 * [List Available Firmware](../../doc/controllers/firmware-v3.md#list-available-firmware)
-* [Synchronize Device Firmware](../../doc/controllers/firmware-v3.md#synchronize-device-firmware)
 * [Report Device Firmware](../../doc/controllers/firmware-v3.md#report-device-firmware)
+* [Synchronize Device Firmware](../../doc/controllers/firmware-v3.md#synchronize-device-firmware)
 
 
 # List Available Firmware
@@ -71,6 +71,54 @@ firmwareV3Controller.listAvailableFirmwareAsync(acc, protocol).thenAccept(result
     "protocol": "LWM2M"
   }
 ]
+```
+
+## Errors
+
+| HTTP Status Code | Error Description | Exception Class |
+|  --- | --- | --- |
+| 400 | Unexpected error. | [`FotaV3ResultException`](../../doc/models/fota-v3-result-exception.md) |
+
+
+# Report Device Firmware
+
+Ask a device to report its firmware version asynchronously.
+
+```java
+CompletableFuture<ApiResponse<DeviceFirmwareVersionUpdateResult>> reportDeviceFirmwareAsync(
+    final String acc,
+    final String deviceId)
+```
+
+## Parameters
+
+| Parameter | Type | Tags | Description |
+|  --- | --- | --- | --- |
+| `acc` | `String` | Template, Required | Account identifier. |
+| `deviceId` | `String` | Template, Required | Device identifier. |
+
+## Server
+
+`Server.SOFTWARE_MANAGEMENT_V3`
+
+## Response Type
+
+[`DeviceFirmwareVersionUpdateResult`](../../doc/models/device-firmware-version-update-result.md)
+
+## Example Usage
+
+```java
+String acc = "0000123456-00001";
+String deviceId = "15-digit IMEI";
+
+firmwareV3Controller.reportDeviceFirmwareAsync(acc, deviceId).thenAccept(result -> {
+    // TODO success callback handler
+    System.out.println(result);
+}).exceptionally(exception -> {
+    // TODO failure callback handler
+    exception.printStackTrace();
+    return null;
+});
 ```
 
 ## Errors
@@ -139,54 +187,6 @@ firmwareV3Controller.synchronizeDeviceFirmwareAsync(acc, body).thenAccept(result
     }
   ]
 }
-```
-
-## Errors
-
-| HTTP Status Code | Error Description | Exception Class |
-|  --- | --- | --- |
-| 400 | Unexpected error. | [`FotaV3ResultException`](../../doc/models/fota-v3-result-exception.md) |
-
-
-# Report Device Firmware
-
-Ask a device to report its firmware version asynchronously.
-
-```java
-CompletableFuture<ApiResponse<DeviceFirmwareVersionUpdateResult>> reportDeviceFirmwareAsync(
-    final String acc,
-    final String deviceId)
-```
-
-## Parameters
-
-| Parameter | Type | Tags | Description |
-|  --- | --- | --- | --- |
-| `acc` | `String` | Template, Required | Account identifier. |
-| `deviceId` | `String` | Template, Required | Device identifier. |
-
-## Server
-
-`Server.SOFTWARE_MANAGEMENT_V3`
-
-## Response Type
-
-[`DeviceFirmwareVersionUpdateResult`](../../doc/models/device-firmware-version-update-result.md)
-
-## Example Usage
-
-```java
-String acc = "0000123456-00001";
-String deviceId = "15-digit IMEI";
-
-firmwareV3Controller.reportDeviceFirmwareAsync(acc, deviceId).thenAccept(result -> {
-    // TODO success callback handler
-    System.out.println(result);
-}).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
-    return null;
-});
 ```
 
 ## Errors

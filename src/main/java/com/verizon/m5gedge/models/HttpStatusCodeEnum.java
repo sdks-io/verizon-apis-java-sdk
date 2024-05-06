@@ -45,7 +45,7 @@ public enum HttpStatusCodeEnum {
 
     ENUM_226_IM_USED,
 
-    ENUM300MULT_IP_LECHOICES,
+    ENUM_300_MULTIPLE_CHOICES,
 
     ENUM_301_MOVED_PERMANENTLY,
 
@@ -172,7 +172,7 @@ public enum HttpStatusCodeEnum {
         ENUM_207_MULTI_STATUS.value = "207 MULTI_STATUS";
         ENUM_208_ALREADY_REPORTED.value = "208 ALREADY_REPORTED";
         ENUM_226_IM_USED.value = "226 IM_USED";
-        ENUM300MULT_IP_LECHOICES.value = "300 MULTIPLE_CHOICES";
+        ENUM_300_MULTIPLE_CHOICES.value = "300 MULTIPLE_CHOICES";
         ENUM_301_MOVED_PERMANENTLY.value = "301 MOVED_PERMANENTLY";
         ENUM_302_FOUND.value = "302 FOUND";
         ENUM_302_MOVED_TEMPORARILY.value = "302 MOVED_TEMPORARILY";
@@ -241,7 +241,7 @@ public enum HttpStatusCodeEnum {
         valueMap.put("207 MULTI_STATUS", ENUM_207_MULTI_STATUS);
         valueMap.put("208 ALREADY_REPORTED", ENUM_208_ALREADY_REPORTED);
         valueMap.put("226 IM_USED", ENUM_226_IM_USED);
-        valueMap.put("300 MULTIPLE_CHOICES", ENUM300MULT_IP_LECHOICES);
+        valueMap.put("300 MULTIPLE_CHOICES", ENUM_300_MULTIPLE_CHOICES);
         valueMap.put("301 MOVED_PERMANENTLY", ENUM_301_MOVED_PERMANENTLY);
         valueMap.put("302 FOUND", ENUM_302_FOUND);
         valueMap.put("302 MOVED_TEMPORARILY", ENUM_302_MOVED_TEMPORARILY);
@@ -306,8 +306,7 @@ public enum HttpStatusCodeEnum {
     @JsonCreator
     public static HttpStatusCodeEnum constructFromString(String toConvert) throws IOException {
         HttpStatusCodeEnum enumValue = fromString(toConvert);
-        if (enumValue == null)
-        {
+        if (enumValue == null) {
             throw new IOException("Unable to create enum instance with value: " + toConvert);
         }
         return enumValue;

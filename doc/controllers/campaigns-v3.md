@@ -10,21 +10,22 @@ CampaignsV3Controller campaignsV3Controller = client.getCampaignsV3Controller();
 
 ## Methods
 
-* [Schedule Campaign Firmware Upgrade](../../doc/controllers/campaigns-v3.md#schedule-campaign-firmware-upgrade)
-* [Update Campaign Firmware Devices](../../doc/controllers/campaigns-v3.md#update-campaign-firmware-devices)
 * [Update Campaign Dates](../../doc/controllers/campaigns-v3.md#update-campaign-dates)
+* [Update Campaign Firmware Devices](../../doc/controllers/campaigns-v3.md#update-campaign-firmware-devices)
+* [Schedule Campaign Firmware Upgrade](../../doc/controllers/campaigns-v3.md#schedule-campaign-firmware-upgrade)
 * [Get Campaign Information](../../doc/controllers/campaigns-v3.md#get-campaign-information)
 * [Cancel Campaign](../../doc/controllers/campaigns-v3.md#cancel-campaign)
 
 
-# Schedule Campaign Firmware Upgrade
+# Update Campaign Dates
 
-This endpoint allows a user to schedule a firmware upgrade for a list of devices.
+This endpoint allows user to change campaign dates and time windows. Fields which need to remain unchanged should be also provided.
 
 ```java
-CompletableFuture<ApiResponse<FirmwareCampaign>> scheduleCampaignFirmwareUpgradeAsync(
+CompletableFuture<ApiResponse<FirmwareCampaign>> updateCampaignDatesAsync(
     final String acc,
-    final CampaignFirmwareUpgrade body)
+    final String campaignId,
+    final V3ChangeCampaignDatesRequest body)
 ```
 
 ## Parameters
@@ -32,7 +33,8 @@ CompletableFuture<ApiResponse<FirmwareCampaign>> scheduleCampaignFirmwareUpgrade
 | Parameter | Type | Tags | Description |
 |  --- | --- | --- | --- |
 | `acc` | `String` | Template, Required | Account identifier. |
-| `body` | [`CampaignFirmwareUpgrade`](../../doc/models/campaign-firmware-upgrade.md) | Body, Required | Firmware upgrade information. |
+| `campaignId` | `String` | Template, Required | Firmware upgrade information. |
+| `body` | [`V3ChangeCampaignDatesRequest`](../../doc/models/v3-change-campaign-dates-request.md) | Body, Required | New dates and time windows. |
 
 ## Server
 
@@ -46,28 +48,21 @@ CompletableFuture<ApiResponse<FirmwareCampaign>> scheduleCampaignFirmwareUpgrade
 
 ```java
 String acc = "0000123456-00001";
-CampaignFirmwareUpgrade body = new CampaignFirmwareUpgrade.Builder(
-    "SEQUANSCommunications_GM01Q_SR1.2.0.0-10512_SR1.2.0.0-10657",
-    "SR1.2.0.0-10512",
-    "SR1.2.0.0-10657",
-    "LWM2M",
-    DateTimeHelper.fromSimpleDate("2021-09-29"),
-    DateTimeHelper.fromSimpleDate("2021-10-01"),
-    Arrays.asList(
-        "15-digit IMEI"
-    )
+String campaignId = "f858b8c4-2153-11ec-8c44-aeb16d1aa652";
+V3ChangeCampaignDatesRequest body = new V3ChangeCampaignDatesRequest.Builder(
+    DateTimeHelper.fromSimpleDate("2022-02-23"),
+    DateTimeHelper.fromSimpleDate("2022-02-24")
 )
-.campaignName("Smart FOTA - test 4")
 .campaignTimeWindowList(Arrays.asList(
         new V3TimeWindow.Builder(
-            18,
-            22
+            14,
+            18
         )
         .build()
     ))
 .build();
 
-campaignsV3Controller.scheduleCampaignFirmwareUpgradeAsync(acc, body).thenAccept(result -> {
+campaignsV3Controller.updateCampaignDatesAsync(acc, campaignId, body).thenAccept(result -> {
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
@@ -81,22 +76,22 @@ campaignsV3Controller.scheduleCampaignFirmwareUpgradeAsync(acc, body).thenAccept
 
 ```json
 {
-  "id": "f858b8c4-2153-11ec-8c44-aeb16d1aa652",
+  "id": "4e03b882-936a-11ec-931f-76f56843c393",
   "accountName": "0000123456-00001",
-  "campaignName": "Smart FOTA - test 4",
-  "firmwareName": "SEQUANSCommunications_GM01Q_SR1.2.0.0-10512_SR1.2.0.0-10657",
+  "campaignName": "modify-campaign-test-1",
+  "firmwareName": "NordicSemiconductorASA_nRF9160_ee58ac77-f1fd-4960-8dc4-4d32e118a6d4_4325d595-7b69-4474-ba39-9c177930aac3",
   "protocol": "LWM2M",
-  "firmwareFrom": "SR1.2.0.0-10512",
-  "firmwareTo": "SR1.2.0.0-10657",
-  "make": "SEQUANS Communications",
-  "model": "GM01Q",
-  "status": "CampaignRequestPending",
-  "startDate": "2021-09-29",
-  "endDate": "2021-10-01",
+  "firmwareFrom": "ee58ac77-f1fd-4960-8dc4-4d32e118a6d4",
+  "firmwareTo": "4325d595-7b69-4474-ba39-9c177930aac3",
+  "make": "Nordic Semiconductor ASA",
+  "model": "nRF9160",
+  "status": "CampaignRequestQueued",
+  "startDate": "2022-02-23",
+  "endDate": "2022-02-24",
   "campaignTimeWindowList": [
     {
-      "startTime": 18,
-      "endTime": 22
+      "startTime": 14,
+      "endTime": 18
     }
   ]
 }
@@ -182,15 +177,14 @@ campaignsV3Controller.updateCampaignFirmwareDevicesAsync(acc, campaignId, body).
 | 400 | Unexpected error. | [`FotaV3ResultException`](../../doc/models/fota-v3-result-exception.md) |
 
 
-# Update Campaign Dates
+# Schedule Campaign Firmware Upgrade
 
-This endpoint allows user to change campaign dates and time windows. Fields which need to remain unchanged should be also provided.
+This endpoint allows a user to schedule a firmware upgrade for a list of devices.
 
 ```java
-CompletableFuture<ApiResponse<FirmwareCampaign>> updateCampaignDatesAsync(
+CompletableFuture<ApiResponse<FirmwareCampaign>> scheduleCampaignFirmwareUpgradeAsync(
     final String acc,
-    final String campaignId,
-    final V3ChangeCampaignDatesRequest body)
+    final CampaignFirmwareUpgrade body)
 ```
 
 ## Parameters
@@ -198,8 +192,7 @@ CompletableFuture<ApiResponse<FirmwareCampaign>> updateCampaignDatesAsync(
 | Parameter | Type | Tags | Description |
 |  --- | --- | --- | --- |
 | `acc` | `String` | Template, Required | Account identifier. |
-| `campaignId` | `String` | Template, Required | Firmware upgrade information. |
-| `body` | [`V3ChangeCampaignDatesRequest`](../../doc/models/v3-change-campaign-dates-request.md) | Body, Required | New dates and time windows. |
+| `body` | [`CampaignFirmwareUpgrade`](../../doc/models/campaign-firmware-upgrade.md) | Body, Required | Firmware upgrade information. |
 
 ## Server
 
@@ -213,21 +206,28 @@ CompletableFuture<ApiResponse<FirmwareCampaign>> updateCampaignDatesAsync(
 
 ```java
 String acc = "0000123456-00001";
-String campaignId = "f858b8c4-2153-11ec-8c44-aeb16d1aa652";
-V3ChangeCampaignDatesRequest body = new V3ChangeCampaignDatesRequest.Builder(
-    DateTimeHelper.fromSimpleDate("2022-02-23"),
-    DateTimeHelper.fromSimpleDate("2022-02-24")
+CampaignFirmwareUpgrade body = new CampaignFirmwareUpgrade.Builder(
+    "SEQUANSCommunications_GM01Q_SR1.2.0.0-10512_SR1.2.0.0-10657",
+    "SR1.2.0.0-10512",
+    "SR1.2.0.0-10657",
+    "LWM2M",
+    DateTimeHelper.fromSimpleDate("2021-09-29"),
+    DateTimeHelper.fromSimpleDate("2021-10-01"),
+    Arrays.asList(
+        "15-digit IMEI"
+    )
 )
+.campaignName("Smart FOTA - test 4")
 .campaignTimeWindowList(Arrays.asList(
         new V3TimeWindow.Builder(
-            14,
-            18
+            18,
+            22
         )
         .build()
     ))
 .build();
 
-campaignsV3Controller.updateCampaignDatesAsync(acc, campaignId, body).thenAccept(result -> {
+campaignsV3Controller.scheduleCampaignFirmwareUpgradeAsync(acc, body).thenAccept(result -> {
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
@@ -241,22 +241,22 @@ campaignsV3Controller.updateCampaignDatesAsync(acc, campaignId, body).thenAccept
 
 ```json
 {
-  "id": "4e03b882-936a-11ec-931f-76f56843c393",
+  "id": "f858b8c4-2153-11ec-8c44-aeb16d1aa652",
   "accountName": "0000123456-00001",
-  "campaignName": "modify-campaign-test-1",
-  "firmwareName": "NordicSemiconductorASA_nRF9160_ee58ac77-f1fd-4960-8dc4-4d32e118a6d4_4325d595-7b69-4474-ba39-9c177930aac3",
+  "campaignName": "Smart FOTA - test 4",
+  "firmwareName": "SEQUANSCommunications_GM01Q_SR1.2.0.0-10512_SR1.2.0.0-10657",
   "protocol": "LWM2M",
-  "firmwareFrom": "ee58ac77-f1fd-4960-8dc4-4d32e118a6d4",
-  "firmwareTo": "4325d595-7b69-4474-ba39-9c177930aac3",
-  "make": "Nordic Semiconductor ASA",
-  "model": "nRF9160",
-  "status": "CampaignRequestQueued",
-  "startDate": "2022-02-23",
-  "endDate": "2022-02-24",
+  "firmwareFrom": "SR1.2.0.0-10512",
+  "firmwareTo": "SR1.2.0.0-10657",
+  "make": "SEQUANS Communications",
+  "model": "GM01Q",
+  "status": "CampaignRequestPending",
+  "startDate": "2021-09-29",
+  "endDate": "2021-10-01",
   "campaignTimeWindowList": [
     {
-      "startTime": 14,
-      "endTime": 18
+      "startTime": 18,
+      "endTime": 22
     }
   ]
 }

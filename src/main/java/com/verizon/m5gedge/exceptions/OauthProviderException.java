@@ -17,7 +17,7 @@ import io.apimatic.coreinterfaces.http.Context;
 public class OauthProviderException extends ApiException {
     private static final long serialVersionUID = 6122168453796959323L;
     private OauthProviderErrorEnum error;
-    private String errorDescrIpTion;
+    private String errorDescription;
     private String errorUri;
 
     /**
@@ -51,25 +51,25 @@ public class OauthProviderException extends ApiException {
     }
 
     /**
-     * Getter for ErrorDescrIpTion.
+     * Getter for ErrorDescription.
      * Gets or sets human-readable text providing additional information on error. Used to assist
      * the client developer in understanding the error that occurred.
      * @return Returns the String
      */
     @JsonGetter("error_description")
-    public String getErrorDescrIpTion() {
-        return this.errorDescrIpTion;
+    public String getErrorDescription() {
+        return this.errorDescription;
     }
 
     /**
-     * Setter for ErrorDescrIpTion.
+     * Setter for ErrorDescription.
      * Gets or sets human-readable text providing additional information on error. Used to assist
      * the client developer in understanding the error that occurred.
-     * @param errorDescrIpTion Value for String
+     * @param errorDescription Value for String
      */
     @JsonSetter("error_description")
-    private void setErrorDescrIpTion(String errorDescrIpTion) {
-        this.errorDescrIpTion = errorDescrIpTion;
+    private void setErrorDescription(String errorDescription) {
+        this.errorDescription = errorDescription;
     }
 
     /**

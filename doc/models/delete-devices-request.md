@@ -11,8 +11,8 @@ Request to delete a device request.
 
 | Name | Type | Tags | Description | Getter | Setter |
 |  --- | --- | --- | --- | --- | --- |
+| `DevicesToDelete` | [`List<AccountDeviceList>`](../../doc/models/account-device-list.md) | Required | A list of up to 100 devices that you want to delete, specified by device identifier. You only need to provide one identifier per device. | List<AccountDeviceList> getDevicesToDelete() | setDevicesToDelete(List<AccountDeviceList> devicesToDelete) |
 | `AccountName` | `String` | Optional | The Verizon billing account that the device group belongs to. An account name is usually numeric, and must include any leading zeros. | String getAccountName() | setAccountName(String accountName) |
-| `DevicesToDelete` | [`List<AccountDeviceList>`](../../doc/models/account-device-list.md) | Optional | A list of up to 100 devices that you want to delete, specified by device identifier. You only need to provide one identifier per device. | List<AccountDeviceList> getDevicesToDelete() | setDevicesToDelete(List<AccountDeviceList> devicesToDelete) |
 
 ## Example (as JSON)
 

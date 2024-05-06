@@ -9,10 +9,10 @@
 
 | Name | Type | Tags | Description | Getter | Setter |
 |  --- | --- | --- | --- | --- | --- |
+| `AccountName` | `String` | Required | - | String getAccountName() | setAccountName(String accountName) |
+| `ReasonCode` | `String` | Required | - | String getReasonCode() | setReasonCode(String reasonCode) |
 | `Devices` | [`List<DeactivateDeviceList>`](../../doc/models/deactivate-device-list.md) | Optional | **Constraints**: *Maximum Items*: `100` | List<DeactivateDeviceList> getDevices() | setDevices(List<DeactivateDeviceList> devices) |
-| `AccountName` | `String` | Optional | - | String getAccountName() | setAccountName(String accountName) |
 | `CarrierName` | `String` | Optional | - | String getCarrierName() | setCarrierName(String carrierName) |
-| `ReasonCode` | `String` | Optional | - | String getReasonCode() | setReasonCode(String reasonCode) |
 | `EtfWaiver` | `Boolean` | Optional | **Default**: `true` | Boolean getEtfWaiver() | setEtfWaiver(Boolean etfWaiver) |
 | `CheckFallbackProfile` | `Boolean` | Optional | **Default**: `false` | Boolean getCheckFallbackProfile() | setCheckFallbackProfile(Boolean checkFallbackProfile) |
 
@@ -21,8 +21,8 @@
 ```json
 {
   "accountName": "0000123456-00001",
-  "carrierName": "the name of the mobile service provider",
   "reasonCode": "a short code for the reason action was taken",
+  "carrierName": "the name of the mobile service provider",
   "etfWaiver": true,
   "checkFallbackProfile": false,
   "devices": [

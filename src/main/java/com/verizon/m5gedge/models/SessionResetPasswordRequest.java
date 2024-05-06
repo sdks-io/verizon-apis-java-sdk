@@ -7,7 +7,6 @@
 package com.verizon.m5gedge.models;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonSetter;
 
 /**
@@ -37,7 +36,6 @@ public class SessionResetPasswordRequest {
      * @return Returns the String
      */
     @JsonGetter("oldPassword")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     public String getOldPassword() {
         return oldPassword;
     }
@@ -67,8 +65,7 @@ public class SessionResetPasswordRequest {
      * @return a new {@link SessionResetPasswordRequest.Builder} object
      */
     public Builder toBuilder() {
-        Builder builder = new Builder()
-                .oldPassword(getOldPassword());
+        Builder builder = new Builder(oldPassword);
         return builder;
     }
 
@@ -78,7 +75,19 @@ public class SessionResetPasswordRequest {
     public static class Builder {
         private String oldPassword;
 
+        /**
+         * Initialization constructor.
+         */
+        public Builder() {
+        }
 
+        /**
+         * Initialization constructor.
+         * @param  oldPassword  String value for oldPassword.
+         */
+        public Builder(String oldPassword) {
+            this.oldPassword = oldPassword;
+        }
 
         /**
          * Setter for oldPassword.

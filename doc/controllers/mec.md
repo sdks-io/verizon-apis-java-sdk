@@ -10,13 +10,133 @@ MECController mECController = client.getMECController();
 
 ## Methods
 
-* [KPI List](../../doc/controllers/mec.md#kpi-list)
 * [Get Profile List](../../doc/controllers/mec.md#get-profile-list)
+* [Change Pmec Device I Paddress Bulk](../../doc/controllers/mec.md#change-pmec-device-i-paddress-bulk)
+* [KPI List](../../doc/controllers/mec.md#kpi-list)
+* [Get MEC Performance Consent](../../doc/controllers/mec.md#get-mec-performance-consent)
 * [Change Pmec Device State-Activate](../../doc/controllers/mec.md#change-pmec-device-state-activate)
 * [Change Pmec Device State-Bulk Deactivate](../../doc/controllers/mec.md#change-pmec-device-state-bulk-deactivate)
 * [Change Pmec Device Profile](../../doc/controllers/mec.md#change-pmec-device-profile)
-* [Change Pmec Device IP Address Bulk](../../doc/controllers/mec.md#change-pmec-device-ip-address-bulk)
-* [Get MEC Performance Consent](../../doc/controllers/mec.md#get-mec-performance-consent)
+
+
+# Get Profile List
+
+```java
+CompletableFuture<ApiResponse<MECProfileList>> getProfileListAsync(
+    final String aname)
+```
+
+## Parameters
+
+| Parameter | Type | Tags | Description |
+|  --- | --- | --- | --- |
+| `aname` | `String` | Template, Required | Account name. |
+
+## Server
+
+`Server.THINGSPACE`
+
+## Response Type
+
+[`MECProfileList`](../../doc/models/mec-profile-list.md)
+
+## Example Usage
+
+```java
+String aname = "0342351414-00001";
+
+mECController.getProfileListAsync(aname).thenAccept(result -> {
+    // TODO success callback handler
+    System.out.println(result);
+}).exceptionally(exception -> {
+    // TODO failure callback handler
+    exception.printStackTrace();
+    return null;
+});
+```
+
+## Example Response *(as JSON)*
+
+```json
+{
+  "profiles": [
+    {
+      "profileId": "HSS-EsmProfile_Enterprise",
+      "profileName": "HSS EsmProfile Enterprise"
+    }
+  ]
+}
+```
+
+
+# Change Pmec Device I Paddress Bulk
+
+```java
+CompletableFuture<ApiResponse<ChangeMecDeviceIPAddressResponse>> changePmecDeviceIPaddressBulkAsync(
+    final ChangePmecDeviceStateBulkDeactivateRequest body)
+```
+
+## Parameters
+
+| Parameter | Type | Tags | Description |
+|  --- | --- | --- | --- |
+| `body` | [`ChangePmecDeviceStateBulkDeactivateRequest`](../../doc/models/change-pmec-device-state-bulk-deactivate-request.md) | Body, Required | - |
+
+## Server
+
+`Server.THINGSPACE`
+
+## Response Type
+
+[`ChangeMecDeviceIPAddressResponse`](../../doc/models/change-mec-device-ip-address-response.md)
+
+## Example Usage
+
+```java
+ChangePmecDeviceStateBulkDeactivateRequest body = new ChangePmecDeviceStateBulkDeactivateRequest.Builder(
+    "0342351414-00001",
+    Arrays.asList(
+        new MECDeviceList.Builder(
+            Arrays.asList(
+                new MECDeviceId.Builder(
+                    "99948099913031600000",
+                    "iccid"
+                )
+                .build()
+            )
+        )
+        .build(),
+        new MECDeviceList.Builder(
+            Arrays.asList(
+                new MECDeviceId.Builder(
+                    "99948099913031700000",
+                    "iccid"
+                )
+                .build()
+            )
+        )
+        .build()
+    )
+)
+.build();
+
+mECController.changePmecDeviceIPaddressBulkAsync(body).thenAccept(result -> {
+    // TODO success callback handler
+    System.out.println(result);
+}).exceptionally(exception -> {
+    // TODO failure callback handler
+    exception.printStackTrace();
+    return null;
+});
+```
+
+## Example Response *(as JSON)*
+
+```json
+{
+  "requestId": "c7b45cf2-cab1-4e42-82f8-20350f4c4ea3"
+}
+```
 
 
 # KPI List
@@ -75,10 +195,10 @@ mECController.kPIListAsync(aname).thenAccept(result -> {
 ```
 
 
-# Get Profile List
+# Get MEC Performance Consent
 
 ```java
-CompletableFuture<ApiResponse<MECProfileList>> getProfileListAsync(
+CompletableFuture<ApiResponse<GetMECPerformanceConsentResponse>> getMECPerformanceConsentAsync(
     final String aname)
 ```
 
@@ -94,14 +214,14 @@ CompletableFuture<ApiResponse<MECProfileList>> getProfileListAsync(
 
 ## Response Type
 
-[`MECProfileList`](../../doc/models/mec-profile-list.md)
+[`GetMECPerformanceConsentResponse`](../../doc/models/get-mec-performance-consent-response.md)
 
 ## Example Usage
 
 ```java
-String aname = "0342351414-00001";
+String aname = "1533445500-00088";
 
-mECController.getProfileListAsync(aname).thenAccept(result -> {
+mECController.getMECPerformanceConsentAsync(aname).thenAccept(result -> {
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
@@ -115,12 +235,7 @@ mECController.getProfileListAsync(aname).thenAccept(result -> {
 
 ```json
 {
-  "profiles": [
-    {
-      "profileId": "HSS-EsmProfile_Enterprise",
-      "profileName": "HSS EsmProfile Enterprise"
-    }
-  ]
+  "consent": "false"
 }
 ```
 
@@ -316,121 +431,6 @@ mECController.changePmecDeviceProfileAsync(body).thenAccept(result -> {
 ```json
 {
   "requestId": "c7b45cf2-cab1-4e42-82f8-20350f4c4ea3"
-}
-```
-
-
-# Change Pmec Device IP Address Bulk
-
-```java
-CompletableFuture<ApiResponse<ChangeMecDeviceIpAddressResponse>> changePmecDeviceIpAddressBulkAsync(
-    final ChangePmecDeviceStateBulkDeactivateRequest body)
-```
-
-## Parameters
-
-| Parameter | Type | Tags | Description |
-|  --- | --- | --- | --- |
-| `body` | [`ChangePmecDeviceStateBulkDeactivateRequest`](../../doc/models/change-pmec-device-state-bulk-deactivate-request.md) | Body, Required | - |
-
-## Server
-
-`Server.THINGSPACE`
-
-## Response Type
-
-[`ChangeMecDeviceIpAddressResponse`](../../doc/models/change-mec-device-ip-address-response.md)
-
-## Example Usage
-
-```java
-ChangePmecDeviceStateBulkDeactivateRequest body = new ChangePmecDeviceStateBulkDeactivateRequest.Builder(
-    "0342351414-00001",
-    Arrays.asList(
-        new MECDeviceList.Builder(
-            Arrays.asList(
-                new MECDeviceId.Builder(
-                    "99948099913031600000",
-                    "iccid"
-                )
-                .build()
-            )
-        )
-        .build(),
-        new MECDeviceList.Builder(
-            Arrays.asList(
-                new MECDeviceId.Builder(
-                    "99948099913031700000",
-                    "iccid"
-                )
-                .build()
-            )
-        )
-        .build()
-    )
-)
-.build();
-
-mECController.changePmecDeviceIpAddressBulkAsync(body).thenAccept(result -> {
-    // TODO success callback handler
-    System.out.println(result);
-}).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
-    return null;
-});
-```
-
-## Example Response *(as JSON)*
-
-```json
-{
-  "requestId": "c7b45cf2-cab1-4e42-82f8-20350f4c4ea3"
-}
-```
-
-
-# Get MEC Performance Consent
-
-```java
-CompletableFuture<ApiResponse<GetMECPerformanceConsentResponse>> getMECPerformanceConsentAsync(
-    final String aname)
-```
-
-## Parameters
-
-| Parameter | Type | Tags | Description |
-|  --- | --- | --- | --- |
-| `aname` | `String` | Template, Required | Account name. |
-
-## Server
-
-`Server.THINGSPACE`
-
-## Response Type
-
-[`GetMECPerformanceConsentResponse`](../../doc/models/get-mec-performance-consent-response.md)
-
-## Example Usage
-
-```java
-String aname = "1533445500-00088";
-
-mECController.getMECPerformanceConsentAsync(aname).thenAccept(result -> {
-    // TODO success callback handler
-    System.out.println(result);
-}).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
-    return null;
-});
-```
-
-## Example Response *(as JSON)*
-
-```json
-{
-  "consent": "false"
 }
 ```
 

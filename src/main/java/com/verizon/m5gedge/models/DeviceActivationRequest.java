@@ -7,7 +7,6 @@
 package com.verizon.m5gedge.models;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import java.util.List;
 
@@ -42,7 +41,6 @@ public class DeviceActivationRequest {
      * @return Returns the String
      */
     @JsonGetter("accountName")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     public String getAccountName() {
         return accountName;
     }
@@ -64,7 +62,6 @@ public class DeviceActivationRequest {
      * @return Returns the List of AccountDeviceList
      */
     @JsonGetter("devices")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     public List<AccountDeviceList> getDevices() {
         return devices;
     }
@@ -96,9 +93,7 @@ public class DeviceActivationRequest {
      * @return a new {@link DeviceActivationRequest.Builder} object
      */
     public Builder toBuilder() {
-        Builder builder = new Builder()
-                .accountName(getAccountName())
-                .devices(getDevices());
+        Builder builder = new Builder(accountName, devices);
         return builder;
     }
 
@@ -109,7 +104,21 @@ public class DeviceActivationRequest {
         private String accountName;
         private List<AccountDeviceList> devices;
 
+        /**
+         * Initialization constructor.
+         */
+        public Builder() {
+        }
 
+        /**
+         * Initialization constructor.
+         * @param  accountName  String value for accountName.
+         * @param  devices  List of AccountDeviceList value for devices.
+         */
+        public Builder(String accountName, List<AccountDeviceList> devices) {
+            this.accountName = accountName;
+            this.devices = devices;
+        }
 
         /**
          * Setter for accountName.

@@ -38,68 +38,6 @@ public final class ConfigurationFilesController extends BaseController {
     }
 
     /**
-     * You can retrieve a list of configuration or supplementary of files for an account.
-     * @param  acc  Required parameter: Account identifier.
-     * @param  distributionType  Required parameter: Filter the distributionType to only retrieve
-     *         files for a specific distribution type.
-     * @return    Returns the RetrievesAvailableFilesResponseList wrapped in ApiResponse response from the API call
-     * @throws    ApiException    Represents error response from the server.
-     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
-     */
-    public ApiResponse<RetrievesAvailableFilesResponseList> getListOfFiles(
-            final String acc,
-            final String distributionType) throws ApiException, IOException {
-        return prepareGetListOfFilesRequest(acc, distributionType).execute();
-    }
-
-    /**
-     * You can retrieve a list of configuration or supplementary of files for an account.
-     * @param  acc  Required parameter: Account identifier.
-     * @param  distributionType  Required parameter: Filter the distributionType to only retrieve
-     *         files for a specific distribution type.
-     * @return    Returns the RetrievesAvailableFilesResponseList wrapped in ApiResponse response from the API call
-     */
-    public CompletableFuture<ApiResponse<RetrievesAvailableFilesResponseList>> getListOfFilesAsync(
-            final String acc,
-            final String distributionType) {
-        try { 
-            return prepareGetListOfFilesRequest(acc, distributionType).executeAsync(); 
-        } catch (Exception e) {  
-            throw new CompletionException(e); 
-        }
-    }
-
-    /**
-     * Builds the ApiCall object for getListOfFiles.
-     */
-    private ApiCall<ApiResponse<RetrievesAvailableFilesResponseList>, ApiException> prepareGetListOfFilesRequest(
-            final String acc,
-            final String distributionType) throws IOException {
-        return new ApiCall.Builder<ApiResponse<RetrievesAvailableFilesResponseList>, ApiException>()
-                .globalConfig(getGlobalConfiguration())
-                .requestBuilder(requestBuilder -> requestBuilder
-                        .server(Server.SOFTWARE_MANAGEMENT_V2.value())
-                        .path("/files/{acc}")
-                        .queryParam(param -> param.key("distributionType")
-                                .value(distributionType))
-                        .templateParam(param -> param.key("acc").value(acc)
-                                .shouldEncode(true))
-                        .headerParam(param -> param.key("accept").value("application/json"))
-                        .authenticationKey(BaseController.AUTHENTICATION_KEY)
-                        .httpMethod(HttpMethod.GET))
-                .responseHandler(responseHandler -> responseHandler
-                        .responseClassType(ResponseClassType.API_RESPONSE)
-                        .apiResponseDeserializer(
-                                response -> ApiHelper.deserialize(response, RetrievesAvailableFilesResponseList.class))
-                        .nullify404(false)
-                        .localErrorCase("400",
-                                 ErrorCase.setReason("Unexpected error.",
-                                (reason, context) -> new FotaV2ResultException(reason, context)))
-                        .globalErrorCase(GLOBAL_ERROR_CASES))
-                .build();
-    }
-
-    /**
      * Uploads a configuration/supplementary file for an account. ThingSpace generates a fileName
      * after the upload and is returned in the response.
      * @param  acc  Required parameter: Account identifier.
@@ -179,12 +117,76 @@ public final class ConfigurationFilesController extends BaseController {
                         .templateParam(param -> param.key("acc").value(acc)
                                 .shouldEncode(true))
                         .headerParam(param -> param.key("accept").value("application/json"))
-                        .authenticationKey(BaseController.AUTHENTICATION_KEY)
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
                         .httpMethod(HttpMethod.POST))
                 .responseHandler(responseHandler -> responseHandler
                         .responseClassType(ResponseClassType.API_RESPONSE)
                         .apiResponseDeserializer(
                                 response -> ApiHelper.deserialize(response, UploadConfigurationFilesResponse.class))
+                        .nullify404(false)
+                        .localErrorCase("400",
+                                 ErrorCase.setReason("Unexpected error.",
+                                (reason, context) -> new FotaV2ResultException(reason, context)))
+                        .globalErrorCase(GLOBAL_ERROR_CASES))
+                .build();
+    }
+
+    /**
+     * You can retrieve a list of configuration or supplementary of files for an account.
+     * @param  acc  Required parameter: Account identifier.
+     * @param  distributionType  Required parameter: Filter the distributionType to only retrieve
+     *         files for a specific distribution type.
+     * @return    Returns the RetrievesAvailableFilesResponseList wrapped in ApiResponse response from the API call
+     * @throws    ApiException    Represents error response from the server.
+     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
+     */
+    public ApiResponse<RetrievesAvailableFilesResponseList> getListOfFiles(
+            final String acc,
+            final String distributionType) throws ApiException, IOException {
+        return prepareGetListOfFilesRequest(acc, distributionType).execute();
+    }
+
+    /**
+     * You can retrieve a list of configuration or supplementary of files for an account.
+     * @param  acc  Required parameter: Account identifier.
+     * @param  distributionType  Required parameter: Filter the distributionType to only retrieve
+     *         files for a specific distribution type.
+     * @return    Returns the RetrievesAvailableFilesResponseList wrapped in ApiResponse response from the API call
+     */
+    public CompletableFuture<ApiResponse<RetrievesAvailableFilesResponseList>> getListOfFilesAsync(
+            final String acc,
+            final String distributionType) {
+        try { 
+            return prepareGetListOfFilesRequest(acc, distributionType).executeAsync(); 
+        } catch (Exception e) {  
+            throw new CompletionException(e); 
+        }
+    }
+
+    /**
+     * Builds the ApiCall object for getListOfFiles.
+     */
+    private ApiCall<ApiResponse<RetrievesAvailableFilesResponseList>, ApiException> prepareGetListOfFilesRequest(
+            final String acc,
+            final String distributionType) throws IOException {
+        return new ApiCall.Builder<ApiResponse<RetrievesAvailableFilesResponseList>, ApiException>()
+                .globalConfig(getGlobalConfiguration())
+                .requestBuilder(requestBuilder -> requestBuilder
+                        .server(Server.SOFTWARE_MANAGEMENT_V2.value())
+                        .path("/files/{acc}")
+                        .queryParam(param -> param.key("distributionType")
+                                .value(distributionType))
+                        .templateParam(param -> param.key("acc").value(acc)
+                                .shouldEncode(true))
+                        .headerParam(param -> param.key("accept").value("application/json"))
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
+                        .httpMethod(HttpMethod.GET))
+                .responseHandler(responseHandler -> responseHandler
+                        .responseClassType(ResponseClassType.API_RESPONSE)
+                        .apiResponseDeserializer(
+                                response -> ApiHelper.deserialize(response, RetrievesAvailableFilesResponseList.class))
                         .nullify404(false)
                         .localErrorCase("400",
                                  ErrorCase.setReason("Unexpected error.",

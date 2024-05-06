@@ -83,137 +83,13 @@ public final class DeviceGroupsController extends BaseController {
                         .headerParam(param -> param.key("Content-Type")
                                 .value("application/json").isRequired(false))
                         .headerParam(param -> param.key("accept").value("application/json"))
-                        .authenticationKey(BaseController.AUTHENTICATION_KEY)
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
                         .httpMethod(HttpMethod.POST))
                 .responseHandler(responseHandler -> responseHandler
                         .responseClassType(ResponseClassType.API_RESPONSE)
                         .apiResponseDeserializer(
                                 response -> ApiHelper.deserialize(response, ConnectivityManagementSuccessResult.class))
-                        .nullify404(false)
-                        .localErrorCase("400",
-                                 ErrorCase.setReason("Error response.",
-                                (reason, context) -> new ConnectivityManagementResultException(reason, context)))
-                        .globalErrorCase(GLOBAL_ERROR_CASES))
-                .build();
-    }
-
-    /**
-     * Returns a list of all device groups in a specified account.
-     * @param  aname  Required parameter: Account name.
-     * @return    Returns the List of DeviceGroup wrapped in ApiResponse response from the API call
-     * @throws    ApiException    Represents error response from the server.
-     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
-     */
-    public ApiResponse<List<DeviceGroup>> listDeviceGroups(
-            final String aname) throws ApiException, IOException {
-        return prepareListDeviceGroupsRequest(aname).execute();
-    }
-
-    /**
-     * Returns a list of all device groups in a specified account.
-     * @param  aname  Required parameter: Account name.
-     * @return    Returns the List of DeviceGroup wrapped in ApiResponse response from the API call
-     */
-    public CompletableFuture<ApiResponse<List<DeviceGroup>>> listDeviceGroupsAsync(
-            final String aname) {
-        try { 
-            return prepareListDeviceGroupsRequest(aname).executeAsync(); 
-        } catch (Exception e) {  
-            throw new CompletionException(e); 
-        }
-    }
-
-    /**
-     * Builds the ApiCall object for listDeviceGroups.
-     */
-    private ApiCall<ApiResponse<List<DeviceGroup>>, ApiException> prepareListDeviceGroupsRequest(
-            final String aname) throws IOException {
-        return new ApiCall.Builder<ApiResponse<List<DeviceGroup>>, ApiException>()
-                .globalConfig(getGlobalConfiguration())
-                .requestBuilder(requestBuilder -> requestBuilder
-                        .server(Server.THINGSPACE.value())
-                        .path("/m2m/v1/groups/{aname}")
-                        .templateParam(param -> param.key("aname").value(aname)
-                                .shouldEncode(true))
-                        .headerParam(param -> param.key("accept").value("application/json"))
-                        .authenticationKey(BaseController.AUTHENTICATION_KEY)
-                        .httpMethod(HttpMethod.GET))
-                .responseHandler(responseHandler -> responseHandler
-                        .responseClassType(ResponseClassType.API_RESPONSE)
-                        .apiResponseDeserializer(
-                                response -> ApiHelper.deserializeArray(response,
-                                        DeviceGroup[].class))
-                        .nullify404(false)
-                        .localErrorCase("400",
-                                 ErrorCase.setReason("Error response.",
-                                (reason, context) -> new ConnectivityManagementResultException(reason, context)))
-                        .globalErrorCase(GLOBAL_ERROR_CASES))
-                .build();
-    }
-
-    /**
-     * When HTTP status is 202, a URL will be returned in the Location header of the form
-     * /groups/{aname}/name/{gname}/?next={token}. This URL can be used to request the next set of
-     * groups.
-     * @param  aname  Required parameter: Account name.
-     * @param  gname  Required parameter: Group name.
-     * @param  next  Optional parameter: Continue the previous query from the pageUrl pagetoken.
-     * @return    Returns the DeviceGroupDevicesData wrapped in ApiResponse response from the API call
-     * @throws    ApiException    Represents error response from the server.
-     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
-     */
-    public ApiResponse<DeviceGroupDevicesData> getDeviceGroupInformation(
-            final String aname,
-            final String gname,
-            final Long next) throws ApiException, IOException {
-        return prepareGetDeviceGroupInformationRequest(aname, gname, next).execute();
-    }
-
-    /**
-     * When HTTP status is 202, a URL will be returned in the Location header of the form
-     * /groups/{aname}/name/{gname}/?next={token}. This URL can be used to request the next set of
-     * groups.
-     * @param  aname  Required parameter: Account name.
-     * @param  gname  Required parameter: Group name.
-     * @param  next  Optional parameter: Continue the previous query from the pageUrl pagetoken.
-     * @return    Returns the DeviceGroupDevicesData wrapped in ApiResponse response from the API call
-     */
-    public CompletableFuture<ApiResponse<DeviceGroupDevicesData>> getDeviceGroupInformationAsync(
-            final String aname,
-            final String gname,
-            final Long next) {
-        try { 
-            return prepareGetDeviceGroupInformationRequest(aname, gname, next).executeAsync(); 
-        } catch (Exception e) {  
-            throw new CompletionException(e); 
-        }
-    }
-
-    /**
-     * Builds the ApiCall object for getDeviceGroupInformation.
-     */
-    private ApiCall<ApiResponse<DeviceGroupDevicesData>, ApiException> prepareGetDeviceGroupInformationRequest(
-            final String aname,
-            final String gname,
-            final Long next) throws IOException {
-        return new ApiCall.Builder<ApiResponse<DeviceGroupDevicesData>, ApiException>()
-                .globalConfig(getGlobalConfiguration())
-                .requestBuilder(requestBuilder -> requestBuilder
-                        .server(Server.THINGSPACE.value())
-                        .path("/m2m/v1/groups/{aname}/name/{gname}")
-                        .queryParam(param -> param.key("next")
-                                .value(next).isRequired(false))
-                        .templateParam(param -> param.key("aname").value(aname)
-                                .shouldEncode(true))
-                        .templateParam(param -> param.key("gname").value(gname)
-                                .shouldEncode(true))
-                        .headerParam(param -> param.key("accept").value("application/json"))
-                        .authenticationKey(BaseController.AUTHENTICATION_KEY)
-                        .httpMethod(HttpMethod.GET))
-                .responseHandler(responseHandler -> responseHandler
-                        .responseClassType(ResponseClassType.API_RESPONSE)
-                        .apiResponseDeserializer(
-                                response -> ApiHelper.deserialize(response, DeviceGroupDevicesData.class))
                         .nullify404(false)
                         .localErrorCase("400",
                                  ErrorCase.setReason("Error response.",
@@ -279,12 +155,68 @@ public final class DeviceGroupsController extends BaseController {
                         .headerParam(param -> param.key("Content-Type")
                                 .value("application/json").isRequired(false))
                         .headerParam(param -> param.key("accept").value("application/json"))
-                        .authenticationKey(BaseController.AUTHENTICATION_KEY)
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
                         .httpMethod(HttpMethod.PUT))
                 .responseHandler(responseHandler -> responseHandler
                         .responseClassType(ResponseClassType.API_RESPONSE)
                         .apiResponseDeserializer(
                                 response -> ApiHelper.deserialize(response, ConnectivityManagementSuccessResult.class))
+                        .nullify404(false)
+                        .localErrorCase("400",
+                                 ErrorCase.setReason("Error response.",
+                                (reason, context) -> new ConnectivityManagementResultException(reason, context)))
+                        .globalErrorCase(GLOBAL_ERROR_CASES))
+                .build();
+    }
+
+    /**
+     * Returns a list of all device groups in a specified account.
+     * @param  aname  Required parameter: Account name.
+     * @return    Returns the List of DeviceGroup wrapped in ApiResponse response from the API call
+     * @throws    ApiException    Represents error response from the server.
+     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
+     */
+    public ApiResponse<List<DeviceGroup>> listDeviceGroups(
+            final String aname) throws ApiException, IOException {
+        return prepareListDeviceGroupsRequest(aname).execute();
+    }
+
+    /**
+     * Returns a list of all device groups in a specified account.
+     * @param  aname  Required parameter: Account name.
+     * @return    Returns the List of DeviceGroup wrapped in ApiResponse response from the API call
+     */
+    public CompletableFuture<ApiResponse<List<DeviceGroup>>> listDeviceGroupsAsync(
+            final String aname) {
+        try { 
+            return prepareListDeviceGroupsRequest(aname).executeAsync(); 
+        } catch (Exception e) {  
+            throw new CompletionException(e); 
+        }
+    }
+
+    /**
+     * Builds the ApiCall object for listDeviceGroups.
+     */
+    private ApiCall<ApiResponse<List<DeviceGroup>>, ApiException> prepareListDeviceGroupsRequest(
+            final String aname) throws IOException {
+        return new ApiCall.Builder<ApiResponse<List<DeviceGroup>>, ApiException>()
+                .globalConfig(getGlobalConfiguration())
+                .requestBuilder(requestBuilder -> requestBuilder
+                        .server(Server.THINGSPACE.value())
+                        .path("/m2m/v1/groups/{aname}")
+                        .templateParam(param -> param.key("aname").value(aname)
+                                .shouldEncode(true))
+                        .headerParam(param -> param.key("accept").value("application/json"))
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
+                        .httpMethod(HttpMethod.GET))
+                .responseHandler(responseHandler -> responseHandler
+                        .responseClassType(ResponseClassType.API_RESPONSE)
+                        .apiResponseDeserializer(
+                                response -> ApiHelper.deserializeArray(response,
+                                        DeviceGroup[].class))
                         .nullify404(false)
                         .localErrorCase("400",
                                  ErrorCase.setReason("Error response.",
@@ -341,12 +273,85 @@ public final class DeviceGroupsController extends BaseController {
                         .templateParam(param -> param.key("gname").value(gname)
                                 .shouldEncode(true))
                         .headerParam(param -> param.key("accept").value("application/json"))
-                        .authenticationKey(BaseController.AUTHENTICATION_KEY)
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
                         .httpMethod(HttpMethod.DELETE))
                 .responseHandler(responseHandler -> responseHandler
                         .responseClassType(ResponseClassType.API_RESPONSE)
                         .apiResponseDeserializer(
                                 response -> ApiHelper.deserialize(response, ConnectivityManagementSuccessResult.class))
+                        .nullify404(false)
+                        .localErrorCase("400",
+                                 ErrorCase.setReason("Error response.",
+                                (reason, context) -> new ConnectivityManagementResultException(reason, context)))
+                        .globalErrorCase(GLOBAL_ERROR_CASES))
+                .build();
+    }
+
+    /**
+     * When HTTP status is 202, a URL will be returned in the Location header of the form
+     * /groups/{aname}/name/{gname}/?next={token}. This URL can be used to request the next set of
+     * groups.
+     * @param  aname  Required parameter: Account name.
+     * @param  gname  Required parameter: Group name.
+     * @param  next  Optional parameter: Continue the previous query from the pageUrl pagetoken.
+     * @return    Returns the DeviceGroupDevicesData wrapped in ApiResponse response from the API call
+     * @throws    ApiException    Represents error response from the server.
+     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
+     */
+    public ApiResponse<DeviceGroupDevicesData> getDeviceGroupInformation(
+            final String aname,
+            final String gname,
+            final Long next) throws ApiException, IOException {
+        return prepareGetDeviceGroupInformationRequest(aname, gname, next).execute();
+    }
+
+    /**
+     * When HTTP status is 202, a URL will be returned in the Location header of the form
+     * /groups/{aname}/name/{gname}/?next={token}. This URL can be used to request the next set of
+     * groups.
+     * @param  aname  Required parameter: Account name.
+     * @param  gname  Required parameter: Group name.
+     * @param  next  Optional parameter: Continue the previous query from the pageUrl pagetoken.
+     * @return    Returns the DeviceGroupDevicesData wrapped in ApiResponse response from the API call
+     */
+    public CompletableFuture<ApiResponse<DeviceGroupDevicesData>> getDeviceGroupInformationAsync(
+            final String aname,
+            final String gname,
+            final Long next) {
+        try { 
+            return prepareGetDeviceGroupInformationRequest(aname, gname, next).executeAsync(); 
+        } catch (Exception e) {  
+            throw new CompletionException(e); 
+        }
+    }
+
+    /**
+     * Builds the ApiCall object for getDeviceGroupInformation.
+     */
+    private ApiCall<ApiResponse<DeviceGroupDevicesData>, ApiException> prepareGetDeviceGroupInformationRequest(
+            final String aname,
+            final String gname,
+            final Long next) throws IOException {
+        return new ApiCall.Builder<ApiResponse<DeviceGroupDevicesData>, ApiException>()
+                .globalConfig(getGlobalConfiguration())
+                .requestBuilder(requestBuilder -> requestBuilder
+                        .server(Server.THINGSPACE.value())
+                        .path("/m2m/v1/groups/{aname}/name/{gname}")
+                        .queryParam(param -> param.key("next")
+                                .value(next).isRequired(false))
+                        .templateParam(param -> param.key("aname").value(aname)
+                                .shouldEncode(true))
+                        .templateParam(param -> param.key("gname").value(gname)
+                                .shouldEncode(true))
+                        .headerParam(param -> param.key("accept").value("application/json"))
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
+                        .httpMethod(HttpMethod.GET))
+                .responseHandler(responseHandler -> responseHandler
+                        .responseClassType(ResponseClassType.API_RESPONSE)
+                        .apiResponseDeserializer(
+                                response -> ApiHelper.deserialize(response, DeviceGroupDevicesData.class))
                         .nullify404(false)
                         .localErrorCase("400",
                                  ErrorCase.setReason("Error response.",

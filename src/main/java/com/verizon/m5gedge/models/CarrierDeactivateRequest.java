@@ -16,11 +16,11 @@ import java.util.List;
  */
 public class CarrierDeactivateRequest {
     private String accountName;
-    private List<CustomFields> customFields;
     private List<AccountDeviceList> devices;
+    private String reasonCode;
+    private List<CustomFields> customFields;
     private Boolean etfWaiver;
     private String groupName;
-    private String reasonCode;
     private String servicePlan;
     private Boolean deleteAfterDeactivation;
 
@@ -33,29 +33,29 @@ public class CarrierDeactivateRequest {
     /**
      * Initialization constructor.
      * @param  accountName  String value for accountName.
-     * @param  customFields  List of CustomFields value for customFields.
      * @param  devices  List of AccountDeviceList value for devices.
+     * @param  reasonCode  String value for reasonCode.
+     * @param  customFields  List of CustomFields value for customFields.
      * @param  etfWaiver  Boolean value for etfWaiver.
      * @param  groupName  String value for groupName.
-     * @param  reasonCode  String value for reasonCode.
      * @param  servicePlan  String value for servicePlan.
      * @param  deleteAfterDeactivation  Boolean value for deleteAfterDeactivation.
      */
     public CarrierDeactivateRequest(
             String accountName,
-            List<CustomFields> customFields,
             List<AccountDeviceList> devices,
+            String reasonCode,
+            List<CustomFields> customFields,
             Boolean etfWaiver,
             String groupName,
-            String reasonCode,
             String servicePlan,
             Boolean deleteAfterDeactivation) {
         this.accountName = accountName;
-        this.customFields = customFields;
         this.devices = devices;
+        this.reasonCode = reasonCode;
+        this.customFields = customFields;
         this.etfWaiver = etfWaiver;
         this.groupName = groupName;
-        this.reasonCode = reasonCode;
         this.servicePlan = servicePlan;
         this.deleteAfterDeactivation = deleteAfterDeactivation;
     }
@@ -66,7 +66,6 @@ public class CarrierDeactivateRequest {
      * @return Returns the String
      */
     @JsonGetter("accountName")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     public String getAccountName() {
         return accountName;
     }
@@ -79,6 +78,48 @@ public class CarrierDeactivateRequest {
     @JsonSetter("accountName")
     public void setAccountName(String accountName) {
         this.accountName = accountName;
+    }
+
+    /**
+     * Getter for Devices.
+     * The devices for which you want to deactivate service, specified by device identifier.
+     * @return Returns the List of AccountDeviceList
+     */
+    @JsonGetter("devices")
+    public List<AccountDeviceList> getDevices() {
+        return devices;
+    }
+
+    /**
+     * Setter for Devices.
+     * The devices for which you want to deactivate service, specified by device identifier.
+     * @param devices Value for List of AccountDeviceList
+     */
+    @JsonSetter("devices")
+    public void setDevices(List<AccountDeviceList> devices) {
+        this.devices = devices;
+    }
+
+    /**
+     * Getter for ReasonCode.
+     * Code identifying the reason for the deactivation. Currently the only valid reason code is
+     * “FF”, which corresponds to General Admin/Maintenance.
+     * @return Returns the String
+     */
+    @JsonGetter("reasonCode")
+    public String getReasonCode() {
+        return reasonCode;
+    }
+
+    /**
+     * Setter for ReasonCode.
+     * Code identifying the reason for the deactivation. Currently the only valid reason code is
+     * “FF”, which corresponds to General Admin/Maintenance.
+     * @param reasonCode Value for String
+     */
+    @JsonSetter("reasonCode")
+    public void setReasonCode(String reasonCode) {
+        this.reasonCode = reasonCode;
     }
 
     /**
@@ -100,27 +141,6 @@ public class CarrierDeactivateRequest {
     @JsonSetter("customFields")
     public void setCustomFields(List<CustomFields> customFields) {
         this.customFields = customFields;
-    }
-
-    /**
-     * Getter for Devices.
-     * The devices for which you want to deactivate service, specified by device identifier.
-     * @return Returns the List of AccountDeviceList
-     */
-    @JsonGetter("devices")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public List<AccountDeviceList> getDevices() {
-        return devices;
-    }
-
-    /**
-     * Setter for Devices.
-     * The devices for which you want to deactivate service, specified by device identifier.
-     * @param devices Value for List of AccountDeviceList
-     */
-    @JsonSetter("devices")
-    public void setDevices(List<AccountDeviceList> devices) {
-        this.devices = devices;
     }
 
     /**
@@ -165,29 +185,6 @@ public class CarrierDeactivateRequest {
     @JsonSetter("groupName")
     public void setGroupName(String groupName) {
         this.groupName = groupName;
-    }
-
-    /**
-     * Getter for ReasonCode.
-     * Code identifying the reason for the deactivation. Currently the only valid reason code is
-     * “FF”, which corresponds to General Admin/Maintenance.
-     * @return Returns the String
-     */
-    @JsonGetter("reasonCode")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getReasonCode() {
-        return reasonCode;
-    }
-
-    /**
-     * Setter for ReasonCode.
-     * Code identifying the reason for the deactivation. Currently the only valid reason code is
-     * “FF”, which corresponds to General Admin/Maintenance.
-     * @param reasonCode Value for String
-     */
-    @JsonSetter("reasonCode")
-    public void setReasonCode(String reasonCode) {
-        this.reasonCode = reasonCode;
     }
 
     /**
@@ -236,10 +233,10 @@ public class CarrierDeactivateRequest {
      */
     @Override
     public String toString() {
-        return "CarrierDeactivateRequest [" + "accountName=" + accountName + ", customFields="
-                + customFields + ", devices=" + devices + ", etfWaiver=" + etfWaiver
-                + ", groupName=" + groupName + ", reasonCode=" + reasonCode + ", servicePlan="
-                + servicePlan + ", deleteAfterDeactivation=" + deleteAfterDeactivation + "]";
+        return "CarrierDeactivateRequest [" + "accountName=" + accountName + ", devices=" + devices
+                + ", reasonCode=" + reasonCode + ", customFields=" + customFields + ", etfWaiver="
+                + etfWaiver + ", groupName=" + groupName + ", servicePlan=" + servicePlan
+                + ", deleteAfterDeactivation=" + deleteAfterDeactivation + "]";
     }
 
     /**
@@ -248,13 +245,10 @@ public class CarrierDeactivateRequest {
      * @return a new {@link CarrierDeactivateRequest.Builder} object
      */
     public Builder toBuilder() {
-        Builder builder = new Builder()
-                .accountName(getAccountName())
+        Builder builder = new Builder(accountName, devices, reasonCode)
                 .customFields(getCustomFields())
-                .devices(getDevices())
                 .etfWaiver(getEtfWaiver())
                 .groupName(getGroupName())
-                .reasonCode(getReasonCode())
                 .servicePlan(getServicePlan())
                 .deleteAfterDeactivation(getDeleteAfterDeactivation());
         return builder;
@@ -265,15 +259,31 @@ public class CarrierDeactivateRequest {
      */
     public static class Builder {
         private String accountName;
-        private List<CustomFields> customFields;
         private List<AccountDeviceList> devices;
+        private String reasonCode;
+        private List<CustomFields> customFields;
         private Boolean etfWaiver;
         private String groupName;
-        private String reasonCode;
         private String servicePlan;
         private Boolean deleteAfterDeactivation;
 
+        /**
+         * Initialization constructor.
+         */
+        public Builder() {
+        }
 
+        /**
+         * Initialization constructor.
+         * @param  accountName  String value for accountName.
+         * @param  devices  List of AccountDeviceList value for devices.
+         * @param  reasonCode  String value for reasonCode.
+         */
+        public Builder(String accountName, List<AccountDeviceList> devices, String reasonCode) {
+            this.accountName = accountName;
+            this.devices = devices;
+            this.reasonCode = reasonCode;
+        }
 
         /**
          * Setter for accountName.
@@ -286,22 +296,32 @@ public class CarrierDeactivateRequest {
         }
 
         /**
-         * Setter for customFields.
-         * @param  customFields  List of CustomFields value for customFields.
-         * @return Builder
-         */
-        public Builder customFields(List<CustomFields> customFields) {
-            this.customFields = customFields;
-            return this;
-        }
-
-        /**
          * Setter for devices.
          * @param  devices  List of AccountDeviceList value for devices.
          * @return Builder
          */
         public Builder devices(List<AccountDeviceList> devices) {
             this.devices = devices;
+            return this;
+        }
+
+        /**
+         * Setter for reasonCode.
+         * @param  reasonCode  String value for reasonCode.
+         * @return Builder
+         */
+        public Builder reasonCode(String reasonCode) {
+            this.reasonCode = reasonCode;
+            return this;
+        }
+
+        /**
+         * Setter for customFields.
+         * @param  customFields  List of CustomFields value for customFields.
+         * @return Builder
+         */
+        public Builder customFields(List<CustomFields> customFields) {
+            this.customFields = customFields;
             return this;
         }
 
@@ -322,16 +342,6 @@ public class CarrierDeactivateRequest {
          */
         public Builder groupName(String groupName) {
             this.groupName = groupName;
-            return this;
-        }
-
-        /**
-         * Setter for reasonCode.
-         * @param  reasonCode  String value for reasonCode.
-         * @return Builder
-         */
-        public Builder reasonCode(String reasonCode) {
-            this.reasonCode = reasonCode;
             return this;
         }
 
@@ -360,8 +370,8 @@ public class CarrierDeactivateRequest {
          * @return {@link CarrierDeactivateRequest}
          */
         public CarrierDeactivateRequest build() {
-            return new CarrierDeactivateRequest(accountName, customFields, devices, etfWaiver,
-                    groupName, reasonCode, servicePlan, deleteAfterDeactivation);
+            return new CarrierDeactivateRequest(accountName, devices, reasonCode, customFields,
+                    etfWaiver, groupName, servicePlan, deleteAfterDeactivation);
         }
     }
 }

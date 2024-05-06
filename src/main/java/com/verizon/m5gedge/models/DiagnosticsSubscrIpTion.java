@@ -14,9 +14,9 @@ import com.verizon.m5gedge.DateTimeHelper;
 import java.time.LocalDateTime;
 
 /**
- * This is a model class for DiagnosticsSubscrIpTion type.
+ * This is a model class for DiagnosticsSubscription type.
  */
-public class DiagnosticsSubscrIpTion {
+public class DiagnosticsSubscription {
     private String accountName;
     private LocalDateTime createdOn;
     private LocalDateTime lastUpdated;
@@ -27,7 +27,7 @@ public class DiagnosticsSubscrIpTion {
     /**
      * Default constructor.
      */
-    public DiagnosticsSubscrIpTion() {
+    public DiagnosticsSubscription() {
     }
 
     /**
@@ -39,7 +39,7 @@ public class DiagnosticsSubscrIpTion {
      * @param  totalUsed  int value for totalUsed.
      * @param  skuName  String value for skuName.
      */
-    public DiagnosticsSubscrIpTion(
+    public DiagnosticsSubscription(
             String accountName,
             LocalDateTime createdOn,
             LocalDateTime lastUpdated,
@@ -181,20 +181,20 @@ public class DiagnosticsSubscrIpTion {
     }
 
     /**
-     * Converts this DiagnosticsSubscrIpTion into string format.
+     * Converts this DiagnosticsSubscription into string format.
      * @return String representation of this class
      */
     @Override
     public String toString() {
-        return "DiagnosticsSubscrIpTion [" + "accountName=" + accountName + ", createdOn="
+        return "DiagnosticsSubscription [" + "accountName=" + accountName + ", createdOn="
                 + createdOn + ", lastUpdated=" + lastUpdated + ", totalAllowed=" + totalAllowed
                 + ", totalUsed=" + totalUsed + ", skuName=" + skuName + "]";
     }
 
     /**
-     * Builds a new {@link DiagnosticsSubscrIpTion.Builder} object.
+     * Builds a new {@link DiagnosticsSubscription.Builder} object.
      * Creates the instance with the state of the current model.
-     * @return a new {@link DiagnosticsSubscrIpTion.Builder} object
+     * @return a new {@link DiagnosticsSubscription.Builder} object
      */
     public Builder toBuilder() {
         Builder builder = new Builder(accountName, createdOn, lastUpdated, totalAllowed, totalUsed,
@@ -203,7 +203,7 @@ public class DiagnosticsSubscrIpTion {
     }
 
     /**
-     * Class to build instances of {@link DiagnosticsSubscrIpTion}.
+     * Class to build instances of {@link DiagnosticsSubscription}.
      */
     public static class Builder {
         private String accountName;
@@ -299,11 +299,11 @@ public class DiagnosticsSubscrIpTion {
         }
 
         /**
-         * Builds a new {@link DiagnosticsSubscrIpTion} object using the set fields.
-         * @return {@link DiagnosticsSubscrIpTion}
+         * Builds a new {@link DiagnosticsSubscription} object using the set fields.
+         * @return {@link DiagnosticsSubscription}
          */
-        public DiagnosticsSubscrIpTion build() {
-            return new DiagnosticsSubscrIpTion(accountName, createdOn, lastUpdated, totalAllowed,
+        public DiagnosticsSubscription build() {
+            return new DiagnosticsSubscription(accountName, createdOn, lastUpdated, totalAllowed,
                     totalUsed, skuName);
         }
     }

@@ -11,16 +11,16 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 import java.util.List;
 
 /**
- * This is a model class for ChangePmecDeviceIpAddressRequest type.
+ * This is a model class for ChangePmecDeviceIPaddressRequest type.
  */
-public class ChangePmecDeviceIpAddressRequest {
+public class ChangePmecDeviceIPaddressRequest {
     private String accountName;
     private List<DeviceList7> deviceList;
 
     /**
      * Default constructor.
      */
-    public ChangePmecDeviceIpAddressRequest() {
+    public ChangePmecDeviceIPaddressRequest() {
     }
 
     /**
@@ -28,7 +28,7 @@ public class ChangePmecDeviceIpAddressRequest {
      * @param  accountName  String value for accountName.
      * @param  deviceList  List of DeviceList7 value for deviceList.
      */
-    public ChangePmecDeviceIpAddressRequest(
+    public ChangePmecDeviceIPaddressRequest(
             String accountName,
             List<DeviceList7> deviceList) {
         this.accountName = accountName;
@@ -72,19 +72,19 @@ public class ChangePmecDeviceIpAddressRequest {
     }
 
     /**
-     * Converts this ChangePmecDeviceIpAddressRequest into string format.
+     * Converts this ChangePmecDeviceIPaddressRequest into string format.
      * @return String representation of this class
      */
     @Override
     public String toString() {
-        return "ChangePmecDeviceIpAddressRequest [" + "accountName=" + accountName + ", deviceList="
+        return "ChangePmecDeviceIPaddressRequest [" + "accountName=" + accountName + ", deviceList="
                 + deviceList + "]";
     }
 
     /**
-     * Builds a new {@link ChangePmecDeviceIpAddressRequest.Builder} object.
+     * Builds a new {@link ChangePmecDeviceIPaddressRequest.Builder} object.
      * Creates the instance with the state of the current model.
-     * @return a new {@link ChangePmecDeviceIpAddressRequest.Builder} object
+     * @return a new {@link ChangePmecDeviceIPaddressRequest.Builder} object
      */
     public Builder toBuilder() {
         Builder builder = new Builder(accountName, deviceList);
@@ -92,7 +92,7 @@ public class ChangePmecDeviceIpAddressRequest {
     }
 
     /**
-     * Class to build instances of {@link ChangePmecDeviceIpAddressRequest}.
+     * Class to build instances of {@link ChangePmecDeviceIPaddressRequest}.
      */
     public static class Builder {
         private String accountName;
@@ -135,11 +135,11 @@ public class ChangePmecDeviceIpAddressRequest {
         }
 
         /**
-         * Builds a new {@link ChangePmecDeviceIpAddressRequest} object using the set fields.
-         * @return {@link ChangePmecDeviceIpAddressRequest}
+         * Builds a new {@link ChangePmecDeviceIPaddressRequest} object using the set fields.
+         * @return {@link ChangePmecDeviceIPaddressRequest}
          */
-        public ChangePmecDeviceIpAddressRequest build() {
-            return new ChangePmecDeviceIpAddressRequest(accountName, deviceList);
+        public ChangePmecDeviceIPaddressRequest build() {
+            return new ChangePmecDeviceIPaddressRequest(accountName, deviceList);
         }
     }
 }

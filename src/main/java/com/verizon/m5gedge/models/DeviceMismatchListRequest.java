@@ -15,8 +15,8 @@ import java.util.List;
  * This is a model class for DeviceMismatchListRequest type.
  */
 public class DeviceMismatchListRequest {
-    private List<AccountDeviceList> devices;
     private DateFilter filter;
+    private List<AccountDeviceList> devices;
     private String accountName;
     private String groupName;
 
@@ -28,20 +28,40 @@ public class DeviceMismatchListRequest {
 
     /**
      * Initialization constructor.
-     * @param  devices  List of AccountDeviceList value for devices.
      * @param  filter  DateFilter value for filter.
+     * @param  devices  List of AccountDeviceList value for devices.
      * @param  accountName  String value for accountName.
      * @param  groupName  String value for groupName.
      */
     public DeviceMismatchListRequest(
-            List<AccountDeviceList> devices,
             DateFilter filter,
+            List<AccountDeviceList> devices,
             String accountName,
             String groupName) {
-        this.devices = devices;
         this.filter = filter;
+        this.devices = devices;
         this.accountName = accountName;
         this.groupName = groupName;
+    }
+
+    /**
+     * Getter for Filter.
+     * Filter out the dates.
+     * @return Returns the DateFilter
+     */
+    @JsonGetter("filter")
+    public DateFilter getFilter() {
+        return filter;
+    }
+
+    /**
+     * Setter for Filter.
+     * Filter out the dates.
+     * @param filter Value for DateFilter
+     */
+    @JsonSetter("filter")
+    public void setFilter(DateFilter filter) {
+        this.filter = filter;
     }
 
     /**
@@ -63,27 +83,6 @@ public class DeviceMismatchListRequest {
     @JsonSetter("devices")
     public void setDevices(List<AccountDeviceList> devices) {
         this.devices = devices;
-    }
-
-    /**
-     * Getter for Filter.
-     * Filter out the dates.
-     * @return Returns the DateFilter
-     */
-    @JsonGetter("filter")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public DateFilter getFilter() {
-        return filter;
-    }
-
-    /**
-     * Setter for Filter.
-     * Filter out the dates.
-     * @param filter Value for DateFilter
-     */
-    @JsonSetter("filter")
-    public void setFilter(DateFilter filter) {
-        this.filter = filter;
     }
 
     /**
@@ -136,7 +135,7 @@ public class DeviceMismatchListRequest {
      */
     @Override
     public String toString() {
-        return "DeviceMismatchListRequest [" + "devices=" + devices + ", filter=" + filter
+        return "DeviceMismatchListRequest [" + "filter=" + filter + ", devices=" + devices
                 + ", accountName=" + accountName + ", groupName=" + groupName + "]";
     }
 
@@ -146,9 +145,8 @@ public class DeviceMismatchListRequest {
      * @return a new {@link DeviceMismatchListRequest.Builder} object
      */
     public Builder toBuilder() {
-        Builder builder = new Builder()
+        Builder builder = new Builder(filter)
                 .devices(getDevices())
-                .filter(getFilter())
                 .accountName(getAccountName())
                 .groupName(getGroupName());
         return builder;
@@ -158,21 +156,23 @@ public class DeviceMismatchListRequest {
      * Class to build instances of {@link DeviceMismatchListRequest}.
      */
     public static class Builder {
-        private List<AccountDeviceList> devices;
         private DateFilter filter;
+        private List<AccountDeviceList> devices;
         private String accountName;
         private String groupName;
 
-
+        /**
+         * Initialization constructor.
+         */
+        public Builder() {
+        }
 
         /**
-         * Setter for devices.
-         * @param  devices  List of AccountDeviceList value for devices.
-         * @return Builder
+         * Initialization constructor.
+         * @param  filter  DateFilter value for filter.
          */
-        public Builder devices(List<AccountDeviceList> devices) {
-            this.devices = devices;
-            return this;
+        public Builder(DateFilter filter) {
+            this.filter = filter;
         }
 
         /**
@@ -182,6 +182,16 @@ public class DeviceMismatchListRequest {
          */
         public Builder filter(DateFilter filter) {
             this.filter = filter;
+            return this;
+        }
+
+        /**
+         * Setter for devices.
+         * @param  devices  List of AccountDeviceList value for devices.
+         * @return Builder
+         */
+        public Builder devices(List<AccountDeviceList> devices) {
+            this.devices = devices;
             return this;
         }
 
@@ -210,7 +220,7 @@ public class DeviceMismatchListRequest {
          * @return {@link DeviceMismatchListRequest}
          */
         public DeviceMismatchListRequest build() {
-            return new DeviceMismatchListRequest(devices, filter, accountName, groupName);
+            return new DeviceMismatchListRequest(filter, devices, accountName, groupName);
         }
     }
 }

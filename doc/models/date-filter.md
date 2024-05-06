@@ -11,8 +11,8 @@ Filter out the dates.
 
 | Name | Type | Tags | Description | Getter | Setter |
 |  --- | --- | --- | --- | --- | --- |
-| `Earliest` | `String` | Optional | Only include devices that were added after this date and time. | String getEarliest() | setEarliest(String earliest) |
-| `Latest` | `String` | Optional | Only include devices that were added before this date and time. | String getLatest() | setLatest(String latest) |
+| `Earliest` | `String` | Required | Only include devices that were added after this date and time. | String getEarliest() | setEarliest(String earliest) |
+| `Latest` | `String` | Required | Only include devices that were added before this date and time. | String getLatest() | setLatest(String latest) |
 
 ## Example (as JSON)
 

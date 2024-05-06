@@ -40,104 +40,48 @@ public final class WirelessNetworkPerformanceController extends BaseController {
     }
 
     /**
-     * WNP Query for current network condition.
-     * @param  body  Required parameter: Request for current network health.
+     * Run a report to view the latest device experience score for specific devices.
+     * @param  body  Required parameter: Request for bulk latest history details.
      * @return    Returns the WNPRequestResponse wrapped in ApiResponse response from the API call
      * @throws    ApiException    Represents error response from the server.
      * @throws    IOException    Signals that an I/O exception of some sort has occurred.
      */
-    public ApiResponse<WNPRequestResponse> nearRealTimeNetworkConditions(
-            final GetNetworkConditionsRequest body) throws ApiException, IOException {
-        return prepareNearRealTimeNetworkConditionsRequest(body).execute();
+    public ApiResponse<WNPRequestResponse> deviceExperienceBulkLatest(
+            final GetDeviceExperienceScoreBulkRequest body) throws ApiException, IOException {
+        return prepareDeviceExperienceBulkLatestRequest(body).execute();
     }
 
     /**
-     * WNP Query for current network condition.
-     * @param  body  Required parameter: Request for current network health.
+     * Run a report to view the latest device experience score for specific devices.
+     * @param  body  Required parameter: Request for bulk latest history details.
      * @return    Returns the WNPRequestResponse wrapped in ApiResponse response from the API call
      */
-    public CompletableFuture<ApiResponse<WNPRequestResponse>> nearRealTimeNetworkConditionsAsync(
-            final GetNetworkConditionsRequest body) {
+    public CompletableFuture<ApiResponse<WNPRequestResponse>> deviceExperienceBulkLatestAsync(
+            final GetDeviceExperienceScoreBulkRequest body) {
         try { 
-            return prepareNearRealTimeNetworkConditionsRequest(body).executeAsync(); 
+            return prepareDeviceExperienceBulkLatestRequest(body).executeAsync(); 
         } catch (Exception e) {  
             throw new CompletionException(e); 
         }
     }
 
     /**
-     * Builds the ApiCall object for nearRealTimeNetworkConditions.
+     * Builds the ApiCall object for deviceExperienceBulkLatest.
      */
-    private ApiCall<ApiResponse<WNPRequestResponse>, ApiException> prepareNearRealTimeNetworkConditionsRequest(
-            final GetNetworkConditionsRequest body) throws JsonProcessingException, IOException {
+    private ApiCall<ApiResponse<WNPRequestResponse>, ApiException> prepareDeviceExperienceBulkLatestRequest(
+            final GetDeviceExperienceScoreBulkRequest body) throws JsonProcessingException, IOException {
         return new ApiCall.Builder<ApiResponse<WNPRequestResponse>, ApiException>()
                 .globalConfig(getGlobalConfiguration())
                 .requestBuilder(requestBuilder -> requestBuilder
                         .server(Server.THINGSPACE.value())
-                        .path("/m2m/v1/intelligence/network-conditions")
+                        .path("/m2m/v1/intelligence/device-experience/bulk/latest")
                         .bodyParam(param -> param.value(body))
                         .bodySerializer(() ->  ApiHelper.serialize(body))
                         .headerParam(param -> param.key("Content-Type")
                                 .value("application/json").isRequired(false))
                         .headerParam(param -> param.key("accept").value("application/json"))
-                        .authenticationKey(BaseController.AUTHENTICATION_KEY)
-                        .httpMethod(HttpMethod.POST))
-                .responseHandler(responseHandler -> responseHandler
-                        .responseClassType(ResponseClassType.API_RESPONSE)
-                        .apiResponseDeserializer(
-                                response -> ApiHelper.deserialize(response, WNPRequestResponse.class))
-                        .nullify404(false)
-                        .localErrorCase(ErrorCase.DEFAULT,
-                                 ErrorCase.setReason("Error response",
-                                (reason, context) -> new WNPRestErrorResponseException(reason, context)))
-                        .globalErrorCase(GLOBAL_ERROR_CASES))
-                .build();
-    }
-
-    /**
-     * Run a report to determine network types available and available coverage. Network types
-     * covered include: CAT-M, NB-IOT, LTE, LTE-AWS and 5GNW.
-     * @param  body  Required parameter: Request for network coverage details.
-     * @return    Returns the WNPRequestResponse wrapped in ApiResponse response from the API call
-     * @throws    ApiException    Represents error response from the server.
-     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
-     */
-    public ApiResponse<WNPRequestResponse> domestic4GAnd5gNationwideNetworkCoverage(
-            final GetWirelessCoverageRequest body) throws ApiException, IOException {
-        return prepareDomestic4GAnd5gNationwideNetworkCoverageRequest(body).execute();
-    }
-
-    /**
-     * Run a report to determine network types available and available coverage. Network types
-     * covered include: CAT-M, NB-IOT, LTE, LTE-AWS and 5GNW.
-     * @param  body  Required parameter: Request for network coverage details.
-     * @return    Returns the WNPRequestResponse wrapped in ApiResponse response from the API call
-     */
-    public CompletableFuture<ApiResponse<WNPRequestResponse>> domestic4GAnd5gNationwideNetworkCoverageAsync(
-            final GetWirelessCoverageRequest body) {
-        try { 
-            return prepareDomestic4GAnd5gNationwideNetworkCoverageRequest(body).executeAsync(); 
-        } catch (Exception e) {  
-            throw new CompletionException(e); 
-        }
-    }
-
-    /**
-     * Builds the ApiCall object for domestic4GAnd5gNationwideNetworkCoverage.
-     */
-    private ApiCall<ApiResponse<WNPRequestResponse>, ApiException> prepareDomestic4GAnd5gNationwideNetworkCoverageRequest(
-            final GetWirelessCoverageRequest body) throws JsonProcessingException, IOException {
-        return new ApiCall.Builder<ApiResponse<WNPRequestResponse>, ApiException>()
-                .globalConfig(getGlobalConfiguration())
-                .requestBuilder(requestBuilder -> requestBuilder
-                        .server(Server.THINGSPACE.value())
-                        .path("/m2m/v1/intelligence/wireless-coverage")
-                        .bodyParam(param -> param.value(body))
-                        .bodySerializer(() ->  ApiHelper.serialize(body))
-                        .headerParam(param -> param.key("Content-Type")
-                                .value("application/json").isRequired(false))
-                        .headerParam(param -> param.key("accept").value("application/json"))
-                        .authenticationKey(BaseController.AUTHENTICATION_KEY)
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
                         .httpMethod(HttpMethod.POST))
                 .responseHandler(responseHandler -> responseHandler
                         .responseClassType(ResponseClassType.API_RESPONSE)
@@ -194,7 +138,122 @@ public final class WirelessNetworkPerformanceController extends BaseController {
                         .headerParam(param -> param.key("Content-Type")
                                 .value("application/json").isRequired(false))
                         .headerParam(param -> param.key("accept").value("application/json"))
-                        .authenticationKey(BaseController.AUTHENTICATION_KEY)
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
+                        .httpMethod(HttpMethod.POST))
+                .responseHandler(responseHandler -> responseHandler
+                        .responseClassType(ResponseClassType.API_RESPONSE)
+                        .apiResponseDeserializer(
+                                response -> ApiHelper.deserialize(response, WNPRequestResponse.class))
+                        .nullify404(false)
+                        .localErrorCase(ErrorCase.DEFAULT,
+                                 ErrorCase.setReason("Error response",
+                                (reason, context) -> new WNPRestErrorResponseException(reason, context)))
+                        .globalErrorCase(GLOBAL_ERROR_CASES))
+                .build();
+    }
+
+    /**
+     * WNP Query for current network condition.
+     * @param  body  Required parameter: Request for current network health.
+     * @return    Returns the WNPRequestResponse wrapped in ApiResponse response from the API call
+     * @throws    ApiException    Represents error response from the server.
+     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
+     */
+    public ApiResponse<WNPRequestResponse> nearRealTimeNetworkConditions(
+            final GetNetworkConditionsRequest body) throws ApiException, IOException {
+        return prepareNearRealTimeNetworkConditionsRequest(body).execute();
+    }
+
+    /**
+     * WNP Query for current network condition.
+     * @param  body  Required parameter: Request for current network health.
+     * @return    Returns the WNPRequestResponse wrapped in ApiResponse response from the API call
+     */
+    public CompletableFuture<ApiResponse<WNPRequestResponse>> nearRealTimeNetworkConditionsAsync(
+            final GetNetworkConditionsRequest body) {
+        try { 
+            return prepareNearRealTimeNetworkConditionsRequest(body).executeAsync(); 
+        } catch (Exception e) {  
+            throw new CompletionException(e); 
+        }
+    }
+
+    /**
+     * Builds the ApiCall object for nearRealTimeNetworkConditions.
+     */
+    private ApiCall<ApiResponse<WNPRequestResponse>, ApiException> prepareNearRealTimeNetworkConditionsRequest(
+            final GetNetworkConditionsRequest body) throws JsonProcessingException, IOException {
+        return new ApiCall.Builder<ApiResponse<WNPRequestResponse>, ApiException>()
+                .globalConfig(getGlobalConfiguration())
+                .requestBuilder(requestBuilder -> requestBuilder
+                        .server(Server.THINGSPACE.value())
+                        .path("/m2m/v1/intelligence/network-conditions")
+                        .bodyParam(param -> param.value(body))
+                        .bodySerializer(() ->  ApiHelper.serialize(body))
+                        .headerParam(param -> param.key("Content-Type")
+                                .value("application/json").isRequired(false))
+                        .headerParam(param -> param.key("accept").value("application/json"))
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
+                        .httpMethod(HttpMethod.POST))
+                .responseHandler(responseHandler -> responseHandler
+                        .responseClassType(ResponseClassType.API_RESPONSE)
+                        .apiResponseDeserializer(
+                                response -> ApiHelper.deserialize(response, WNPRequestResponse.class))
+                        .nullify404(false)
+                        .localErrorCase(ErrorCase.DEFAULT,
+                                 ErrorCase.setReason("Error response",
+                                (reason, context) -> new WNPRestErrorResponseException(reason, context)))
+                        .globalErrorCase(GLOBAL_ERROR_CASES))
+                .build();
+    }
+
+    /**
+     * Run a report to determine network types available and available coverage. Network types
+     * covered include: CAT-M, NB-IOT, LTE, LTE-AWS and 5GNW.
+     * @param  body  Required parameter: Request for network coverage details.
+     * @return    Returns the WNPRequestResponse wrapped in ApiResponse response from the API call
+     * @throws    ApiException    Represents error response from the server.
+     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
+     */
+    public ApiResponse<WNPRequestResponse> domestic4GAnd5gNationwideNetworkCoverage(
+            final GetWirelessCoverageRequest body) throws ApiException, IOException {
+        return prepareDomestic4GAnd5gNationwideNetworkCoverageRequest(body).execute();
+    }
+
+    /**
+     * Run a report to determine network types available and available coverage. Network types
+     * covered include: CAT-M, NB-IOT, LTE, LTE-AWS and 5GNW.
+     * @param  body  Required parameter: Request for network coverage details.
+     * @return    Returns the WNPRequestResponse wrapped in ApiResponse response from the API call
+     */
+    public CompletableFuture<ApiResponse<WNPRequestResponse>> domestic4GAnd5gNationwideNetworkCoverageAsync(
+            final GetWirelessCoverageRequest body) {
+        try { 
+            return prepareDomestic4GAnd5gNationwideNetworkCoverageRequest(body).executeAsync(); 
+        } catch (Exception e) {  
+            throw new CompletionException(e); 
+        }
+    }
+
+    /**
+     * Builds the ApiCall object for domestic4GAnd5gNationwideNetworkCoverage.
+     */
+    private ApiCall<ApiResponse<WNPRequestResponse>, ApiException> prepareDomestic4GAnd5gNationwideNetworkCoverageRequest(
+            final GetWirelessCoverageRequest body) throws JsonProcessingException, IOException {
+        return new ApiCall.Builder<ApiResponse<WNPRequestResponse>, ApiException>()
+                .globalConfig(getGlobalConfiguration())
+                .requestBuilder(requestBuilder -> requestBuilder
+                        .server(Server.THINGSPACE.value())
+                        .path("/m2m/v1/intelligence/wireless-coverage")
+                        .bodyParam(param -> param.value(body))
+                        .bodySerializer(() ->  ApiHelper.serialize(body))
+                        .headerParam(param -> param.key("Content-Type")
+                                .value("application/json").isRequired(false))
+                        .headerParam(param -> param.key("accept").value("application/json"))
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
                         .httpMethod(HttpMethod.POST))
                 .responseHandler(responseHandler -> responseHandler
                         .responseClassType(ResponseClassType.API_RESPONSE)
@@ -249,62 +308,8 @@ public final class WirelessNetworkPerformanceController extends BaseController {
                         .headerParam(param -> param.key("Content-Type")
                                 .value("application/json").isRequired(false))
                         .headerParam(param -> param.key("accept").value("application/json"))
-                        .authenticationKey(BaseController.AUTHENTICATION_KEY)
-                        .httpMethod(HttpMethod.POST))
-                .responseHandler(responseHandler -> responseHandler
-                        .responseClassType(ResponseClassType.API_RESPONSE)
-                        .apiResponseDeserializer(
-                                response -> ApiHelper.deserialize(response, WNPRequestResponse.class))
-                        .nullify404(false)
-                        .localErrorCase(ErrorCase.DEFAULT,
-                                 ErrorCase.setReason("Error response",
-                                (reason, context) -> new WNPRestErrorResponseException(reason, context)))
-                        .globalErrorCase(GLOBAL_ERROR_CASES))
-                .build();
-    }
-
-    /**
-     * Run a report to view the latest device experience score for specific devices.
-     * @param  body  Required parameter: Request for bulk latest history details.
-     * @return    Returns the WNPRequestResponse wrapped in ApiResponse response from the API call
-     * @throws    ApiException    Represents error response from the server.
-     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
-     */
-    public ApiResponse<WNPRequestResponse> deviceExperienceBulkLatest(
-            final GetDeviceExperienceScoreBulkRequest body) throws ApiException, IOException {
-        return prepareDeviceExperienceBulkLatestRequest(body).execute();
-    }
-
-    /**
-     * Run a report to view the latest device experience score for specific devices.
-     * @param  body  Required parameter: Request for bulk latest history details.
-     * @return    Returns the WNPRequestResponse wrapped in ApiResponse response from the API call
-     */
-    public CompletableFuture<ApiResponse<WNPRequestResponse>> deviceExperienceBulkLatestAsync(
-            final GetDeviceExperienceScoreBulkRequest body) {
-        try { 
-            return prepareDeviceExperienceBulkLatestRequest(body).executeAsync(); 
-        } catch (Exception e) {  
-            throw new CompletionException(e); 
-        }
-    }
-
-    /**
-     * Builds the ApiCall object for deviceExperienceBulkLatest.
-     */
-    private ApiCall<ApiResponse<WNPRequestResponse>, ApiException> prepareDeviceExperienceBulkLatestRequest(
-            final GetDeviceExperienceScoreBulkRequest body) throws JsonProcessingException, IOException {
-        return new ApiCall.Builder<ApiResponse<WNPRequestResponse>, ApiException>()
-                .globalConfig(getGlobalConfiguration())
-                .requestBuilder(requestBuilder -> requestBuilder
-                        .server(Server.THINGSPACE.value())
-                        .path("/m2m/v1/intelligence/device-experience/bulk/latest")
-                        .bodyParam(param -> param.value(body))
-                        .bodySerializer(() ->  ApiHelper.serialize(body))
-                        .headerParam(param -> param.key("Content-Type")
-                                .value("application/json").isRequired(false))
-                        .headerParam(param -> param.key("accept").value("application/json"))
-                        .authenticationKey(BaseController.AUTHENTICATION_KEY)
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
                         .httpMethod(HttpMethod.POST))
                 .responseHandler(responseHandler -> responseHandler
                         .responseClassType(ResponseClassType.API_RESPONSE)

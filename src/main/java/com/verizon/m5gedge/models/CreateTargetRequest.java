@@ -20,7 +20,7 @@ public class CreateTargetRequest {
     private String address;
     private String addressscheme;
     private CreateTargetRequestFields fields;
-    private String descrIpTion;
+    private String description;
     private String externalid;
     private String name;
     private String region;
@@ -41,7 +41,7 @@ public class CreateTargetRequest {
      * @param  address  String value for address.
      * @param  addressscheme  String value for addressscheme.
      * @param  fields  CreateTargetRequestFields value for fields.
-     * @param  descrIpTion  String value for descrIpTion.
+     * @param  description  String value for description.
      * @param  externalid  String value for externalid.
      * @param  name  String value for name.
      * @param  region  String value for region.
@@ -55,7 +55,7 @@ public class CreateTargetRequest {
             String address,
             String addressscheme,
             CreateTargetRequestFields fields,
-            String descrIpTion,
+            String description,
             String externalid,
             String name,
             String region,
@@ -67,7 +67,7 @@ public class CreateTargetRequest {
         this.address = address;
         this.addressscheme = addressscheme;
         this.fields = fields;
-        this.descrIpTion = descrIpTion;
+        this.description = description;
         this.externalid = externalid;
         this.name = name;
         this.region = region;
@@ -208,24 +208,24 @@ public class CreateTargetRequest {
     }
 
     /**
-     * Getter for DescrIpTion.
+     * Getter for Description.
      * Descriptive information about the target.
      * @return Returns the String
      */
     @JsonGetter("description")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getDescrIpTion() {
-        return descrIpTion;
+    public String getDescription() {
+        return description;
     }
 
     /**
-     * Setter for DescrIpTion.
+     * Setter for Description.
      * Descriptive information about the target.
-     * @param descrIpTion Value for String
+     * @param description Value for String
      */
     @JsonSetter("description")
-    public void setDescrIpTion(String descrIpTion) {
-        this.descrIpTion = descrIpTion;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     /**
@@ -342,7 +342,7 @@ public class CreateTargetRequest {
         return "CreateTargetRequest [" + "accountidentifier=" + accountidentifier
                 + ", billingaccountid=" + billingaccountid + ", kind=" + kind + ", address="
                 + address + ", addressscheme=" + addressscheme + ", fields=" + fields
-                + ", descrIpTion=" + descrIpTion + ", externalid=" + externalid + ", name=" + name
+                + ", description=" + description + ", externalid=" + externalid + ", name=" + name
                 + ", region=" + region + ", key1=" + key1 + ", oauth=" + oauth + "]";
     }
 
@@ -359,7 +359,7 @@ public class CreateTargetRequest {
                 .address(getAddress())
                 .addressscheme(getAddressscheme())
                 .fields(getFields())
-                .descrIpTion(getDescrIpTion())
+                .description(getDescription())
                 .externalid(getExternalid())
                 .name(getName())
                 .region(getRegion())
@@ -378,7 +378,7 @@ public class CreateTargetRequest {
         private String address;
         private String addressscheme;
         private CreateTargetRequestFields fields;
-        private String descrIpTion;
+        private String description;
         private String externalid;
         private String name;
         private String region;
@@ -448,12 +448,12 @@ public class CreateTargetRequest {
         }
 
         /**
-         * Setter for descrIpTion.
-         * @param  descrIpTion  String value for descrIpTion.
+         * Setter for description.
+         * @param  description  String value for description.
          * @return Builder
          */
-        public Builder descrIpTion(String descrIpTion) {
-            this.descrIpTion = descrIpTion;
+        public Builder description(String description) {
+            this.description = description;
             return this;
         }
 
@@ -513,7 +513,7 @@ public class CreateTargetRequest {
          */
         public CreateTargetRequest build() {
             return new CreateTargetRequest(accountidentifier, billingaccountid, kind, address,
-                    addressscheme, fields, descrIpTion, externalid, name, region, key1, oauth);
+                    addressscheme, fields, description, externalid, name, region, key1, oauth);
         }
     }
 }

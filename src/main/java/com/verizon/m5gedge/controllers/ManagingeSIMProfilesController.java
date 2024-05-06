@@ -39,47 +39,48 @@ public final class ManagingeSIMProfilesController extends BaseController {
     }
 
     /**
-     * Activate a device with either a lead or local profile.
+     * Download a Global IoT Orchestration device profile.
      * @param  body  Required parameter: Device Profile Query
      * @return    Returns the GIORequestResponse wrapped in ApiResponse response from the API call
      * @throws    ApiException    Represents error response from the server.
      * @throws    IOException    Signals that an I/O exception of some sort has occurred.
      */
-    public ApiResponse<GIORequestResponse> activateADeviceProfile(
-            final GIOProfileRequest body) throws ApiException, IOException {
-        return prepareActivateADeviceProfileRequest(body).execute();
+    public ApiResponse<GIORequestResponse> downloadADeviceProfile(
+            final DeviceProfileRequest body) throws ApiException, IOException {
+        return prepareDownloadADeviceProfileRequest(body).execute();
     }
 
     /**
-     * Activate a device with either a lead or local profile.
+     * Download a Global IoT Orchestration device profile.
      * @param  body  Required parameter: Device Profile Query
      * @return    Returns the GIORequestResponse wrapped in ApiResponse response from the API call
      */
-    public CompletableFuture<ApiResponse<GIORequestResponse>> activateADeviceProfileAsync(
-            final GIOProfileRequest body) {
+    public CompletableFuture<ApiResponse<GIORequestResponse>> downloadADeviceProfileAsync(
+            final DeviceProfileRequest body) {
         try { 
-            return prepareActivateADeviceProfileRequest(body).executeAsync(); 
+            return prepareDownloadADeviceProfileRequest(body).executeAsync(); 
         } catch (Exception e) {  
             throw new CompletionException(e); 
         }
     }
 
     /**
-     * Builds the ApiCall object for activateADeviceProfile.
+     * Builds the ApiCall object for downloadADeviceProfile.
      */
-    private ApiCall<ApiResponse<GIORequestResponse>, ApiException> prepareActivateADeviceProfileRequest(
-            final GIOProfileRequest body) throws JsonProcessingException, IOException {
+    private ApiCall<ApiResponse<GIORequestResponse>, ApiException> prepareDownloadADeviceProfileRequest(
+            final DeviceProfileRequest body) throws JsonProcessingException, IOException {
         return new ApiCall.Builder<ApiResponse<GIORequestResponse>, ApiException>()
                 .globalConfig(getGlobalConfiguration())
                 .requestBuilder(requestBuilder -> requestBuilder
                         .server(Server.THINGSPACE.value())
-                        .path("/m2m/v1/devices/profile/actions/activate")
+                        .path("/m2m/v1/devices/profile/actions/download")
                         .bodyParam(param -> param.value(body))
                         .bodySerializer(() ->  ApiHelper.serialize(body))
                         .headerParam(param -> param.key("Content-Type")
                                 .value("application/json").isRequired(false))
                         .headerParam(param -> param.key("accept").value("application/json"))
-                        .authenticationKey(BaseController.AUTHENTICATION_KEY)
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
                         .httpMethod(HttpMethod.POST))
                 .responseHandler(responseHandler -> responseHandler
                         .responseClassType(ResponseClassType.API_RESPONSE)
@@ -134,7 +135,64 @@ public final class ManagingeSIMProfilesController extends BaseController {
                         .headerParam(param -> param.key("Content-Type")
                                 .value("application/json").isRequired(false))
                         .headerParam(param -> param.key("accept").value("application/json"))
-                        .authenticationKey(BaseController.AUTHENTICATION_KEY)
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
+                        .httpMethod(HttpMethod.POST))
+                .responseHandler(responseHandler -> responseHandler
+                        .responseClassType(ResponseClassType.API_RESPONSE)
+                        .apiResponseDeserializer(
+                                response -> ApiHelper.deserialize(response, GIORequestResponse.class))
+                        .nullify404(false)
+                        .localErrorCase(ErrorCase.DEFAULT,
+                                 ErrorCase.setReason("Error response",
+                                (reason, context) -> new GIORestErrorResponseException(reason, context)))
+                        .globalErrorCase(GLOBAL_ERROR_CASES))
+                .build();
+    }
+
+    /**
+     * Activate a device with either a lead or local profile.
+     * @param  body  Required parameter: Device Profile Query
+     * @return    Returns the GIORequestResponse wrapped in ApiResponse response from the API call
+     * @throws    ApiException    Represents error response from the server.
+     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
+     */
+    public ApiResponse<GIORequestResponse> activateADeviceProfile(
+            final GIOProfileRequest body) throws ApiException, IOException {
+        return prepareActivateADeviceProfileRequest(body).execute();
+    }
+
+    /**
+     * Activate a device with either a lead or local profile.
+     * @param  body  Required parameter: Device Profile Query
+     * @return    Returns the GIORequestResponse wrapped in ApiResponse response from the API call
+     */
+    public CompletableFuture<ApiResponse<GIORequestResponse>> activateADeviceProfileAsync(
+            final GIOProfileRequest body) {
+        try { 
+            return prepareActivateADeviceProfileRequest(body).executeAsync(); 
+        } catch (Exception e) {  
+            throw new CompletionException(e); 
+        }
+    }
+
+    /**
+     * Builds the ApiCall object for activateADeviceProfile.
+     */
+    private ApiCall<ApiResponse<GIORequestResponse>, ApiException> prepareActivateADeviceProfileRequest(
+            final GIOProfileRequest body) throws JsonProcessingException, IOException {
+        return new ApiCall.Builder<ApiResponse<GIORequestResponse>, ApiException>()
+                .globalConfig(getGlobalConfiguration())
+                .requestBuilder(requestBuilder -> requestBuilder
+                        .server(Server.THINGSPACE.value())
+                        .path("/m2m/v1/devices/profile/actions/activate")
+                        .bodyParam(param -> param.value(body))
+                        .bodySerializer(() ->  ApiHelper.serialize(body))
+                        .headerParam(param -> param.key("Content-Type")
+                                .value("application/json").isRequired(false))
+                        .headerParam(param -> param.key("accept").value("application/json"))
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
                         .httpMethod(HttpMethod.POST))
                 .responseHandler(responseHandler -> responseHandler
                         .responseClassType(ResponseClassType.API_RESPONSE)
@@ -191,117 +249,8 @@ public final class ManagingeSIMProfilesController extends BaseController {
                         .headerParam(param -> param.key("Content-Type")
                                 .value("application/json").isRequired(false))
                         .headerParam(param -> param.key("accept").value("application/json"))
-                        .authenticationKey(BaseController.AUTHENTICATION_KEY)
-                        .httpMethod(HttpMethod.POST))
-                .responseHandler(responseHandler -> responseHandler
-                        .responseClassType(ResponseClassType.API_RESPONSE)
-                        .apiResponseDeserializer(
-                                response -> ApiHelper.deserialize(response, GIORequestResponse.class))
-                        .nullify404(false)
-                        .localErrorCase(ErrorCase.DEFAULT,
-                                 ErrorCase.setReason("Error response",
-                                (reason, context) -> new GIORestErrorResponseException(reason, context)))
-                        .globalErrorCase(GLOBAL_ERROR_CASES))
-                .build();
-    }
-
-    /**
-     * Enable the Global IoT Orchestration device profile for download.
-     * @param  body  Required parameter: Device Profile Query
-     * @return    Returns the GIORequestResponse wrapped in ApiResponse response from the API call
-     * @throws    ApiException    Represents error response from the server.
-     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
-     */
-    public ApiResponse<GIORequestResponse> enableADeviceProfileForDownload(
-            final DeviceProfileRequest body) throws ApiException, IOException {
-        return prepareEnableADeviceProfileForDownloadRequest(body).execute();
-    }
-
-    /**
-     * Enable the Global IoT Orchestration device profile for download.
-     * @param  body  Required parameter: Device Profile Query
-     * @return    Returns the GIORequestResponse wrapped in ApiResponse response from the API call
-     */
-    public CompletableFuture<ApiResponse<GIORequestResponse>> enableADeviceProfileForDownloadAsync(
-            final DeviceProfileRequest body) {
-        try { 
-            return prepareEnableADeviceProfileForDownloadRequest(body).executeAsync(); 
-        } catch (Exception e) {  
-            throw new CompletionException(e); 
-        }
-    }
-
-    /**
-     * Builds the ApiCall object for enableADeviceProfileForDownload.
-     */
-    private ApiCall<ApiResponse<GIORequestResponse>, ApiException> prepareEnableADeviceProfileForDownloadRequest(
-            final DeviceProfileRequest body) throws JsonProcessingException, IOException {
-        return new ApiCall.Builder<ApiResponse<GIORequestResponse>, ApiException>()
-                .globalConfig(getGlobalConfiguration())
-                .requestBuilder(requestBuilder -> requestBuilder
-                        .server(Server.THINGSPACE.value())
-                        .path("/m2m/v1/devices/profile/actions/download_enable")
-                        .bodyParam(param -> param.value(body))
-                        .bodySerializer(() ->  ApiHelper.serialize(body))
-                        .headerParam(param -> param.key("Content-Type")
-                                .value("application/json").isRequired(false))
-                        .headerParam(param -> param.key("accept").value("application/json"))
-                        .authenticationKey(BaseController.AUTHENTICATION_KEY)
-                        .httpMethod(HttpMethod.POST))
-                .responseHandler(responseHandler -> responseHandler
-                        .responseClassType(ResponseClassType.API_RESPONSE)
-                        .apiResponseDeserializer(
-                                response -> ApiHelper.deserialize(response, GIORequestResponse.class))
-                        .nullify404(false)
-                        .localErrorCase(ErrorCase.DEFAULT,
-                                 ErrorCase.setReason("Error response",
-                                (reason, context) -> new GIORestErrorResponseException(reason, context)))
-                        .globalErrorCase(GLOBAL_ERROR_CASES))
-                .build();
-    }
-
-    /**
-     * Download a Global IoT Orchestration device profile.
-     * @param  body  Required parameter: Device Profile Query
-     * @return    Returns the GIORequestResponse wrapped in ApiResponse response from the API call
-     * @throws    ApiException    Represents error response from the server.
-     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
-     */
-    public ApiResponse<GIORequestResponse> downloadADeviceProfile(
-            final DeviceProfileRequest body) throws ApiException, IOException {
-        return prepareDownloadADeviceProfileRequest(body).execute();
-    }
-
-    /**
-     * Download a Global IoT Orchestration device profile.
-     * @param  body  Required parameter: Device Profile Query
-     * @return    Returns the GIORequestResponse wrapped in ApiResponse response from the API call
-     */
-    public CompletableFuture<ApiResponse<GIORequestResponse>> downloadADeviceProfileAsync(
-            final DeviceProfileRequest body) {
-        try { 
-            return prepareDownloadADeviceProfileRequest(body).executeAsync(); 
-        } catch (Exception e) {  
-            throw new CompletionException(e); 
-        }
-    }
-
-    /**
-     * Builds the ApiCall object for downloadADeviceProfile.
-     */
-    private ApiCall<ApiResponse<GIORequestResponse>, ApiException> prepareDownloadADeviceProfileRequest(
-            final DeviceProfileRequest body) throws JsonProcessingException, IOException {
-        return new ApiCall.Builder<ApiResponse<GIORequestResponse>, ApiException>()
-                .globalConfig(getGlobalConfiguration())
-                .requestBuilder(requestBuilder -> requestBuilder
-                        .server(Server.THINGSPACE.value())
-                        .path("/m2m/v1/devices/profile/actions/download")
-                        .bodyParam(param -> param.value(body))
-                        .bodySerializer(() ->  ApiHelper.serialize(body))
-                        .headerParam(param -> param.key("Content-Type")
-                                .value("application/json").isRequired(false))
-                        .headerParam(param -> param.key("accept").value("application/json"))
-                        .authenticationKey(BaseController.AUTHENTICATION_KEY)
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
                         .httpMethod(HttpMethod.POST))
                 .responseHandler(responseHandler -> responseHandler
                         .responseClassType(ResponseClassType.API_RESPONSE)
@@ -358,7 +307,64 @@ public final class ManagingeSIMProfilesController extends BaseController {
                         .headerParam(param -> param.key("Content-Type")
                                 .value("application/json").isRequired(false))
                         .headerParam(param -> param.key("accept").value("application/json"))
-                        .authenticationKey(BaseController.AUTHENTICATION_KEY)
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
+                        .httpMethod(HttpMethod.POST))
+                .responseHandler(responseHandler -> responseHandler
+                        .responseClassType(ResponseClassType.API_RESPONSE)
+                        .apiResponseDeserializer(
+                                response -> ApiHelper.deserialize(response, GIORequestResponse.class))
+                        .nullify404(false)
+                        .localErrorCase(ErrorCase.DEFAULT,
+                                 ErrorCase.setReason("Error response",
+                                (reason, context) -> new GIORestErrorResponseException(reason, context)))
+                        .globalErrorCase(GLOBAL_ERROR_CASES))
+                .build();
+    }
+
+    /**
+     * Enable the Global IoT Orchestration device profile for download.
+     * @param  body  Required parameter: Device Profile Query
+     * @return    Returns the GIORequestResponse wrapped in ApiResponse response from the API call
+     * @throws    ApiException    Represents error response from the server.
+     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
+     */
+    public ApiResponse<GIORequestResponse> enableADeviceProfileForDownload(
+            final DeviceProfileRequest body) throws ApiException, IOException {
+        return prepareEnableADeviceProfileForDownloadRequest(body).execute();
+    }
+
+    /**
+     * Enable the Global IoT Orchestration device profile for download.
+     * @param  body  Required parameter: Device Profile Query
+     * @return    Returns the GIORequestResponse wrapped in ApiResponse response from the API call
+     */
+    public CompletableFuture<ApiResponse<GIORequestResponse>> enableADeviceProfileForDownloadAsync(
+            final DeviceProfileRequest body) {
+        try { 
+            return prepareEnableADeviceProfileForDownloadRequest(body).executeAsync(); 
+        } catch (Exception e) {  
+            throw new CompletionException(e); 
+        }
+    }
+
+    /**
+     * Builds the ApiCall object for enableADeviceProfileForDownload.
+     */
+    private ApiCall<ApiResponse<GIORequestResponse>, ApiException> prepareEnableADeviceProfileForDownloadRequest(
+            final DeviceProfileRequest body) throws JsonProcessingException, IOException {
+        return new ApiCall.Builder<ApiResponse<GIORequestResponse>, ApiException>()
+                .globalConfig(getGlobalConfiguration())
+                .requestBuilder(requestBuilder -> requestBuilder
+                        .server(Server.THINGSPACE.value())
+                        .path("/m2m/v1/devices/profile/actions/download_enable")
+                        .bodyParam(param -> param.value(body))
+                        .bodySerializer(() ->  ApiHelper.serialize(body))
+                        .headerParam(param -> param.key("Content-Type")
+                                .value("application/json").isRequired(false))
+                        .headerParam(param -> param.key("accept").value("application/json"))
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
                         .httpMethod(HttpMethod.POST))
                 .responseHandler(responseHandler -> responseHandler
                         .responseClassType(ResponseClassType.API_RESPONSE)

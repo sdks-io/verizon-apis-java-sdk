@@ -7,7 +7,6 @@
 package com.verizon.m5gedge.models;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import java.util.List;
 
@@ -45,7 +44,6 @@ public class ProfileChangeStateRequest {
      * @return Returns the List of DeviceList
      */
     @JsonGetter("devices")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     public List<DeviceList> getDevices() {
         return devices;
     }
@@ -64,7 +62,6 @@ public class ProfileChangeStateRequest {
      * @return Returns the String
      */
     @JsonGetter("accountName")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     public String getAccountName() {
         return accountName;
     }
@@ -83,7 +80,6 @@ public class ProfileChangeStateRequest {
      * @return Returns the String
      */
     @JsonGetter("smsrOid")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     public String getSmsrOid() {
         return smsrOid;
     }
@@ -113,10 +109,7 @@ public class ProfileChangeStateRequest {
      * @return a new {@link ProfileChangeStateRequest.Builder} object
      */
     public Builder toBuilder() {
-        Builder builder = new Builder()
-                .devices(getDevices())
-                .accountName(getAccountName())
-                .smsrOid(getSmsrOid());
+        Builder builder = new Builder(devices, accountName, smsrOid);
         return builder;
     }
 
@@ -128,7 +121,23 @@ public class ProfileChangeStateRequest {
         private String accountName;
         private String smsrOid;
 
+        /**
+         * Initialization constructor.
+         */
+        public Builder() {
+        }
 
+        /**
+         * Initialization constructor.
+         * @param  devices  List of DeviceList value for devices.
+         * @param  accountName  String value for accountName.
+         * @param  smsrOid  String value for smsrOid.
+         */
+        public Builder(List<DeviceList> devices, String accountName, String smsrOid) {
+            this.devices = devices;
+            this.accountName = accountName;
+            this.smsrOid = smsrOid;
+        }
 
         /**
          * Setter for devices.

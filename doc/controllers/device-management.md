@@ -11,33 +11,33 @@ DeviceManagementController deviceManagementController = client.getDeviceManageme
 ## Methods
 
 * [Activate Service for Devices](../../doc/controllers/device-management.md#activate-service-for-devices)
-* [Add Devices](../../doc/controllers/device-management.md#add-devices)
 * [Update Devices Contact Information](../../doc/controllers/device-management.md#update-devices-contact-information)
-* [Update Devices Custom Fields](../../doc/controllers/device-management.md#update-devices-custom-fields)
-* [Deactivate Service for Devices](../../doc/controllers/device-management.md#deactivate-service-for-devices)
-* [Delete Deactivated Devices](../../doc/controllers/device-management.md#delete-deactivated-devices)
 * [List Devices Information](../../doc/controllers/device-management.md#list-devices-information)
-* [List Devices With Imei Iccid Mismatch](../../doc/controllers/device-management.md#list-devices-with-imei-iccid-mismatch)
-* [Move Devices Within Accounts of Profile](../../doc/controllers/device-management.md#move-devices-within-accounts-of-profile)
-* [Update Devices State](../../doc/controllers/device-management.md#update-devices-state)
-* [Change Devices Service Plan](../../doc/controllers/device-management.md#change-devices-service-plan)
 * [Suspend Service for Devices](../../doc/controllers/device-management.md#suspend-service-for-devices)
-* [Restore Service for Suspended Devices](../../doc/controllers/device-management.md#restore-service-for-suspended-devices)
-* [Check Devices Availability for Activation](../../doc/controllers/device-management.md#check-devices-availability-for-activation)
-* [Retrieve Device Connection History](../../doc/controllers/device-management.md#retrieve-device-connection-history)
-* [Update Devices Cost Center Code](../../doc/controllers/device-management.md#update-devices-cost-center-code)
-* [Get Device Extended Diagnostic Information](../../doc/controllers/device-management.md#get-device-extended-diagnostic-information)
-* [List Devices Provisioning History](../../doc/controllers/device-management.md#list-devices-provisioning-history)
-* [List Current Devices PRL Version](../../doc/controllers/device-management.md#list-current-devices-prl-version)
-* [Get Device Service Suspension Status](../../doc/controllers/device-management.md#get-device-service-suspension-status)
-* [List Devices Usage History](../../doc/controllers/device-management.md#list-devices-usage-history)
 * [Retrieve Aggregate Device Usage History](../../doc/controllers/device-management.md#retrieve-aggregate-device-usage-history)
 * [Update Device Id](../../doc/controllers/device-management.md#update-device-id)
+* [Add Devices](../../doc/controllers/device-management.md#add-devices)
+* [Update Devices Custom Fields](../../doc/controllers/device-management.md#update-devices-custom-fields)
+* [Change Devices Service Plan](../../doc/controllers/device-management.md#change-devices-service-plan)
+* [Get Device Extended Diagnostic Information](../../doc/controllers/device-management.md#get-device-extended-diagnostic-information)
+* [List Current Devices PRL Version](../../doc/controllers/device-management.md#list-current-devices-prl-version)
+* [Delete Deactivated Devices](../../doc/controllers/device-management.md#delete-deactivated-devices)
+* [Move Devices Within Accounts of Profile](../../doc/controllers/device-management.md#move-devices-within-accounts-of-profile)
+* [Update Devices State](../../doc/controllers/device-management.md#update-devices-state)
+* [Restore Service for Suspended Devices](../../doc/controllers/device-management.md#restore-service-for-suspended-devices)
+* [Check Devices Availability for Activation](../../doc/controllers/device-management.md#check-devices-availability-for-activation)
+* [Update Devices Cost Center Code](../../doc/controllers/device-management.md#update-devices-cost-center-code)
+* [Get Device Service Suspension Status](../../doc/controllers/device-management.md#get-device-service-suspension-status)
 * [Device Upload](../../doc/controllers/device-management.md#device-upload)
+* [Deactivate Service for Devices](../../doc/controllers/device-management.md#deactivate-service-for-devices)
+* [List Devices With Imei Iccid Mismatch](../../doc/controllers/device-management.md#list-devices-with-imei-iccid-mismatch)
+* [Retrieve Device Connection History](../../doc/controllers/device-management.md#retrieve-device-connection-history)
+* [List Devices Provisioning History](../../doc/controllers/device-management.md#list-devices-provisioning-history)
+* [List Devices Usage History](../../doc/controllers/device-management.md#list-devices-usage-history)
 * [Billed Usage Info](../../doc/controllers/device-management.md#billed-usage-info)
 * [Usage Segmentation Label Association](../../doc/controllers/device-management.md#usage-segmentation-label-association)
-* [Usage Segmentation Label Deletion](../../doc/controllers/device-management.md#usage-segmentation-label-deletion)
 * [Activation Order Status](../../doc/controllers/device-management.md#activation-order-status)
+* [Usage Segmentation Label Deletion](../../doc/controllers/device-management.md#usage-segmentation-label-deletion)
 * [Upload Device Identifier](../../doc/controllers/device-management.md#upload-device-identifier)
 
 
@@ -67,60 +67,69 @@ CompletableFuture<ApiResponse<DeviceManagementResult>> activateServiceForDevices
 ## Example Usage
 
 ```java
-CarrierActivateRequest body = new CarrierActivateRequest.Builder()
-    .accountName("0868924207-00001")
-    .customFields(Arrays.asList(
-        new CustomFields.Builder()
-            .key("CustomField2")
-            .value("SuperVend")
-            .build()
+CarrierActivateRequest body = new CarrierActivateRequest.Builder(
+    Arrays.asList(
+        new AccountDeviceList.Builder(
+            Arrays.asList(
+                new DeviceId.Builder(
+                    "990013907835573",
+                    "imei"
+                )
+                .build(),
+                new DeviceId.Builder(
+                    "89141390780800784259",
+                    "iccid"
+                )
+                .build()
+            )
+        )
+        .build(),
+        new AccountDeviceList.Builder(
+            Arrays.asList(
+                new DeviceId.Builder(
+                    "990013907884259",
+                    "imei"
+                )
+                .build(),
+                new DeviceId.Builder(
+                    "89141390780800735573",
+                    "iccid"
+                )
+                .build()
+            )
+        )
+        .build()
+    ),
+    "m2m_4G",
+    "98801"
+)
+.accountName("0868924207-00001")
+.customFields(Arrays.asList(
+        new CustomFields.Builder(
+            "CustomField2",
+            "SuperVend"
+        )
+        .build()
     ))
-    .devices(Arrays.asList(
-        new AccountDeviceList.Builder()
-            .deviceIds(Arrays.asList(
-                new DeviceId.Builder()
-                    .id("990013907835573")
-                    .kind("imei")
-                    .build(),
-                new DeviceId.Builder()
-                    .id("89141390780800784259")
-                    .kind("iccid")
-                    .build()
-            ))
-            .build(),
-        new AccountDeviceList.Builder()
-            .deviceIds(Arrays.asList(
-                new DeviceId.Builder()
-                    .id("990013907884259")
-                    .kind("imei")
-                    .build(),
-                new DeviceId.Builder()
-                    .id("89141390780800735573")
-                    .kind("iccid")
-                    .build()
-            ))
-            .build()
-    ))
-    .groupName("4G West")
-    .mdnZIpCode("98801")
-    .primaryPlaceOfUse(new PlaceOfUse.Builder()
-        .address(new Address.Builder(
+.groupName("4G West")
+.primaryPlaceOfUse(new PlaceOfUse.Builder(
+        new Address.Builder(
             "1600 Pennsylvania Ave NW",
             "Washington",
             "DC",
             "20500",
             "USA"
         )
-        .build())
-        .customerName(new CustomerName.Builder(
+        .build(),
+        new CustomerName.Builder(
             "Zaffod",
             "Beeblebrox"
         )
         .title("President")
-        .build())
-        .build())
-    .servicePlan("m2m_4G")
-    .build();
+        .build()
+    )
+    .build())
+.build();
 
 deviceManagementController.activateServiceForDevicesAsync(body).thenAccept(result -> {
     // TODO success callback handler
@@ -138,103 +147,6 @@ deviceManagementController.activateServiceForDevicesAsync(body).thenAccept(resul
 {
   "requestId": "595f5c44-c31c-4552-8670-020a1545a84d"
 }
-```
-
-## Errors
-
-| HTTP Status Code | Error Description | Exception Class |
-|  --- | --- | --- |
-| 400 | Error response. | [`ConnectivityManagementResultException`](../../doc/models/connectivity-management-result-exception.md) |
-
-
-# Add Devices
-
-Use this API if you want to manage some device settings before you are ready to activate service for the devices.
-
-```java
-CompletableFuture<ApiResponse<List<AddDevicesResult>>> addDevicesAsync(
-    final AddDevicesRequest body)
-```
-
-## Parameters
-
-| Parameter | Type | Tags | Description |
-|  --- | --- | --- | --- |
-| `body` | [`AddDevicesRequest`](../../doc/models/add-devices-request.md) | Body, Required | Devices to add. |
-
-## Server
-
-`Server.THINGSPACE`
-
-## Response Type
-
-[`List<AddDevicesResult>`](../../doc/models/add-devices-result.md)
-
-## Example Usage
-
-```java
-AddDevicesRequest body = new AddDevicesRequest.Builder()
-    .accountName("0868924207-00001")
-    .customFields(Arrays.asList(
-        new CustomFields.Builder()
-            .key("CustomField2")
-            .value("SuperVend")
-            .build()
-    ))
-    .devicesToAdd(Arrays.asList(
-        new AccountDeviceList.Builder()
-            .deviceIds(Arrays.asList(
-                new DeviceId.Builder()
-                    .id("990013907835573")
-                    .kind("imei")
-                    .build(),
-                new DeviceId.Builder()
-                    .id("89141390780800784259")
-                    .kind("iccid")
-                    .build()
-            ))
-            .build(),
-        new AccountDeviceList.Builder()
-            .deviceIds(Arrays.asList(
-                new DeviceId.Builder()
-                    .id("990013907884259")
-                    .kind("imei")
-                    .build(),
-                new DeviceId.Builder()
-                    .id("89141390780800735573")
-                    .kind("iccid")
-                    .build()
-            ))
-            .build()
-    ))
-    .groupName("West Region")
-    .state("preactive")
-    .build();
-
-deviceManagementController.addDevicesAsync(body).thenAccept(result -> {
-    // TODO success callback handler
-    System.out.println(result);
-}).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
-    return null;
-});
-```
-
-## Example Response *(as JSON)*
-
-```json
-[
-  {
-    "deviceIds": [
-      {
-        "id": "89148000000800784259",
-        "kind": "iccid"
-      }
-    ],
-    "response": "Success"
-  }
-]
 ```
 
 ## Errors
@@ -270,24 +182,51 @@ CompletableFuture<ApiResponse<DeviceManagementResult>> updateDevicesContactInfor
 ## Example Usage
 
 ```java
-ContactInfoUpdateRequest body = new ContactInfoUpdateRequest.Builder()
-    .accountName("0212345678-00001")
-    .devices(Arrays.asList(
-        new AccountDeviceList.Builder()
-            .deviceIds(Arrays.asList(
-                new DeviceId.Builder()
-                    .id("19110173057")
-                    .kind("ESN")
-                    .build(),
-                new DeviceId.Builder()
-                    .id("19110173057")
-                    .kind("ESN")
-                    .build()
-            ))
-            .build()
+ContactInfoUpdateRequest body = new ContactInfoUpdateRequest.Builder(
+    new PlaceOfUse.Builder(
+        new Address.Builder(
+            "9868 Scranton Rd",
+            "San Diego",
+            "CA",
+            "92121",
+            "USA"
+        )
+        .addressLine2("Suite A")
+        .zip4("0001")
+        .phone("1234567890")
+        .phoneType("H")
+        .emailAddress("zaffod@theinternet.com")
+        .build(),
+        new CustomerName.Builder(
+            "Zaffod",
+            "Beeblebrox"
+        )
+        .title("President")
+        .middleName("P")
+        .suffix("I")
+        .build()
+    )
+    .build()
+)
+.accountName("0212345678-00001")
+.devices(Arrays.asList(
+        new AccountDeviceList.Builder(
+            Arrays.asList(
+                new DeviceId.Builder(
+                    "19110173057",
+                    "ESN"
+                )
+                .build(),
+                new DeviceId.Builder(
+                    "19110173057",
+                    "ESN"
+                )
+                .build()
+            )
+        )
+        .build()
     ))
-    .primaryPlaceOfUse(ApiHelper.deserialize("{\"address\":{\"addressLine1\":\"9868 Scranton Rd\",\"addressLine2\":\"Suite A\",\"city\":\"San Diego\",\"state\":\"CA\",\"country\":\"USA\",\"zip\":\"92121\",\"zip4\":\"0001\",\"phone\":\"1234567890\",\"phoneType\":\"H\",\"emailAddress\":\"zaffod@theinternet.com\"},\"customerName\":{\"firstName\":\"Zaffod\",\"lastName\":\"Beeblebrox\",\"middleName\":\"P\",\"title\":\"President\",\"suffix\":\"I\"}}"))
-    .build();
+.build();
 
 deviceManagementController.updateDevicesContactInformationAsync(body).thenAccept(result -> {
     // TODO success callback handler
@@ -305,253 +244,6 @@ deviceManagementController.updateDevicesContactInformationAsync(body).thenAccept
 {
   "requestId": "24da9f9a-d110-4a54-86b4-93fb76aab83c"
 }
-```
-
-## Errors
-
-| HTTP Status Code | Error Description | Exception Class |
-|  --- | --- | --- |
-| 400 | Error response. | [`ConnectivityManagementResultException`](../../doc/models/connectivity-management-result-exception.md) |
-
-
-# Update Devices Custom Fields
-
-Sends a CarrierService callback message for each device in the request when the custom fields have been changed, or if there was a problem and the change could not be completed.
-
-```java
-CompletableFuture<ApiResponse<DeviceManagementResult>> updateDevicesCustomFieldsAsync(
-    final CustomFieldsUpdateRequest body)
-```
-
-## Parameters
-
-| Parameter | Type | Tags | Description |
-|  --- | --- | --- | --- |
-| `body` | [`CustomFieldsUpdateRequest`](../../doc/models/custom-fields-update-request.md) | Body, Required | Request to update custom field of devices. |
-
-## Server
-
-`Server.THINGSPACE`
-
-## Response Type
-
-[`DeviceManagementResult`](../../doc/models/device-management-result.md)
-
-## Example Usage
-
-```java
-CustomFieldsUpdateRequest body = new CustomFieldsUpdateRequest.Builder()
-    .customFieldsToUpdate(Arrays.asList(
-        new CustomFields.Builder()
-            .key("CustomField1")
-            .value("West Region")
-            .build(),
-        new CustomFields.Builder()
-            .key("CustomField2")
-            .value("Distribution")
-            .build()
-    ))
-    .devices(Arrays.asList(
-        new AccountDeviceList.Builder()
-            .deviceIds(Arrays.asList(
-                new DeviceId.Builder()
-                    .id("89148000000800139708")
-                    .kind("iccid")
-                    .build()
-            ))
-            .build()
-    ))
-    .build();
-
-deviceManagementController.updateDevicesCustomFieldsAsync(body).thenAccept(result -> {
-    // TODO success callback handler
-    System.out.println(result);
-}).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
-    return null;
-});
-```
-
-## Example Response *(as JSON)*
-
-```json
-{
-  "requestId": "595f5c44-c31c-4552-8670-020a1545a84d"
-}
-```
-
-## Errors
-
-| HTTP Status Code | Error Description | Exception Class |
-|  --- | --- | --- |
-| 400 | Error response. | [`ConnectivityManagementResultException`](../../doc/models/connectivity-management-result-exception.md) |
-
-
-# Deactivate Service for Devices
-
-Deactivating service for a device may result in an early termination fee (ETF) being charged to the account, depending on the terms of the contract with Verizon. If your contract allows ETF waivers and if you want to use one for a particular deactivation, set the etfWaiver value to True.
-
-```java
-CompletableFuture<ApiResponse<DeviceManagementResult>> deactivateServiceForDevicesAsync(
-    final CarrierDeactivateRequest body)
-```
-
-## Parameters
-
-| Parameter | Type | Tags | Description |
-|  --- | --- | --- | --- |
-| `body` | [`CarrierDeactivateRequest`](../../doc/models/carrier-deactivate-request.md) | Body, Required | Request to deactivate service for one or more devices. |
-
-## Server
-
-`Server.THINGSPACE`
-
-## Response Type
-
-[`DeviceManagementResult`](../../doc/models/device-management-result.md)
-
-## Example Usage
-
-```java
-CarrierDeactivateRequest body = new CarrierDeactivateRequest.Builder()
-    .devices(Arrays.asList(
-        new AccountDeviceList.Builder()
-            .deviceIds(Arrays.asList(
-                new DeviceId.Builder()
-                    .id("20-digit ICCID")
-                    .kind("iccid")
-                    .build()
-            ))
-            .build()
-    ))
-    .etfWaiver(true)
-    .reasonCode("FF")
-    .build();
-
-deviceManagementController.deactivateServiceForDevicesAsync(body).thenAccept(result -> {
-    // TODO success callback handler
-    System.out.println(result);
-}).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
-    return null;
-});
-```
-
-## Example Response *(as JSON)*
-
-```json
-{
-  "requestId": "595f5c44-c31c-4552-8670-020a1545a84d"
-}
-```
-
-## Errors
-
-| HTTP Status Code | Error Description | Exception Class |
-|  --- | --- | --- |
-| 400 | Error response. | [`ConnectivityManagementResultException`](../../doc/models/connectivity-management-result-exception.md) |
-
-
-# Delete Deactivated Devices
-
-Use this API to remove unneeded devices from an account.
-
-```java
-CompletableFuture<ApiResponse<List<DeleteDevicesResult>>> deleteDeactivatedDevicesAsync(
-    final DeleteDevicesRequest body)
-```
-
-## Parameters
-
-| Parameter | Type | Tags | Description |
-|  --- | --- | --- | --- |
-| `body` | [`DeleteDevicesRequest`](../../doc/models/delete-devices-request.md) | Body, Required | Devices to delete. |
-
-## Server
-
-`Server.THINGSPACE`
-
-## Response Type
-
-[`List<DeleteDevicesResult>`](../../doc/models/delete-devices-result.md)
-
-## Example Usage
-
-```java
-DeleteDevicesRequest body = new DeleteDevicesRequest.Builder()
-    .devicesToDelete(Arrays.asList(
-        new AccountDeviceList.Builder()
-            .deviceIds(Arrays.asList(
-                new DeviceId.Builder()
-                    .id("09005470263")
-                    .kind("esn")
-                    .build()
-            ))
-            .build(),
-        new AccountDeviceList.Builder()
-            .deviceIds(Arrays.asList(
-                new DeviceId.Builder()
-                    .id("85000022411113460014")
-                    .kind("iccid")
-                    .build()
-            ))
-            .build(),
-        new AccountDeviceList.Builder()
-            .deviceIds(Arrays.asList(
-                new DeviceId.Builder()
-                    .id("85000022412313460016")
-                    .kind("iccid")
-                    .build()
-            ))
-            .build()
-    ))
-    .build();
-
-deviceManagementController.deleteDeactivatedDevicesAsync(body).thenAccept(result -> {
-    // TODO success callback handler
-    System.out.println(result);
-}).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
-    return null;
-});
-```
-
-## Example Response *(as JSON)*
-
-```json
-[
-  {
-    "deviceIds": {
-      "id": "09005470263",
-      "kind": "esn"
-    },
-    "status": "Success"
-  },
-  {
-    "deviceIds": {
-      "id": "85000022411113460014",
-      "kind": "iccid"
-    },
-    "status": "Success"
-  },
-  {
-    "deviceIds": [
-      {
-        "id": "85000022412313460016",
-        "kind": "iccid"
-      },
-      {
-        "id": "09005470263",
-        "kind": "esn"
-      }
-    ],
-    "status": "Failed",
-    "message": "The device is not in deactive state."
-  }
-]
 ```
 
 ## Errors
@@ -588,10 +280,11 @@ CompletableFuture<ApiResponse<AccountDeviceListResult>> listDevicesInformationAs
 
 ```java
 AccountDeviceListRequest body = new AccountDeviceListRequest.Builder()
-    .deviceId(new DeviceId.Builder()
-        .id("20-digit ICCID")
-        .kind("iccid")
-        .build())
+    .deviceId(new DeviceId.Builder(
+        "20-digit ICCID",
+        "iccid"
+    )
+    .build())
     .build();
 
 deviceManagementController.listDevicesInformationAsync(body).thenAccept(result -> {
@@ -651,20 +344,20 @@ deviceManagementController.listDevicesInformationAsync(body).thenAccept(result -
 | 400 | Error response. | [`ConnectivityManagementResultException`](../../doc/models/connectivity-management-result-exception.md) |
 
 
-# List Devices With Imei Iccid Mismatch
+# Suspend Service for Devices
 
-Returns a list of all 4G devices with an ICCID (SIM) that was not activated with the expected IMEI (hardware) during a specified time frame.
+Suspends service for one or more devices.
 
 ```java
-CompletableFuture<ApiResponse<DeviceMismatchListResult>> listDevicesWithImeiIccidMismatchAsync(
-    final DeviceMismatchListRequest body)
+CompletableFuture<ApiResponse<DeviceManagementResult>> suspendServiceForDevicesAsync(
+    final CarrierActionsRequest body)
 ```
 
 ## Parameters
 
 | Parameter | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `body` | [`DeviceMismatchListRequest`](../../doc/models/device-mismatch-list-request.md) | Body, Required | Request to list devices with mismatched IMEIs and ICCIDs. |
+| `body` | [`CarrierActionsRequest`](../../doc/models/carrier-actions-request.md) | Body, Required | Request to suspend service for one or more devices. |
 
 ## Server
 
@@ -672,34 +365,38 @@ CompletableFuture<ApiResponse<DeviceMismatchListResult>> listDevicesWithImeiIcci
 
 ## Response Type
 
-[`DeviceMismatchListResult`](../../doc/models/device-mismatch-list-result.md)
+[`DeviceManagementResult`](../../doc/models/device-management-result.md)
 
 ## Example Usage
 
 ```java
-DeviceMismatchListRequest body = new DeviceMismatchListRequest.Builder()
-    .devices(Arrays.asList(
-        new AccountDeviceList.Builder()
-            .deviceIds(Arrays.asList(
-                new DeviceId.Builder()
-                    .id("8914800000080078")
-                    .kind("ICCID")
-                    .build(),
-                new DeviceId.Builder()
-                    .id("5096300587")
-                    .kind("MDN")
-                    .build()
-            ))
-            .build()
+CarrierActionsRequest body = new CarrierActionsRequest.Builder()
+    .accountName("0000123456-00001")
+    .customFields(Arrays.asList(
+        new CustomFields.Builder(
+            "customField1",
+            "key value"
+        )
+        .build()
     ))
-    .filter(new DateFilter.Builder()
-        .earliest("2020-05-01T15:00:00-08:00Z")
-        .latest("2020-07-30T15:00:00-08:00Z")
-        .build())
-    .accountName("0342077109-00001")
+    .devices(Arrays.asList(
+        new AccountDeviceList.Builder(
+            Arrays.asList(
+                new DeviceId.Builder(
+                    "20-digit ICCID",
+                    "iccid"
+                )
+                .build()
+            )
+        )
+        .build()
+    ))
+    .withBilling(true)
+    .groupName("name of the group")
+    .servicePlan("service plan name")
     .build();
 
-deviceManagementController.listDevicesWithImeiIccidMismatchAsync(body).thenAccept(result -> {
+deviceManagementController.suspendServiceForDevicesAsync(body).thenAccept(result -> {
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
@@ -713,18 +410,643 @@ deviceManagementController.listDevicesWithImeiIccidMismatchAsync(body).thenAccep
 
 ```json
 {
-  "devices": [
+  "requestId": "595f5c44-c31c-4552-8670-020a1545a84d"
+}
+```
+
+## Errors
+
+| HTTP Status Code | Error Description | Exception Class |
+|  --- | --- | --- |
+| 400 | Error response. | [`ConnectivityManagementResultException`](../../doc/models/connectivity-management-result-exception.md) |
+
+
+# Retrieve Aggregate Device Usage History
+
+The information is returned in a callback response, so you must register a URL for DeviceUsage callback messages using the POST /callbacks API.
+
+```java
+CompletableFuture<ApiResponse<DeviceManagementResult>> retrieveAggregateDeviceUsageHistoryAsync(
+    final DeviceAggregateUsageListRequest body)
+```
+
+## Parameters
+
+| Parameter | Type | Tags | Description |
+|  --- | --- | --- | --- |
+| `body` | [`DeviceAggregateUsageListRequest`](../../doc/models/device-aggregate-usage-list-request.md) | Body, Required | A request to retrieve aggregated device usage history information. |
+
+## Server
+
+`Server.THINGSPACE`
+
+## Response Type
+
+[`DeviceManagementResult`](../../doc/models/device-management-result.md)
+
+## Example Usage
+
+```java
+DeviceAggregateUsageListRequest body = new DeviceAggregateUsageListRequest.Builder(
+    "2021-08-01T00:00:00-06:00",
+    "2021-08-30T00:00:00-06:00"
+)
+.deviceIds(Arrays.asList(
+        new DeviceId.Builder(
+            "84258000000891490087",
+            "ICCID"
+        )
+        .build()
+    ))
+.accountName("9992330389-00001")
+.build();
+
+deviceManagementController.retrieveAggregateDeviceUsageHistoryAsync(body).thenAccept(result -> {
+    // TODO success callback handler
+    System.out.println(result);
+}).exceptionally(exception -> {
+    // TODO failure callback handler
+    exception.printStackTrace();
+    return null;
+});
+```
+
+## Example Response *(as JSON)*
+
+```json
+{
+  "requestId": "1631e200-7398-4609-b1f8-398341229176"
+}
+```
+
+## Errors
+
+| HTTP Status Code | Error Description | Exception Class |
+|  --- | --- | --- |
+| 400 | Error response. | [`ConnectivityManagementResultException`](../../doc/models/connectivity-management-result-exception.md) |
+
+
+# Update Device Id
+
+Changes the identifier of a 3G or 4G device to match hardware changes made for a line of service. Use this request to transfer the line of service and the MDN to new hardware, or to change the MDN.
+
+```java
+CompletableFuture<ApiResponse<DeviceManagementResult>> updateDeviceIdAsync(
+    final String serviceType,
+    final ChangeDeviceIdRequest body)
+```
+
+## Parameters
+
+| Parameter | Type | Tags | Description |
+|  --- | --- | --- | --- |
+| `serviceType` | `String` | Template, Required | Identifier type. |
+| `body` | [`ChangeDeviceIdRequest`](../../doc/models/change-device-id-request.md) | Body, Required | Request to update device id. |
+
+## Server
+
+`Server.THINGSPACE`
+
+## Response Type
+
+[`DeviceManagementResult`](../../doc/models/device-management-result.md)
+
+## Example Usage
+
+```java
+String serviceType = "serviceType6";
+ChangeDeviceIdRequest body = new ChangeDeviceIdRequest.Builder(
+    Arrays.asList(
+        new DeviceId.Builder(
+            "42590078891480000008",
+            "iccid"
+        )
+        .build()
+    )
+)
+.change4gOption("ChangeICCID")
+.deviceIdsTo(Arrays.asList(
+        new DeviceId.Builder(
+            "89148000000842590078",
+            "iccid"
+        )
+        .build()
+    ))
+.servicePlan("4G 2GB")
+.zipCode("98802")
+.build();
+
+deviceManagementController.updateDeviceIdAsync(serviceType, body).thenAccept(result -> {
+    // TODO success callback handler
+    System.out.println(result);
+}).exceptionally(exception -> {
+    // TODO failure callback handler
+    exception.printStackTrace();
+    return null;
+});
+```
+
+## Example Response *(as JSON)*
+
+```json
+{
+  "requestId": "a28892ea-6503-4aa7-bfa2-4cd45d42f61b"
+}
+```
+
+## Errors
+
+| HTTP Status Code | Error Description | Exception Class |
+|  --- | --- | --- |
+| 400 | Error response. | [`ConnectivityManagementResultException`](../../doc/models/connectivity-management-result-exception.md) |
+
+
+# Add Devices
+
+Use this API if you want to manage some device settings before you are ready to activate service for the devices.
+
+```java
+CompletableFuture<ApiResponse<List<AddDevicesResult>>> addDevicesAsync(
+    final AddDevicesRequest body)
+```
+
+## Parameters
+
+| Parameter | Type | Tags | Description |
+|  --- | --- | --- | --- |
+| `body` | [`AddDevicesRequest`](../../doc/models/add-devices-request.md) | Body, Required | Devices to add. |
+
+## Server
+
+`Server.THINGSPACE`
+
+## Response Type
+
+[`List<AddDevicesResult>`](../../doc/models/add-devices-result.md)
+
+## Example Usage
+
+```java
+AddDevicesRequest body = new AddDevicesRequest.Builder(
+    "preactive",
+    Arrays.asList(
+        new AccountDeviceList.Builder(
+            Arrays.asList(
+                new DeviceId.Builder(
+                    "990013907835573",
+                    "imei"
+                )
+                .build(),
+                new DeviceId.Builder(
+                    "89141390780800784259",
+                    "iccid"
+                )
+                .build()
+            )
+        )
+        .build(),
+        new AccountDeviceList.Builder(
+            Arrays.asList(
+                new DeviceId.Builder(
+                    "990013907884259",
+                    "imei"
+                )
+                .build(),
+                new DeviceId.Builder(
+                    "89141390780800735573",
+                    "iccid"
+                )
+                .build()
+            )
+        )
+        .build()
+    )
+)
+.accountName("0868924207-00001")
+.customFields(Arrays.asList(
+        new CustomFields.Builder(
+            "CustomField2",
+            "SuperVend"
+        )
+        .build()
+    ))
+.groupName("West Region")
+.build();
+
+deviceManagementController.addDevicesAsync(body).thenAccept(result -> {
+    // TODO success callback handler
+    System.out.println(result);
+}).exceptionally(exception -> {
+    // TODO failure callback handler
+    exception.printStackTrace();
+    return null;
+});
+```
+
+## Example Response *(as JSON)*
+
+```json
+[
+  {
+    "deviceIds": [
+      {
+        "id": "89148000000800784259",
+        "kind": "iccid"
+      }
+    ],
+    "response": "Success"
+  }
+]
+```
+
+## Errors
+
+| HTTP Status Code | Error Description | Exception Class |
+|  --- | --- | --- |
+| 400 | Error response. | [`ConnectivityManagementResultException`](../../doc/models/connectivity-management-result-exception.md) |
+
+
+# Update Devices Custom Fields
+
+Sends a CarrierService callback message for each device in the request when the custom fields have been changed, or if there was a problem and the change could not be completed.
+
+```java
+CompletableFuture<ApiResponse<DeviceManagementResult>> updateDevicesCustomFieldsAsync(
+    final CustomFieldsUpdateRequest body)
+```
+
+## Parameters
+
+| Parameter | Type | Tags | Description |
+|  --- | --- | --- | --- |
+| `body` | [`CustomFieldsUpdateRequest`](../../doc/models/custom-fields-update-request.md) | Body, Required | Request to update custom field of devices. |
+
+## Server
+
+`Server.THINGSPACE`
+
+## Response Type
+
+[`DeviceManagementResult`](../../doc/models/device-management-result.md)
+
+## Example Usage
+
+```java
+CustomFieldsUpdateRequest body = new CustomFieldsUpdateRequest.Builder()
+    .customFieldsToUpdate(Arrays.asList(
+        new CustomFields.Builder(
+            "CustomField1",
+            "West Region"
+        )
+        .build(),
+        new CustomFields.Builder(
+            "CustomField2",
+            "Distribution"
+        )
+        .build()
+    ))
+    .devices(Arrays.asList(
+        new AccountDeviceList.Builder(
+            Arrays.asList(
+                new DeviceId.Builder(
+                    "89148000000800139708",
+                    "iccid"
+                )
+                .build()
+            )
+        )
+        .build()
+    ))
+    .build();
+
+deviceManagementController.updateDevicesCustomFieldsAsync(body).thenAccept(result -> {
+    // TODO success callback handler
+    System.out.println(result);
+}).exceptionally(exception -> {
+    // TODO failure callback handler
+    exception.printStackTrace();
+    return null;
+});
+```
+
+## Example Response *(as JSON)*
+
+```json
+{
+  "requestId": "595f5c44-c31c-4552-8670-020a1545a84d"
+}
+```
+
+## Errors
+
+| HTTP Status Code | Error Description | Exception Class |
+|  --- | --- | --- |
+| 400 | Error response. | [`ConnectivityManagementResultException`](../../doc/models/connectivity-management-result-exception.md) |
+
+
+# Change Devices Service Plan
+
+Changes the service plan for one or more devices.
+
+```java
+CompletableFuture<ApiResponse<DeviceManagementResult>> changeDevicesServicePlanAsync(
+    final ServicePlanUpdateRequest body)
+```
+
+## Parameters
+
+| Parameter | Type | Tags | Description |
+|  --- | --- | --- | --- |
+| `body` | [`ServicePlanUpdateRequest`](../../doc/models/service-plan-update-request.md) | Body, Required | Request to change device service plan. |
+
+## Server
+
+`Server.THINGSPACE`
+
+## Response Type
+
+[`DeviceManagementResult`](../../doc/models/device-management-result.md)
+
+## Example Usage
+
+```java
+ServicePlanUpdateRequest body = new ServicePlanUpdateRequest.Builder(
+    "new_service_plan_code"
+)
+.devices(Arrays.asList(
+        new AccountDeviceList.Builder(
+            Arrays.asList(
+                new DeviceId.Builder(
+                    "A100003685E561",
+                    "meid"
+                )
+                .build()
+            )
+        )
+        .build()
+    ))
+.build();
+
+deviceManagementController.changeDevicesServicePlanAsync(body).thenAccept(result -> {
+    // TODO success callback handler
+    System.out.println(result);
+}).exceptionally(exception -> {
+    // TODO failure callback handler
+    exception.printStackTrace();
+    return null;
+});
+```
+
+## Example Response *(as JSON)*
+
+```json
+{
+  "requestId": "c8de7c1d-59b9-4cf3-b969-db76cb2ce509"
+}
+```
+
+## Errors
+
+| HTTP Status Code | Error Description | Exception Class |
+|  --- | --- | --- |
+| 400 | Error response. | [`ConnectivityManagementResultException`](../../doc/models/connectivity-management-result-exception.md) |
+
+
+# Get Device Extended Diagnostic Information
+
+Returns extended diagnostic information about a specified device, including connectivity, provisioning, billing and location status.
+
+```java
+CompletableFuture<ApiResponse<DeviceExtendedDiagnosticsResult>> getDeviceExtendedDiagnosticInformationAsync(
+    final DeviceExtendedDiagnosticsRequest body)
+```
+
+## Parameters
+
+| Parameter | Type | Tags | Description |
+|  --- | --- | --- | --- |
+| `body` | [`DeviceExtendedDiagnosticsRequest`](../../doc/models/device-extended-diagnostics-request.md) | Body, Required | Request to query extended diagnostics information for a device. |
+
+## Server
+
+`Server.THINGSPACE`
+
+## Response Type
+
+[`DeviceExtendedDiagnosticsResult`](../../doc/models/device-extended-diagnostics-result.md)
+
+## Example Usage
+
+```java
+DeviceExtendedDiagnosticsRequest body = new DeviceExtendedDiagnosticsRequest.Builder(
+    "1223334444-00001",
+    Arrays.asList(
+        new DeviceId.Builder(
+            "10-digit MDN",
+            "mdn"
+        )
+        .build()
+    )
+)
+.build();
+
+deviceManagementController.getDeviceExtendedDiagnosticInformationAsync(body).thenAccept(result -> {
+    // TODO success callback handler
+    System.out.println(result);
+}).exceptionally(exception -> {
+    // TODO failure callback handler
+    exception.printStackTrace();
+    return null;
+});
+```
+
+## Example Response *(as JSON)*
+
+```json
+{
+  "categories": [
     {
-      "accountName": "0212398765-00001",
-      "mdn": "5096300587",
-      "activationDate": "2011-01-21T10:55:27-08:00",
-      "iccid": "89148000000800784259",
-      "preImei": "990003420535573",
-      "postImei": "987603420573553",
-      "simOtaDate": "2017-12-01T16:00:00-08:00"
+      "categoryName": "Connectivity",
+      "extendedAttributes": [
+        {
+          "key": "Connected",
+          "value": "false"
+        }
+      ]
     }
   ]
 }
+```
+
+## Errors
+
+| HTTP Status Code | Error Description | Exception Class |
+|  --- | --- | --- |
+| 400 | Error response. | [`ConnectivityManagementResultException`](../../doc/models/connectivity-management-result-exception.md) |
+
+
+# List Current Devices PRL Version
+
+4G and GSM devices do not have a PRL.
+
+```java
+CompletableFuture<ApiResponse<DeviceManagementResult>> listCurrentDevicesPRLVersionAsync(
+    final DevicePrlListRequest body)
+```
+
+## Parameters
+
+| Parameter | Type | Tags | Description |
+|  --- | --- | --- | --- |
+| `body` | [`DevicePrlListRequest`](../../doc/models/device-prl-list-request.md) | Body, Required | Request to query device PRL. |
+
+## Server
+
+`Server.THINGSPACE`
+
+## Response Type
+
+[`DeviceManagementResult`](../../doc/models/device-management-result.md)
+
+## Example Usage
+
+```java
+DevicePrlListRequest body = new DevicePrlListRequest.Builder()
+    .accountName("101234-0001")
+    .groupName("West Region")
+    .servicePlan("3G 2MB")
+    .build();
+
+deviceManagementController.listCurrentDevicesPRLVersionAsync(body).thenAccept(result -> {
+    // TODO success callback handler
+    System.out.println(result);
+}).exceptionally(exception -> {
+    // TODO failure callback handler
+    exception.printStackTrace();
+    return null;
+});
+```
+
+## Example Response *(as JSON)*
+
+```json
+{
+  "requestId": "595f5c44-c31c-4552-8670-020a1545a84d"
+}
+```
+
+## Errors
+
+| HTTP Status Code | Error Description | Exception Class |
+|  --- | --- | --- |
+| 400 | Error response. | [`ConnectivityManagementResultException`](../../doc/models/connectivity-management-result-exception.md) |
+
+
+# Delete Deactivated Devices
+
+Use this API to remove unneeded devices from an account.
+
+```java
+CompletableFuture<ApiResponse<List<DeleteDevicesResult>>> deleteDeactivatedDevicesAsync(
+    final DeleteDevicesRequest body)
+```
+
+## Parameters
+
+| Parameter | Type | Tags | Description |
+|  --- | --- | --- | --- |
+| `body` | [`DeleteDevicesRequest`](../../doc/models/delete-devices-request.md) | Body, Required | Devices to delete. |
+
+## Server
+
+`Server.THINGSPACE`
+
+## Response Type
+
+[`List<DeleteDevicesResult>`](../../doc/models/delete-devices-result.md)
+
+## Example Usage
+
+```java
+DeleteDevicesRequest body = new DeleteDevicesRequest.Builder(
+    Arrays.asList(
+        new AccountDeviceList.Builder(
+            Arrays.asList(
+                new DeviceId.Builder(
+                    "09005470263",
+                    "esn"
+                )
+                .build()
+            )
+        )
+        .build(),
+        new AccountDeviceList.Builder(
+            Arrays.asList(
+                new DeviceId.Builder(
+                    "85000022411113460014",
+                    "iccid"
+                )
+                .build()
+            )
+        )
+        .build(),
+        new AccountDeviceList.Builder(
+            Arrays.asList(
+                new DeviceId.Builder(
+                    "85000022412313460016",
+                    "iccid"
+                )
+                .build()
+            )
+        )
+        .build()
+    )
+)
+.build();
+
+deviceManagementController.deleteDeactivatedDevicesAsync(body).thenAccept(result -> {
+    // TODO success callback handler
+    System.out.println(result);
+}).exceptionally(exception -> {
+    // TODO failure callback handler
+    exception.printStackTrace();
+    return null;
+});
+```
+
+## Example Response *(as JSON)*
+
+```json
+[
+  {
+    "deviceIds": {
+      "id": "09005470263",
+      "kind": "esn"
+    },
+    "status": "Success"
+  },
+  {
+    "deviceIds": {
+      "id": "85000022411113460014",
+      "kind": "iccid"
+    },
+    "status": "Success"
+  },
+  {
+    "deviceIds": [
+      {
+        "id": "85000022412313460016",
+        "kind": "iccid"
+      },
+      {
+        "id": "09005470263",
+        "kind": "esn"
+      }
+    ],
+    "status": "Failed",
+    "message": "The device is not in deactive state."
+  }
+]
 ```
 
 ## Errors
@@ -760,20 +1082,23 @@ CompletableFuture<ApiResponse<DeviceManagementResult>> moveDevicesWithinAccounts
 ## Example Usage
 
 ```java
-MoveDeviceRequest body = new MoveDeviceRequest.Builder()
-    .accountName("0212345678-00001")
-    .devices(Arrays.asList(
-        new AccountDeviceList.Builder()
-            .deviceIds(Arrays.asList(
-                new DeviceId.Builder()
-                    .id("19110173057")
-                    .kind("ESN")
-                    .build()
-            ))
-            .build()
+MoveDeviceRequest body = new MoveDeviceRequest.Builder(
+    "0212345678-00001"
+)
+.devices(Arrays.asList(
+        new AccountDeviceList.Builder(
+            Arrays.asList(
+                new DeviceId.Builder(
+                    "19110173057",
+                    "ESN"
+                )
+                .build()
+            )
+        )
+        .build()
     ))
-    .servicePlan("M2M5GB")
-    .build();
+.servicePlan("M2M5GB")
+.build();
 
 deviceManagementController.moveDevicesWithinAccountsOfProfileAsync(body).thenAccept(result -> {
     // TODO success callback handler
@@ -826,187 +1151,66 @@ CompletableFuture<ApiResponse<DeviceManagementResult>> updateDevicesStateAsync(
 ## Example Usage
 
 ```java
-GoToStateRequest body = new GoToStateRequest.Builder()
-    .devices(Arrays.asList(
-        new AccountDeviceList.Builder()
-            .deviceIds(Arrays.asList(
-                new DeviceId.Builder()
-                    .id("990013907835573")
-                    .kind("imei")
-                    .build(),
-                new DeviceId.Builder()
-                    .id("89141390780800784259")
-                    .kind("iccid")
-                    .build()
-            ))
-            .build(),
-        new AccountDeviceList.Builder()
-            .deviceIds(Arrays.asList(
-                new DeviceId.Builder()
-                    .id("990013907884259")
-                    .kind("imei")
-                    .build(),
-                new DeviceId.Builder()
-                    .id("89141390780800735573")
-                    .kind("iccid")
-                    .build()
-            ))
-            .build()
+GoToStateRequest body = new GoToStateRequest.Builder(
+    "My Service",
+    "My State",
+    "87641",
+    "94203"
+)
+.devices(Arrays.asList(
+        new AccountDeviceList.Builder(
+            Arrays.asList(
+                new DeviceId.Builder(
+                    "990013907835573",
+                    "imei"
+                )
+                .build(),
+                new DeviceId.Builder(
+                    "89141390780800784259",
+                    "iccid"
+                )
+                .build()
+            )
+        )
+        .build(),
+        new AccountDeviceList.Builder(
+            Arrays.asList(
+                new DeviceId.Builder(
+                    "990013907884259",
+                    "imei"
+                )
+                .build(),
+                new DeviceId.Builder(
+                    "89141390780800735573",
+                    "iccid"
+                )
+                .build()
+            )
+        )
+        .build()
     ))
-    .serviceName("My Service")
-    .stateName("My State")
-    .servicePlan("87641")
-    .mdnZIpCode("94203")
-    .publicIpRestriction("unrestricted")
-    .groupName("4G West")
-    .primaryPlaceOfUse(new PlaceOfUse.Builder()
-        .address(new Address.Builder(
+.publicIpRestriction("unrestricted")
+.groupName("4G West")
+.primaryPlaceOfUse(new PlaceOfUse.Builder(
+        new Address.Builder(
             "1600 Pennsylvania Ave NW",
             "Washington",
             "DC",
             "20500",
             "USA"
         )
-        .build())
-        .customerName(new CustomerName.Builder(
+        .build(),
+        new CustomerName.Builder(
             "Zaffod",
             "Beeblebrox"
         )
         .title("President")
-        .build())
-        .build())
-    .build();
+        .build()
+    )
+    .build())
+.build();
 
 deviceManagementController.updateDevicesStateAsync(body).thenAccept(result -> {
-    // TODO success callback handler
-    System.out.println(result);
-}).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
-    return null;
-});
-```
-
-## Example Response *(as JSON)*
-
-```json
-{
-  "requestId": "595f5c44-c31c-4552-8670-020a1545a84d"
-}
-```
-
-## Errors
-
-| HTTP Status Code | Error Description | Exception Class |
-|  --- | --- | --- |
-| 400 | Error response. | [`ConnectivityManagementResultException`](../../doc/models/connectivity-management-result-exception.md) |
-
-
-# Change Devices Service Plan
-
-Changes the service plan for one or more devices.
-
-```java
-CompletableFuture<ApiResponse<DeviceManagementResult>> changeDevicesServicePlanAsync(
-    final ServicePlanUpdateRequest body)
-```
-
-## Parameters
-
-| Parameter | Type | Tags | Description |
-|  --- | --- | --- | --- |
-| `body` | [`ServicePlanUpdateRequest`](../../doc/models/service-plan-update-request.md) | Body, Required | Request to change device service plan. |
-
-## Server
-
-`Server.THINGSPACE`
-
-## Response Type
-
-[`DeviceManagementResult`](../../doc/models/device-management-result.md)
-
-## Example Usage
-
-```java
-ServicePlanUpdateRequest body = new ServicePlanUpdateRequest.Builder()
-    .devices(Arrays.asList(
-        new AccountDeviceList.Builder()
-            .deviceIds(Arrays.asList(
-                new DeviceId.Builder()
-                    .id("A100003685E561")
-                    .kind("meid")
-                    .build()
-            ))
-            .build()
-    ))
-    .servicePlan("new_service_plan_code")
-    .build();
-
-deviceManagementController.changeDevicesServicePlanAsync(body).thenAccept(result -> {
-    // TODO success callback handler
-    System.out.println(result);
-}).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
-    return null;
-});
-```
-
-## Example Response *(as JSON)*
-
-```json
-{
-  "requestId": "c8de7c1d-59b9-4cf3-b969-db76cb2ce509"
-}
-```
-
-## Errors
-
-| HTTP Status Code | Error Description | Exception Class |
-|  --- | --- | --- |
-| 400 | Error response. | [`ConnectivityManagementResultException`](../../doc/models/connectivity-management-result-exception.md) |
-
-
-# Suspend Service for Devices
-
-Suspends service for one or more devices.
-
-```java
-CompletableFuture<ApiResponse<DeviceManagementResult>> suspendServiceForDevicesAsync(
-    final CarrierActionsRequest body)
-```
-
-## Parameters
-
-| Parameter | Type | Tags | Description |
-|  --- | --- | --- | --- |
-| `body` | [`CarrierActionsRequest`](../../doc/models/carrier-actions-request.md) | Body, Required | Request to suspend service for one or more devices. |
-
-## Server
-
-`Server.THINGSPACE`
-
-## Response Type
-
-[`DeviceManagementResult`](../../doc/models/device-management-result.md)
-
-## Example Usage
-
-```java
-CarrierActionsRequest body = new CarrierActionsRequest.Builder()
-    .devices(Arrays.asList(
-        new AccountDeviceList.Builder()
-            .deviceIds(Arrays.asList(
-                new DeviceId.Builder()
-                    .id("89148000000800139708")
-                    .kind("iccid")
-                    .build()
-            ))
-            .build()
-    ))
-    .build();
-
-deviceManagementController.suspendServiceForDevicesAsync(body).thenAccept(result -> {
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
@@ -1058,16 +1262,28 @@ CompletableFuture<ApiResponse<DeviceManagementResult>> restoreServiceForSuspende
 
 ```java
 CarrierActionsRequest body = new CarrierActionsRequest.Builder()
-    .devices(Arrays.asList(
-        new AccountDeviceList.Builder()
-            .deviceIds(Arrays.asList(
-                new DeviceId.Builder()
-                    .id("89148000000800139708")
-                    .kind("iccid")
-                    .build()
-            ))
-            .build()
+    .accountName("0000123456-00001")
+    .customFields(Arrays.asList(
+        new CustomFields.Builder(
+            "customField1",
+            "key value"
+        )
+        .build()
     ))
+    .devices(Arrays.asList(
+        new AccountDeviceList.Builder(
+            Arrays.asList(
+                new DeviceId.Builder(
+                    "20-digit ICCID",
+                    "iccid"
+                )
+                .build()
+            )
+        )
+        .build()
+    ))
+    .groupName("name of the group")
+    .servicePlan("service plan name")
     .build();
 
 deviceManagementController.restoreServiceForSuspendedDevicesAsync(body).thenAccept(result -> {
@@ -1121,19 +1337,22 @@ CompletableFuture<ApiResponse<DeviceManagementResult>> checkDevicesAvailabilityF
 ## Example Usage
 
 ```java
-DeviceActivationRequest body = new DeviceActivationRequest.Builder()
-    .accountName("0212345678-00001")
-    .devices(Arrays.asList(
-        new AccountDeviceList.Builder()
-            .deviceIds(Arrays.asList(
-                new DeviceId.Builder()
-                    .id("A100008385E561")
-                    .kind("meid")
-                    .build()
-            ))
-            .build()
-    ))
-    .build();
+DeviceActivationRequest body = new DeviceActivationRequest.Builder(
+    "0212345678-00001",
+    Arrays.asList(
+        new AccountDeviceList.Builder(
+            Arrays.asList(
+                new DeviceId.Builder(
+                    "A100008385E561",
+                    "meid"
+                )
+                .build()
+            )
+        )
+        .build()
+    )
+)
+.build();
 
 deviceManagementController.checkDevicesAvailabilityForActivationAsync(body).thenAccept(result -> {
     // TODO success callback handler
@@ -1150,100 +1369,6 @@ deviceManagementController.checkDevicesAvailabilityForActivationAsync(body).then
 ```json
 {
   "requestId": "595f5c44-c31c-4552-8670-020a1545a84d"
-}
-```
-
-## Errors
-
-| HTTP Status Code | Error Description | Exception Class |
-|  --- | --- | --- |
-| 400 | Error response. | [`ConnectivityManagementResultException`](../../doc/models/connectivity-management-result-exception.md) |
-
-
-# Retrieve Device Connection History
-
-Each response includes a maximum of 500 records. To obtain more records, you can call the API multiple times, adjusting the earliest value each time to start where the previous request finished.
-
-```java
-CompletableFuture<ApiResponse<ConnectionHistoryResult>> retrieveDeviceConnectionHistoryAsync(
-    final DeviceConnectionListRequest body)
-```
-
-## Parameters
-
-| Parameter | Type | Tags | Description |
-|  --- | --- | --- | --- |
-| `body` | [`DeviceConnectionListRequest`](../../doc/models/device-connection-list-request.md) | Body, Required | Query to retrieve device connection history. |
-
-## Server
-
-`Server.THINGSPACE`
-
-## Response Type
-
-[`ConnectionHistoryResult`](../../doc/models/connection-history-result.md)
-
-## Example Usage
-
-```java
-DeviceConnectionListRequest body = new DeviceConnectionListRequest.Builder()
-    .deviceId(new DeviceId.Builder()
-        .id("89141390780800784259")
-        .kind("iccid")
-        .build())
-    .earliest("2015-09-16T00:00:01Z")
-    .latest("2010-09-18T00:00:01Z")
-    .build();
-
-deviceManagementController.retrieveDeviceConnectionHistoryAsync(body).thenAccept(result -> {
-    // TODO success callback handler
-    System.out.println(result);
-}).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
-    return null;
-});
-```
-
-## Example Response *(as JSON)*
-
-```json
-{
-  "connectionHistory": [
-    {
-      "connectionEventAttributes": [
-        {
-          "key": "BytesUsed",
-          "value": "0"
-        },
-        {
-          "key": "Event",
-          "value": "Start"
-        }
-      ],
-      "extendedAttributes": [],
-      "occurredAt": "2015-12-17T14:12:36-05:00"
-    },
-    {
-      "connectionEventAttributes": [
-        {
-          "key": "BytesUsed",
-          "value": "419863234"
-        },
-        {
-          "key": "Event",
-          "value": "Stop"
-        },
-        {
-          "key": "Msisdn",
-          "value": "15086303371"
-        }
-      ],
-      "extendedAttributes": [],
-      "occurredAt": "2015-12-19T01:20:00-05:00"
-    }
-  ],
-  "hasMoreData": false
 }
 ```
 
@@ -1283,221 +1408,20 @@ CompletableFuture<ApiResponse<DeviceManagementResult>> updateDevicesCostCenterCo
 DeviceCostCenterRequest body = new DeviceCostCenterRequest.Builder()
     .costCenter("cc12345")
     .devices(Arrays.asList(
-        new AccountDeviceList.Builder()
-            .deviceIds(Arrays.asList(
-                new DeviceId.Builder()
-                    .id("89148000000800139708")
-                    .kind("iccid")
-                    .build()
-            ))
-            .build()
+        new AccountDeviceList.Builder(
+            Arrays.asList(
+                new DeviceId.Builder(
+                    "89148000000800139708",
+                    "iccid"
+                )
+                .build()
+            )
+        )
+        .build()
     ))
     .build();
 
 deviceManagementController.updateDevicesCostCenterCodeAsync(body).thenAccept(result -> {
-    // TODO success callback handler
-    System.out.println(result);
-}).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
-    return null;
-});
-```
-
-## Example Response *(as JSON)*
-
-```json
-{
-  "requestId": "595f5c44-c31c-4552-8670-020a1545a84d"
-}
-```
-
-## Errors
-
-| HTTP Status Code | Error Description | Exception Class |
-|  --- | --- | --- |
-| 400 | Error response. | [`ConnectivityManagementResultException`](../../doc/models/connectivity-management-result-exception.md) |
-
-
-# Get Device Extended Diagnostic Information
-
-Returns extended diagnostic information about a specified device, including connectivity, provisioning, billing and location status.
-
-```java
-CompletableFuture<ApiResponse<DeviceExtendedDiagnosticsResult>> getDeviceExtendedDiagnosticInformationAsync(
-    final DeviceExtendedDiagnosticsRequest body)
-```
-
-## Parameters
-
-| Parameter | Type | Tags | Description |
-|  --- | --- | --- | --- |
-| `body` | [`DeviceExtendedDiagnosticsRequest`](../../doc/models/device-extended-diagnostics-request.md) | Body, Required | Request to query extended diagnostics information for a device. |
-
-## Server
-
-`Server.THINGSPACE`
-
-## Response Type
-
-[`DeviceExtendedDiagnosticsResult`](../../doc/models/device-extended-diagnostics-result.md)
-
-## Example Usage
-
-```java
-DeviceExtendedDiagnosticsRequest body = new DeviceExtendedDiagnosticsRequest.Builder(
-    "1223334444-00001",
-    Arrays.asList(
-        new DeviceId.Builder()
-            .id("10-digit MDN")
-            .kind("mdn")
-            .build()
-    )
-)
-.build();
-
-deviceManagementController.getDeviceExtendedDiagnosticInformationAsync(body).thenAccept(result -> {
-    // TODO success callback handler
-    System.out.println(result);
-}).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
-    return null;
-});
-```
-
-## Example Response *(as JSON)*
-
-```json
-{
-  "categories": [
-    {
-      "categoryName": "Connectivity",
-      "extendedAttributes": [
-        {
-          "key": "Connected",
-          "value": "false"
-        }
-      ]
-    }
-  ]
-}
-```
-
-## Errors
-
-| HTTP Status Code | Error Description | Exception Class |
-|  --- | --- | --- |
-| 400 | Error response. | [`ConnectivityManagementResultException`](../../doc/models/connectivity-management-result-exception.md) |
-
-
-# List Devices Provisioning History
-
-Returns the provisioning history of a specified device during a specified time period.
-
-```java
-CompletableFuture<ApiResponse<List<DeviceProvisioningHistoryListResult>>> listDevicesProvisioningHistoryAsync(
-    final DeviceProvisioningHistoryListRequest body)
-```
-
-## Parameters
-
-| Parameter | Type | Tags | Description |
-|  --- | --- | --- | --- |
-| `body` | [`DeviceProvisioningHistoryListRequest`](../../doc/models/device-provisioning-history-list-request.md) | Body, Required | Query to obtain device provisioning history. |
-
-## Server
-
-`Server.THINGSPACE`
-
-## Response Type
-
-[`List<DeviceProvisioningHistoryListResult>`](../../doc/models/device-provisioning-history-list-result.md)
-
-## Example Usage
-
-```java
-DeviceProvisioningHistoryListRequest body = new DeviceProvisioningHistoryListRequest.Builder()
-    .deviceId(new DeviceId.Builder()
-        .id("89141390780800784259")
-        .kind("iccid")
-        .build())
-    .earliest("2015-09-16T00:00:01Z")
-    .latest("2015-09-18T00:00:01Z")
-    .build();
-
-deviceManagementController.listDevicesProvisioningHistoryAsync(body).thenAccept(result -> {
-    // TODO success callback handler
-    System.out.println(result);
-}).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
-    return null;
-});
-```
-
-## Example Response *(as JSON)*
-
-```json
-[
-  {
-    "provisioningHistory": [
-      {
-        "occurredAt": "2015-12-17T13:56:13-05:00",
-        "status": "Success",
-        "eventBy": "Harry Potter",
-        "eventType": "Activation Confirmed",
-        "servicePlan": "Tablet5GB",
-        "mdn": "",
-        "msisdn": "15086303371",
-        "extendedAttributes": []
-      }
-    ],
-    "hasMoreData": false
-  }
-]
-```
-
-## Errors
-
-| HTTP Status Code | Error Description | Exception Class |
-|  --- | --- | --- |
-| 400 | Error response. | [`ConnectivityManagementResultException`](../../doc/models/connectivity-management-result-exception.md) |
-
-
-# List Current Devices PRL Version
-
-4G and GSM devices do not have a PRL.
-
-```java
-CompletableFuture<ApiResponse<DeviceManagementResult>> listCurrentDevicesPRLVersionAsync(
-    final DevicePrlListRequest body)
-```
-
-## Parameters
-
-| Parameter | Type | Tags | Description |
-|  --- | --- | --- | --- |
-| `body` | [`DevicePrlListRequest`](../../doc/models/device-prl-list-request.md) | Body, Required | Request to query device PRL. |
-
-## Server
-
-`Server.THINGSPACE`
-
-## Response Type
-
-[`DeviceManagementResult`](../../doc/models/device-management-result.md)
-
-## Example Usage
-
-```java
-DevicePrlListRequest body = new DevicePrlListRequest.Builder()
-    .accountName("101234-0001")
-    .groupName("West Region")
-    .servicePlan("3G 2MB")
-    .build();
-
-deviceManagementController.listCurrentDevicesPRLVersionAsync(body).thenAccept(result -> {
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
@@ -1580,6 +1504,417 @@ deviceManagementController.getDeviceServiceSuspensionStatusAsync(body).thenAccep
 | 400 | Error response. | [`ConnectivityManagementResultException`](../../doc/models/connectivity-management-result-exception.md) |
 
 
+# Device Upload
+
+This corresponds to the M2M-MC SOAP interface, `DeviceUploadService`.
+
+```java
+CompletableFuture<ApiResponse<RequestResponse>> deviceUploadAsync(
+    final DeviceUploadRequest body)
+```
+
+## Parameters
+
+| Parameter | Type | Tags | Description |
+|  --- | --- | --- | --- |
+| `body` | [`DeviceUploadRequest`](../../doc/models/device-upload-request.md) | Body, Required | Device Upload Query |
+
+## Server
+
+`Server.THINGSPACE`
+
+## Response Type
+
+[`RequestResponse`](../../doc/models/request-response.md)
+
+## Example Usage
+
+```java
+DeviceUploadRequest body = new DeviceUploadRequest.Builder(
+    "1223334444-00001",
+    Arrays.asList(
+        new DeviceList.Builder()
+            .deviceIds(Arrays.asList(
+                new DeviceId.Builder(
+                    "15-digit IMEI",
+                    "imei"
+                )
+                .build()
+            ))
+            .build(),
+        new DeviceList.Builder()
+            .deviceIds(Arrays.asList(
+                new DeviceId.Builder(
+                    "15-digit IMEI",
+                    "imei"
+                )
+                .build()
+            ))
+            .build()
+    ),
+    "bob@mycompany.com",
+    "VZW123456",
+    "IMEI"
+)
+.build();
+
+deviceManagementController.deviceUploadAsync(body).thenAccept(result -> {
+    // TODO success callback handler
+    System.out.println(result);
+}).exceptionally(exception -> {
+    // TODO failure callback handler
+    exception.printStackTrace();
+    return null;
+});
+```
+
+## Errors
+
+| HTTP Status Code | Error Description | Exception Class |
+|  --- | --- | --- |
+| 400 | Error Response | [`RestErrorResponseException`](../../doc/models/rest-error-response-exception.md) |
+
+
+# Deactivate Service for Devices
+
+Deactivating service for a device may result in an early termination fee (ETF) being charged to the account, depending on the terms of the contract with Verizon. If your contract allows ETF waivers and if you want to use one for a particular deactivation, set the etfWaiver value to True.
+
+```java
+CompletableFuture<ApiResponse<DeviceManagementResult>> deactivateServiceForDevicesAsync(
+    final CarrierDeactivateRequest body)
+```
+
+## Parameters
+
+| Parameter | Type | Tags | Description |
+|  --- | --- | --- | --- |
+| `body` | [`CarrierDeactivateRequest`](../../doc/models/carrier-deactivate-request.md) | Body, Required | Request to deactivate service for one or more devices. |
+
+## Server
+
+`Server.THINGSPACE`
+
+## Response Type
+
+[`DeviceManagementResult`](../../doc/models/device-management-result.md)
+
+## Example Usage
+
+```java
+CarrierDeactivateRequest body = new CarrierDeactivateRequest.Builder(
+    "0000123456-00001",
+    Arrays.asList(
+        new AccountDeviceList.Builder(
+            Arrays.asList(
+                new DeviceId.Builder(
+                    "20-digit ICCID",
+                    "iccid"
+                )
+                .build()
+            )
+        )
+        .build(),
+        new AccountDeviceList.Builder(
+            Arrays.asList(
+                new DeviceId.Builder(
+                    "20-digit ICCID",
+                    "iccid"
+                )
+                .build()
+            )
+        )
+        .build()
+    ),
+    "FF"
+)
+.etfWaiver(true)
+.build();
+
+deviceManagementController.deactivateServiceForDevicesAsync(body).thenAccept(result -> {
+    // TODO success callback handler
+    System.out.println(result);
+}).exceptionally(exception -> {
+    // TODO failure callback handler
+    exception.printStackTrace();
+    return null;
+});
+```
+
+## Example Response *(as JSON)*
+
+```json
+{
+  "requestId": "595f5c44-c31c-4552-8670-020a1545a84d"
+}
+```
+
+## Errors
+
+| HTTP Status Code | Error Description | Exception Class |
+|  --- | --- | --- |
+| 400 | Error response. | [`ConnectivityManagementResultException`](../../doc/models/connectivity-management-result-exception.md) |
+
+
+# List Devices With Imei Iccid Mismatch
+
+Returns a list of all 4G devices with an ICCID (SIM) that was not activated with the expected IMEI (hardware) during a specified time frame.
+
+```java
+CompletableFuture<ApiResponse<DeviceMismatchListResult>> listDevicesWithImeiIccidMismatchAsync(
+    final DeviceMismatchListRequest body)
+```
+
+## Parameters
+
+| Parameter | Type | Tags | Description |
+|  --- | --- | --- | --- |
+| `body` | [`DeviceMismatchListRequest`](../../doc/models/device-mismatch-list-request.md) | Body, Required | Request to list devices with mismatched IMEIs and ICCIDs. |
+
+## Server
+
+`Server.THINGSPACE`
+
+## Response Type
+
+[`DeviceMismatchListResult`](../../doc/models/device-mismatch-list-result.md)
+
+## Example Usage
+
+```java
+DeviceMismatchListRequest body = new DeviceMismatchListRequest.Builder(
+    new DateFilter.Builder(
+        "2020-05-01T15:00:00-08:00Z",
+        "2020-07-30T15:00:00-08:00Z"
+    )
+    .build()
+)
+.devices(Arrays.asList(
+        new AccountDeviceList.Builder(
+            Arrays.asList(
+                new DeviceId.Builder(
+                    "8914800000080078",
+                    "ICCID"
+                )
+                .build(),
+                new DeviceId.Builder(
+                    "5096300587",
+                    "MDN"
+                )
+                .build()
+            )
+        )
+        .build()
+    ))
+.accountName("0342077109-00001")
+.build();
+
+deviceManagementController.listDevicesWithImeiIccidMismatchAsync(body).thenAccept(result -> {
+    // TODO success callback handler
+    System.out.println(result);
+}).exceptionally(exception -> {
+    // TODO failure callback handler
+    exception.printStackTrace();
+    return null;
+});
+```
+
+## Example Response *(as JSON)*
+
+```json
+{
+  "devices": [
+    {
+      "accountName": "0212398765-00001",
+      "mdn": "5096300587",
+      "activationDate": "2011-01-21T10:55:27-08:00",
+      "iccid": "89148000000800784259",
+      "preImei": "990003420535573",
+      "postImei": "987603420573553",
+      "simOtaDate": "2017-12-01T16:00:00-08:00"
+    }
+  ]
+}
+```
+
+## Errors
+
+| HTTP Status Code | Error Description | Exception Class |
+|  --- | --- | --- |
+| 400 | Error response. | [`ConnectivityManagementResultException`](../../doc/models/connectivity-management-result-exception.md) |
+
+
+# Retrieve Device Connection History
+
+Each response includes a maximum of 500 records. To obtain more records, you can call the API multiple times, adjusting the earliest value each time to start where the previous request finished.
+
+```java
+CompletableFuture<ApiResponse<ConnectionHistoryResult>> retrieveDeviceConnectionHistoryAsync(
+    final DeviceConnectionListRequest body)
+```
+
+## Parameters
+
+| Parameter | Type | Tags | Description |
+|  --- | --- | --- | --- |
+| `body` | [`DeviceConnectionListRequest`](../../doc/models/device-connection-list-request.md) | Body, Required | Query to retrieve device connection history. |
+
+## Server
+
+`Server.THINGSPACE`
+
+## Response Type
+
+[`ConnectionHistoryResult`](../../doc/models/connection-history-result.md)
+
+## Example Usage
+
+```java
+DeviceConnectionListRequest body = new DeviceConnectionListRequest.Builder(
+    new DeviceId.Builder(
+        "89141390780800784259",
+        "iccid"
+    )
+    .build(),
+    "2015-09-16T00:00:01Z",
+    "2010-09-18T00:00:01Z"
+)
+.build();
+
+deviceManagementController.retrieveDeviceConnectionHistoryAsync(body).thenAccept(result -> {
+    // TODO success callback handler
+    System.out.println(result);
+}).exceptionally(exception -> {
+    // TODO failure callback handler
+    exception.printStackTrace();
+    return null;
+});
+```
+
+## Example Response *(as JSON)*
+
+```json
+{
+  "connectionHistory": [
+    {
+      "connectionEventAttributes": [
+        {
+          "key": "BytesUsed",
+          "value": "0"
+        },
+        {
+          "key": "Event",
+          "value": "Start"
+        }
+      ],
+      "extendedAttributes": [],
+      "occurredAt": "2015-12-17T14:12:36-05:00"
+    },
+    {
+      "connectionEventAttributes": [
+        {
+          "key": "BytesUsed",
+          "value": "419863234"
+        },
+        {
+          "key": "Event",
+          "value": "Stop"
+        },
+        {
+          "key": "Msisdn",
+          "value": "15086303371"
+        }
+      ],
+      "extendedAttributes": [],
+      "occurredAt": "2015-12-19T01:20:00-05:00"
+    }
+  ],
+  "hasMoreData": false
+}
+```
+
+## Errors
+
+| HTTP Status Code | Error Description | Exception Class |
+|  --- | --- | --- |
+| 400 | Error response. | [`ConnectivityManagementResultException`](../../doc/models/connectivity-management-result-exception.md) |
+
+
+# List Devices Provisioning History
+
+Returns the provisioning history of a specified device during a specified time period.
+
+```java
+CompletableFuture<ApiResponse<List<DeviceProvisioningHistoryListResult>>> listDevicesProvisioningHistoryAsync(
+    final DeviceProvisioningHistoryListRequest body)
+```
+
+## Parameters
+
+| Parameter | Type | Tags | Description |
+|  --- | --- | --- | --- |
+| `body` | [`DeviceProvisioningHistoryListRequest`](../../doc/models/device-provisioning-history-list-request.md) | Body, Required | Query to obtain device provisioning history. |
+
+## Server
+
+`Server.THINGSPACE`
+
+## Response Type
+
+[`List<DeviceProvisioningHistoryListResult>`](../../doc/models/device-provisioning-history-list-result.md)
+
+## Example Usage
+
+```java
+DeviceProvisioningHistoryListRequest body = new DeviceProvisioningHistoryListRequest.Builder(
+    new DeviceId.Builder(
+        "89141390780800784259",
+        "iccid"
+    )
+    .build(),
+    "2015-09-16T00:00:01Z",
+    "2015-09-18T00:00:01Z"
+)
+.build();
+
+deviceManagementController.listDevicesProvisioningHistoryAsync(body).thenAccept(result -> {
+    // TODO success callback handler
+    System.out.println(result);
+}).exceptionally(exception -> {
+    // TODO failure callback handler
+    exception.printStackTrace();
+    return null;
+});
+```
+
+## Example Response *(as JSON)*
+
+```json
+[
+  {
+    "provisioningHistory": [
+      {
+        "occurredAt": "2015-12-17T13:56:13-05:00",
+        "status": "Success",
+        "eventBy": "Harry Potter",
+        "eventType": "Activation Confirmed",
+        "servicePlan": "Tablet5GB",
+        "mdn": "",
+        "msisdn": "15086303371",
+        "extendedAttributes": []
+      }
+    ],
+    "hasMoreData": false
+  }
+]
+```
+
+## Errors
+
+| HTTP Status Code | Error Description | Exception Class |
+|  --- | --- | --- |
+| 400 | Error response. | [`ConnectivityManagementResultException`](../../doc/models/connectivity-management-result-exception.md) |
+
+
 # List Devices Usage History
 
 Returns the network data usage history of a device during a specified time period.
@@ -1606,10 +1941,11 @@ CompletableFuture<ApiResponse<DeviceUsageListResult>> listDevicesUsageHistoryAsy
 ## Example Usage
 
 ```java
-DeviceUsageListRequest body = new DeviceUsageListRequest.Builder()
-    .earliest("2018-03-20T00:00:01Z")
-    .latest("2020-12-31T00:00:01Z")
-    .build();
+DeviceUsageListRequest body = new DeviceUsageListRequest.Builder(
+    "2018-03-20T00:00:01Z",
+    "2020-12-31T00:00:01Z"
+)
+.build();
 
 deviceManagementController.listDevicesUsageHistoryAsync(body).thenAccept(result -> {
     // TODO success callback handler
@@ -1650,210 +1986,6 @@ deviceManagementController.listDevicesUsageHistoryAsync(body).thenAccept(result 
 | 400 | Error response. | [`ConnectivityManagementResultException`](../../doc/models/connectivity-management-result-exception.md) |
 
 
-# Retrieve Aggregate Device Usage History
-
-The information is returned in a callback response, so you must register a URL for DeviceUsage callback messages using the POST /callbacks API.
-
-```java
-CompletableFuture<ApiResponse<DeviceManagementResult>> retrieveAggregateDeviceUsageHistoryAsync(
-    final DeviceAggregateUsageListRequest body)
-```
-
-## Parameters
-
-| Parameter | Type | Tags | Description |
-|  --- | --- | --- | --- |
-| `body` | [`DeviceAggregateUsageListRequest`](../../doc/models/device-aggregate-usage-list-request.md) | Body, Required | A request to retrieve aggregated device usage history information. |
-
-## Server
-
-`Server.THINGSPACE`
-
-## Response Type
-
-[`DeviceManagementResult`](../../doc/models/device-management-result.md)
-
-## Example Usage
-
-```java
-DeviceAggregateUsageListRequest body = new DeviceAggregateUsageListRequest.Builder()
-    .deviceIds(Arrays.asList(
-        new DeviceId.Builder()
-            .id("84258000000891490087")
-            .kind("ICCID")
-            .build()
-    ))
-    .accountName("9992330389-00001")
-    .startTime("2021-08-01T00:00:00-06:00")
-    .endTime("2021-08-30T00:00:00-06:00")
-    .build();
-
-deviceManagementController.retrieveAggregateDeviceUsageHistoryAsync(body).thenAccept(result -> {
-    // TODO success callback handler
-    System.out.println(result);
-}).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
-    return null;
-});
-```
-
-## Example Response *(as JSON)*
-
-```json
-{
-  "requestId": "1631e200-7398-4609-b1f8-398341229176"
-}
-```
-
-## Errors
-
-| HTTP Status Code | Error Description | Exception Class |
-|  --- | --- | --- |
-| 400 | Error response. | [`ConnectivityManagementResultException`](../../doc/models/connectivity-management-result-exception.md) |
-
-
-# Update Device Id
-
-Changes the identifier of a 3G or 4G device to match hardware changes made for a line of service. Use this request to transfer the line of service and the MDN to new hardware, or to change the MDN.
-
-```java
-CompletableFuture<ApiResponse<DeviceManagementResult>> updateDeviceIdAsync(
-    final String serviceType,
-    final ChangeDeviceIdRequest body)
-```
-
-## Parameters
-
-| Parameter | Type | Tags | Description |
-|  --- | --- | --- | --- |
-| `serviceType` | `String` | Template, Required | Identifier type. |
-| `body` | [`ChangeDeviceIdRequest`](../../doc/models/change-device-id-request.md) | Body, Required | Request to update device id. |
-
-## Server
-
-`Server.THINGSPACE`
-
-## Response Type
-
-[`DeviceManagementResult`](../../doc/models/device-management-result.md)
-
-## Example Usage
-
-```java
-String serviceType = "serviceType6";
-ChangeDeviceIdRequest body = new ChangeDeviceIdRequest.Builder()
-    .change4gOption("ChangeICCID")
-    .deviceIds(Arrays.asList(
-        new DeviceId.Builder()
-            .id("42590078891480000008")
-            .kind("iccid")
-            .build()
-    ))
-    .deviceIdsTo(Arrays.asList(
-        new DeviceId.Builder()
-            .id("89148000000842590078")
-            .kind("iccid")
-            .build()
-    ))
-    .servicePlan("4G 2GB")
-    .zIpCode("98802")
-    .build();
-
-deviceManagementController.updateDeviceIdAsync(serviceType, body).thenAccept(result -> {
-    // TODO success callback handler
-    System.out.println(result);
-}).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
-    return null;
-});
-```
-
-## Example Response *(as JSON)*
-
-```json
-{
-  "requestId": "a28892ea-6503-4aa7-bfa2-4cd45d42f61b"
-}
-```
-
-## Errors
-
-| HTTP Status Code | Error Description | Exception Class |
-|  --- | --- | --- |
-| 400 | Error response. | [`ConnectivityManagementResultException`](../../doc/models/connectivity-management-result-exception.md) |
-
-
-# Device Upload
-
-This corresponds to the M2M-MC SOAP interface, `DeviceUploadService`.
-
-```java
-CompletableFuture<ApiResponse<RequestResponse>> deviceUploadAsync(
-    final DeviceUploadRequest body)
-```
-
-## Parameters
-
-| Parameter | Type | Tags | Description |
-|  --- | --- | --- | --- |
-| `body` | [`DeviceUploadRequest`](../../doc/models/device-upload-request.md) | Body, Required | Device Upload Query |
-
-## Server
-
-`Server.THINGSPACE`
-
-## Response Type
-
-[`RequestResponse`](../../doc/models/request-response.md)
-
-## Example Usage
-
-```java
-DeviceUploadRequest body = new DeviceUploadRequest.Builder(
-    "1223334444-00001",
-    Arrays.asList(
-        new DeviceList.Builder()
-            .deviceIds(Arrays.asList(
-                new DeviceId.Builder()
-                    .id("15-digit IMEI")
-                    .kind("imei")
-                    .build()
-            ))
-            .build(),
-        new DeviceList.Builder()
-            .deviceIds(Arrays.asList(
-                new DeviceId.Builder()
-                    .id("15-digit IMEI")
-                    .kind("imei")
-                    .build()
-            ))
-            .build()
-    ),
-    "bob@mycompany.com",
-    "VZW123456",
-    "IMEI"
-)
-.build();
-
-deviceManagementController.deviceUploadAsync(body).thenAccept(result -> {
-    // TODO success callback handler
-    System.out.println(result);
-}).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
-    return null;
-});
-```
-
-## Errors
-
-| HTTP Status Code | Error Description | Exception Class |
-|  --- | --- | --- |
-| 400 | Error Response | [`RestErrorResponseException`](../../doc/models/rest-error-response-exception.md) |
-
-
 # Billed Usage Info
 
 Gets billed usage for for either multiple devices or an entire billing account.
@@ -1880,9 +2012,10 @@ CompletableFuture<ApiResponse<DeviceManagementResult>> billedUsageInfoAsync(
 ## Example Usage
 
 ```java
-BilledusageListRequest body = new BilledusageListRequest.Builder()
-    .accountName("0342077109-00001")
-    .build();
+BilledusageListRequest body = new BilledusageListRequest.Builder(
+    "0342077109-00001"
+)
+.build();
 
 deviceManagementController.billedUsageInfoAsync(body).thenAccept(result -> {
     // TODO success callback handler
@@ -1935,11 +2068,97 @@ CompletableFuture<ApiResponse<DeviceManagementResult>> usageSegmentationLabelAss
 ## Example Usage
 
 ```java
-AssociateLabelRequest body = new AssociateLabelRequest.Builder()
-    .accountName("1223334444-00001")
-    .build();
+AssociateLabelRequest body = new AssociateLabelRequest.Builder(
+    "1223334444-00001",
+    new AccountLabels.Builder(
+        Arrays.asList(
+            new DeviceList.Builder()
+                .build()
+        )
+    )
+    .build()
+)
+.build();
 
 deviceManagementController.usageSegmentationLabelAssociationAsync(body).thenAccept(result -> {
+    // TODO success callback handler
+    System.out.println(result);
+}).exceptionally(exception -> {
+    // TODO failure callback handler
+    exception.printStackTrace();
+    return null;
+});
+```
+
+## Example Response *(as JSON)*
+
+```json
+{
+  "requestId": "ec682a8b-e288-4806-934d-24e7a59ed889"
+}
+```
+
+## Errors
+
+| HTTP Status Code | Error Description | Exception Class |
+|  --- | --- | --- |
+| 400 | Error response. | [`ConnectivityManagementResultException`](../../doc/models/connectivity-management-result-exception.md) |
+
+
+# Activation Order Status
+
+Uploads and activates device identifiers and SKUs for new devices from OEMs to Verizon.
+
+```java
+CompletableFuture<ApiResponse<DeviceManagementResult>> activationOrderStatusAsync(
+    final UploadsActivatesDeviceRequest body)
+```
+
+## Parameters
+
+| Parameter | Type | Tags | Description |
+|  --- | --- | --- | --- |
+| `body` | [`UploadsActivatesDeviceRequest`](../../doc/models/uploads-activates-device-request.md) | Body, Required | Request to Uploads and activates device. |
+
+## Server
+
+`Server.THINGSPACE`
+
+## Response Type
+
+[`DeviceManagementResult`](../../doc/models/device-management-result.md)
+
+## Example Usage
+
+```java
+UploadsActivatesDeviceRequest body = new UploadsActivatesDeviceRequest.Builder(
+    "1223334444-00001",
+    "bob@mycompany.com",
+    "VZW123456",
+    "IMEI ICCID Pair",
+    "15MBShr",
+    "92222",
+    Arrays.asList(
+        new DeviceList.Builder()
+            .deviceIds(Arrays.asList(
+                new DeviceId.Builder(
+                    "990013907835573",
+                    "imei"
+                )
+                .build(),
+                new DeviceId.Builder(
+                    "89141390780800784259",
+                    "iccid"
+                )
+                .build()
+            ))
+            .build()
+    )
+)
+.carrierIpPoolName("")
+.build();
+
+deviceManagementController.activationOrderStatusAsync(body).thenAccept(result -> {
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
@@ -2021,82 +2240,6 @@ deviceManagementController.usageSegmentationLabelDeletionAsync(accountName, labe
 | 400 | Error response. | [`ConnectivityManagementResultException`](../../doc/models/connectivity-management-result-exception.md) |
 
 
-# Activation Order Status
-
-Uploads and activates device identifiers and SKUs for new devices from OEMs to Verizon.
-
-```java
-CompletableFuture<ApiResponse<DeviceManagementResult>> activationOrderStatusAsync(
-    final UploadsActivatesDeviceRequest body)
-```
-
-## Parameters
-
-| Parameter | Type | Tags | Description |
-|  --- | --- | --- | --- |
-| `body` | [`UploadsActivatesDeviceRequest`](../../doc/models/uploads-activates-device-request.md) | Body, Required | Request to Uploads and activates device. |
-
-## Server
-
-`Server.THINGSPACE`
-
-## Response Type
-
-[`DeviceManagementResult`](../../doc/models/device-management-result.md)
-
-## Example Usage
-
-```java
-UploadsActivatesDeviceRequest body = new UploadsActivatesDeviceRequest.Builder(
-    "1223334444-00001",
-    "bob@mycompany.com",
-    "VZW123456",
-    "IMEI ICCID Pair",
-    "15MBShr",
-    "92222",
-    Arrays.asList(
-        new DeviceList.Builder()
-            .deviceIds(Arrays.asList(
-                new DeviceId.Builder()
-                    .id("990013907835573")
-                    .kind("imei")
-                    .build(),
-                new DeviceId.Builder()
-                    .id("89141390780800784259")
-                    .kind("iccid")
-                    .build()
-            ))
-            .build()
-    )
-)
-.carrierIpPoolName("")
-.build();
-
-deviceManagementController.activationOrderStatusAsync(body).thenAccept(result -> {
-    // TODO success callback handler
-    System.out.println(result);
-}).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
-    return null;
-});
-```
-
-## Example Response *(as JSON)*
-
-```json
-{
-  "requestId": "ec682a8b-e288-4806-934d-24e7a59ed889"
-}
-```
-
-## Errors
-
-| HTTP Status Code | Error Description | Exception Class |
-|  --- | --- | --- |
-| 400 | Error response. | [`ConnectivityManagementResultException`](../../doc/models/connectivity-management-result-exception.md) |
-
-
 # Upload Device Identifier
 
 Checks the status of an activation order and lists where the order is in the provisioning process.
@@ -2128,10 +2271,11 @@ CheckOrderStatusRequest body = new CheckOrderStatusRequest.Builder(
     Arrays.asList(
         new DeviceList.Builder()
             .deviceIds(Arrays.asList(
-                new DeviceId.Builder()
-                    .id("20112019672551234613")
-                    .kind("iccid")
-                    .build()
+                new DeviceId.Builder(
+                    "20112019672551234613",
+                    "iccid"
+                )
+                .build()
             ))
             .build()
     )

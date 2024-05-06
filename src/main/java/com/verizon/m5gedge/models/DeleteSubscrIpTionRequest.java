@@ -11,16 +11,16 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonSetter;
 
 /**
- * This is a model class for DeleteSubscrIpTionRequest type.
+ * This is a model class for DeleteSubscriptionRequest type.
  */
-public class DeleteSubscrIpTionRequest {
+public class DeleteSubscriptionRequest {
     private AccountIdentifier accountidentifier;
     private ResourceIdentifier resourceidentifier;
 
     /**
      * Default constructor.
      */
-    public DeleteSubscrIpTionRequest() {
+    public DeleteSubscriptionRequest() {
     }
 
     /**
@@ -28,7 +28,7 @@ public class DeleteSubscrIpTionRequest {
      * @param  accountidentifier  AccountIdentifier value for accountidentifier.
      * @param  resourceidentifier  ResourceIdentifier value for resourceidentifier.
      */
-    public DeleteSubscrIpTionRequest(
+    public DeleteSubscriptionRequest(
             AccountIdentifier accountidentifier,
             ResourceIdentifier resourceidentifier) {
         this.accountidentifier = accountidentifier;
@@ -80,19 +80,19 @@ public class DeleteSubscrIpTionRequest {
     }
 
     /**
-     * Converts this DeleteSubscrIpTionRequest into string format.
+     * Converts this DeleteSubscriptionRequest into string format.
      * @return String representation of this class
      */
     @Override
     public String toString() {
-        return "DeleteSubscrIpTionRequest [" + "accountidentifier=" + accountidentifier
+        return "DeleteSubscriptionRequest [" + "accountidentifier=" + accountidentifier
                 + ", resourceidentifier=" + resourceidentifier + "]";
     }
 
     /**
-     * Builds a new {@link DeleteSubscrIpTionRequest.Builder} object.
+     * Builds a new {@link DeleteSubscriptionRequest.Builder} object.
      * Creates the instance with the state of the current model.
-     * @return a new {@link DeleteSubscrIpTionRequest.Builder} object
+     * @return a new {@link DeleteSubscriptionRequest.Builder} object
      */
     public Builder toBuilder() {
         Builder builder = new Builder()
@@ -102,7 +102,7 @@ public class DeleteSubscrIpTionRequest {
     }
 
     /**
-     * Class to build instances of {@link DeleteSubscrIpTionRequest}.
+     * Class to build instances of {@link DeleteSubscriptionRequest}.
      */
     public static class Builder {
         private AccountIdentifier accountidentifier;
@@ -131,11 +131,11 @@ public class DeleteSubscrIpTionRequest {
         }
 
         /**
-         * Builds a new {@link DeleteSubscrIpTionRequest} object using the set fields.
-         * @return {@link DeleteSubscrIpTionRequest}
+         * Builds a new {@link DeleteSubscriptionRequest} object using the set fields.
+         * @return {@link DeleteSubscriptionRequest}
          */
-        public DeleteSubscrIpTionRequest build() {
-            return new DeleteSubscrIpTionRequest(accountidentifier, resourceidentifier);
+        public DeleteSubscriptionRequest build() {
+            return new DeleteSubscriptionRequest(accountidentifier, resourceidentifier);
         }
     }
 }

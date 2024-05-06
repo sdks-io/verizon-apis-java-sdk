@@ -42,6 +42,67 @@ public final class BillingController extends BaseController {
     }
 
     /**
+     * This endpoint allows user to retrieve the list of all accounts managed by a primary account.
+     * @param  accountName  Required parameter: Primary account identifier
+     * @param  serviceName  Required parameter: Service name
+     * @return    Returns the ManagedAccountsGetAllResponse wrapped in ApiResponse response from the API call
+     * @throws    ApiException    Represents error response from the server.
+     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
+     */
+    public ApiResponse<ManagedAccountsGetAllResponse> listManagedAccount(
+            final String accountName,
+            final String serviceName) throws ApiException, IOException {
+        return prepareListManagedAccountRequest(accountName, serviceName).execute();
+    }
+
+    /**
+     * This endpoint allows user to retrieve the list of all accounts managed by a primary account.
+     * @param  accountName  Required parameter: Primary account identifier
+     * @param  serviceName  Required parameter: Service name
+     * @return    Returns the ManagedAccountsGetAllResponse wrapped in ApiResponse response from the API call
+     */
+    public CompletableFuture<ApiResponse<ManagedAccountsGetAllResponse>> listManagedAccountAsync(
+            final String accountName,
+            final String serviceName) {
+        try { 
+            return prepareListManagedAccountRequest(accountName, serviceName).executeAsync(); 
+        } catch (Exception e) {  
+            throw new CompletionException(e); 
+        }
+    }
+
+    /**
+     * Builds the ApiCall object for listManagedAccount.
+     */
+    private ApiCall<ApiResponse<ManagedAccountsGetAllResponse>, ApiException> prepareListManagedAccountRequest(
+            final String accountName,
+            final String serviceName) throws IOException {
+        return new ApiCall.Builder<ApiResponse<ManagedAccountsGetAllResponse>, ApiException>()
+                .globalConfig(getGlobalConfiguration())
+                .requestBuilder(requestBuilder -> requestBuilder
+                        .server(Server.SUBSCRIPTION_SERVER.value())
+                        .path("/managedaccounts/{accountName}/service/{serviceName}")
+                        .templateParam(param -> param.key("accountName").value(accountName)
+                                .shouldEncode(true))
+                        .templateParam(param -> param.key("serviceName").value(serviceName)
+                                .shouldEncode(true))
+                        .headerParam(param -> param.key("accept").value("application/json"))
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
+                        .httpMethod(HttpMethod.GET))
+                .responseHandler(responseHandler -> responseHandler
+                        .responseClassType(ResponseClassType.API_RESPONSE)
+                        .apiResponseDeserializer(
+                                response -> ApiHelper.deserialize(response, ManagedAccountsGetAllResponse.class))
+                        .nullify404(false)
+                        .localErrorCase("400",
+                                 ErrorCase.setReason("Unexpected error",
+                                (reason, context) -> new DeviceLocationResultException(reason, context)))
+                        .globalErrorCase(GLOBAL_ERROR_CASES))
+                .build();
+    }
+
+    /**
      * This endpoint allows user to add managed accounts to a primary account.
      * @param  body  Required parameter: Service name and list of accounts to add
      * @return    Returns the ManagedAccountsAddResponse wrapped in ApiResponse response from the API call
@@ -75,76 +136,20 @@ public final class BillingController extends BaseController {
         return new ApiCall.Builder<ApiResponse<ManagedAccountsAddResponse>, ApiException>()
                 .globalConfig(getGlobalConfiguration())
                 .requestBuilder(requestBuilder -> requestBuilder
-                        .server(Server.SUBSCR_IP_TION_SERVER.value())
+                        .server(Server.SUBSCRIPTION_SERVER.value())
                         .path("/managedaccounts/actions/add")
                         .bodyParam(param -> param.value(body))
                         .bodySerializer(() ->  ApiHelper.serialize(body))
                         .headerParam(param -> param.key("Content-Type")
                                 .value("application/json").isRequired(false))
                         .headerParam(param -> param.key("accept").value("application/json"))
-                        .authenticationKey(BaseController.AUTHENTICATION_KEY)
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
                         .httpMethod(HttpMethod.POST))
                 .responseHandler(responseHandler -> responseHandler
                         .responseClassType(ResponseClassType.API_RESPONSE)
                         .apiResponseDeserializer(
                                 response -> ApiHelper.deserialize(response, ManagedAccountsAddResponse.class))
-                        .nullify404(false)
-                        .localErrorCase("400",
-                                 ErrorCase.setReason("Unexpected error",
-                                (reason, context) -> new DeviceLocationResultException(reason, context)))
-                        .globalErrorCase(GLOBAL_ERROR_CASES))
-                .build();
-    }
-
-    /**
-     * Activates a managed billing service relationship between a managed account and the primary
-     * account.
-     * @param  body  Required parameter: Service name and list of accounts to add
-     * @return    Returns the ManagedAccountsProvisionResponse wrapped in ApiResponse response from the API call
-     * @throws    ApiException    Represents error response from the server.
-     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
-     */
-    public ApiResponse<ManagedAccountsProvisionResponse> managedAccountAction(
-            final ManagedAccountsProvisionRequest body) throws ApiException, IOException {
-        return prepareManagedAccountActionRequest(body).execute();
-    }
-
-    /**
-     * Activates a managed billing service relationship between a managed account and the primary
-     * account.
-     * @param  body  Required parameter: Service name and list of accounts to add
-     * @return    Returns the ManagedAccountsProvisionResponse wrapped in ApiResponse response from the API call
-     */
-    public CompletableFuture<ApiResponse<ManagedAccountsProvisionResponse>> managedAccountActionAsync(
-            final ManagedAccountsProvisionRequest body) {
-        try { 
-            return prepareManagedAccountActionRequest(body).executeAsync(); 
-        } catch (Exception e) {  
-            throw new CompletionException(e); 
-        }
-    }
-
-    /**
-     * Builds the ApiCall object for managedAccountAction.
-     */
-    private ApiCall<ApiResponse<ManagedAccountsProvisionResponse>, ApiException> prepareManagedAccountActionRequest(
-            final ManagedAccountsProvisionRequest body) throws JsonProcessingException, IOException {
-        return new ApiCall.Builder<ApiResponse<ManagedAccountsProvisionResponse>, ApiException>()
-                .globalConfig(getGlobalConfiguration())
-                .requestBuilder(requestBuilder -> requestBuilder
-                        .server(Server.SUBSCR_IP_TION_SERVER.value())
-                        .path("/managedaccounts/actions/provision")
-                        .bodyParam(param -> param.value(body))
-                        .bodySerializer(() ->  ApiHelper.serialize(body))
-                        .headerParam(param -> param.key("Content-Type")
-                                .value("application/json").isRequired(false))
-                        .headerParam(param -> param.key("accept").value("application/json"))
-                        .authenticationKey(BaseController.AUTHENTICATION_KEY)
-                        .httpMethod(HttpMethod.POST))
-                .responseHandler(responseHandler -> responseHandler
-                        .responseClassType(ResponseClassType.API_RESPONSE)
-                        .apiResponseDeserializer(
-                                response -> ApiHelper.deserialize(response, ManagedAccountsProvisionResponse.class))
                         .nullify404(false)
                         .localErrorCase("400",
                                  ErrorCase.setReason("Unexpected error",
@@ -189,14 +194,15 @@ public final class BillingController extends BaseController {
         return new ApiCall.Builder<ApiResponse<ManagedAccountCancelResponse>, ApiException>()
                 .globalConfig(getGlobalConfiguration())
                 .requestBuilder(requestBuilder -> requestBuilder
-                        .server(Server.SUBSCR_IP_TION_SERVER.value())
+                        .server(Server.SUBSCRIPTION_SERVER.value())
                         .path("/managedaccounts/actions/cancel")
                         .bodyParam(param -> param.value(body))
                         .bodySerializer(() ->  ApiHelper.serialize(body))
                         .headerParam(param -> param.key("Content-Type")
                                 .value("application/json").isRequired(false))
                         .headerParam(param -> param.key("accept").value("application/json"))
-                        .authenticationKey(BaseController.AUTHENTICATION_KEY)
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
                         .httpMethod(HttpMethod.POST))
                 .responseHandler(responseHandler -> responseHandler
                         .responseClassType(ResponseClassType.API_RESPONSE)
@@ -211,57 +217,55 @@ public final class BillingController extends BaseController {
     }
 
     /**
-     * This endpoint allows user to retrieve the list of all accounts managed by a primary account.
-     * @param  accountName  Required parameter: Primary account identifier
-     * @param  serviceName  Required parameter: Service name
-     * @return    Returns the ManagedAccountsGetAllResponse wrapped in ApiResponse response from the API call
+     * Activates a managed billing service relationship between a managed account and the primary
+     * account.
+     * @param  body  Required parameter: Service name and list of accounts to add
+     * @return    Returns the ManagedAccountsProvisionResponse wrapped in ApiResponse response from the API call
      * @throws    ApiException    Represents error response from the server.
      * @throws    IOException    Signals that an I/O exception of some sort has occurred.
      */
-    public ApiResponse<ManagedAccountsGetAllResponse> listManagedAccount(
-            final String accountName,
-            final String serviceName) throws ApiException, IOException {
-        return prepareListManagedAccountRequest(accountName, serviceName).execute();
+    public ApiResponse<ManagedAccountsProvisionResponse> managedAccountAction(
+            final ManagedAccountsProvisionRequest body) throws ApiException, IOException {
+        return prepareManagedAccountActionRequest(body).execute();
     }
 
     /**
-     * This endpoint allows user to retrieve the list of all accounts managed by a primary account.
-     * @param  accountName  Required parameter: Primary account identifier
-     * @param  serviceName  Required parameter: Service name
-     * @return    Returns the ManagedAccountsGetAllResponse wrapped in ApiResponse response from the API call
+     * Activates a managed billing service relationship between a managed account and the primary
+     * account.
+     * @param  body  Required parameter: Service name and list of accounts to add
+     * @return    Returns the ManagedAccountsProvisionResponse wrapped in ApiResponse response from the API call
      */
-    public CompletableFuture<ApiResponse<ManagedAccountsGetAllResponse>> listManagedAccountAsync(
-            final String accountName,
-            final String serviceName) {
+    public CompletableFuture<ApiResponse<ManagedAccountsProvisionResponse>> managedAccountActionAsync(
+            final ManagedAccountsProvisionRequest body) {
         try { 
-            return prepareListManagedAccountRequest(accountName, serviceName).executeAsync(); 
+            return prepareManagedAccountActionRequest(body).executeAsync(); 
         } catch (Exception e) {  
             throw new CompletionException(e); 
         }
     }
 
     /**
-     * Builds the ApiCall object for listManagedAccount.
+     * Builds the ApiCall object for managedAccountAction.
      */
-    private ApiCall<ApiResponse<ManagedAccountsGetAllResponse>, ApiException> prepareListManagedAccountRequest(
-            final String accountName,
-            final String serviceName) throws IOException {
-        return new ApiCall.Builder<ApiResponse<ManagedAccountsGetAllResponse>, ApiException>()
+    private ApiCall<ApiResponse<ManagedAccountsProvisionResponse>, ApiException> prepareManagedAccountActionRequest(
+            final ManagedAccountsProvisionRequest body) throws JsonProcessingException, IOException {
+        return new ApiCall.Builder<ApiResponse<ManagedAccountsProvisionResponse>, ApiException>()
                 .globalConfig(getGlobalConfiguration())
                 .requestBuilder(requestBuilder -> requestBuilder
-                        .server(Server.SUBSCR_IP_TION_SERVER.value())
-                        .path("/managedaccounts/{accountName}/service/{serviceName}")
-                        .templateParam(param -> param.key("accountName").value(accountName)
-                                .shouldEncode(true))
-                        .templateParam(param -> param.key("serviceName").value(serviceName)
-                                .shouldEncode(true))
+                        .server(Server.SUBSCRIPTION_SERVER.value())
+                        .path("/managedaccounts/actions/provision")
+                        .bodyParam(param -> param.value(body))
+                        .bodySerializer(() ->  ApiHelper.serialize(body))
+                        .headerParam(param -> param.key("Content-Type")
+                                .value("application/json").isRequired(false))
                         .headerParam(param -> param.key("accept").value("application/json"))
-                        .authenticationKey(BaseController.AUTHENTICATION_KEY)
-                        .httpMethod(HttpMethod.GET))
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
+                        .httpMethod(HttpMethod.POST))
                 .responseHandler(responseHandler -> responseHandler
                         .responseClassType(ResponseClassType.API_RESPONSE)
                         .apiResponseDeserializer(
-                                response -> ApiHelper.deserialize(response, ManagedAccountsGetAllResponse.class))
+                                response -> ApiHelper.deserialize(response, ManagedAccountsProvisionResponse.class))
                         .nullify404(false)
                         .localErrorCase("400",
                                  ErrorCase.setReason("Unexpected error",

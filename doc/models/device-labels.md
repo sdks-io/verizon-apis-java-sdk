@@ -11,8 +11,8 @@ A label for a single device.
 
 | Name | Type | Tags | Description | Getter | Setter |
 |  --- | --- | --- | --- | --- | --- |
-| `Name` | `String` | Optional | The label you want to associate with the device. | String getName() | setName(String name) |
-| `Value` | `String` | Optional | The value of label | String getValue() | setValue(String value) |
+| `Name` | `String` | Required | The label you want to associate with the device. | String getName() | setName(String name) |
+| `Value` | `String` | Required | The value of label | String getValue() | setValue(String value) |
 
 ## Example (as JSON)
 

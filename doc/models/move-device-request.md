@@ -11,7 +11,7 @@ Request to move active devices from one billing account to another within a cust
 
 | Name | Type | Tags | Description | Getter | Setter |
 |  --- | --- | --- | --- | --- | --- |
-| `AccountName` | `String` | Optional | The name of the billing account that you want to move the devices to. | String getAccountName() | setAccountName(String accountName) |
+| `AccountName` | `String` | Required | The name of the billing account that you want to move the devices to. | String getAccountName() | setAccountName(String accountName) |
 | `Filter` | [`DeviceFilter`](../../doc/models/device-filter.md) | Optional | Specify the kind of the device identifier, the type of match, and the string that you want to match. | DeviceFilter getFilter() | setFilter(DeviceFilter filter) |
 | `CustomFields` | [`List<CustomFields>`](../../doc/models/custom-fields.md) | Optional | Custom field names and values, if you want to only include devices that have matching values. | List<CustomFields> getCustomFields() | setCustomFields(List<CustomFields> customFields) |
 | `Devices` | [`List<AccountDeviceList>`](../../doc/models/account-device-list.md) | Optional | Up to 10,000 devices that you want to move to a different account, specified by device identifier. | List<AccountDeviceList> getDevices() | setDevices(List<AccountDeviceList> devices) |
@@ -71,7 +71,8 @@ Request to move active devices from one billing account to another within a cust
       "ipAddress": "ipAddress4"
     }
   ],
-  "groupName": "groupName2"
+  "groupName": "groupName2",
+  "carrierIpPoolName": "carrierIpPoolName0"
 }
 ```
 

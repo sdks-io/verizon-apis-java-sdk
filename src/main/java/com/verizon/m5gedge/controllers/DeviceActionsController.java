@@ -39,63 +39,6 @@ public final class DeviceActionsController extends BaseController {
     }
 
     /**
-     * Allows the profile to fetch the complete device list. This works with Verizon US and Global
-     * profiles.
-     * @param  body  Required parameter: Device Profile Query
-     * @return    Returns the GIORequestResponse wrapped in ApiResponse response from the API call
-     * @throws    ApiException    Represents error response from the server.
-     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
-     */
-    public ApiResponse<GIORequestResponse> retrieveTheGlobalDeviceList(
-            final GetDeviceListWithProfilesRequest body) throws ApiException, IOException {
-        return prepareRetrieveTheGlobalDeviceListRequest(body).execute();
-    }
-
-    /**
-     * Allows the profile to fetch the complete device list. This works with Verizon US and Global
-     * profiles.
-     * @param  body  Required parameter: Device Profile Query
-     * @return    Returns the GIORequestResponse wrapped in ApiResponse response from the API call
-     */
-    public CompletableFuture<ApiResponse<GIORequestResponse>> retrieveTheGlobalDeviceListAsync(
-            final GetDeviceListWithProfilesRequest body) {
-        try { 
-            return prepareRetrieveTheGlobalDeviceListRequest(body).executeAsync(); 
-        } catch (Exception e) {  
-            throw new CompletionException(e); 
-        }
-    }
-
-    /**
-     * Builds the ApiCall object for retrieveTheGlobalDeviceList.
-     */
-    private ApiCall<ApiResponse<GIORequestResponse>, ApiException> prepareRetrieveTheGlobalDeviceListRequest(
-            final GetDeviceListWithProfilesRequest body) throws JsonProcessingException, IOException {
-        return new ApiCall.Builder<ApiResponse<GIORequestResponse>, ApiException>()
-                .globalConfig(getGlobalConfiguration())
-                .requestBuilder(requestBuilder -> requestBuilder
-                        .server(Server.THINGSPACE.value())
-                        .path("/m2m/v2/devices/actions/list")
-                        .bodyParam(param -> param.value(body))
-                        .bodySerializer(() ->  ApiHelper.serialize(body))
-                        .headerParam(param -> param.key("Content-Type")
-                                .value("application/json").isRequired(false))
-                        .headerParam(param -> param.key("accept").value("application/json"))
-                        .authenticationKey(BaseController.AUTHENTICATION_KEY)
-                        .httpMethod(HttpMethod.POST))
-                .responseHandler(responseHandler -> responseHandler
-                        .responseClassType(ResponseClassType.API_RESPONSE)
-                        .apiResponseDeserializer(
-                                response -> ApiHelper.deserialize(response, GIORequestResponse.class))
-                        .nullify404(false)
-                        .localErrorCase(ErrorCase.DEFAULT,
-                                 ErrorCase.setReason("Error response",
-                                (reason, context) -> new GIORestErrorResponseException(reason, context)))
-                        .globalErrorCase(GLOBAL_ERROR_CASES))
-                .build();
-    }
-
-    /**
      * Retreive the provisioning history of a specific device or devices.
      * @param  body  Required parameter: Device Provisioning History
      * @return    Returns the GIORequestResponse wrapped in ApiResponse response from the API call
@@ -136,7 +79,8 @@ public final class DeviceActionsController extends BaseController {
                         .headerParam(param -> param.key("Content-Type")
                                 .value("application/json").isRequired(false))
                         .headerParam(param -> param.key("accept").value("application/json"))
-                        .authenticationKey(BaseController.AUTHENTICATION_KEY)
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
                         .httpMethod(HttpMethod.POST))
                 .responseHandler(responseHandler -> responseHandler
                         .responseClassType(ResponseClassType.API_RESPONSE)
@@ -196,12 +140,71 @@ public final class DeviceActionsController extends BaseController {
                         .templateParam(param -> param.key("requestID").value(requestID)
                                 .shouldEncode(true))
                         .headerParam(param -> param.key("accept").value("application/json"))
-                        .authenticationKey(BaseController.AUTHENTICATION_KEY)
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
                         .httpMethod(HttpMethod.GET))
                 .responseHandler(responseHandler -> responseHandler
                         .responseClassType(ResponseClassType.API_RESPONSE)
                         .apiResponseDeserializer(
                                 response -> ApiHelper.deserialize(response, StatusResponse.class))
+                        .nullify404(false)
+                        .localErrorCase(ErrorCase.DEFAULT,
+                                 ErrorCase.setReason("Error response",
+                                (reason, context) -> new GIORestErrorResponseException(reason, context)))
+                        .globalErrorCase(GLOBAL_ERROR_CASES))
+                .build();
+    }
+
+    /**
+     * Allows the profile to fetch the complete device list. This works with Verizon US and Global
+     * profiles.
+     * @param  body  Required parameter: Device Profile Query
+     * @return    Returns the GIORequestResponse wrapped in ApiResponse response from the API call
+     * @throws    ApiException    Represents error response from the server.
+     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
+     */
+    public ApiResponse<GIORequestResponse> retrieveTheGlobalDeviceList(
+            final GetDeviceListWithProfilesRequest body) throws ApiException, IOException {
+        return prepareRetrieveTheGlobalDeviceListRequest(body).execute();
+    }
+
+    /**
+     * Allows the profile to fetch the complete device list. This works with Verizon US and Global
+     * profiles.
+     * @param  body  Required parameter: Device Profile Query
+     * @return    Returns the GIORequestResponse wrapped in ApiResponse response from the API call
+     */
+    public CompletableFuture<ApiResponse<GIORequestResponse>> retrieveTheGlobalDeviceListAsync(
+            final GetDeviceListWithProfilesRequest body) {
+        try { 
+            return prepareRetrieveTheGlobalDeviceListRequest(body).executeAsync(); 
+        } catch (Exception e) {  
+            throw new CompletionException(e); 
+        }
+    }
+
+    /**
+     * Builds the ApiCall object for retrieveTheGlobalDeviceList.
+     */
+    private ApiCall<ApiResponse<GIORequestResponse>, ApiException> prepareRetrieveTheGlobalDeviceListRequest(
+            final GetDeviceListWithProfilesRequest body) throws JsonProcessingException, IOException {
+        return new ApiCall.Builder<ApiResponse<GIORequestResponse>, ApiException>()
+                .globalConfig(getGlobalConfiguration())
+                .requestBuilder(requestBuilder -> requestBuilder
+                        .server(Server.THINGSPACE.value())
+                        .path("/m2m/v2/devices/actions/list")
+                        .bodyParam(param -> param.value(body))
+                        .bodySerializer(() ->  ApiHelper.serialize(body))
+                        .headerParam(param -> param.key("Content-Type")
+                                .value("application/json").isRequired(false))
+                        .headerParam(param -> param.key("accept").value("application/json"))
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
+                        .httpMethod(HttpMethod.POST))
+                .responseHandler(responseHandler -> responseHandler
+                        .responseClassType(ResponseClassType.API_RESPONSE)
+                        .apiResponseDeserializer(
+                                response -> ApiHelper.deserialize(response, GIORequestResponse.class))
                         .nullify404(false)
                         .localErrorCase(ErrorCase.DEFAULT,
                                  ErrorCase.setReason("Error response",

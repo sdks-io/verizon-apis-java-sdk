@@ -86,13 +86,75 @@ public final class FirmwareV3Controller extends BaseController {
                         .templateParam(param -> param.key("acc").value(acc)
                                 .shouldEncode(true))
                         .headerParam(param -> param.key("accept").value("application/json"))
-                        .authenticationKey(BaseController.AUTHENTICATION_KEY)
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
                         .httpMethod(HttpMethod.GET))
                 .responseHandler(responseHandler -> responseHandler
                         .responseClassType(ResponseClassType.API_RESPONSE)
                         .apiResponseDeserializer(
                                 response -> ApiHelper.deserializeArray(response,
                                         FirmwarePackage[].class))
+                        .nullify404(false)
+                        .localErrorCase("400",
+                                 ErrorCase.setReason("Unexpected error.",
+                                (reason, context) -> new FotaV3ResultException(reason, context)))
+                        .globalErrorCase(GLOBAL_ERROR_CASES))
+                .build();
+    }
+
+    /**
+     * Ask a device to report its firmware version asynchronously.
+     * @param  acc  Required parameter: Account identifier.
+     * @param  deviceId  Required parameter: Device identifier.
+     * @return    Returns the DeviceFirmwareVersionUpdateResult wrapped in ApiResponse response from the API call
+     * @throws    ApiException    Represents error response from the server.
+     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
+     */
+    public ApiResponse<DeviceFirmwareVersionUpdateResult> reportDeviceFirmware(
+            final String acc,
+            final String deviceId) throws ApiException, IOException {
+        return prepareReportDeviceFirmwareRequest(acc, deviceId).execute();
+    }
+
+    /**
+     * Ask a device to report its firmware version asynchronously.
+     * @param  acc  Required parameter: Account identifier.
+     * @param  deviceId  Required parameter: Device identifier.
+     * @return    Returns the DeviceFirmwareVersionUpdateResult wrapped in ApiResponse response from the API call
+     */
+    public CompletableFuture<ApiResponse<DeviceFirmwareVersionUpdateResult>> reportDeviceFirmwareAsync(
+            final String acc,
+            final String deviceId) {
+        try { 
+            return prepareReportDeviceFirmwareRequest(acc, deviceId).executeAsync(); 
+        } catch (Exception e) {  
+            throw new CompletionException(e); 
+        }
+    }
+
+    /**
+     * Builds the ApiCall object for reportDeviceFirmware.
+     */
+    private ApiCall<ApiResponse<DeviceFirmwareVersionUpdateResult>, ApiException> prepareReportDeviceFirmwareRequest(
+            final String acc,
+            final String deviceId) throws IOException {
+        return new ApiCall.Builder<ApiResponse<DeviceFirmwareVersionUpdateResult>, ApiException>()
+                .globalConfig(getGlobalConfiguration())
+                .requestBuilder(requestBuilder -> requestBuilder
+                        .server(Server.SOFTWARE_MANAGEMENT_V3.value())
+                        .path("/firmware/{acc}/async/{deviceId}")
+                        .templateParam(param -> param.key("acc").value(acc)
+                                .shouldEncode(true))
+                        .templateParam(param -> param.key("deviceId").value(deviceId)
+                                .shouldEncode(true))
+                        .headerParam(param -> param.key("accept").value("application/json"))
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
+                        .httpMethod(HttpMethod.PUT))
+                .responseHandler(responseHandler -> responseHandler
+                        .responseClassType(ResponseClassType.API_RESPONSE)
+                        .apiResponseDeserializer(
+                                response -> ApiHelper.deserialize(response, DeviceFirmwareVersionUpdateResult.class))
                         .nullify404(false)
                         .localErrorCase("400",
                                  ErrorCase.setReason("Unexpected error.",
@@ -149,72 +211,13 @@ public final class FirmwareV3Controller extends BaseController {
                         .headerParam(param -> param.key("Content-Type")
                                 .value("application/json").isRequired(false))
                         .headerParam(param -> param.key("accept").value("application/json"))
-                        .authenticationKey(BaseController.AUTHENTICATION_KEY)
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
                         .httpMethod(HttpMethod.PUT))
                 .responseHandler(responseHandler -> responseHandler
                         .responseClassType(ResponseClassType.API_RESPONSE)
                         .apiResponseDeserializer(
                                 response -> ApiHelper.deserialize(response, DeviceFirmwareList.class))
-                        .nullify404(false)
-                        .localErrorCase("400",
-                                 ErrorCase.setReason("Unexpected error.",
-                                (reason, context) -> new FotaV3ResultException(reason, context)))
-                        .globalErrorCase(GLOBAL_ERROR_CASES))
-                .build();
-    }
-
-    /**
-     * Ask a device to report its firmware version asynchronously.
-     * @param  acc  Required parameter: Account identifier.
-     * @param  deviceId  Required parameter: Device identifier.
-     * @return    Returns the DeviceFirmwareVersionUpdateResult wrapped in ApiResponse response from the API call
-     * @throws    ApiException    Represents error response from the server.
-     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
-     */
-    public ApiResponse<DeviceFirmwareVersionUpdateResult> reportDeviceFirmware(
-            final String acc,
-            final String deviceId) throws ApiException, IOException {
-        return prepareReportDeviceFirmwareRequest(acc, deviceId).execute();
-    }
-
-    /**
-     * Ask a device to report its firmware version asynchronously.
-     * @param  acc  Required parameter: Account identifier.
-     * @param  deviceId  Required parameter: Device identifier.
-     * @return    Returns the DeviceFirmwareVersionUpdateResult wrapped in ApiResponse response from the API call
-     */
-    public CompletableFuture<ApiResponse<DeviceFirmwareVersionUpdateResult>> reportDeviceFirmwareAsync(
-            final String acc,
-            final String deviceId) {
-        try { 
-            return prepareReportDeviceFirmwareRequest(acc, deviceId).executeAsync(); 
-        } catch (Exception e) {  
-            throw new CompletionException(e); 
-        }
-    }
-
-    /**
-     * Builds the ApiCall object for reportDeviceFirmware.
-     */
-    private ApiCall<ApiResponse<DeviceFirmwareVersionUpdateResult>, ApiException> prepareReportDeviceFirmwareRequest(
-            final String acc,
-            final String deviceId) throws IOException {
-        return new ApiCall.Builder<ApiResponse<DeviceFirmwareVersionUpdateResult>, ApiException>()
-                .globalConfig(getGlobalConfiguration())
-                .requestBuilder(requestBuilder -> requestBuilder
-                        .server(Server.SOFTWARE_MANAGEMENT_V3.value())
-                        .path("/firmware/{acc}/async/{deviceId}")
-                        .templateParam(param -> param.key("acc").value(acc)
-                                .shouldEncode(true))
-                        .templateParam(param -> param.key("deviceId").value(deviceId)
-                                .shouldEncode(true))
-                        .headerParam(param -> param.key("accept").value("application/json"))
-                        .authenticationKey(BaseController.AUTHENTICATION_KEY)
-                        .httpMethod(HttpMethod.PUT))
-                .responseHandler(responseHandler -> responseHandler
-                        .responseClassType(ResponseClassType.API_RESPONSE)
-                        .apiResponseDeserializer(
-                                response -> ApiHelper.deserialize(response, DeviceFirmwareVersionUpdateResult.class))
                         .nullify404(false)
                         .localErrorCase("400",
                                  ErrorCase.setReason("Unexpected error.",

@@ -15,8 +15,8 @@ import java.util.List;
  * This is a model class for DeleteDevicesRequest type.
  */
 public class DeleteDevicesRequest {
-    private String accountName;
     private List<AccountDeviceList> devicesToDelete;
+    private String accountName;
 
     /**
      * Default constructor.
@@ -26,13 +26,35 @@ public class DeleteDevicesRequest {
 
     /**
      * Initialization constructor.
-     * @param  accountName  String value for accountName.
      * @param  devicesToDelete  List of AccountDeviceList value for devicesToDelete.
+     * @param  accountName  String value for accountName.
      */
     public DeleteDevicesRequest(
-            String accountName,
-            List<AccountDeviceList> devicesToDelete) {
+            List<AccountDeviceList> devicesToDelete,
+            String accountName) {
+        this.devicesToDelete = devicesToDelete;
         this.accountName = accountName;
+    }
+
+    /**
+     * Getter for DevicesToDelete.
+     * A list of up to 100 devices that you want to delete, specified by device identifier. You only
+     * need to provide one identifier per device.
+     * @return Returns the List of AccountDeviceList
+     */
+    @JsonGetter("devicesToDelete")
+    public List<AccountDeviceList> getDevicesToDelete() {
+        return devicesToDelete;
+    }
+
+    /**
+     * Setter for DevicesToDelete.
+     * A list of up to 100 devices that you want to delete, specified by device identifier. You only
+     * need to provide one identifier per device.
+     * @param devicesToDelete Value for List of AccountDeviceList
+     */
+    @JsonSetter("devicesToDelete")
+    public void setDevicesToDelete(List<AccountDeviceList> devicesToDelete) {
         this.devicesToDelete = devicesToDelete;
     }
 
@@ -60,36 +82,13 @@ public class DeleteDevicesRequest {
     }
 
     /**
-     * Getter for DevicesToDelete.
-     * A list of up to 100 devices that you want to delete, specified by device identifier. You only
-     * need to provide one identifier per device.
-     * @return Returns the List of AccountDeviceList
-     */
-    @JsonGetter("devicesToDelete")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public List<AccountDeviceList> getDevicesToDelete() {
-        return devicesToDelete;
-    }
-
-    /**
-     * Setter for DevicesToDelete.
-     * A list of up to 100 devices that you want to delete, specified by device identifier. You only
-     * need to provide one identifier per device.
-     * @param devicesToDelete Value for List of AccountDeviceList
-     */
-    @JsonSetter("devicesToDelete")
-    public void setDevicesToDelete(List<AccountDeviceList> devicesToDelete) {
-        this.devicesToDelete = devicesToDelete;
-    }
-
-    /**
      * Converts this DeleteDevicesRequest into string format.
      * @return String representation of this class
      */
     @Override
     public String toString() {
-        return "DeleteDevicesRequest [" + "accountName=" + accountName + ", devicesToDelete="
-                + devicesToDelete + "]";
+        return "DeleteDevicesRequest [" + "devicesToDelete=" + devicesToDelete + ", accountName="
+                + accountName + "]";
     }
 
     /**
@@ -98,9 +97,8 @@ public class DeleteDevicesRequest {
      * @return a new {@link DeleteDevicesRequest.Builder} object
      */
     public Builder toBuilder() {
-        Builder builder = new Builder()
-                .accountName(getAccountName())
-                .devicesToDelete(getDevicesToDelete());
+        Builder builder = new Builder(devicesToDelete)
+                .accountName(getAccountName());
         return builder;
     }
 
@@ -108,19 +106,21 @@ public class DeleteDevicesRequest {
      * Class to build instances of {@link DeleteDevicesRequest}.
      */
     public static class Builder {
-        private String accountName;
         private List<AccountDeviceList> devicesToDelete;
-
-
+        private String accountName;
 
         /**
-         * Setter for accountName.
-         * @param  accountName  String value for accountName.
-         * @return Builder
+         * Initialization constructor.
          */
-        public Builder accountName(String accountName) {
-            this.accountName = accountName;
-            return this;
+        public Builder() {
+        }
+
+        /**
+         * Initialization constructor.
+         * @param  devicesToDelete  List of AccountDeviceList value for devicesToDelete.
+         */
+        public Builder(List<AccountDeviceList> devicesToDelete) {
+            this.devicesToDelete = devicesToDelete;
         }
 
         /**
@@ -134,11 +134,21 @@ public class DeleteDevicesRequest {
         }
 
         /**
+         * Setter for accountName.
+         * @param  accountName  String value for accountName.
+         * @return Builder
+         */
+        public Builder accountName(String accountName) {
+            this.accountName = accountName;
+            return this;
+        }
+
+        /**
          * Builds a new {@link DeleteDevicesRequest} object using the set fields.
          * @return {@link DeleteDevicesRequest}
          */
         public DeleteDevicesRequest build() {
-            return new DeleteDevicesRequest(accountName, devicesToDelete);
+            return new DeleteDevicesRequest(devicesToDelete, accountName);
         }
     }
 }

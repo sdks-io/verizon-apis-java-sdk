@@ -54,16 +54,6 @@ public enum OauthScopeEnum {
 
     TS_APPLICATION_RO,
 
-    EDGEDISCOVERYREAD,
-
-    EDGESERVICEPROFILEREAD,
-
-    EDGESERVICEPROFILEWRITE,
-
-    EDGESERVICEREGISTRYREAD,
-
-    EDGESERVICEREGISTRYWRITE,
-
     /**
      * read access
      */
@@ -87,11 +77,6 @@ public enum OauthScopeEnum {
         TS_MEC_FULLACCESS.value = "ts.mec.fullaccess";
         TS_MEC_LIMITACCESS.value = "ts.mec.limitaccess";
         TS_APPLICATION_RO.value = "ts.application.ro";
-        EDGEDISCOVERYREAD.value = "edge:discovery:read";
-        EDGESERVICEPROFILEREAD.value = "edge:serviceprofile:read";
-        EDGESERVICEPROFILEWRITE.value = "edge:serviceprofile:write";
-        EDGESERVICEREGISTRYREAD.value = "edge:serviceregistry:read";
-        EDGESERVICEREGISTRYWRITE.value = "edge:serviceregistry:write";
         READ.value = "read";
         WRITE.value = "write";
 
@@ -103,11 +88,6 @@ public enum OauthScopeEnum {
         valueMap.put("ts.mec.fullaccess", TS_MEC_FULLACCESS);
         valueMap.put("ts.mec.limitaccess", TS_MEC_LIMITACCESS);
         valueMap.put("ts.application.ro", TS_APPLICATION_RO);
-        valueMap.put("edge:discovery:read", EDGEDISCOVERYREAD);
-        valueMap.put("edge:serviceprofile:read", EDGESERVICEPROFILEREAD);
-        valueMap.put("edge:serviceprofile:write", EDGESERVICEPROFILEWRITE);
-        valueMap.put("edge:serviceregistry:read", EDGESERVICEREGISTRYREAD);
-        valueMap.put("edge:serviceregistry:write", EDGESERVICEREGISTRYWRITE);
         valueMap.put("read", READ);
         valueMap.put("write", WRITE);
     }
@@ -121,8 +101,7 @@ public enum OauthScopeEnum {
     @JsonCreator
     public static OauthScopeEnum constructFromString(String toConvert) throws IOException {
         OauthScopeEnum enumValue = fromString(toConvert);
-        if (enumValue == null)
-        {
+        if (enumValue == null) {
             throw new IOException("Unable to create enum instance with value: " + toConvert);
         }
         return enumValue;

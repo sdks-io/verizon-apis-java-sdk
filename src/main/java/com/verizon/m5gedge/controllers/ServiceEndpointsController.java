@@ -19,7 +19,7 @@ import com.verizon.m5gedge.models.ListOptimalServiceEndpointsResult;
 import com.verizon.m5gedge.models.RegisterServiceEndpointResult;
 import com.verizon.m5gedge.models.ResourcesEdgeHostedServiceWithProfileId;
 import com.verizon.m5gedge.models.UpdateServiceEndpointResult;
-import com.verizon.m5gedge.models.UserEquIpMentIdentityTypeEnum;
+import com.verizon.m5gedge.models.UserEquipmentIdentityTypeEnum;
 import io.apimatic.core.ApiCall;
 import io.apimatic.core.ErrorCase;
 import io.apimatic.core.GlobalConfiguration;
@@ -67,7 +67,7 @@ public final class ServiceEndpointsController extends BaseController {
     public ApiResponse<ListOptimalServiceEndpointsResult> listOptimalServiceEndpoints(
             final String region,
             final Integer subscriberDensity,
-            final UserEquIpMentIdentityTypeEnum uEIdentityType,
+            final UserEquipmentIdentityTypeEnum uEIdentityType,
             final String uEIdentity,
             final String serviceEndpointsIds) throws ApiException, IOException {
         return prepareListOptimalServiceEndpointsRequest(region, subscriberDensity, uEIdentityType,
@@ -97,7 +97,7 @@ public final class ServiceEndpointsController extends BaseController {
     public CompletableFuture<ApiResponse<ListOptimalServiceEndpointsResult>> listOptimalServiceEndpointsAsync(
             final String region,
             final Integer subscriberDensity,
-            final UserEquIpMentIdentityTypeEnum uEIdentityType,
+            final UserEquipmentIdentityTypeEnum uEIdentityType,
             final String uEIdentity,
             final String serviceEndpointsIds) {
         try { 
@@ -114,7 +114,7 @@ public final class ServiceEndpointsController extends BaseController {
     private ApiCall<ApiResponse<ListOptimalServiceEndpointsResult>, ApiException> prepareListOptimalServiceEndpointsRequest(
             final String region,
             final Integer subscriberDensity,
-            final UserEquIpMentIdentityTypeEnum uEIdentityType,
+            final UserEquipmentIdentityTypeEnum uEIdentityType,
             final String uEIdentity,
             final String serviceEndpointsIds) throws IOException {
         return new ApiCall.Builder<ApiResponse<ListOptimalServiceEndpointsResult>, ApiException>()
@@ -133,203 +133,13 @@ public final class ServiceEndpointsController extends BaseController {
                         .queryParam(param -> param.key("serviceEndpointsIds")
                                 .value(serviceEndpointsIds).isRequired(false))
                         .headerParam(param -> param.key("accept").value("application/json"))
-                        .authenticationKey(BaseController.AUTHENTICATION_KEY)
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
                         .httpMethod(HttpMethod.GET))
                 .responseHandler(responseHandler -> responseHandler
                         .responseClassType(ResponseClassType.API_RESPONSE)
                         .apiResponseDeserializer(
                                 response -> ApiHelper.deserialize(response, ListOptimalServiceEndpointsResult.class))
-                        .nullify404(false)
-                        .localErrorCase("400",
-                                 ErrorCase.setReason("HTTP 400 Bad Request.",
-                                (reason, context) -> new EdgeDiscoveryResultException(reason, context)))
-                        .localErrorCase("401",
-                                 ErrorCase.setReason("HTTP 401 Unauthorized.",
-                                (reason, context) -> new EdgeDiscoveryResultException(reason, context)))
-                        .localErrorCase(ErrorCase.DEFAULT,
-                                 ErrorCase.setReason("HTTP 500 Internal Server Error.",
-                                (reason, context) -> new EdgeDiscoveryResultException(reason, context)))
-                        .globalErrorCase(GLOBAL_ERROR_CASES))
-                .build();
-    }
-
-    /**
-     * Register Service Endpoints of a deployed application to specified MEC Platforms.
-     * @param  body  Required parameter: An array of Service Endpoint data for a deployed
-     *         application. The request body passes all of the needed parameters to create a service
-     *         endpoint. Parameters will be edited here rather than the **Parameters** section
-     *         above. The `ern`,`applicationServerProviderId`, `applicationId` and
-     *         `serviceProfileID` parameters are required. **Note:** Currently, the only valid value
-     *         for `applicationServerProviderId`is **AWS**. Also, if you do not know one of the
-     *         optional values (i.e. URI), you can erase the line from the query by back-spacing
-     *         over it.
-     * @return    Returns the RegisterServiceEndpointResult wrapped in ApiResponse response from the API call
-     * @throws    ApiException    Represents error response from the server.
-     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
-     */
-    public ApiResponse<RegisterServiceEndpointResult> registerServiceEndpoints(
-            final List<ResourcesEdgeHostedServiceWithProfileId> body) throws ApiException, IOException {
-        return prepareRegisterServiceEndpointsRequest(body).execute();
-    }
-
-    /**
-     * Register Service Endpoints of a deployed application to specified MEC Platforms.
-     * @param  body  Required parameter: An array of Service Endpoint data for a deployed
-     *         application. The request body passes all of the needed parameters to create a service
-     *         endpoint. Parameters will be edited here rather than the **Parameters** section
-     *         above. The `ern`,`applicationServerProviderId`, `applicationId` and
-     *         `serviceProfileID` parameters are required. **Note:** Currently, the only valid value
-     *         for `applicationServerProviderId`is **AWS**. Also, if you do not know one of the
-     *         optional values (i.e. URI), you can erase the line from the query by back-spacing
-     *         over it.
-     * @return    Returns the RegisterServiceEndpointResult wrapped in ApiResponse response from the API call
-     */
-    public CompletableFuture<ApiResponse<RegisterServiceEndpointResult>> registerServiceEndpointsAsync(
-            final List<ResourcesEdgeHostedServiceWithProfileId> body) {
-        try { 
-            return prepareRegisterServiceEndpointsRequest(body).executeAsync(); 
-        } catch (Exception e) {  
-            throw new CompletionException(e); 
-        }
-    }
-
-    /**
-     * Builds the ApiCall object for registerServiceEndpoints.
-     */
-    private ApiCall<ApiResponse<RegisterServiceEndpointResult>, ApiException> prepareRegisterServiceEndpointsRequest(
-            final List<ResourcesEdgeHostedServiceWithProfileId> body) throws JsonProcessingException, IOException {
-        return new ApiCall.Builder<ApiResponse<RegisterServiceEndpointResult>, ApiException>()
-                .globalConfig(getGlobalConfiguration())
-                .requestBuilder(requestBuilder -> requestBuilder
-                        .server(Server.EDGE_DISCOVERY.value())
-                        .path("/serviceendpoints")
-                        .bodyParam(param -> param.value(body))
-                        .bodySerializer(() ->  ApiHelper.serialize(body))
-                        .headerParam(param -> param.key("Content-Type")
-                                .value("application/json").isRequired(false))
-                        .headerParam(param -> param.key("accept").value("application/json"))
-                        .authenticationKey(BaseController.AUTHENTICATION_KEY)
-                        .httpMethod(HttpMethod.POST))
-                .responseHandler(responseHandler -> responseHandler
-                        .responseClassType(ResponseClassType.API_RESPONSE)
-                        .apiResponseDeserializer(
-                                response -> ApiHelper.deserialize(response, RegisterServiceEndpointResult.class))
-                        .nullify404(false)
-                        .localErrorCase("400",
-                                 ErrorCase.setReason("HTTP 400 Bad Request.",
-                                (reason, context) -> new EdgeDiscoveryResultException(reason, context)))
-                        .localErrorCase("401",
-                                 ErrorCase.setReason("HTTP 401 Unauthorized.",
-                                (reason, context) -> new EdgeDiscoveryResultException(reason, context)))
-                        .localErrorCase(ErrorCase.DEFAULT,
-                                 ErrorCase.setReason("HTTP 500 Internal Server Error.",
-                                (reason, context) -> new EdgeDiscoveryResultException(reason, context)))
-                        .globalErrorCase(GLOBAL_ERROR_CASES))
-                .build();
-    }
-
-    /**
-     * Returns a list of all registered service endpoints.
-     * @return    Returns the ListAllServiceEndpointsResult wrapped in ApiResponse response from the API call
-     * @throws    ApiException    Represents error response from the server.
-     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
-     */
-    public ApiResponse<ListAllServiceEndpointsResult> listAllServiceEndpoints() throws ApiException, IOException {
-        return prepareListAllServiceEndpointsRequest().execute();
-    }
-
-    /**
-     * Returns a list of all registered service endpoints.
-     * @return    Returns the ListAllServiceEndpointsResult wrapped in ApiResponse response from the API call
-     */
-    public CompletableFuture<ApiResponse<ListAllServiceEndpointsResult>> listAllServiceEndpointsAsync() {
-        try { 
-            return prepareListAllServiceEndpointsRequest().executeAsync(); 
-        } catch (Exception e) {  
-            throw new CompletionException(e); 
-        }
-    }
-
-    /**
-     * Builds the ApiCall object for listAllServiceEndpoints.
-     */
-    private ApiCall<ApiResponse<ListAllServiceEndpointsResult>, ApiException> prepareListAllServiceEndpointsRequest() throws IOException {
-        return new ApiCall.Builder<ApiResponse<ListAllServiceEndpointsResult>, ApiException>()
-                .globalConfig(getGlobalConfiguration())
-                .requestBuilder(requestBuilder -> requestBuilder
-                        .server(Server.EDGE_DISCOVERY.value())
-                        .path("/serviceendpointsall")
-                        .headerParam(param -> param.key("accept").value("application/json"))
-                        .authenticationKey(BaseController.AUTHENTICATION_KEY)
-                        .httpMethod(HttpMethod.GET))
-                .responseHandler(responseHandler -> responseHandler
-                        .responseClassType(ResponseClassType.API_RESPONSE)
-                        .apiResponseDeserializer(
-                                response -> ApiHelper.deserialize(response, ListAllServiceEndpointsResult.class))
-                        .nullify404(false)
-                        .localErrorCase("400",
-                                 ErrorCase.setReason("HTTP 400 Bad Request.",
-                                (reason, context) -> new EdgeDiscoveryResultException(reason, context)))
-                        .localErrorCase("401",
-                                 ErrorCase.setReason("HTTP 401 Unauthorized.",
-                                (reason, context) -> new EdgeDiscoveryResultException(reason, context)))
-                        .localErrorCase(ErrorCase.DEFAULT,
-                                 ErrorCase.setReason("HTTP 500 Internal Server Error.",
-                                (reason, context) -> new EdgeDiscoveryResultException(reason, context)))
-                        .globalErrorCase(GLOBAL_ERROR_CASES))
-                .build();
-    }
-
-    /**
-     * Returns endpoint information for all Service Endpoints registered to a specified
-     * serviceEndpointId.
-     * @param  serviceEndpointsId  Required parameter: A system-defined string identifier
-     *         representing one or more registered Service Endpoints.
-     * @return    Returns the List of ResourcesEdgeHostedServiceWithProfileId wrapped in ApiResponse response from the API call
-     * @throws    ApiException    Represents error response from the server.
-     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
-     */
-    public ApiResponse<List<ResourcesEdgeHostedServiceWithProfileId>> getServiceEndpoint(
-            final String serviceEndpointsId) throws ApiException, IOException {
-        return prepareGetServiceEndpointRequest(serviceEndpointsId).execute();
-    }
-
-    /**
-     * Returns endpoint information for all Service Endpoints registered to a specified
-     * serviceEndpointId.
-     * @param  serviceEndpointsId  Required parameter: A system-defined string identifier
-     *         representing one or more registered Service Endpoints.
-     * @return    Returns the List of ResourcesEdgeHostedServiceWithProfileId wrapped in ApiResponse response from the API call
-     */
-    public CompletableFuture<ApiResponse<List<ResourcesEdgeHostedServiceWithProfileId>>> getServiceEndpointAsync(
-            final String serviceEndpointsId) {
-        try { 
-            return prepareGetServiceEndpointRequest(serviceEndpointsId).executeAsync(); 
-        } catch (Exception e) {  
-            throw new CompletionException(e); 
-        }
-    }
-
-    /**
-     * Builds the ApiCall object for getServiceEndpoint.
-     */
-    private ApiCall<ApiResponse<List<ResourcesEdgeHostedServiceWithProfileId>>, ApiException> prepareGetServiceEndpointRequest(
-            final String serviceEndpointsId) throws IOException {
-        return new ApiCall.Builder<ApiResponse<List<ResourcesEdgeHostedServiceWithProfileId>>, ApiException>()
-                .globalConfig(getGlobalConfiguration())
-                .requestBuilder(requestBuilder -> requestBuilder
-                        .server(Server.EDGE_DISCOVERY.value())
-                        .path("/serviceendpoints/{serviceEndpointsId}")
-                        .templateParam(param -> param.key("serviceEndpointsId").value(serviceEndpointsId)
-                                .shouldEncode(true))
-                        .headerParam(param -> param.key("accept").value("application/json"))
-                        .authenticationKey(BaseController.AUTHENTICATION_KEY)
-                        .httpMethod(HttpMethod.GET))
-                .responseHandler(responseHandler -> responseHandler
-                        .responseClassType(ResponseClassType.API_RESPONSE)
-                        .apiResponseDeserializer(
-                                response -> ApiHelper.deserializeArray(response,
-                                        ResourcesEdgeHostedServiceWithProfileId[].class))
                         .nullify404(false)
                         .localErrorCase("400",
                                  ErrorCase.setReason("HTTP 400 Bad Request.",
@@ -404,12 +214,207 @@ public final class ServiceEndpointsController extends BaseController {
                         .headerParam(param -> param.key("Content-Type")
                                 .value("application/json").isRequired(false))
                         .headerParam(param -> param.key("accept").value("application/json"))
-                        .authenticationKey(BaseController.AUTHENTICATION_KEY)
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
                         .httpMethod(HttpMethod.PUT))
                 .responseHandler(responseHandler -> responseHandler
                         .responseClassType(ResponseClassType.API_RESPONSE)
                         .apiResponseDeserializer(
                                 response -> ApiHelper.deserialize(response, UpdateServiceEndpointResult.class))
+                        .nullify404(false)
+                        .localErrorCase("400",
+                                 ErrorCase.setReason("HTTP 400 Bad Request.",
+                                (reason, context) -> new EdgeDiscoveryResultException(reason, context)))
+                        .localErrorCase("401",
+                                 ErrorCase.setReason("HTTP 401 Unauthorized.",
+                                (reason, context) -> new EdgeDiscoveryResultException(reason, context)))
+                        .localErrorCase(ErrorCase.DEFAULT,
+                                 ErrorCase.setReason("HTTP 500 Internal Server Error.",
+                                (reason, context) -> new EdgeDiscoveryResultException(reason, context)))
+                        .globalErrorCase(GLOBAL_ERROR_CASES))
+                .build();
+    }
+
+    /**
+     * Returns endpoint information for all Service Endpoints registered to a specified
+     * serviceEndpointId.
+     * @param  serviceEndpointsId  Required parameter: A system-defined string identifier
+     *         representing one or more registered Service Endpoints.
+     * @return    Returns the List of ResourcesEdgeHostedServiceWithProfileId wrapped in ApiResponse response from the API call
+     * @throws    ApiException    Represents error response from the server.
+     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
+     */
+    public ApiResponse<List<ResourcesEdgeHostedServiceWithProfileId>> getServiceEndpoint(
+            final String serviceEndpointsId) throws ApiException, IOException {
+        return prepareGetServiceEndpointRequest(serviceEndpointsId).execute();
+    }
+
+    /**
+     * Returns endpoint information for all Service Endpoints registered to a specified
+     * serviceEndpointId.
+     * @param  serviceEndpointsId  Required parameter: A system-defined string identifier
+     *         representing one or more registered Service Endpoints.
+     * @return    Returns the List of ResourcesEdgeHostedServiceWithProfileId wrapped in ApiResponse response from the API call
+     */
+    public CompletableFuture<ApiResponse<List<ResourcesEdgeHostedServiceWithProfileId>>> getServiceEndpointAsync(
+            final String serviceEndpointsId) {
+        try { 
+            return prepareGetServiceEndpointRequest(serviceEndpointsId).executeAsync(); 
+        } catch (Exception e) {  
+            throw new CompletionException(e); 
+        }
+    }
+
+    /**
+     * Builds the ApiCall object for getServiceEndpoint.
+     */
+    private ApiCall<ApiResponse<List<ResourcesEdgeHostedServiceWithProfileId>>, ApiException> prepareGetServiceEndpointRequest(
+            final String serviceEndpointsId) throws IOException {
+        return new ApiCall.Builder<ApiResponse<List<ResourcesEdgeHostedServiceWithProfileId>>, ApiException>()
+                .globalConfig(getGlobalConfiguration())
+                .requestBuilder(requestBuilder -> requestBuilder
+                        .server(Server.EDGE_DISCOVERY.value())
+                        .path("/serviceendpoints/{serviceEndpointsId}")
+                        .templateParam(param -> param.key("serviceEndpointsId").value(serviceEndpointsId)
+                                .shouldEncode(true))
+                        .headerParam(param -> param.key("accept").value("application/json"))
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
+                        .httpMethod(HttpMethod.GET))
+                .responseHandler(responseHandler -> responseHandler
+                        .responseClassType(ResponseClassType.API_RESPONSE)
+                        .apiResponseDeserializer(
+                                response -> ApiHelper.deserializeArray(response,
+                                        ResourcesEdgeHostedServiceWithProfileId[].class))
+                        .nullify404(false)
+                        .localErrorCase("400",
+                                 ErrorCase.setReason("HTTP 400 Bad Request.",
+                                (reason, context) -> new EdgeDiscoveryResultException(reason, context)))
+                        .localErrorCase("401",
+                                 ErrorCase.setReason("HTTP 401 Unauthorized.",
+                                (reason, context) -> new EdgeDiscoveryResultException(reason, context)))
+                        .localErrorCase(ErrorCase.DEFAULT,
+                                 ErrorCase.setReason("HTTP 500 Internal Server Error.",
+                                (reason, context) -> new EdgeDiscoveryResultException(reason, context)))
+                        .globalErrorCase(GLOBAL_ERROR_CASES))
+                .build();
+    }
+
+    /**
+     * Returns a list of all registered service endpoints.
+     * @return    Returns the ListAllServiceEndpointsResult wrapped in ApiResponse response from the API call
+     * @throws    ApiException    Represents error response from the server.
+     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
+     */
+    public ApiResponse<ListAllServiceEndpointsResult> listAllServiceEndpoints() throws ApiException, IOException {
+        return prepareListAllServiceEndpointsRequest().execute();
+    }
+
+    /**
+     * Returns a list of all registered service endpoints.
+     * @return    Returns the ListAllServiceEndpointsResult wrapped in ApiResponse response from the API call
+     */
+    public CompletableFuture<ApiResponse<ListAllServiceEndpointsResult>> listAllServiceEndpointsAsync() {
+        try { 
+            return prepareListAllServiceEndpointsRequest().executeAsync(); 
+        } catch (Exception e) {  
+            throw new CompletionException(e); 
+        }
+    }
+
+    /**
+     * Builds the ApiCall object for listAllServiceEndpoints.
+     */
+    private ApiCall<ApiResponse<ListAllServiceEndpointsResult>, ApiException> prepareListAllServiceEndpointsRequest() throws IOException {
+        return new ApiCall.Builder<ApiResponse<ListAllServiceEndpointsResult>, ApiException>()
+                .globalConfig(getGlobalConfiguration())
+                .requestBuilder(requestBuilder -> requestBuilder
+                        .server(Server.EDGE_DISCOVERY.value())
+                        .path("/serviceendpointsall")
+                        .headerParam(param -> param.key("accept").value("application/json"))
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
+                        .httpMethod(HttpMethod.GET))
+                .responseHandler(responseHandler -> responseHandler
+                        .responseClassType(ResponseClassType.API_RESPONSE)
+                        .apiResponseDeserializer(
+                                response -> ApiHelper.deserialize(response, ListAllServiceEndpointsResult.class))
+                        .nullify404(false)
+                        .localErrorCase("400",
+                                 ErrorCase.setReason("HTTP 400 Bad Request.",
+                                (reason, context) -> new EdgeDiscoveryResultException(reason, context)))
+                        .localErrorCase("401",
+                                 ErrorCase.setReason("HTTP 401 Unauthorized.",
+                                (reason, context) -> new EdgeDiscoveryResultException(reason, context)))
+                        .localErrorCase(ErrorCase.DEFAULT,
+                                 ErrorCase.setReason("HTTP 500 Internal Server Error.",
+                                (reason, context) -> new EdgeDiscoveryResultException(reason, context)))
+                        .globalErrorCase(GLOBAL_ERROR_CASES))
+                .build();
+    }
+
+    /**
+     * Register Service Endpoints of a deployed application to specified MEC Platforms.
+     * @param  body  Required parameter: An array of Service Endpoint data for a deployed
+     *         application. The request body passes all of the needed parameters to create a service
+     *         endpoint. Parameters will be edited here rather than the **Parameters** section
+     *         above. The `ern`,`applicationServerProviderId`, `applicationId` and
+     *         `serviceProfileID` parameters are required. **Note:** Currently, the only valid value
+     *         for `applicationServerProviderId`is **AWS**. Also, if you do not know one of the
+     *         optional values (i.e. URI), you can erase the line from the query by back-spacing
+     *         over it.
+     * @return    Returns the RegisterServiceEndpointResult wrapped in ApiResponse response from the API call
+     * @throws    ApiException    Represents error response from the server.
+     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
+     */
+    public ApiResponse<RegisterServiceEndpointResult> registerServiceEndpoints(
+            final List<ResourcesEdgeHostedServiceWithProfileId> body) throws ApiException, IOException {
+        return prepareRegisterServiceEndpointsRequest(body).execute();
+    }
+
+    /**
+     * Register Service Endpoints of a deployed application to specified MEC Platforms.
+     * @param  body  Required parameter: An array of Service Endpoint data for a deployed
+     *         application. The request body passes all of the needed parameters to create a service
+     *         endpoint. Parameters will be edited here rather than the **Parameters** section
+     *         above. The `ern`,`applicationServerProviderId`, `applicationId` and
+     *         `serviceProfileID` parameters are required. **Note:** Currently, the only valid value
+     *         for `applicationServerProviderId`is **AWS**. Also, if you do not know one of the
+     *         optional values (i.e. URI), you can erase the line from the query by back-spacing
+     *         over it.
+     * @return    Returns the RegisterServiceEndpointResult wrapped in ApiResponse response from the API call
+     */
+    public CompletableFuture<ApiResponse<RegisterServiceEndpointResult>> registerServiceEndpointsAsync(
+            final List<ResourcesEdgeHostedServiceWithProfileId> body) {
+        try { 
+            return prepareRegisterServiceEndpointsRequest(body).executeAsync(); 
+        } catch (Exception e) {  
+            throw new CompletionException(e); 
+        }
+    }
+
+    /**
+     * Builds the ApiCall object for registerServiceEndpoints.
+     */
+    private ApiCall<ApiResponse<RegisterServiceEndpointResult>, ApiException> prepareRegisterServiceEndpointsRequest(
+            final List<ResourcesEdgeHostedServiceWithProfileId> body) throws JsonProcessingException, IOException {
+        return new ApiCall.Builder<ApiResponse<RegisterServiceEndpointResult>, ApiException>()
+                .globalConfig(getGlobalConfiguration())
+                .requestBuilder(requestBuilder -> requestBuilder
+                        .server(Server.EDGE_DISCOVERY.value())
+                        .path("/serviceendpoints")
+                        .bodyParam(param -> param.value(body))
+                        .bodySerializer(() ->  ApiHelper.serialize(body))
+                        .headerParam(param -> param.key("Content-Type")
+                                .value("application/json").isRequired(false))
+                        .headerParam(param -> param.key("accept").value("application/json"))
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
+                        .httpMethod(HttpMethod.POST))
+                .responseHandler(responseHandler -> responseHandler
+                        .responseClassType(ResponseClassType.API_RESPONSE)
+                        .apiResponseDeserializer(
+                                response -> ApiHelper.deserialize(response, RegisterServiceEndpointResult.class))
                         .nullify404(false)
                         .localErrorCase("400",
                                  ErrorCase.setReason("HTTP 400 Bad Request.",
@@ -465,7 +470,8 @@ public final class ServiceEndpointsController extends BaseController {
                         .templateParam(param -> param.key("serviceEndpointsId").value(serviceEndpointsId)
                                 .shouldEncode(true))
                         .headerParam(param -> param.key("accept").value("application/json"))
-                        .authenticationKey(BaseController.AUTHENTICATION_KEY)
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
                         .httpMethod(HttpMethod.DELETE))
                 .responseHandler(responseHandler -> responseHandler
                         .responseClassType(ResponseClassType.API_RESPONSE)

@@ -44,9 +44,9 @@ public final class ThingSpaceQualityofServiceAPIActionsController extends BaseCo
      * @throws    ApiException    Represents error response from the server.
      * @throws    IOException    Signals that an I/O exception of some sort has occurred.
      */
-    public ApiResponse<M201success> createAThingSpaceQualityOfServiceAPISubscrIpTion(
+    public ApiResponse<M201success> createAThingSpaceQualityOfServiceAPISubscription(
             final SubscribeRequest body) throws ApiException, IOException {
-        return prepareCreateAThingSpaceQualityOfServiceAPISubscrIpTionRequest(body).execute();
+        return prepareCreateAThingSpaceQualityOfServiceAPISubscriptionRequest(body).execute();
     }
 
     /**
@@ -55,19 +55,19 @@ public final class ThingSpaceQualityofServiceAPIActionsController extends BaseCo
      *         Service API subscription.
      * @return    Returns the M201success wrapped in ApiResponse response from the API call
      */
-    public CompletableFuture<ApiResponse<M201success>> createAThingSpaceQualityOfServiceAPISubscrIpTionAsync(
+    public CompletableFuture<ApiResponse<M201success>> createAThingSpaceQualityOfServiceAPISubscriptionAsync(
             final SubscribeRequest body) {
         try { 
-            return prepareCreateAThingSpaceQualityOfServiceAPISubscrIpTionRequest(body).executeAsync(); 
+            return prepareCreateAThingSpaceQualityOfServiceAPISubscriptionRequest(body).executeAsync(); 
         } catch (Exception e) {  
             throw new CompletionException(e); 
         }
     }
 
     /**
-     * Builds the ApiCall object for createAThingSpaceQualityOfServiceAPISubscrIpTion.
+     * Builds the ApiCall object for createAThingSpaceQualityOfServiceAPISubscription.
      */
-    private ApiCall<ApiResponse<M201success>, ApiException> prepareCreateAThingSpaceQualityOfServiceAPISubscrIpTionRequest(
+    private ApiCall<ApiResponse<M201success>, ApiException> prepareCreateAThingSpaceQualityOfServiceAPISubscriptionRequest(
             final SubscribeRequest body) throws JsonProcessingException, IOException {
         return new ApiCall.Builder<ApiResponse<M201success>, ApiException>()
                 .globalConfig(getGlobalConfiguration())
@@ -79,7 +79,8 @@ public final class ThingSpaceQualityofServiceAPIActionsController extends BaseCo
                         .headerParam(param -> param.key("Content-Type")
                                 .value("application/json").isRequired(false))
                         .headerParam(param -> param.key("accept").value("application/json"))
-                        .authenticationKey(BaseController.AUTHENTICATION_KEY)
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
                         .httpMethod(HttpMethod.POST))
                 .responseHandler(responseHandler -> responseHandler
                         .responseClassType(ResponseClassType.API_RESPONSE)
@@ -97,42 +98,42 @@ public final class ThingSpaceQualityofServiceAPIActionsController extends BaseCo
      * Stops an active ThingSpace Quality of Service API subscription using the account name and the
      * subscription ID.
      * @param  accountName  Required parameter: Example:
-     * @param  qosSubscrIpTionId  Required parameter: Example:
+     * @param  qosSubscriptionId  Required parameter: Example:
      * @return    Returns the M201success wrapped in ApiResponse response from the API call
      * @throws    ApiException    Represents error response from the server.
      * @throws    IOException    Signals that an I/O exception of some sort has occurred.
      */
-    public ApiResponse<M201success> stopAThingSpaceQualityOfServiceAPISubscrIpTion(
+    public ApiResponse<M201success> stopAThingSpaceQualityOfServiceAPISubscription(
             final String accountName,
-            final String qosSubscrIpTionId) throws ApiException, IOException {
-        return prepareStopAThingSpaceQualityOfServiceAPISubscrIpTionRequest(accountName,
-                qosSubscrIpTionId).execute();
+            final String qosSubscriptionId) throws ApiException, IOException {
+        return prepareStopAThingSpaceQualityOfServiceAPISubscriptionRequest(accountName,
+                qosSubscriptionId).execute();
     }
 
     /**
      * Stops an active ThingSpace Quality of Service API subscription using the account name and the
      * subscription ID.
      * @param  accountName  Required parameter: Example:
-     * @param  qosSubscrIpTionId  Required parameter: Example:
+     * @param  qosSubscriptionId  Required parameter: Example:
      * @return    Returns the M201success wrapped in ApiResponse response from the API call
      */
-    public CompletableFuture<ApiResponse<M201success>> stopAThingSpaceQualityOfServiceAPISubscrIpTionAsync(
+    public CompletableFuture<ApiResponse<M201success>> stopAThingSpaceQualityOfServiceAPISubscriptionAsync(
             final String accountName,
-            final String qosSubscrIpTionId) {
+            final String qosSubscriptionId) {
         try { 
-            return prepareStopAThingSpaceQualityOfServiceAPISubscrIpTionRequest(accountName,
-            qosSubscrIpTionId).executeAsync(); 
+            return prepareStopAThingSpaceQualityOfServiceAPISubscriptionRequest(accountName,
+            qosSubscriptionId).executeAsync(); 
         } catch (Exception e) {  
             throw new CompletionException(e); 
         }
     }
 
     /**
-     * Builds the ApiCall object for stopAThingSpaceQualityOfServiceAPISubscrIpTion.
+     * Builds the ApiCall object for stopAThingSpaceQualityOfServiceAPISubscription.
      */
-    private ApiCall<ApiResponse<M201success>, ApiException> prepareStopAThingSpaceQualityOfServiceAPISubscrIpTionRequest(
+    private ApiCall<ApiResponse<M201success>, ApiException> prepareStopAThingSpaceQualityOfServiceAPISubscriptionRequest(
             final String accountName,
-            final String qosSubscrIpTionId) throws IOException {
+            final String qosSubscriptionId) throws IOException {
         return new ApiCall.Builder<ApiResponse<M201success>, ApiException>()
                 .globalConfig(getGlobalConfiguration())
                 .requestBuilder(requestBuilder -> requestBuilder
@@ -141,9 +142,10 @@ public final class ThingSpaceQualityofServiceAPIActionsController extends BaseCo
                         .queryParam(param -> param.key("accountName")
                                 .value(accountName))
                         .queryParam(param -> param.key("qosSubscriptionId")
-                                .value(qosSubscrIpTionId))
+                                .value(qosSubscriptionId))
                         .headerParam(param -> param.key("accept").value("application/json"))
-                        .authenticationKey(BaseController.AUTHENTICATION_KEY)
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
                         .httpMethod(HttpMethod.DELETE))
                 .responseHandler(responseHandler -> responseHandler
                         .responseClassType(ResponseClassType.API_RESPONSE)

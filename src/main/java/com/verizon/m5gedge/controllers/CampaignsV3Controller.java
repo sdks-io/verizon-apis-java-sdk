@@ -42,55 +42,65 @@ public final class CampaignsV3Controller extends BaseController {
     }
 
     /**
-     * This endpoint allows a user to schedule a firmware upgrade for a list of devices.
+     * This endpoint allows user to change campaign dates and time windows. Fields which need to
+     * remain unchanged should be also provided.
      * @param  acc  Required parameter: Account identifier.
-     * @param  body  Required parameter: Firmware upgrade information.
+     * @param  campaignId  Required parameter: Firmware upgrade information.
+     * @param  body  Required parameter: New dates and time windows.
      * @return    Returns the FirmwareCampaign wrapped in ApiResponse response from the API call
      * @throws    ApiException    Represents error response from the server.
      * @throws    IOException    Signals that an I/O exception of some sort has occurred.
      */
-    public ApiResponse<FirmwareCampaign> scheduleCampaignFirmwareUpgrade(
+    public ApiResponse<FirmwareCampaign> updateCampaignDates(
             final String acc,
-            final CampaignFirmwareUpgrade body) throws ApiException, IOException {
-        return prepareScheduleCampaignFirmwareUpgradeRequest(acc, body).execute();
+            final String campaignId,
+            final V3ChangeCampaignDatesRequest body) throws ApiException, IOException {
+        return prepareUpdateCampaignDatesRequest(acc, campaignId, body).execute();
     }
 
     /**
-     * This endpoint allows a user to schedule a firmware upgrade for a list of devices.
+     * This endpoint allows user to change campaign dates and time windows. Fields which need to
+     * remain unchanged should be also provided.
      * @param  acc  Required parameter: Account identifier.
-     * @param  body  Required parameter: Firmware upgrade information.
+     * @param  campaignId  Required parameter: Firmware upgrade information.
+     * @param  body  Required parameter: New dates and time windows.
      * @return    Returns the FirmwareCampaign wrapped in ApiResponse response from the API call
      */
-    public CompletableFuture<ApiResponse<FirmwareCampaign>> scheduleCampaignFirmwareUpgradeAsync(
+    public CompletableFuture<ApiResponse<FirmwareCampaign>> updateCampaignDatesAsync(
             final String acc,
-            final CampaignFirmwareUpgrade body) {
+            final String campaignId,
+            final V3ChangeCampaignDatesRequest body) {
         try { 
-            return prepareScheduleCampaignFirmwareUpgradeRequest(acc, body).executeAsync(); 
+            return prepareUpdateCampaignDatesRequest(acc, campaignId, body).executeAsync(); 
         } catch (Exception e) {  
             throw new CompletionException(e); 
         }
     }
 
     /**
-     * Builds the ApiCall object for scheduleCampaignFirmwareUpgrade.
+     * Builds the ApiCall object for updateCampaignDates.
      */
-    private ApiCall<ApiResponse<FirmwareCampaign>, ApiException> prepareScheduleCampaignFirmwareUpgradeRequest(
+    private ApiCall<ApiResponse<FirmwareCampaign>, ApiException> prepareUpdateCampaignDatesRequest(
             final String acc,
-            final CampaignFirmwareUpgrade body) throws JsonProcessingException, IOException {
+            final String campaignId,
+            final V3ChangeCampaignDatesRequest body) throws JsonProcessingException, IOException {
         return new ApiCall.Builder<ApiResponse<FirmwareCampaign>, ApiException>()
                 .globalConfig(getGlobalConfiguration())
                 .requestBuilder(requestBuilder -> requestBuilder
                         .server(Server.SOFTWARE_MANAGEMENT_V3.value())
-                        .path("/campaigns/firmware/{acc}")
+                        .path("/campaigns/firmware/{acc}/{campaignId}/dates")
                         .bodyParam(param -> param.value(body))
                         .bodySerializer(() ->  ApiHelper.serialize(body))
                         .templateParam(param -> param.key("acc").value(acc)
                                 .shouldEncode(true))
+                        .templateParam(param -> param.key("campaignId").value(campaignId)
+                                .shouldEncode(true))
                         .headerParam(param -> param.key("Content-Type")
                                 .value("application/json").isRequired(false))
                         .headerParam(param -> param.key("accept").value("application/json"))
-                        .authenticationKey(BaseController.AUTHENTICATION_KEY)
-                        .httpMethod(HttpMethod.POST))
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
+                        .httpMethod(HttpMethod.PUT))
                 .responseHandler(responseHandler -> responseHandler
                         .responseClassType(ResponseClassType.API_RESPONSE)
                         .apiResponseDeserializer(
@@ -158,7 +168,8 @@ public final class CampaignsV3Controller extends BaseController {
                         .headerParam(param -> param.key("Content-Type")
                                 .value("application/json").isRequired(false))
                         .headerParam(param -> param.key("accept").value("application/json"))
-                        .authenticationKey(BaseController.AUTHENTICATION_KEY)
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
                         .httpMethod(HttpMethod.PUT))
                 .responseHandler(responseHandler -> responseHandler
                         .responseClassType(ResponseClassType.API_RESPONSE)
@@ -173,64 +184,56 @@ public final class CampaignsV3Controller extends BaseController {
     }
 
     /**
-     * This endpoint allows user to change campaign dates and time windows. Fields which need to
-     * remain unchanged should be also provided.
+     * This endpoint allows a user to schedule a firmware upgrade for a list of devices.
      * @param  acc  Required parameter: Account identifier.
-     * @param  campaignId  Required parameter: Firmware upgrade information.
-     * @param  body  Required parameter: New dates and time windows.
+     * @param  body  Required parameter: Firmware upgrade information.
      * @return    Returns the FirmwareCampaign wrapped in ApiResponse response from the API call
      * @throws    ApiException    Represents error response from the server.
      * @throws    IOException    Signals that an I/O exception of some sort has occurred.
      */
-    public ApiResponse<FirmwareCampaign> updateCampaignDates(
+    public ApiResponse<FirmwareCampaign> scheduleCampaignFirmwareUpgrade(
             final String acc,
-            final String campaignId,
-            final V3ChangeCampaignDatesRequest body) throws ApiException, IOException {
-        return prepareUpdateCampaignDatesRequest(acc, campaignId, body).execute();
+            final CampaignFirmwareUpgrade body) throws ApiException, IOException {
+        return prepareScheduleCampaignFirmwareUpgradeRequest(acc, body).execute();
     }
 
     /**
-     * This endpoint allows user to change campaign dates and time windows. Fields which need to
-     * remain unchanged should be also provided.
+     * This endpoint allows a user to schedule a firmware upgrade for a list of devices.
      * @param  acc  Required parameter: Account identifier.
-     * @param  campaignId  Required parameter: Firmware upgrade information.
-     * @param  body  Required parameter: New dates and time windows.
+     * @param  body  Required parameter: Firmware upgrade information.
      * @return    Returns the FirmwareCampaign wrapped in ApiResponse response from the API call
      */
-    public CompletableFuture<ApiResponse<FirmwareCampaign>> updateCampaignDatesAsync(
+    public CompletableFuture<ApiResponse<FirmwareCampaign>> scheduleCampaignFirmwareUpgradeAsync(
             final String acc,
-            final String campaignId,
-            final V3ChangeCampaignDatesRequest body) {
+            final CampaignFirmwareUpgrade body) {
         try { 
-            return prepareUpdateCampaignDatesRequest(acc, campaignId, body).executeAsync(); 
+            return prepareScheduleCampaignFirmwareUpgradeRequest(acc, body).executeAsync(); 
         } catch (Exception e) {  
             throw new CompletionException(e); 
         }
     }
 
     /**
-     * Builds the ApiCall object for updateCampaignDates.
+     * Builds the ApiCall object for scheduleCampaignFirmwareUpgrade.
      */
-    private ApiCall<ApiResponse<FirmwareCampaign>, ApiException> prepareUpdateCampaignDatesRequest(
+    private ApiCall<ApiResponse<FirmwareCampaign>, ApiException> prepareScheduleCampaignFirmwareUpgradeRequest(
             final String acc,
-            final String campaignId,
-            final V3ChangeCampaignDatesRequest body) throws JsonProcessingException, IOException {
+            final CampaignFirmwareUpgrade body) throws JsonProcessingException, IOException {
         return new ApiCall.Builder<ApiResponse<FirmwareCampaign>, ApiException>()
                 .globalConfig(getGlobalConfiguration())
                 .requestBuilder(requestBuilder -> requestBuilder
                         .server(Server.SOFTWARE_MANAGEMENT_V3.value())
-                        .path("/campaigns/firmware/{acc}/{campaignId}/dates")
+                        .path("/campaigns/firmware/{acc}")
                         .bodyParam(param -> param.value(body))
                         .bodySerializer(() ->  ApiHelper.serialize(body))
                         .templateParam(param -> param.key("acc").value(acc)
                                 .shouldEncode(true))
-                        .templateParam(param -> param.key("campaignId").value(campaignId)
-                                .shouldEncode(true))
                         .headerParam(param -> param.key("Content-Type")
                                 .value("application/json").isRequired(false))
                         .headerParam(param -> param.key("accept").value("application/json"))
-                        .authenticationKey(BaseController.AUTHENTICATION_KEY)
-                        .httpMethod(HttpMethod.PUT))
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
+                        .httpMethod(HttpMethod.POST))
                 .responseHandler(responseHandler -> responseHandler
                         .responseClassType(ResponseClassType.API_RESPONSE)
                         .apiResponseDeserializer(
@@ -291,7 +294,8 @@ public final class CampaignsV3Controller extends BaseController {
                         .templateParam(param -> param.key("campaignId").value(campaignId)
                                 .shouldEncode(true))
                         .headerParam(param -> param.key("accept").value("application/json"))
-                        .authenticationKey(BaseController.AUTHENTICATION_KEY)
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
                         .httpMethod(HttpMethod.GET))
                 .responseHandler(responseHandler -> responseHandler
                         .responseClassType(ResponseClassType.API_RESPONSE)
@@ -353,7 +357,8 @@ public final class CampaignsV3Controller extends BaseController {
                         .templateParam(param -> param.key("campaignId").value(campaignId)
                                 .shouldEncode(true))
                         .headerParam(param -> param.key("accept").value("application/json"))
-                        .authenticationKey(BaseController.AUTHENTICATION_KEY)
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
                         .httpMethod(HttpMethod.DELETE))
                 .responseHandler(responseHandler -> responseHandler
                         .responseClassType(ResponseClassType.API_RESPONSE)

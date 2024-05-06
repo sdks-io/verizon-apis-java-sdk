@@ -13,7 +13,7 @@ import com.verizon.m5gedge.exceptions.FotaV1ResultException;
 import com.verizon.m5gedge.http.request.HttpMethod;
 import com.verizon.m5gedge.http.response.ApiResponse;
 import com.verizon.m5gedge.models.AccountLicenseInfo;
-import com.verizon.m5gedge.models.V1AccountSubscrIpTion;
+import com.verizon.m5gedge.models.V1AccountSubscription;
 import io.apimatic.core.ApiCall;
 import io.apimatic.core.ErrorCase;
 import io.apimatic.core.GlobalConfiguration;
@@ -25,69 +25,14 @@ import java.util.concurrent.CompletionException;
 /**
  * This class lists all the endpoints of the groups.
  */
-public final class SoftwareManagementSubscrIpTionsV1Controller extends BaseController {
+public final class SoftwareManagementSubscriptionsV1Controller extends BaseController {
 
     /**
      * Initializes the controller.
      * @param globalConfig    Configurations added in client.
      */
-    public SoftwareManagementSubscrIpTionsV1Controller(GlobalConfiguration globalConfig) {
+    public SoftwareManagementSubscriptionsV1Controller(GlobalConfiguration globalConfig) {
         super(globalConfig);
-    }
-
-    /**
-     * This subscriptions endpoint retrieves an account's current Software Management Service
-     * subscription status.
-     * @param  account  Required parameter: Account identifier in "##########-#####".
-     * @return    Returns the V1AccountSubscrIpTion wrapped in ApiResponse response from the API call
-     * @throws    ApiException    Represents error response from the server.
-     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
-     */
-    public ApiResponse<V1AccountSubscrIpTion> getAccountSubscrIpTionStatus(
-            final String account) throws ApiException, IOException {
-        return prepareGetAccountSubscrIpTionStatusRequest(account).execute();
-    }
-
-    /**
-     * This subscriptions endpoint retrieves an account's current Software Management Service
-     * subscription status.
-     * @param  account  Required parameter: Account identifier in "##########-#####".
-     * @return    Returns the V1AccountSubscrIpTion wrapped in ApiResponse response from the API call
-     */
-    public CompletableFuture<ApiResponse<V1AccountSubscrIpTion>> getAccountSubscrIpTionStatusAsync(
-            final String account) {
-        try { 
-            return prepareGetAccountSubscrIpTionStatusRequest(account).executeAsync(); 
-        } catch (Exception e) {  
-            throw new CompletionException(e); 
-        }
-    }
-
-    /**
-     * Builds the ApiCall object for getAccountSubscrIpTionStatus.
-     */
-    private ApiCall<ApiResponse<V1AccountSubscrIpTion>, ApiException> prepareGetAccountSubscrIpTionStatusRequest(
-            final String account) throws IOException {
-        return new ApiCall.Builder<ApiResponse<V1AccountSubscrIpTion>, ApiException>()
-                .globalConfig(getGlobalConfiguration())
-                .requestBuilder(requestBuilder -> requestBuilder
-                        .server(Server.SOFTWARE_MANAGEMENT_V1.value())
-                        .path("/subscriptions/{account}")
-                        .templateParam(param -> param.key("account").value(account)
-                                .shouldEncode(true))
-                        .headerParam(param -> param.key("accept").value("application/json"))
-                        .authenticationKey(BaseController.AUTHENTICATION_KEY)
-                        .httpMethod(HttpMethod.GET))
-                .responseHandler(responseHandler -> responseHandler
-                        .responseClassType(ResponseClassType.API_RESPONSE)
-                        .apiResponseDeserializer(
-                                response -> ApiHelper.deserialize(response, V1AccountSubscrIpTion.class))
-                        .nullify404(false)
-                        .localErrorCase("400",
-                                 ErrorCase.setReason("Unexpected error.",
-                                (reason, context) -> new FotaV1ResultException(reason, context)))
-                        .globalErrorCase(GLOBAL_ERROR_CASES))
-                .build();
     }
 
     /**
@@ -144,12 +89,69 @@ public final class SoftwareManagementSubscrIpTionsV1Controller extends BaseContr
                         .templateParam(param -> param.key("startIndex").value(startIndex)
                                 .shouldEncode(true))
                         .headerParam(param -> param.key("accept").value("application/json"))
-                        .authenticationKey(BaseController.AUTHENTICATION_KEY)
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
                         .httpMethod(HttpMethod.GET))
                 .responseHandler(responseHandler -> responseHandler
                         .responseClassType(ResponseClassType.API_RESPONSE)
                         .apiResponseDeserializer(
                                 response -> ApiHelper.deserialize(response, AccountLicenseInfo.class))
+                        .nullify404(false)
+                        .localErrorCase("400",
+                                 ErrorCase.setReason("Unexpected error.",
+                                (reason, context) -> new FotaV1ResultException(reason, context)))
+                        .globalErrorCase(GLOBAL_ERROR_CASES))
+                .build();
+    }
+
+    /**
+     * This subscriptions endpoint retrieves an account's current Software Management Service
+     * subscription status.
+     * @param  account  Required parameter: Account identifier in "##########-#####".
+     * @return    Returns the V1AccountSubscription wrapped in ApiResponse response from the API call
+     * @throws    ApiException    Represents error response from the server.
+     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
+     */
+    public ApiResponse<V1AccountSubscription> getAccountSubscriptionStatus(
+            final String account) throws ApiException, IOException {
+        return prepareGetAccountSubscriptionStatusRequest(account).execute();
+    }
+
+    /**
+     * This subscriptions endpoint retrieves an account's current Software Management Service
+     * subscription status.
+     * @param  account  Required parameter: Account identifier in "##########-#####".
+     * @return    Returns the V1AccountSubscription wrapped in ApiResponse response from the API call
+     */
+    public CompletableFuture<ApiResponse<V1AccountSubscription>> getAccountSubscriptionStatusAsync(
+            final String account) {
+        try { 
+            return prepareGetAccountSubscriptionStatusRequest(account).executeAsync(); 
+        } catch (Exception e) {  
+            throw new CompletionException(e); 
+        }
+    }
+
+    /**
+     * Builds the ApiCall object for getAccountSubscriptionStatus.
+     */
+    private ApiCall<ApiResponse<V1AccountSubscription>, ApiException> prepareGetAccountSubscriptionStatusRequest(
+            final String account) throws IOException {
+        return new ApiCall.Builder<ApiResponse<V1AccountSubscription>, ApiException>()
+                .globalConfig(getGlobalConfiguration())
+                .requestBuilder(requestBuilder -> requestBuilder
+                        .server(Server.SOFTWARE_MANAGEMENT_V1.value())
+                        .path("/subscriptions/{account}")
+                        .templateParam(param -> param.key("account").value(account)
+                                .shouldEncode(true))
+                        .headerParam(param -> param.key("accept").value("application/json"))
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
+                        .httpMethod(HttpMethod.GET))
+                .responseHandler(responseHandler -> responseHandler
+                        .responseClassType(ResponseClassType.API_RESPONSE)
+                        .apiResponseDeserializer(
+                                response -> ApiHelper.deserialize(response, V1AccountSubscription.class))
                         .nullify404(false)
                         .localErrorCase("400",
                                  ErrorCase.setReason("Unexpected error.",

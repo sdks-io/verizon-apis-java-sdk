@@ -44,14 +44,16 @@ NotificationReportRequest body = new NotificationReportRequest.Builder(
     Arrays.asList(
         new DeviceList.Builder()
             .deviceIds(Arrays.asList(
-                new DeviceId.Builder()
-                    .id("89148000004292933820")
-                    .kind("iccid")
-                    .build(),
-                new DeviceId.Builder()
-                    .id("89148000003164287919")
-                    .kind("iccid")
-                    .build()
+                new DeviceId.Builder(
+                    "89148000004292933820",
+                    "iccid"
+                )
+                .build(),
+                new DeviceId.Builder(
+                    "89148000003164287919",
+                    "iccid"
+                )
+                .build()
             ))
             .build()
     ),

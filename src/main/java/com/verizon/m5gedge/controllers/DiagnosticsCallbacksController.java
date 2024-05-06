@@ -38,6 +38,67 @@ public final class DiagnosticsCallbacksController extends BaseController {
     }
 
     /**
+     * This endpoint allows user to delete a registered callback URL and credential.
+     * @param  accountName  Required parameter: Account identifier.
+     * @param  serviceName  Required parameter: Service name for callback notification.
+     * @return    Returns the DeviceDiagnosticsCallback wrapped in ApiResponse response from the API call
+     * @throws    ApiException    Represents error response from the server.
+     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
+     */
+    public ApiResponse<DeviceDiagnosticsCallback> unregisterDiagnosticsCallback(
+            final String accountName,
+            final String serviceName) throws ApiException, IOException {
+        return prepareUnregisterDiagnosticsCallbackRequest(accountName, serviceName).execute();
+    }
+
+    /**
+     * This endpoint allows user to delete a registered callback URL and credential.
+     * @param  accountName  Required parameter: Account identifier.
+     * @param  serviceName  Required parameter: Service name for callback notification.
+     * @return    Returns the DeviceDiagnosticsCallback wrapped in ApiResponse response from the API call
+     */
+    public CompletableFuture<ApiResponse<DeviceDiagnosticsCallback>> unregisterDiagnosticsCallbackAsync(
+            final String accountName,
+            final String serviceName) {
+        try { 
+            return prepareUnregisterDiagnosticsCallbackRequest(accountName, serviceName).executeAsync(); 
+        } catch (Exception e) {  
+            throw new CompletionException(e); 
+        }
+    }
+
+    /**
+     * Builds the ApiCall object for unregisterDiagnosticsCallback.
+     */
+    private ApiCall<ApiResponse<DeviceDiagnosticsCallback>, ApiException> prepareUnregisterDiagnosticsCallbackRequest(
+            final String accountName,
+            final String serviceName) throws IOException {
+        return new ApiCall.Builder<ApiResponse<DeviceDiagnosticsCallback>, ApiException>()
+                .globalConfig(getGlobalConfiguration())
+                .requestBuilder(requestBuilder -> requestBuilder
+                        .server(Server.DEVICE_DIAGNOSTICS.value())
+                        .path("/callbacks")
+                        .queryParam(param -> param.key("accountName")
+                                .value(accountName))
+                        .queryParam(param -> param.key("serviceName")
+                                .value(serviceName))
+                        .headerParam(param -> param.key("accept").value("application/json"))
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
+                        .httpMethod(HttpMethod.DELETE))
+                .responseHandler(responseHandler -> responseHandler
+                        .responseClassType(ResponseClassType.API_RESPONSE)
+                        .apiResponseDeserializer(
+                                response -> ApiHelper.deserialize(response, DeviceDiagnosticsCallback.class))
+                        .nullify404(false)
+                        .localErrorCase("400",
+                                 ErrorCase.setReason("Unexpected error.",
+                                (reason, context) -> new DeviceDiagnosticsResultException(reason, context)))
+                        .globalErrorCase(GLOBAL_ERROR_CASES))
+                .build();
+    }
+
+    /**
      * This endpoint allows user to get the registered callback information of an existing
      * diagnostics subscription.
      * @param  accountName  Required parameter: Account identifier.
@@ -45,9 +106,9 @@ public final class DiagnosticsCallbacksController extends BaseController {
      * @throws    ApiException    Represents error response from the server.
      * @throws    IOException    Signals that an I/O exception of some sort has occurred.
      */
-    public ApiResponse<List<DeviceDiagnosticsCallback>> getDiagnosticsSubscrIpTionCallbackInfo(
+    public ApiResponse<List<DeviceDiagnosticsCallback>> getDiagnosticsSubscriptionCallbackInfo(
             final String accountName) throws ApiException, IOException {
-        return prepareGetDiagnosticsSubscrIpTionCallbackInfoRequest(accountName).execute();
+        return prepareGetDiagnosticsSubscriptionCallbackInfoRequest(accountName).execute();
     }
 
     /**
@@ -56,19 +117,19 @@ public final class DiagnosticsCallbacksController extends BaseController {
      * @param  accountName  Required parameter: Account identifier.
      * @return    Returns the List of DeviceDiagnosticsCallback wrapped in ApiResponse response from the API call
      */
-    public CompletableFuture<ApiResponse<List<DeviceDiagnosticsCallback>>> getDiagnosticsSubscrIpTionCallbackInfoAsync(
+    public CompletableFuture<ApiResponse<List<DeviceDiagnosticsCallback>>> getDiagnosticsSubscriptionCallbackInfoAsync(
             final String accountName) {
         try { 
-            return prepareGetDiagnosticsSubscrIpTionCallbackInfoRequest(accountName).executeAsync(); 
+            return prepareGetDiagnosticsSubscriptionCallbackInfoRequest(accountName).executeAsync(); 
         } catch (Exception e) {  
             throw new CompletionException(e); 
         }
     }
 
     /**
-     * Builds the ApiCall object for getDiagnosticsSubscrIpTionCallbackInfo.
+     * Builds the ApiCall object for getDiagnosticsSubscriptionCallbackInfo.
      */
-    private ApiCall<ApiResponse<List<DeviceDiagnosticsCallback>>, ApiException> prepareGetDiagnosticsSubscrIpTionCallbackInfoRequest(
+    private ApiCall<ApiResponse<List<DeviceDiagnosticsCallback>>, ApiException> prepareGetDiagnosticsSubscriptionCallbackInfoRequest(
             final String accountName) throws IOException {
         return new ApiCall.Builder<ApiResponse<List<DeviceDiagnosticsCallback>>, ApiException>()
                 .globalConfig(getGlobalConfiguration())
@@ -78,7 +139,8 @@ public final class DiagnosticsCallbacksController extends BaseController {
                         .queryParam(param -> param.key("accountName")
                                 .value(accountName))
                         .headerParam(param -> param.key("accept").value("application/json"))
-                        .authenticationKey(BaseController.AUTHENTICATION_KEY)
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
                         .httpMethod(HttpMethod.GET))
                 .responseHandler(responseHandler -> responseHandler
                         .responseClassType(ResponseClassType.API_RESPONSE)
@@ -136,68 +198,9 @@ public final class DiagnosticsCallbacksController extends BaseController {
                         .headerParam(param -> param.key("Content-Type")
                                 .value("*/*").isRequired(false))
                         .headerParam(param -> param.key("accept").value("application/json"))
-                        .authenticationKey(BaseController.AUTHENTICATION_KEY)
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
                         .httpMethod(HttpMethod.POST))
-                .responseHandler(responseHandler -> responseHandler
-                        .responseClassType(ResponseClassType.API_RESPONSE)
-                        .apiResponseDeserializer(
-                                response -> ApiHelper.deserialize(response, DeviceDiagnosticsCallback.class))
-                        .nullify404(false)
-                        .localErrorCase("400",
-                                 ErrorCase.setReason("Unexpected error.",
-                                (reason, context) -> new DeviceDiagnosticsResultException(reason, context)))
-                        .globalErrorCase(GLOBAL_ERROR_CASES))
-                .build();
-    }
-
-    /**
-     * This endpoint allows user to delete a registered callback URL and credential.
-     * @param  accountName  Required parameter: Account identifier.
-     * @param  serviceName  Required parameter: Service name for callback notification.
-     * @return    Returns the DeviceDiagnosticsCallback wrapped in ApiResponse response from the API call
-     * @throws    ApiException    Represents error response from the server.
-     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
-     */
-    public ApiResponse<DeviceDiagnosticsCallback> unregisterDiagnosticsCallback(
-            final String accountName,
-            final String serviceName) throws ApiException, IOException {
-        return prepareUnregisterDiagnosticsCallbackRequest(accountName, serviceName).execute();
-    }
-
-    /**
-     * This endpoint allows user to delete a registered callback URL and credential.
-     * @param  accountName  Required parameter: Account identifier.
-     * @param  serviceName  Required parameter: Service name for callback notification.
-     * @return    Returns the DeviceDiagnosticsCallback wrapped in ApiResponse response from the API call
-     */
-    public CompletableFuture<ApiResponse<DeviceDiagnosticsCallback>> unregisterDiagnosticsCallbackAsync(
-            final String accountName,
-            final String serviceName) {
-        try { 
-            return prepareUnregisterDiagnosticsCallbackRequest(accountName, serviceName).executeAsync(); 
-        } catch (Exception e) {  
-            throw new CompletionException(e); 
-        }
-    }
-
-    /**
-     * Builds the ApiCall object for unregisterDiagnosticsCallback.
-     */
-    private ApiCall<ApiResponse<DeviceDiagnosticsCallback>, ApiException> prepareUnregisterDiagnosticsCallbackRequest(
-            final String accountName,
-            final String serviceName) throws IOException {
-        return new ApiCall.Builder<ApiResponse<DeviceDiagnosticsCallback>, ApiException>()
-                .globalConfig(getGlobalConfiguration())
-                .requestBuilder(requestBuilder -> requestBuilder
-                        .server(Server.DEVICE_DIAGNOSTICS.value())
-                        .path("/callbacks")
-                        .queryParam(param -> param.key("accountName")
-                                .value(accountName))
-                        .queryParam(param -> param.key("serviceName")
-                                .value(serviceName))
-                        .headerParam(param -> param.key("accept").value("application/json"))
-                        .authenticationKey(BaseController.AUTHENTICATION_KEY)
-                        .httpMethod(HttpMethod.DELETE))
                 .responseHandler(responseHandler -> responseHandler
                         .responseClassType(ResponseClassType.API_RESPONSE)
                         .apiResponseDeserializer(

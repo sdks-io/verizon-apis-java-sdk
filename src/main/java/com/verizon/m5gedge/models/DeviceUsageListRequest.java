@@ -14,9 +14,9 @@ import com.fasterxml.jackson.annotation.JsonSetter;
  * This is a model class for DeviceUsageListRequest type.
  */
 public class DeviceUsageListRequest {
-    private DeviceId deviceId;
     private String earliest;
     private String latest;
+    private DeviceId deviceId;
     private Label label;
 
     /**
@@ -27,20 +27,60 @@ public class DeviceUsageListRequest {
 
     /**
      * Initialization constructor.
-     * @param  deviceId  DeviceId value for deviceId.
      * @param  earliest  String value for earliest.
      * @param  latest  String value for latest.
+     * @param  deviceId  DeviceId value for deviceId.
      * @param  label  Label value for label.
      */
     public DeviceUsageListRequest(
-            DeviceId deviceId,
             String earliest,
             String latest,
+            DeviceId deviceId,
             Label label) {
-        this.deviceId = deviceId;
         this.earliest = earliest;
         this.latest = latest;
+        this.deviceId = deviceId;
         this.label = label;
+    }
+
+    /**
+     * Getter for Earliest.
+     * The earliest date for which you want usage data.
+     * @return Returns the String
+     */
+    @JsonGetter("earliest")
+    public String getEarliest() {
+        return earliest;
+    }
+
+    /**
+     * Setter for Earliest.
+     * The earliest date for which you want usage data.
+     * @param earliest Value for String
+     */
+    @JsonSetter("earliest")
+    public void setEarliest(String earliest) {
+        this.earliest = earliest;
+    }
+
+    /**
+     * Getter for Latest.
+     * The last date for which you want usage data.
+     * @return Returns the String
+     */
+    @JsonGetter("latest")
+    public String getLatest() {
+        return latest;
+    }
+
+    /**
+     * Setter for Latest.
+     * The last date for which you want usage data.
+     * @param latest Value for String
+     */
+    @JsonSetter("latest")
+    public void setLatest(String latest) {
+        this.latest = latest;
     }
 
     /**
@@ -62,48 +102,6 @@ public class DeviceUsageListRequest {
     @JsonSetter("deviceId")
     public void setDeviceId(DeviceId deviceId) {
         this.deviceId = deviceId;
-    }
-
-    /**
-     * Getter for Earliest.
-     * The earliest date for which you want usage data.
-     * @return Returns the String
-     */
-    @JsonGetter("earliest")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getEarliest() {
-        return earliest;
-    }
-
-    /**
-     * Setter for Earliest.
-     * The earliest date for which you want usage data.
-     * @param earliest Value for String
-     */
-    @JsonSetter("earliest")
-    public void setEarliest(String earliest) {
-        this.earliest = earliest;
-    }
-
-    /**
-     * Getter for Latest.
-     * The last date for which you want usage data.
-     * @return Returns the String
-     */
-    @JsonGetter("latest")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getLatest() {
-        return latest;
-    }
-
-    /**
-     * Setter for Latest.
-     * The last date for which you want usage data.
-     * @param latest Value for String
-     */
-    @JsonSetter("latest")
-    public void setLatest(String latest) {
-        this.latest = latest;
     }
 
     /**
@@ -131,8 +129,8 @@ public class DeviceUsageListRequest {
      */
     @Override
     public String toString() {
-        return "DeviceUsageListRequest [" + "deviceId=" + deviceId + ", earliest=" + earliest
-                + ", latest=" + latest + ", label=" + label + "]";
+        return "DeviceUsageListRequest [" + "earliest=" + earliest + ", latest=" + latest
+                + ", deviceId=" + deviceId + ", label=" + label + "]";
     }
 
     /**
@@ -141,10 +139,8 @@ public class DeviceUsageListRequest {
      * @return a new {@link DeviceUsageListRequest.Builder} object
      */
     public Builder toBuilder() {
-        Builder builder = new Builder()
+        Builder builder = new Builder(earliest, latest)
                 .deviceId(getDeviceId())
-                .earliest(getEarliest())
-                .latest(getLatest())
                 .label(getLabel());
         return builder;
     }
@@ -153,21 +149,25 @@ public class DeviceUsageListRequest {
      * Class to build instances of {@link DeviceUsageListRequest}.
      */
     public static class Builder {
-        private DeviceId deviceId;
         private String earliest;
         private String latest;
+        private DeviceId deviceId;
         private Label label;
 
-
+        /**
+         * Initialization constructor.
+         */
+        public Builder() {
+        }
 
         /**
-         * Setter for deviceId.
-         * @param  deviceId  DeviceId value for deviceId.
-         * @return Builder
+         * Initialization constructor.
+         * @param  earliest  String value for earliest.
+         * @param  latest  String value for latest.
          */
-        public Builder deviceId(DeviceId deviceId) {
-            this.deviceId = deviceId;
-            return this;
+        public Builder(String earliest, String latest) {
+            this.earliest = earliest;
+            this.latest = latest;
         }
 
         /**
@@ -191,6 +191,16 @@ public class DeviceUsageListRequest {
         }
 
         /**
+         * Setter for deviceId.
+         * @param  deviceId  DeviceId value for deviceId.
+         * @return Builder
+         */
+        public Builder deviceId(DeviceId deviceId) {
+            this.deviceId = deviceId;
+            return this;
+        }
+
+        /**
          * Setter for label.
          * @param  label  Label value for label.
          * @return Builder
@@ -205,7 +215,7 @@ public class DeviceUsageListRequest {
          * @return {@link DeviceUsageListRequest}
          */
         public DeviceUsageListRequest build() {
-            return new DeviceUsageListRequest(deviceId, earliest, latest, label);
+            return new DeviceUsageListRequest(earliest, latest, deviceId, label);
         }
     }
 }

@@ -7,7 +7,6 @@
 package com.verizon.m5gedge.models;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonSetter;
 
 /**
@@ -42,7 +41,6 @@ public class AssociateLabelRequest {
      * @return Returns the String
      */
     @JsonGetter("accountName")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     public String getAccountName() {
         return accountName;
     }
@@ -64,7 +62,6 @@ public class AssociateLabelRequest {
      * @return Returns the AccountLabels
      */
     @JsonGetter("labels")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     public AccountLabels getLabels() {
         return labels;
     }
@@ -95,9 +92,7 @@ public class AssociateLabelRequest {
      * @return a new {@link AssociateLabelRequest.Builder} object
      */
     public Builder toBuilder() {
-        Builder builder = new Builder()
-                .accountName(getAccountName())
-                .labels(getLabels());
+        Builder builder = new Builder(accountName, labels);
         return builder;
     }
 
@@ -108,7 +103,21 @@ public class AssociateLabelRequest {
         private String accountName;
         private AccountLabels labels;
 
+        /**
+         * Initialization constructor.
+         */
+        public Builder() {
+        }
 
+        /**
+         * Initialization constructor.
+         * @param  accountName  String value for accountName.
+         * @param  labels  AccountLabels value for labels.
+         */
+        public Builder(String accountName, AccountLabels labels) {
+            this.accountName = accountName;
+            this.labels = labels;
+        }
 
         /**
          * Setter for accountName.

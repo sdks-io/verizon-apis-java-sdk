@@ -18,8 +18,8 @@ public class Address {
     private String addressLine2;
     private String city;
     private String state;
-    private String zIp;
-    private String zIp4;
+    private String zip;
+    private String zip4;
     private String country;
     private String phone;
     private String phoneType;
@@ -36,10 +36,10 @@ public class Address {
      * @param  addressLine1  String value for addressLine1.
      * @param  city  String value for city.
      * @param  state  String value for state.
-     * @param  zIp  String value for zIp.
+     * @param  zip  String value for zip.
      * @param  country  String value for country.
      * @param  addressLine2  String value for addressLine2.
-     * @param  zIp4  String value for zIp4.
+     * @param  zip4  String value for zip4.
      * @param  phone  String value for phone.
      * @param  phoneType  String value for phoneType.
      * @param  emailAddress  String value for emailAddress.
@@ -48,10 +48,10 @@ public class Address {
             String addressLine1,
             String city,
             String state,
-            String zIp,
+            String zip,
             String country,
             String addressLine2,
-            String zIp4,
+            String zip4,
             String phone,
             String phoneType,
             String emailAddress) {
@@ -59,8 +59,8 @@ public class Address {
         this.addressLine2 = addressLine2;
         this.city = city;
         this.state = state;
-        this.zIp = zIp;
-        this.zIp4 = zIp4;
+        this.zip = zip;
+        this.zip4 = zip4;
         this.country = country;
         this.phone = phone;
         this.phoneType = phoneType;
@@ -151,44 +151,44 @@ public class Address {
     }
 
     /**
-     * Getter for ZIp.
+     * Getter for Zip.
      * The ZIP code for the line's primary place of use.
      * @return Returns the String
      */
     @JsonGetter("zip")
-    public String getZIp() {
-        return zIp;
+    public String getZip() {
+        return zip;
     }
 
     /**
-     * Setter for ZIp.
+     * Setter for Zip.
      * The ZIP code for the line's primary place of use.
-     * @param zIp Value for String
+     * @param zip Value for String
      */
     @JsonSetter("zip")
-    public void setZIp(String zIp) {
-        this.zIp = zIp;
+    public void setZip(String zip) {
+        this.zip = zip;
     }
 
     /**
-     * Getter for ZIp4.
+     * Getter for Zip4.
      * The ZIP+4 for the line's primary place of use.
      * @return Returns the String
      */
     @JsonGetter("zip4")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getZIp4() {
-        return zIp4;
+    public String getZip4() {
+        return zip4;
     }
 
     /**
-     * Setter for ZIp4.
+     * Setter for Zip4.
      * The ZIP+4 for the line's primary place of use.
-     * @param zIp4 Value for String
+     * @param zip4 Value for String
      */
     @JsonSetter("zip4")
-    public void setZIp4(String zIp4) {
-        this.zIp4 = zIp4;
+    public void setZip4(String zip4) {
+        this.zip4 = zip4;
     }
 
     /**
@@ -281,8 +281,8 @@ public class Address {
     @Override
     public String toString() {
         return "Address [" + "addressLine1=" + addressLine1 + ", city=" + city + ", state=" + state
-                + ", zIp=" + zIp + ", country=" + country + ", addressLine2=" + addressLine2
-                + ", zIp4=" + zIp4 + ", phone=" + phone + ", phoneType=" + phoneType
+                + ", zip=" + zip + ", country=" + country + ", addressLine2=" + addressLine2
+                + ", zip4=" + zip4 + ", phone=" + phone + ", phoneType=" + phoneType
                 + ", emailAddress=" + emailAddress + "]";
     }
 
@@ -292,9 +292,9 @@ public class Address {
      * @return a new {@link Address.Builder} object
      */
     public Builder toBuilder() {
-        Builder builder = new Builder(addressLine1, city, state, zIp, country)
+        Builder builder = new Builder(addressLine1, city, state, zip, country)
                 .addressLine2(getAddressLine2())
-                .zIp4(getZIp4())
+                .zip4(getZip4())
                 .phone(getPhone())
                 .phoneType(getPhoneType())
                 .emailAddress(getEmailAddress());
@@ -308,10 +308,10 @@ public class Address {
         private String addressLine1;
         private String city;
         private String state;
-        private String zIp;
+        private String zip;
         private String country;
         private String addressLine2;
-        private String zIp4;
+        private String zip4;
         private String phone;
         private String phoneType;
         private String emailAddress;
@@ -327,14 +327,14 @@ public class Address {
          * @param  addressLine1  String value for addressLine1.
          * @param  city  String value for city.
          * @param  state  String value for state.
-         * @param  zIp  String value for zIp.
+         * @param  zip  String value for zip.
          * @param  country  String value for country.
          */
-        public Builder(String addressLine1, String city, String state, String zIp, String country) {
+        public Builder(String addressLine1, String city, String state, String zip, String country) {
             this.addressLine1 = addressLine1;
             this.city = city;
             this.state = state;
-            this.zIp = zIp;
+            this.zip = zip;
             this.country = country;
         }
 
@@ -369,12 +369,12 @@ public class Address {
         }
 
         /**
-         * Setter for zIp.
-         * @param  zIp  String value for zIp.
+         * Setter for zip.
+         * @param  zip  String value for zip.
          * @return Builder
          */
-        public Builder zIp(String zIp) {
-            this.zIp = zIp;
+        public Builder zip(String zip) {
+            this.zip = zip;
             return this;
         }
 
@@ -399,12 +399,12 @@ public class Address {
         }
 
         /**
-         * Setter for zIp4.
-         * @param  zIp4  String value for zIp4.
+         * Setter for zip4.
+         * @param  zip4  String value for zip4.
          * @return Builder
          */
-        public Builder zIp4(String zIp4) {
-            this.zIp4 = zIp4;
+        public Builder zip4(String zip4) {
+            this.zip4 = zip4;
             return this;
         }
 
@@ -443,7 +443,7 @@ public class Address {
          * @return {@link Address}
          */
         public Address build() {
-            return new Address(addressLine1, city, state, zIp, country, addressLine2, zIp4, phone,
+            return new Address(addressLine1, city, state, zip, country, addressLine2, zip4, phone,
                     phoneType, emailAddress);
         }
     }

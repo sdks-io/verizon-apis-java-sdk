@@ -11,7 +11,7 @@ Filter for a list of devices.
 
 | Name | Type | Tags | Description | Getter | Setter |
 |  --- | --- | --- | --- | --- | --- |
-| `DeviceIdentifierFilters` | [`List<DeviceIdSearch>`](../../doc/models/device-id-search.md) | Optional | Specify the kind of the device identifier, the type of match, and the string that you want to match. | List<DeviceIdSearch> getDeviceIdentifierFilters() | setDeviceIdentifierFilters(List<DeviceIdSearch> deviceIdentifierFilters) |
+| `DeviceIdentifierFilters` | [`List<DeviceIdSearch>`](../../doc/models/device-id-search.md) | Required | Specify the kind of the device identifier, the type of match, and the string that you want to match. | List<DeviceIdSearch> getDeviceIdentifierFilters() | setDeviceIdentifierFilters(List<DeviceIdSearch> deviceIdentifierFilters) |
 
 ## Example (as JSON)
 

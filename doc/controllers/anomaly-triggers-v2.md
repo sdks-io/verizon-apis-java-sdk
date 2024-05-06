@@ -11,8 +11,8 @@ AnomalyTriggersV2Controller anomalyTriggersV2Controller = client.getAnomalyTrigg
 ## Methods
 
 * [Create Anomaly Detection Trigger V2](../../doc/controllers/anomaly-triggers-v2.md#create-anomaly-detection-trigger-v2)
-* [Update Anomaly Detection Trigger V2](../../doc/controllers/anomaly-triggers-v2.md#update-anomaly-detection-trigger-v2)
 * [List Anomaly Detection Trigger Settings V2](../../doc/controllers/anomaly-triggers-v2.md#list-anomaly-detection-trigger-settings-v2)
+* [Update Anomaly Detection Trigger V2](../../doc/controllers/anomaly-triggers-v2.md#update-anomaly-detection-trigger-v2)
 
 
 # Create Anomaly Detection Trigger V2
@@ -60,7 +60,7 @@ List<CreateTriggerRequestOptions> body = Arrays.asList(
             .notificationGroupName("Anomaly Test API")
             .notificationFrequencyFactor(3)
             .notificationFrequencyInterval("Hourly")
-            .externalEmailRecIpIents("placeholder@verizon.com")
+            .externalEmailRecipients("placeholder@verizon.com")
             .smsNotification(true)
             .smsNumbers(Arrays.asList(
                 new SMSNumber.Builder()
@@ -89,91 +89,6 @@ anomalyTriggersV2Controller.createAnomalyDetectionTriggerV2Async(body).thenAccep
 ```json
 {
   "triggerId": "595f5c44-c31c-4552-8670-020a1545a84d"
-}
-```
-
-## Errors
-
-| HTTP Status Code | Error Description | Exception Class |
-|  --- | --- | --- |
-| Default | An error occurred. | [`IntelligenceResultException`](../../doc/models/intelligence-result-exception.md) |
-
-
-# Update Anomaly Detection Trigger V2
-
-Updates an existing trigger using the account name.
-
-```java
-CompletableFuture<ApiResponse<IntelligenceSuccessResult>> updateAnomalyDetectionTriggerV2Async(
-    final List<UpdateTriggerRequestOptions> body)
-```
-
-## Parameters
-
-| Parameter | Type | Tags | Description |
-|  --- | --- | --- | --- |
-| `body` | [`List<UpdateTriggerRequestOptions>`](../../doc/models/update-trigger-request-options.md) | Body, Required | Request to update existing trigger. |
-
-## Server
-
-`Server.THINGSPACE`
-
-## Response Type
-
-[`IntelligenceSuccessResult`](../../doc/models/intelligence-success-result.md)
-
-## Example Usage
-
-```java
-List<UpdateTriggerRequestOptions> body = Arrays.asList(
-    new UpdateTriggerRequestOptions.Builder()
-        .triggerId("595f5c44-c31c-4552-8670-020a1545a84d")
-        .triggerName("Anomaly Daily Usage REST Test-Patch Update 4")
-        .triggerCategory("UsageAnomaly")
-        .accountName("0000123456-00001")
-        .anomalyTriggerRequest(new AnomalyTriggerRequest.Builder()
-            .accountNames("0000123456-00001")
-            .includeAbnormal(true)
-            .includeVeryAbnormal(true)
-            .includeUnderExpectedUsage(false)
-            .includeOverExpectedUsage(true)
-            .build())
-        .notification(new Notification.Builder()
-            .notificationType("DailySummary")
-            .callback(true)
-            .emailNotification(false)
-            .notificationGroupName("Anomaly Test API")
-            .notificationFrequencyFactor(3)
-            .notificationFrequencyInterval("Hourly")
-            .externalEmailRecIpIents("placeholder@verizon.com")
-            .smsNotification(true)
-            .smsNumbers(Arrays.asList(
-                new SMSNumber.Builder()
-                    .carrier("US Cellular")
-                    .number("9299280711")
-                    .build()
-            ))
-            .reminder(true)
-            .severity("Critical")
-            .build())
-        .build()
-);
-
-anomalyTriggersV2Controller.updateAnomalyDetectionTriggerV2Async(body).thenAccept(result -> {
-    // TODO success callback handler
-    System.out.println(result);
-}).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
-    return null;
-});
-```
-
-## Example Response *(as JSON)*
-
-```json
-{
-  "status": "Success"
 }
 ```
 
@@ -259,6 +174,91 @@ anomalyTriggersV2Controller.listAnomalyDetectionTriggerSettingsV2Async(triggerId
       }
     }
   ]
+}
+```
+
+## Errors
+
+| HTTP Status Code | Error Description | Exception Class |
+|  --- | --- | --- |
+| Default | An error occurred. | [`IntelligenceResultException`](../../doc/models/intelligence-result-exception.md) |
+
+
+# Update Anomaly Detection Trigger V2
+
+Updates an existing trigger using the account name.
+
+```java
+CompletableFuture<ApiResponse<IntelligenceSuccessResult>> updateAnomalyDetectionTriggerV2Async(
+    final List<UpdateTriggerRequestOptions> body)
+```
+
+## Parameters
+
+| Parameter | Type | Tags | Description |
+|  --- | --- | --- | --- |
+| `body` | [`List<UpdateTriggerRequestOptions>`](../../doc/models/update-trigger-request-options.md) | Body, Required | Request to update existing trigger. |
+
+## Server
+
+`Server.THINGSPACE`
+
+## Response Type
+
+[`IntelligenceSuccessResult`](../../doc/models/intelligence-success-result.md)
+
+## Example Usage
+
+```java
+List<UpdateTriggerRequestOptions> body = Arrays.asList(
+    new UpdateTriggerRequestOptions.Builder()
+        .triggerId("595f5c44-c31c-4552-8670-020a1545a84d")
+        .triggerName("Anomaly Daily Usage REST Test-Patch Update 4")
+        .triggerCategory("UsageAnomaly")
+        .accountName("0000123456-00001")
+        .anomalyTriggerRequest(new AnomalyTriggerRequest.Builder()
+            .accountNames("0000123456-00001")
+            .includeAbnormal(true)
+            .includeVeryAbnormal(true)
+            .includeUnderExpectedUsage(false)
+            .includeOverExpectedUsage(true)
+            .build())
+        .notification(new Notification.Builder()
+            .notificationType("DailySummary")
+            .callback(true)
+            .emailNotification(false)
+            .notificationGroupName("Anomaly Test API")
+            .notificationFrequencyFactor(3)
+            .notificationFrequencyInterval("Hourly")
+            .externalEmailRecipients("placeholder@verizon.com")
+            .smsNotification(true)
+            .smsNumbers(Arrays.asList(
+                new SMSNumber.Builder()
+                    .carrier("US Cellular")
+                    .number("9299280711")
+                    .build()
+            ))
+            .reminder(true)
+            .severity("Critical")
+            .build())
+        .build()
+);
+
+anomalyTriggersV2Controller.updateAnomalyDetectionTriggerV2Async(body).thenAccept(result -> {
+    // TODO success callback handler
+    System.out.println(result);
+}).exceptionally(exception -> {
+    // TODO failure callback handler
+    exception.printStackTrace();
+    return null;
+});
+```
+
+## Example Response *(as JSON)*
+
+```json
+{
+  "status": "Success"
 }
 ```
 

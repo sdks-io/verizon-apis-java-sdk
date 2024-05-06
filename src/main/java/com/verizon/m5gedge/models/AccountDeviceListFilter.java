@@ -7,7 +7,6 @@
 package com.verizon.m5gedge.models;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import java.util.List;
 
@@ -39,7 +38,6 @@ public class AccountDeviceListFilter {
      * @return Returns the List of DeviceIdSearch
      */
     @JsonGetter("deviceIdentifierFilters")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     public List<DeviceIdSearch> getDeviceIdentifierFilters() {
         return deviceIdentifierFilters;
     }
@@ -71,8 +69,7 @@ public class AccountDeviceListFilter {
      * @return a new {@link AccountDeviceListFilter.Builder} object
      */
     public Builder toBuilder() {
-        Builder builder = new Builder()
-                .deviceIdentifierFilters(getDeviceIdentifierFilters());
+        Builder builder = new Builder(deviceIdentifierFilters);
         return builder;
     }
 
@@ -82,7 +79,20 @@ public class AccountDeviceListFilter {
     public static class Builder {
         private List<DeviceIdSearch> deviceIdentifierFilters;
 
+        /**
+         * Initialization constructor.
+         */
+        public Builder() {
+        }
 
+        /**
+         * Initialization constructor.
+         * @param  deviceIdentifierFilters  List of DeviceIdSearch value for
+         *         deviceIdentifierFilters.
+         */
+        public Builder(List<DeviceIdSearch> deviceIdentifierFilters) {
+            this.deviceIdentifierFilters = deviceIdentifierFilters;
+        }
 
         /**
          * Setter for deviceIdentifierFilters.

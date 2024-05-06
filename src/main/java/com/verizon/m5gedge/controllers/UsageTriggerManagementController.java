@@ -39,54 +39,58 @@ public final class UsageTriggerManagementController extends BaseController {
     }
 
     /**
-     * Create a new usage trigger, which will send an alert when the number of device location
-     * service transactions reaches a specified percentage of the monthly subscription amount.
-     * @param  body  Optional parameter: License assignment.
-     * @return    Returns the UsageTriggerResponse wrapped in ApiResponse response from the API call
+     * eletes the specified usage trigger from the given account.
+     * @param  accountName  Required parameter: Account name
+     * @param  triggerId  Required parameter: Usage trigger ID
+     * @return    Returns the DeviceLocationSuccessResult wrapped in ApiResponse response from the API call
      * @throws    ApiException    Represents error response from the server.
      * @throws    IOException    Signals that an I/O exception of some sort has occurred.
      */
-    public ApiResponse<UsageTriggerResponse> createNewTrigger(
-            final UsageTriggerAddRequest body) throws ApiException, IOException {
-        return prepareCreateNewTriggerRequest(body).execute();
+    public ApiResponse<DeviceLocationSuccessResult> deleteTrigger(
+            final String accountName,
+            final String triggerId) throws ApiException, IOException {
+        return prepareDeleteTriggerRequest(accountName, triggerId).execute();
     }
 
     /**
-     * Create a new usage trigger, which will send an alert when the number of device location
-     * service transactions reaches a specified percentage of the monthly subscription amount.
-     * @param  body  Optional parameter: License assignment.
-     * @return    Returns the UsageTriggerResponse wrapped in ApiResponse response from the API call
+     * eletes the specified usage trigger from the given account.
+     * @param  accountName  Required parameter: Account name
+     * @param  triggerId  Required parameter: Usage trigger ID
+     * @return    Returns the DeviceLocationSuccessResult wrapped in ApiResponse response from the API call
      */
-    public CompletableFuture<ApiResponse<UsageTriggerResponse>> createNewTriggerAsync(
-            final UsageTriggerAddRequest body) {
+    public CompletableFuture<ApiResponse<DeviceLocationSuccessResult>> deleteTriggerAsync(
+            final String accountName,
+            final String triggerId) {
         try { 
-            return prepareCreateNewTriggerRequest(body).executeAsync(); 
+            return prepareDeleteTriggerRequest(accountName, triggerId).executeAsync(); 
         } catch (Exception e) {  
             throw new CompletionException(e); 
         }
     }
 
     /**
-     * Builds the ApiCall object for createNewTrigger.
+     * Builds the ApiCall object for deleteTrigger.
      */
-    private ApiCall<ApiResponse<UsageTriggerResponse>, ApiException> prepareCreateNewTriggerRequest(
-            final UsageTriggerAddRequest body) throws JsonProcessingException, IOException {
-        return new ApiCall.Builder<ApiResponse<UsageTriggerResponse>, ApiException>()
+    private ApiCall<ApiResponse<DeviceLocationSuccessResult>, ApiException> prepareDeleteTriggerRequest(
+            final String accountName,
+            final String triggerId) throws IOException {
+        return new ApiCall.Builder<ApiResponse<DeviceLocationSuccessResult>, ApiException>()
                 .globalConfig(getGlobalConfiguration())
                 .requestBuilder(requestBuilder -> requestBuilder
-                        .server(Server.SUBSCR_IP_TION_SERVER.value())
-                        .path("/usage/triggers")
-                        .bodyParam(param -> param.value(body).isRequired(false))
-                        .bodySerializer(() ->  ApiHelper.serialize(body))
-                        .headerParam(param -> param.key("Content-Type")
-                                .value("application/json").isRequired(false))
+                        .server(Server.SUBSCRIPTION_SERVER.value())
+                        .path("/usage/accounts/{accountName}/triggers/{triggerId}")
+                        .templateParam(param -> param.key("accountName").value(accountName)
+                                .shouldEncode(true))
+                        .templateParam(param -> param.key("triggerId").value(triggerId)
+                                .shouldEncode(true))
                         .headerParam(param -> param.key("accept").value("application/json"))
-                        .authenticationKey(BaseController.AUTHENTICATION_KEY)
-                        .httpMethod(HttpMethod.POST))
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
+                        .httpMethod(HttpMethod.DELETE))
                 .responseHandler(responseHandler -> responseHandler
                         .responseClassType(ResponseClassType.API_RESPONSE)
                         .apiResponseDeserializer(
-                                response -> ApiHelper.deserialize(response, UsageTriggerResponse.class))
+                                response -> ApiHelper.deserialize(response, DeviceLocationSuccessResult.class))
                         .nullify404(false)
                         .localErrorCase("400",
                                  ErrorCase.setReason("Unexpected error",
@@ -134,7 +138,7 @@ public final class UsageTriggerManagementController extends BaseController {
         return new ApiCall.Builder<ApiResponse<UsageTriggerResponse>, ApiException>()
                 .globalConfig(getGlobalConfiguration())
                 .requestBuilder(requestBuilder -> requestBuilder
-                        .server(Server.SUBSCR_IP_TION_SERVER.value())
+                        .server(Server.SUBSCRIPTION_SERVER.value())
                         .path("/usage/triggers/{triggerId}")
                         .bodyParam(param -> param.value(body).isRequired(false))
                         .bodySerializer(() ->  ApiHelper.serialize(body))
@@ -143,7 +147,8 @@ public final class UsageTriggerManagementController extends BaseController {
                         .headerParam(param -> param.key("Content-Type")
                                 .value("application/json").isRequired(false))
                         .headerParam(param -> param.key("accept").value("application/json"))
-                        .authenticationKey(BaseController.AUTHENTICATION_KEY)
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
                         .httpMethod(HttpMethod.POST))
                 .responseHandler(responseHandler -> responseHandler
                         .responseClassType(ResponseClassType.API_RESPONSE)
@@ -158,57 +163,55 @@ public final class UsageTriggerManagementController extends BaseController {
     }
 
     /**
-     * eletes the specified usage trigger from the given account.
-     * @param  accountName  Required parameter: Account name
-     * @param  triggerId  Required parameter: Usage trigger ID
-     * @return    Returns the DeviceLocationSuccessResult wrapped in ApiResponse response from the API call
+     * Create a new usage trigger, which will send an alert when the number of device location
+     * service transactions reaches a specified percentage of the monthly subscription amount.
+     * @param  body  Optional parameter: License assignment.
+     * @return    Returns the UsageTriggerResponse wrapped in ApiResponse response from the API call
      * @throws    ApiException    Represents error response from the server.
      * @throws    IOException    Signals that an I/O exception of some sort has occurred.
      */
-    public ApiResponse<DeviceLocationSuccessResult> deleteTrigger(
-            final String accountName,
-            final String triggerId) throws ApiException, IOException {
-        return prepareDeleteTriggerRequest(accountName, triggerId).execute();
+    public ApiResponse<UsageTriggerResponse> createNewTrigger(
+            final UsageTriggerAddRequest body) throws ApiException, IOException {
+        return prepareCreateNewTriggerRequest(body).execute();
     }
 
     /**
-     * eletes the specified usage trigger from the given account.
-     * @param  accountName  Required parameter: Account name
-     * @param  triggerId  Required parameter: Usage trigger ID
-     * @return    Returns the DeviceLocationSuccessResult wrapped in ApiResponse response from the API call
+     * Create a new usage trigger, which will send an alert when the number of device location
+     * service transactions reaches a specified percentage of the monthly subscription amount.
+     * @param  body  Optional parameter: License assignment.
+     * @return    Returns the UsageTriggerResponse wrapped in ApiResponse response from the API call
      */
-    public CompletableFuture<ApiResponse<DeviceLocationSuccessResult>> deleteTriggerAsync(
-            final String accountName,
-            final String triggerId) {
+    public CompletableFuture<ApiResponse<UsageTriggerResponse>> createNewTriggerAsync(
+            final UsageTriggerAddRequest body) {
         try { 
-            return prepareDeleteTriggerRequest(accountName, triggerId).executeAsync(); 
+            return prepareCreateNewTriggerRequest(body).executeAsync(); 
         } catch (Exception e) {  
             throw new CompletionException(e); 
         }
     }
 
     /**
-     * Builds the ApiCall object for deleteTrigger.
+     * Builds the ApiCall object for createNewTrigger.
      */
-    private ApiCall<ApiResponse<DeviceLocationSuccessResult>, ApiException> prepareDeleteTriggerRequest(
-            final String accountName,
-            final String triggerId) throws IOException {
-        return new ApiCall.Builder<ApiResponse<DeviceLocationSuccessResult>, ApiException>()
+    private ApiCall<ApiResponse<UsageTriggerResponse>, ApiException> prepareCreateNewTriggerRequest(
+            final UsageTriggerAddRequest body) throws JsonProcessingException, IOException {
+        return new ApiCall.Builder<ApiResponse<UsageTriggerResponse>, ApiException>()
                 .globalConfig(getGlobalConfiguration())
                 .requestBuilder(requestBuilder -> requestBuilder
-                        .server(Server.SUBSCR_IP_TION_SERVER.value())
-                        .path("/usage/accounts/{accountName}/triggers/{triggerId}")
-                        .templateParam(param -> param.key("accountName").value(accountName)
-                                .shouldEncode(true))
-                        .templateParam(param -> param.key("triggerId").value(triggerId)
-                                .shouldEncode(true))
+                        .server(Server.SUBSCRIPTION_SERVER.value())
+                        .path("/usage/triggers")
+                        .bodyParam(param -> param.value(body).isRequired(false))
+                        .bodySerializer(() ->  ApiHelper.serialize(body))
+                        .headerParam(param -> param.key("Content-Type")
+                                .value("application/json").isRequired(false))
                         .headerParam(param -> param.key("accept").value("application/json"))
-                        .authenticationKey(BaseController.AUTHENTICATION_KEY)
-                        .httpMethod(HttpMethod.DELETE))
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
+                        .httpMethod(HttpMethod.POST))
                 .responseHandler(responseHandler -> responseHandler
                         .responseClassType(ResponseClassType.API_RESPONSE)
                         .apiResponseDeserializer(
-                                response -> ApiHelper.deserialize(response, DeviceLocationSuccessResult.class))
+                                response -> ApiHelper.deserialize(response, UsageTriggerResponse.class))
                         .nullify404(false)
                         .localErrorCase("400",
                                  ErrorCase.setReason("Unexpected error",

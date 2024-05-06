@@ -21,7 +21,7 @@ public class ChangeDeviceIdRequest {
     private List<DeviceId> deviceIdsTo;
     private String npaNxx;
     private String servicePlan;
-    private String zIpCode;
+    private String zipCode;
     private String smsrOid;
 
     /**
@@ -32,23 +32,23 @@ public class ChangeDeviceIdRequest {
 
     /**
      * Initialization constructor.
+     * @param  deviceIds  List of DeviceId value for deviceIds.
      * @param  assignNonGeoMdn  Boolean value for assignNonGeoMdn.
      * @param  change4gOption  String value for change4gOption.
-     * @param  deviceIds  List of DeviceId value for deviceIds.
      * @param  deviceIdsTo  List of DeviceId value for deviceIdsTo.
      * @param  npaNxx  String value for npaNxx.
      * @param  servicePlan  String value for servicePlan.
-     * @param  zIpCode  String value for zIpCode.
+     * @param  zipCode  String value for zipCode.
      * @param  smsrOid  String value for smsrOid.
      */
     public ChangeDeviceIdRequest(
+            List<DeviceId> deviceIds,
             Boolean assignNonGeoMdn,
             String change4gOption,
-            List<DeviceId> deviceIds,
             List<DeviceId> deviceIdsTo,
             String npaNxx,
             String servicePlan,
-            String zIpCode,
+            String zipCode,
             String smsrOid) {
         this.assignNonGeoMdn = assignNonGeoMdn;
         this.change4gOption = change4gOption;
@@ -56,7 +56,7 @@ public class ChangeDeviceIdRequest {
         this.deviceIdsTo = deviceIdsTo;
         this.npaNxx = npaNxx;
         this.servicePlan = servicePlan;
-        this.zIpCode = zIpCode;
+        this.zipCode = zipCode;
         this.smsrOid = smsrOid;
     }
 
@@ -110,7 +110,6 @@ public class ChangeDeviceIdRequest {
      * @return Returns the List of DeviceId
      */
     @JsonGetter("deviceIds")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     public List<DeviceId> getDeviceIds() {
         return deviceIds;
     }
@@ -201,26 +200,26 @@ public class ChangeDeviceIdRequest {
     }
 
     /**
-     * Getter for ZIpCode.
+     * Getter for ZipCode.
      * The ZIP code from which the MDN and MSISDN will be derived when assignNonGeoMDN is true.
      * Specify the zip code of the location where the line of service will primarily be used.
      * @return Returns the String
      */
     @JsonGetter("zipCode")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getZIpCode() {
-        return zIpCode;
+    public String getZipCode() {
+        return zipCode;
     }
 
     /**
-     * Setter for ZIpCode.
+     * Setter for ZipCode.
      * The ZIP code from which the MDN and MSISDN will be derived when assignNonGeoMDN is true.
      * Specify the zip code of the location where the line of service will primarily be used.
-     * @param zIpCode Value for String
+     * @param zipCode Value for String
      */
     @JsonSetter("zipCode")
-    public void setZIpCode(String zIpCode) {
-        this.zIpCode = zIpCode;
+    public void setZipCode(String zipCode) {
+        this.zipCode = zipCode;
     }
 
     /**
@@ -248,10 +247,10 @@ public class ChangeDeviceIdRequest {
      */
     @Override
     public String toString() {
-        return "ChangeDeviceIdRequest [" + "assignNonGeoMdn=" + assignNonGeoMdn
-                + ", change4gOption=" + change4gOption + ", deviceIds=" + deviceIds
-                + ", deviceIdsTo=" + deviceIdsTo + ", npaNxx=" + npaNxx + ", servicePlan="
-                + servicePlan + ", zIpCode=" + zIpCode + ", smsrOid=" + smsrOid + "]";
+        return "ChangeDeviceIdRequest [" + "deviceIds=" + deviceIds + ", assignNonGeoMdn="
+                + assignNonGeoMdn + ", change4gOption=" + change4gOption + ", deviceIdsTo="
+                + deviceIdsTo + ", npaNxx=" + npaNxx + ", servicePlan=" + servicePlan + ", zipCode="
+                + zipCode + ", smsrOid=" + smsrOid + "]";
     }
 
     /**
@@ -260,14 +259,13 @@ public class ChangeDeviceIdRequest {
      * @return a new {@link ChangeDeviceIdRequest.Builder} object
      */
     public Builder toBuilder() {
-        Builder builder = new Builder()
+        Builder builder = new Builder(deviceIds)
                 .assignNonGeoMdn(getAssignNonGeoMdn())
                 .change4gOption(getChange4gOption())
-                .deviceIds(getDeviceIds())
                 .deviceIdsTo(getDeviceIdsTo())
                 .npaNxx(getNpaNxx())
                 .servicePlan(getServicePlan())
-                .zIpCode(getZIpCode())
+                .zipCode(getZipCode())
                 .smsrOid(getSmsrOid());
         return builder;
     }
@@ -276,16 +274,38 @@ public class ChangeDeviceIdRequest {
      * Class to build instances of {@link ChangeDeviceIdRequest}.
      */
     public static class Builder {
+        private List<DeviceId> deviceIds;
         private Boolean assignNonGeoMdn;
         private String change4gOption;
-        private List<DeviceId> deviceIds;
         private List<DeviceId> deviceIdsTo;
         private String npaNxx;
         private String servicePlan;
-        private String zIpCode;
+        private String zipCode;
         private String smsrOid;
 
+        /**
+         * Initialization constructor.
+         */
+        public Builder() {
+        }
 
+        /**
+         * Initialization constructor.
+         * @param  deviceIds  List of DeviceId value for deviceIds.
+         */
+        public Builder(List<DeviceId> deviceIds) {
+            this.deviceIds = deviceIds;
+        }
+
+        /**
+         * Setter for deviceIds.
+         * @param  deviceIds  List of DeviceId value for deviceIds.
+         * @return Builder
+         */
+        public Builder deviceIds(List<DeviceId> deviceIds) {
+            this.deviceIds = deviceIds;
+            return this;
+        }
 
         /**
          * Setter for assignNonGeoMdn.
@@ -304,16 +324,6 @@ public class ChangeDeviceIdRequest {
          */
         public Builder change4gOption(String change4gOption) {
             this.change4gOption = change4gOption;
-            return this;
-        }
-
-        /**
-         * Setter for deviceIds.
-         * @param  deviceIds  List of DeviceId value for deviceIds.
-         * @return Builder
-         */
-        public Builder deviceIds(List<DeviceId> deviceIds) {
-            this.deviceIds = deviceIds;
             return this;
         }
 
@@ -348,12 +358,12 @@ public class ChangeDeviceIdRequest {
         }
 
         /**
-         * Setter for zIpCode.
-         * @param  zIpCode  String value for zIpCode.
+         * Setter for zipCode.
+         * @param  zipCode  String value for zipCode.
          * @return Builder
          */
-        public Builder zIpCode(String zIpCode) {
-            this.zIpCode = zIpCode;
+        public Builder zipCode(String zipCode) {
+            this.zipCode = zipCode;
             return this;
         }
 
@@ -372,8 +382,8 @@ public class ChangeDeviceIdRequest {
          * @return {@link ChangeDeviceIdRequest}
          */
         public ChangeDeviceIdRequest build() {
-            return new ChangeDeviceIdRequest(assignNonGeoMdn, change4gOption, deviceIds,
-                    deviceIdsTo, npaNxx, servicePlan, zIpCode, smsrOid);
+            return new ChangeDeviceIdRequest(deviceIds, assignNonGeoMdn, change4gOption,
+                    deviceIdsTo, npaNxx, servicePlan, zipCode, smsrOid);
         }
     }
 }

@@ -11,9 +11,9 @@ Bill usage request.
 
 | Name | Type | Tags | Description | Getter | Setter |
 |  --- | --- | --- | --- | --- | --- |
-| `AccountName` | `String` | Optional | Account identifier. | String getAccountName() | setAccountName(String accountName) |
-| `StartDate` | `String` | Optional | Start date to search for billable usage, mm-dd-yyyy. | String getStartDate() | setStartDate(String startDate) |
-| `EndDate` | `String` | Optional | End date to search for billable usage, mm-dd-yyyy. | String getEndDate() | setEndDate(String endDate) |
+| `AccountName` | `String` | Required | Account identifier. | String getAccountName() | setAccountName(String accountName) |
+| `StartDate` | `String` | Required | Start date to search for billable usage, mm-dd-yyyy. | String getStartDate() | setStartDate(String startDate) |
+| `EndDate` | `String` | Required | End date to search for billable usage, mm-dd-yyyy. | String getEndDate() | setEndDate(String endDate) |
 | `UsageForAllAccounts` | `Boolean` | Optional | Request usage for single or multiple accounts. | Boolean getUsageForAllAccounts() | setUsageForAllAccounts(Boolean usageForAllAccounts) |
 
 ## Example (as JSON)

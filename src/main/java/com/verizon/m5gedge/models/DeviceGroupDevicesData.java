@@ -15,7 +15,7 @@ import java.util.List;
  * This is a model class for DeviceGroupDevicesData type.
  */
 public class DeviceGroupDevicesData {
-    private String descrIpTion;
+    private String description;
     private List<AccountDeviceList> devices;
     private Boolean hasMoreData;
     private String name;
@@ -28,41 +28,41 @@ public class DeviceGroupDevicesData {
 
     /**
      * Initialization constructor.
-     * @param  descrIpTion  String value for descrIpTion.
+     * @param  description  String value for description.
      * @param  devices  List of AccountDeviceList value for devices.
      * @param  hasMoreData  Boolean value for hasMoreData.
      * @param  name  String value for name.
      */
     public DeviceGroupDevicesData(
-            String descrIpTion,
+            String description,
             List<AccountDeviceList> devices,
             Boolean hasMoreData,
             String name) {
-        this.descrIpTion = descrIpTion;
+        this.description = description;
         this.devices = devices;
         this.hasMoreData = hasMoreData;
         this.name = name;
     }
 
     /**
-     * Getter for DescrIpTion.
+     * Getter for Description.
      * The description of the device group.
      * @return Returns the String
      */
     @JsonGetter("description")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getDescrIpTion() {
-        return descrIpTion;
+    public String getDescription() {
+        return description;
     }
 
     /**
-     * Setter for DescrIpTion.
+     * Setter for Description.
      * The description of the device group.
-     * @param descrIpTion Value for String
+     * @param description Value for String
      */
     @JsonSetter("description")
-    public void setDescrIpTion(String descrIpTion) {
-        this.descrIpTion = descrIpTion;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     /**
@@ -136,7 +136,7 @@ public class DeviceGroupDevicesData {
      */
     @Override
     public String toString() {
-        return "DeviceGroupDevicesData [" + "descrIpTion=" + descrIpTion + ", devices=" + devices
+        return "DeviceGroupDevicesData [" + "description=" + description + ", devices=" + devices
                 + ", hasMoreData=" + hasMoreData + ", name=" + name + "]";
     }
 
@@ -147,7 +147,7 @@ public class DeviceGroupDevicesData {
      */
     public Builder toBuilder() {
         Builder builder = new Builder()
-                .descrIpTion(getDescrIpTion())
+                .description(getDescription())
                 .devices(getDevices())
                 .hasMoreData(getHasMoreData())
                 .name(getName());
@@ -158,7 +158,7 @@ public class DeviceGroupDevicesData {
      * Class to build instances of {@link DeviceGroupDevicesData}.
      */
     public static class Builder {
-        private String descrIpTion;
+        private String description;
         private List<AccountDeviceList> devices;
         private Boolean hasMoreData;
         private String name;
@@ -166,12 +166,12 @@ public class DeviceGroupDevicesData {
 
 
         /**
-         * Setter for descrIpTion.
-         * @param  descrIpTion  String value for descrIpTion.
+         * Setter for description.
+         * @param  description  String value for description.
          * @return Builder
          */
-        public Builder descrIpTion(String descrIpTion) {
-            this.descrIpTion = descrIpTion;
+        public Builder description(String description) {
+            this.description = description;
             return this;
         }
 
@@ -210,7 +210,7 @@ public class DeviceGroupDevicesData {
          * @return {@link DeviceGroupDevicesData}
          */
         public DeviceGroupDevicesData build() {
-            return new DeviceGroupDevicesData(descrIpTion, devices, hasMoreData, name);
+            return new DeviceGroupDevicesData(description, devices, hasMoreData, name);
         }
     }
 }

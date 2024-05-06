@@ -7,7 +7,6 @@
 package com.verizon.m5gedge.models;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonSetter;
 
 /**
@@ -41,7 +40,6 @@ public class DeviceLabels {
      * @return Returns the String
      */
     @JsonGetter("name")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     public String getName() {
         return name;
     }
@@ -62,7 +60,6 @@ public class DeviceLabels {
      * @return Returns the String
      */
     @JsonGetter("value")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     public String getValue() {
         return value;
     }
@@ -92,9 +89,7 @@ public class DeviceLabels {
      * @return a new {@link DeviceLabels.Builder} object
      */
     public Builder toBuilder() {
-        Builder builder = new Builder()
-                .name(getName())
-                .value(getValue());
+        Builder builder = new Builder(name, value);
         return builder;
     }
 
@@ -105,7 +100,21 @@ public class DeviceLabels {
         private String name;
         private String value;
 
+        /**
+         * Initialization constructor.
+         */
+        public Builder() {
+        }
 
+        /**
+         * Initialization constructor.
+         * @param  name  String value for name.
+         * @param  value  String value for value.
+         */
+        public Builder(String name, String value) {
+            this.name = name;
+            this.value = value;
+        }
 
         /**
          * Setter for name.

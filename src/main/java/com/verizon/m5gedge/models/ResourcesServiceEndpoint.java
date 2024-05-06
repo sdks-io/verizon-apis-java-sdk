@@ -16,8 +16,8 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 public class ResourcesServiceEndpoint {
     private String uRI;
     private String fQDN;
-    private String ipV4Address;
-    private String ipV6Address;
+    private String iPv4Address;
+    private String iPv6Address;
     private Integer port;
 
     /**
@@ -30,20 +30,20 @@ public class ResourcesServiceEndpoint {
      * Initialization constructor.
      * @param  uRI  String value for uRI.
      * @param  fQDN  String value for fQDN.
-     * @param  ipV4Address  String value for ipV4Address.
-     * @param  ipV6Address  String value for ipV6Address.
+     * @param  iPv4Address  String value for iPv4Address.
+     * @param  iPv6Address  String value for iPv6Address.
      * @param  port  Integer value for port.
      */
     public ResourcesServiceEndpoint(
             String uRI,
             String fQDN,
-            String ipV4Address,
-            String ipV6Address,
+            String iPv4Address,
+            String iPv6Address,
             Integer port) {
         this.uRI = uRI;
         this.fQDN = fQDN;
-        this.ipV4Address = ipV4Address;
-        this.ipV6Address = ipV6Address;
+        this.iPv4Address = iPv4Address;
+        this.iPv6Address = iPv6Address;
         this.port = port;
     }
 
@@ -90,45 +90,45 @@ public class ResourcesServiceEndpoint {
     }
 
     /**
-     * Getter for IpV4Address.
+     * Getter for IPv4Address.
      * IPv4 Address of Service Endpoint if available.
      * @return Returns the String
      */
     @JsonGetter("IPv4Address")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getIpV4Address() {
-        return ipV4Address;
+    public String getIPv4Address() {
+        return iPv4Address;
     }
 
     /**
-     * Setter for IpV4Address.
+     * Setter for IPv4Address.
      * IPv4 Address of Service Endpoint if available.
-     * @param ipV4Address Value for String
+     * @param iPv4Address Value for String
      */
     @JsonSetter("IPv4Address")
-    public void setIpV4Address(String ipV4Address) {
-        this.ipV4Address = ipV4Address;
+    public void setIPv4Address(String iPv4Address) {
+        this.iPv4Address = iPv4Address;
     }
 
     /**
-     * Getter for IpV6Address.
+     * Getter for IPv6Address.
      * IPv6 Address of Service Endpoint if available.
      * @return Returns the String
      */
     @JsonGetter("IPv6Address")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getIpV6Address() {
-        return ipV6Address;
+    public String getIPv6Address() {
+        return iPv6Address;
     }
 
     /**
-     * Setter for IpV6Address.
+     * Setter for IPv6Address.
      * IPv6 Address of Service Endpoint if available.
-     * @param ipV6Address Value for String
+     * @param iPv6Address Value for String
      */
     @JsonSetter("IPv6Address")
-    public void setIpV6Address(String ipV6Address) {
-        this.ipV6Address = ipV6Address;
+    public void setIPv6Address(String iPv6Address) {
+        this.iPv6Address = iPv6Address;
     }
 
     /**
@@ -158,8 +158,8 @@ public class ResourcesServiceEndpoint {
      */
     @Override
     public String toString() {
-        return "ResourcesServiceEndpoint [" + "uRI=" + uRI + ", fQDN=" + fQDN + ", ipV4Address="
-                + ipV4Address + ", ipV6Address=" + ipV6Address + ", port=" + port + "]";
+        return "ResourcesServiceEndpoint [" + "uRI=" + uRI + ", fQDN=" + fQDN + ", iPv4Address="
+                + iPv4Address + ", iPv6Address=" + iPv6Address + ", port=" + port + "]";
     }
 
     /**
@@ -171,8 +171,8 @@ public class ResourcesServiceEndpoint {
         Builder builder = new Builder()
                 .uRI(getURI())
                 .fQDN(getFQDN())
-                .ipV4Address(getIpV4Address())
-                .ipV6Address(getIpV6Address())
+                .iPv4Address(getIPv4Address())
+                .iPv6Address(getIPv6Address())
                 .port(getPort());
         return builder;
     }
@@ -183,8 +183,8 @@ public class ResourcesServiceEndpoint {
     public static class Builder {
         private String uRI;
         private String fQDN;
-        private String ipV4Address;
-        private String ipV6Address;
+        private String iPv4Address;
+        private String iPv6Address;
         private Integer port;
 
 
@@ -210,22 +210,22 @@ public class ResourcesServiceEndpoint {
         }
 
         /**
-         * Setter for ipV4Address.
-         * @param  ipV4Address  String value for ipV4Address.
+         * Setter for iPv4Address.
+         * @param  iPv4Address  String value for iPv4Address.
          * @return Builder
          */
-        public Builder ipV4Address(String ipV4Address) {
-            this.ipV4Address = ipV4Address;
+        public Builder iPv4Address(String iPv4Address) {
+            this.iPv4Address = iPv4Address;
             return this;
         }
 
         /**
-         * Setter for ipV6Address.
-         * @param  ipV6Address  String value for ipV6Address.
+         * Setter for iPv6Address.
+         * @param  iPv6Address  String value for iPv6Address.
          * @return Builder
          */
-        public Builder ipV6Address(String ipV6Address) {
-            this.ipV6Address = ipV6Address;
+        public Builder iPv6Address(String iPv6Address) {
+            this.iPv6Address = iPv6Address;
             return this;
         }
 
@@ -244,7 +244,7 @@ public class ResourcesServiceEndpoint {
          * @return {@link ResourcesServiceEndpoint}
          */
         public ResourcesServiceEndpoint build() {
-            return new ResourcesServiceEndpoint(uRI, fQDN, ipV4Address, ipV6Address, port);
+            return new ResourcesServiceEndpoint(uRI, fQDN, iPv4Address, iPv6Address, port);
         }
     }
 }

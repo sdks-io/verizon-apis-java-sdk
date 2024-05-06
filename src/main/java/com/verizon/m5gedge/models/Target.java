@@ -26,7 +26,7 @@ public class Target {
     private String region;
     private String version;
     private String versionid;
-    private String descrIpTion;
+    private String description;
 
     /**
      * Default constructor.
@@ -48,7 +48,7 @@ public class Target {
      * @param  region  String value for region.
      * @param  version  String value for version.
      * @param  versionid  String value for versionid.
-     * @param  descrIpTion  String value for descrIpTion.
+     * @param  description  String value for description.
      */
     public Target(
             String address,
@@ -63,7 +63,7 @@ public class Target {
             String region,
             String version,
             String versionid,
-            String descrIpTion) {
+            String description) {
         this.address = address;
         this.addressscheme = addressscheme;
         this.billingaccountid = billingaccountid;
@@ -76,7 +76,7 @@ public class Target {
         this.region = region;
         this.version = version;
         this.versionid = versionid;
-        this.descrIpTion = descrIpTion;
+        this.description = description;
     }
 
     /**
@@ -332,24 +332,24 @@ public class Target {
     }
 
     /**
-     * Getter for DescrIpTion.
+     * Getter for Description.
      * Description of the target.
      * @return Returns the String
      */
     @JsonGetter("description")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getDescrIpTion() {
-        return descrIpTion;
+    public String getDescription() {
+        return description;
     }
 
     /**
-     * Setter for DescrIpTion.
+     * Setter for Description.
      * Description of the target.
-     * @param descrIpTion Value for String
+     * @param description Value for String
      */
     @JsonSetter("description")
-    public void setDescrIpTion(String descrIpTion) {
-        this.descrIpTion = descrIpTion;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     /**
@@ -362,7 +362,7 @@ public class Target {
                 + ", billingaccountid=" + billingaccountid + ", createdon=" + createdon
                 + ", externalid=" + externalid + ", id=" + id + ", kind=" + kind + ", lastupdated="
                 + lastupdated + ", name=" + name + ", region=" + region + ", version=" + version
-                + ", versionid=" + versionid + ", descrIpTion=" + descrIpTion + "]";
+                + ", versionid=" + versionid + ", description=" + description + "]";
     }
 
     /**
@@ -384,7 +384,7 @@ public class Target {
                 .region(getRegion())
                 .version(getVersion())
                 .versionid(getVersionid())
-                .descrIpTion(getDescrIpTion());
+                .description(getDescription());
         return builder;
     }
 
@@ -404,7 +404,7 @@ public class Target {
         private String region;
         private String version;
         private String versionid;
-        private String descrIpTion;
+        private String description;
 
 
 
@@ -529,12 +529,12 @@ public class Target {
         }
 
         /**
-         * Setter for descrIpTion.
-         * @param  descrIpTion  String value for descrIpTion.
+         * Setter for description.
+         * @param  description  String value for description.
          * @return Builder
          */
-        public Builder descrIpTion(String descrIpTion) {
-            this.descrIpTion = descrIpTion;
+        public Builder description(String description) {
+            this.description = description;
             return this;
         }
 
@@ -544,7 +544,7 @@ public class Target {
          */
         public Target build() {
             return new Target(address, addressscheme, billingaccountid, createdon, externalid, id,
-                    kind, lastupdated, name, region, version, versionid, descrIpTion);
+                    kind, lastupdated, name, region, version, versionid, description);
         }
     }
 }

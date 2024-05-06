@@ -15,9 +15,9 @@ import java.util.List;
  * This is a model class for ContactInfoUpdateRequest type.
  */
 public class ContactInfoUpdateRequest {
+    private PlaceOfUse primaryPlaceOfUse;
     private String accountName;
     private List<AccountDeviceList> devices;
-    private Object primaryPlaceOfUse;
 
     /**
      * Default constructor.
@@ -27,16 +27,44 @@ public class ContactInfoUpdateRequest {
 
     /**
      * Initialization constructor.
+     * @param  primaryPlaceOfUse  PlaceOfUse value for primaryPlaceOfUse.
      * @param  accountName  String value for accountName.
      * @param  devices  List of AccountDeviceList value for devices.
-     * @param  primaryPlaceOfUse  Object value for primaryPlaceOfUse.
      */
     public ContactInfoUpdateRequest(
+            PlaceOfUse primaryPlaceOfUse,
             String accountName,
-            List<AccountDeviceList> devices,
-            Object primaryPlaceOfUse) {
+            List<AccountDeviceList> devices) {
+        this.primaryPlaceOfUse = primaryPlaceOfUse;
         this.accountName = accountName;
         this.devices = devices;
+    }
+
+    /**
+     * Getter for PrimaryPlaceOfUse.
+     * The customer name and the address of the device's primary place of use. Leave these fields
+     * empty to use the account profile address as the primary place of use. These values will be
+     * applied to all devices in the request.If the account is enabled for non-geographic MDNs and
+     * the device supports it, the primaryPlaceOfUse address will also be used to derive the MDN for
+     * the device.
+     * @return Returns the PlaceOfUse
+     */
+    @JsonGetter("primaryPlaceOfUse")
+    public PlaceOfUse getPrimaryPlaceOfUse() {
+        return primaryPlaceOfUse;
+    }
+
+    /**
+     * Setter for PrimaryPlaceOfUse.
+     * The customer name and the address of the device's primary place of use. Leave these fields
+     * empty to use the account profile address as the primary place of use. These values will be
+     * applied to all devices in the request.If the account is enabled for non-geographic MDNs and
+     * the device supports it, the primaryPlaceOfUse address will also be used to derive the MDN for
+     * the device.
+     * @param primaryPlaceOfUse Value for PlaceOfUse
+     */
+    @JsonSetter("primaryPlaceOfUse")
+    public void setPrimaryPlaceOfUse(PlaceOfUse primaryPlaceOfUse) {
         this.primaryPlaceOfUse = primaryPlaceOfUse;
     }
 
@@ -89,40 +117,13 @@ public class ContactInfoUpdateRequest {
     }
 
     /**
-     * Getter for PrimaryPlaceOfUse.
-     * The customer name and the address of the device's primary place of use. These values are
-     * applied to all devices in the request.The Primary Place of Use location may affect taxation
-     * or have other legal implications. You may want to speak with legal and/or financial advisers
-     * before entering values for these fields.
-     * @return Returns the Object
-     */
-    @JsonGetter("primaryPlaceOfUse")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public Object getPrimaryPlaceOfUse() {
-        return primaryPlaceOfUse;
-    }
-
-    /**
-     * Setter for PrimaryPlaceOfUse.
-     * The customer name and the address of the device's primary place of use. These values are
-     * applied to all devices in the request.The Primary Place of Use location may affect taxation
-     * or have other legal implications. You may want to speak with legal and/or financial advisers
-     * before entering values for these fields.
-     * @param primaryPlaceOfUse Value for Object
-     */
-    @JsonSetter("primaryPlaceOfUse")
-    public void setPrimaryPlaceOfUse(Object primaryPlaceOfUse) {
-        this.primaryPlaceOfUse = primaryPlaceOfUse;
-    }
-
-    /**
      * Converts this ContactInfoUpdateRequest into string format.
      * @return String representation of this class
      */
     @Override
     public String toString() {
-        return "ContactInfoUpdateRequest [" + "accountName=" + accountName + ", devices=" + devices
-                + ", primaryPlaceOfUse=" + primaryPlaceOfUse + "]";
+        return "ContactInfoUpdateRequest [" + "primaryPlaceOfUse=" + primaryPlaceOfUse
+                + ", accountName=" + accountName + ", devices=" + devices + "]";
     }
 
     /**
@@ -131,10 +132,9 @@ public class ContactInfoUpdateRequest {
      * @return a new {@link ContactInfoUpdateRequest.Builder} object
      */
     public Builder toBuilder() {
-        Builder builder = new Builder()
+        Builder builder = new Builder(primaryPlaceOfUse)
                 .accountName(getAccountName())
-                .devices(getDevices())
-                .primaryPlaceOfUse(getPrimaryPlaceOfUse());
+                .devices(getDevices());
         return builder;
     }
 
@@ -142,11 +142,33 @@ public class ContactInfoUpdateRequest {
      * Class to build instances of {@link ContactInfoUpdateRequest}.
      */
     public static class Builder {
+        private PlaceOfUse primaryPlaceOfUse;
         private String accountName;
         private List<AccountDeviceList> devices;
-        private Object primaryPlaceOfUse;
 
+        /**
+         * Initialization constructor.
+         */
+        public Builder() {
+        }
 
+        /**
+         * Initialization constructor.
+         * @param  primaryPlaceOfUse  PlaceOfUse value for primaryPlaceOfUse.
+         */
+        public Builder(PlaceOfUse primaryPlaceOfUse) {
+            this.primaryPlaceOfUse = primaryPlaceOfUse;
+        }
+
+        /**
+         * Setter for primaryPlaceOfUse.
+         * @param  primaryPlaceOfUse  PlaceOfUse value for primaryPlaceOfUse.
+         * @return Builder
+         */
+        public Builder primaryPlaceOfUse(PlaceOfUse primaryPlaceOfUse) {
+            this.primaryPlaceOfUse = primaryPlaceOfUse;
+            return this;
+        }
 
         /**
          * Setter for accountName.
@@ -169,21 +191,11 @@ public class ContactInfoUpdateRequest {
         }
 
         /**
-         * Setter for primaryPlaceOfUse.
-         * @param  primaryPlaceOfUse  Object value for primaryPlaceOfUse.
-         * @return Builder
-         */
-        public Builder primaryPlaceOfUse(Object primaryPlaceOfUse) {
-            this.primaryPlaceOfUse = primaryPlaceOfUse;
-            return this;
-        }
-
-        /**
          * Builds a new {@link ContactInfoUpdateRequest} object using the set fields.
          * @return {@link ContactInfoUpdateRequest}
          */
         public ContactInfoUpdateRequest build() {
-            return new ContactInfoUpdateRequest(accountName, devices, primaryPlaceOfUse);
+            return new ContactInfoUpdateRequest(primaryPlaceOfUse, accountName, devices);
         }
     }
 }

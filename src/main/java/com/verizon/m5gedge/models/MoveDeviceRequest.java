@@ -62,7 +62,6 @@ public class MoveDeviceRequest {
      * @return Returns the String
      */
     @JsonGetter("accountName")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     public String getAccountName() {
         return accountName;
     }
@@ -231,8 +230,7 @@ public class MoveDeviceRequest {
      * @return a new {@link MoveDeviceRequest.Builder} object
      */
     public Builder toBuilder() {
-        Builder builder = new Builder()
-                .accountName(getAccountName())
+        Builder builder = new Builder(accountName)
                 .filter(getFilter())
                 .customFields(getCustomFields())
                 .devices(getDevices())
@@ -254,7 +252,19 @@ public class MoveDeviceRequest {
         private String carrierIpPoolName;
         private String servicePlan;
 
+        /**
+         * Initialization constructor.
+         */
+        public Builder() {
+        }
 
+        /**
+         * Initialization constructor.
+         * @param  accountName  String value for accountName.
+         */
+        public Builder(String accountName) {
+            this.accountName = accountName;
+        }
 
         /**
          * Setter for accountName.

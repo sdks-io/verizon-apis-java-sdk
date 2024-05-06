@@ -11,7 +11,7 @@ Request to a new, randomly generated password for the current username.
 
 | Name | Type | Tags | Description | Getter | Setter |
 |  --- | --- | --- | --- | --- | --- |
-| `OldPassword` | `String` | Optional | The current password for the username. | String getOldPassword() | setOldPassword(String oldPassword) |
+| `OldPassword` | `String` | Required | The current password for the username. | String getOldPassword() | setOldPassword(String oldPassword) |
 
 ## Example (as JSON)
 

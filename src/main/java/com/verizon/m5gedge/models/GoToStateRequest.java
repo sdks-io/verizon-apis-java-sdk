@@ -15,16 +15,18 @@ import java.util.List;
  * This is a model class for GoToStateRequest type.
  */
 public class GoToStateRequest {
-    private List<AccountDeviceList> devices;
-    private DeviceFilter filter;
     private String serviceName;
     private String stateName;
     private String servicePlan;
-    private String mdnZIpCode;
+    private String mdnZipCode;
+    private List<AccountDeviceList> devices;
+    private DeviceFilter filter;
     private String carrierIpPoolName;
     private String publicIpRestriction;
     private String skuNumber;
     private List<CustomFields> customFields;
+    private List<Object> devicesWithServiceAddress;
+    private String ipAddress;
     private String groupName;
     private PlaceOfUse primaryPlaceOfUse;
 
@@ -36,44 +38,134 @@ public class GoToStateRequest {
 
     /**
      * Initialization constructor.
-     * @param  devices  List of AccountDeviceList value for devices.
-     * @param  filter  DeviceFilter value for filter.
      * @param  serviceName  String value for serviceName.
      * @param  stateName  String value for stateName.
      * @param  servicePlan  String value for servicePlan.
-     * @param  mdnZIpCode  String value for mdnZIpCode.
+     * @param  mdnZipCode  String value for mdnZipCode.
+     * @param  devices  List of AccountDeviceList value for devices.
+     * @param  filter  DeviceFilter value for filter.
      * @param  carrierIpPoolName  String value for carrierIpPoolName.
      * @param  publicIpRestriction  String value for publicIpRestriction.
      * @param  skuNumber  String value for skuNumber.
      * @param  customFields  List of CustomFields value for customFields.
+     * @param  devicesWithServiceAddress  List of Object value for devicesWithServiceAddress.
+     * @param  ipAddress  String value for ipAddress.
      * @param  groupName  String value for groupName.
      * @param  primaryPlaceOfUse  PlaceOfUse value for primaryPlaceOfUse.
      */
     public GoToStateRequest(
-            List<AccountDeviceList> devices,
-            DeviceFilter filter,
             String serviceName,
             String stateName,
             String servicePlan,
-            String mdnZIpCode,
+            String mdnZipCode,
+            List<AccountDeviceList> devices,
+            DeviceFilter filter,
             String carrierIpPoolName,
             String publicIpRestriction,
             String skuNumber,
             List<CustomFields> customFields,
+            List<Object> devicesWithServiceAddress,
+            String ipAddress,
             String groupName,
             PlaceOfUse primaryPlaceOfUse) {
-        this.devices = devices;
-        this.filter = filter;
         this.serviceName = serviceName;
         this.stateName = stateName;
         this.servicePlan = servicePlan;
-        this.mdnZIpCode = mdnZIpCode;
+        this.mdnZipCode = mdnZipCode;
+        this.devices = devices;
+        this.filter = filter;
         this.carrierIpPoolName = carrierIpPoolName;
         this.publicIpRestriction = publicIpRestriction;
         this.skuNumber = skuNumber;
         this.customFields = customFields;
+        this.devicesWithServiceAddress = devicesWithServiceAddress;
+        this.ipAddress = ipAddress;
         this.groupName = groupName;
         this.primaryPlaceOfUse = primaryPlaceOfUse;
+    }
+
+    /**
+     * Getter for ServiceName.
+     * The name of a customer-defined service to push the devices to.
+     * @return Returns the String
+     */
+    @JsonGetter("serviceName")
+    public String getServiceName() {
+        return serviceName;
+    }
+
+    /**
+     * Setter for ServiceName.
+     * The name of a customer-defined service to push the devices to.
+     * @param serviceName Value for String
+     */
+    @JsonSetter("serviceName")
+    public void setServiceName(String serviceName) {
+        this.serviceName = serviceName;
+    }
+
+    /**
+     * Getter for StateName.
+     * The name of a customer-defined stage state to push the devices to.
+     * @return Returns the String
+     */
+    @JsonGetter("stateName")
+    public String getStateName() {
+        return stateName;
+    }
+
+    /**
+     * Setter for StateName.
+     * The name of a customer-defined stage state to push the devices to.
+     * @param stateName Value for String
+     */
+    @JsonSetter("stateName")
+    public void setStateName(String stateName) {
+        this.stateName = stateName;
+    }
+
+    /**
+     * Getter for ServicePlan.
+     * The service plan code that you want to assign to all specified devices in the new state.
+     * @return Returns the String
+     */
+    @JsonGetter("servicePlan")
+    public String getServicePlan() {
+        return servicePlan;
+    }
+
+    /**
+     * Setter for ServicePlan.
+     * The service plan code that you want to assign to all specified devices in the new state.
+     * @param servicePlan Value for String
+     */
+    @JsonSetter("servicePlan")
+    public void setServicePlan(String servicePlan) {
+        this.servicePlan = servicePlan;
+    }
+
+    /**
+     * Getter for MdnZipCode.
+     * The Zip code of the location where the line of service will primarily be used, or a Zip code
+     * that you have been told to use with these devices. For accounts that are configured for
+     * geographic numbering, this is the ZIP code from which the MDN will be derived.
+     * @return Returns the String
+     */
+    @JsonGetter("mdnZipCode")
+    public String getMdnZipCode() {
+        return mdnZipCode;
+    }
+
+    /**
+     * Setter for MdnZipCode.
+     * The Zip code of the location where the line of service will primarily be used, or a Zip code
+     * that you have been told to use with these devices. For accounts that are configured for
+     * geographic numbering, this is the ZIP code from which the MDN will be derived.
+     * @param mdnZipCode Value for String
+     */
+    @JsonSetter("mdnZipCode")
+    public void setMdnZipCode(String mdnZipCode) {
+        this.mdnZipCode = mdnZipCode;
     }
 
     /**
@@ -120,94 +212,6 @@ public class GoToStateRequest {
     @JsonSetter("filter")
     public void setFilter(DeviceFilter filter) {
         this.filter = filter;
-    }
-
-    /**
-     * Getter for ServiceName.
-     * The name of a customer-defined service to push the devices to.
-     * @return Returns the String
-     */
-    @JsonGetter("serviceName")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getServiceName() {
-        return serviceName;
-    }
-
-    /**
-     * Setter for ServiceName.
-     * The name of a customer-defined service to push the devices to.
-     * @param serviceName Value for String
-     */
-    @JsonSetter("serviceName")
-    public void setServiceName(String serviceName) {
-        this.serviceName = serviceName;
-    }
-
-    /**
-     * Getter for StateName.
-     * The name of a customer-defined stage state to push the devices to.
-     * @return Returns the String
-     */
-    @JsonGetter("stateName")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getStateName() {
-        return stateName;
-    }
-
-    /**
-     * Setter for StateName.
-     * The name of a customer-defined stage state to push the devices to.
-     * @param stateName Value for String
-     */
-    @JsonSetter("stateName")
-    public void setStateName(String stateName) {
-        this.stateName = stateName;
-    }
-
-    /**
-     * Getter for ServicePlan.
-     * The service plan code that you want to assign to all specified devices in the new state.
-     * @return Returns the String
-     */
-    @JsonGetter("servicePlan")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getServicePlan() {
-        return servicePlan;
-    }
-
-    /**
-     * Setter for ServicePlan.
-     * The service plan code that you want to assign to all specified devices in the new state.
-     * @param servicePlan Value for String
-     */
-    @JsonSetter("servicePlan")
-    public void setServicePlan(String servicePlan) {
-        this.servicePlan = servicePlan;
-    }
-
-    /**
-     * Getter for MdnZIpCode.
-     * The Zip code of the location where the line of service will primarily be used, or a Zip code
-     * that you have been told to use with these devices. For accounts that are configured for
-     * geographic numbering, this is the ZIP code from which the MDN will be derived.
-     * @return Returns the String
-     */
-    @JsonGetter("mdnZipCode")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getMdnZIpCode() {
-        return mdnZIpCode;
-    }
-
-    /**
-     * Setter for MdnZIpCode.
-     * The Zip code of the location where the line of service will primarily be used, or a Zip code
-     * that you have been told to use with these devices. For accounts that are configured for
-     * geographic numbering, this is the ZIP code from which the MDN will be derived.
-     * @param mdnZIpCode Value for String
-     */
-    @JsonSetter("mdnZipCode")
-    public void setMdnZIpCode(String mdnZIpCode) {
-        this.mdnZIpCode = mdnZIpCode;
     }
 
     /**
@@ -305,6 +309,50 @@ public class GoToStateRequest {
     }
 
     /**
+     * Getter for DevicesWithServiceAddress.
+     * This is an array that associates an IP address with a device identifier. This variable is
+     * only relevant for Business Internet/Fixed Wireless Access
+     * @return Returns the List of Object
+     */
+    @JsonGetter("devicesWithServiceAddress")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public List<Object> getDevicesWithServiceAddress() {
+        return devicesWithServiceAddress;
+    }
+
+    /**
+     * Setter for DevicesWithServiceAddress.
+     * This is an array that associates an IP address with a device identifier. This variable is
+     * only relevant for Business Internet/Fixed Wireless Access
+     * @param devicesWithServiceAddress Value for List of Object
+     */
+    @JsonSetter("devicesWithServiceAddress")
+    public void setDevicesWithServiceAddress(List<Object> devicesWithServiceAddress) {
+        this.devicesWithServiceAddress = devicesWithServiceAddress;
+    }
+
+    /**
+     * Getter for IpAddress.
+     * The IP address of the device.
+     * @return Returns the String
+     */
+    @JsonGetter("ipAddress")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public String getIpAddress() {
+        return ipAddress;
+    }
+
+    /**
+     * Setter for IpAddress.
+     * The IP address of the device.
+     * @param ipAddress Value for String
+     */
+    @JsonSetter("ipAddress")
+    public void setIpAddress(String ipAddress) {
+        this.ipAddress = ipAddress;
+    }
+
+    /**
      * Getter for GroupName.
      * The name of a device group that the devices should be added to.
      * @return Returns the String
@@ -360,12 +408,13 @@ public class GoToStateRequest {
      */
     @Override
     public String toString() {
-        return "GoToStateRequest [" + "devices=" + devices + ", filter=" + filter + ", serviceName="
-                + serviceName + ", stateName=" + stateName + ", servicePlan=" + servicePlan
-                + ", mdnZIpCode=" + mdnZIpCode + ", carrierIpPoolName=" + carrierIpPoolName
+        return "GoToStateRequest [" + "serviceName=" + serviceName + ", stateName=" + stateName
+                + ", servicePlan=" + servicePlan + ", mdnZipCode=" + mdnZipCode + ", devices="
+                + devices + ", filter=" + filter + ", carrierIpPoolName=" + carrierIpPoolName
                 + ", publicIpRestriction=" + publicIpRestriction + ", skuNumber=" + skuNumber
-                + ", customFields=" + customFields + ", groupName=" + groupName
-                + ", primaryPlaceOfUse=" + primaryPlaceOfUse + "]";
+                + ", customFields=" + customFields + ", devicesWithServiceAddress="
+                + devicesWithServiceAddress + ", ipAddress=" + ipAddress + ", groupName="
+                + groupName + ", primaryPlaceOfUse=" + primaryPlaceOfUse + "]";
     }
 
     /**
@@ -374,17 +423,15 @@ public class GoToStateRequest {
      * @return a new {@link GoToStateRequest.Builder} object
      */
     public Builder toBuilder() {
-        Builder builder = new Builder()
+        Builder builder = new Builder(serviceName, stateName, servicePlan, mdnZipCode)
                 .devices(getDevices())
                 .filter(getFilter())
-                .serviceName(getServiceName())
-                .stateName(getStateName())
-                .servicePlan(getServicePlan())
-                .mdnZIpCode(getMdnZIpCode())
                 .carrierIpPoolName(getCarrierIpPoolName())
                 .publicIpRestriction(getPublicIpRestriction())
                 .skuNumber(getSkuNumber())
                 .customFields(getCustomFields())
+                .devicesWithServiceAddress(getDevicesWithServiceAddress())
+                .ipAddress(getIpAddress())
                 .groupName(getGroupName())
                 .primaryPlaceOfUse(getPrimaryPlaceOfUse());
         return builder;
@@ -394,39 +441,40 @@ public class GoToStateRequest {
      * Class to build instances of {@link GoToStateRequest}.
      */
     public static class Builder {
-        private List<AccountDeviceList> devices;
-        private DeviceFilter filter;
         private String serviceName;
         private String stateName;
         private String servicePlan;
-        private String mdnZIpCode;
+        private String mdnZipCode;
+        private List<AccountDeviceList> devices;
+        private DeviceFilter filter;
         private String carrierIpPoolName;
         private String publicIpRestriction;
         private String skuNumber;
         private List<CustomFields> customFields;
+        private List<Object> devicesWithServiceAddress;
+        private String ipAddress;
         private String groupName;
         private PlaceOfUse primaryPlaceOfUse;
 
-
-
         /**
-         * Setter for devices.
-         * @param  devices  List of AccountDeviceList value for devices.
-         * @return Builder
+         * Initialization constructor.
          */
-        public Builder devices(List<AccountDeviceList> devices) {
-            this.devices = devices;
-            return this;
+        public Builder() {
         }
 
         /**
-         * Setter for filter.
-         * @param  filter  DeviceFilter value for filter.
-         * @return Builder
+         * Initialization constructor.
+         * @param  serviceName  String value for serviceName.
+         * @param  stateName  String value for stateName.
+         * @param  servicePlan  String value for servicePlan.
+         * @param  mdnZipCode  String value for mdnZipCode.
          */
-        public Builder filter(DeviceFilter filter) {
-            this.filter = filter;
-            return this;
+        public Builder(String serviceName, String stateName, String servicePlan,
+                String mdnZipCode) {
+            this.serviceName = serviceName;
+            this.stateName = stateName;
+            this.servicePlan = servicePlan;
+            this.mdnZipCode = mdnZipCode;
         }
 
         /**
@@ -460,12 +508,32 @@ public class GoToStateRequest {
         }
 
         /**
-         * Setter for mdnZIpCode.
-         * @param  mdnZIpCode  String value for mdnZIpCode.
+         * Setter for mdnZipCode.
+         * @param  mdnZipCode  String value for mdnZipCode.
          * @return Builder
          */
-        public Builder mdnZIpCode(String mdnZIpCode) {
-            this.mdnZIpCode = mdnZIpCode;
+        public Builder mdnZipCode(String mdnZipCode) {
+            this.mdnZipCode = mdnZipCode;
+            return this;
+        }
+
+        /**
+         * Setter for devices.
+         * @param  devices  List of AccountDeviceList value for devices.
+         * @return Builder
+         */
+        public Builder devices(List<AccountDeviceList> devices) {
+            this.devices = devices;
+            return this;
+        }
+
+        /**
+         * Setter for filter.
+         * @param  filter  DeviceFilter value for filter.
+         * @return Builder
+         */
+        public Builder filter(DeviceFilter filter) {
+            this.filter = filter;
             return this;
         }
 
@@ -510,6 +578,26 @@ public class GoToStateRequest {
         }
 
         /**
+         * Setter for devicesWithServiceAddress.
+         * @param  devicesWithServiceAddress  List of Object value for devicesWithServiceAddress.
+         * @return Builder
+         */
+        public Builder devicesWithServiceAddress(List<Object> devicesWithServiceAddress) {
+            this.devicesWithServiceAddress = devicesWithServiceAddress;
+            return this;
+        }
+
+        /**
+         * Setter for ipAddress.
+         * @param  ipAddress  String value for ipAddress.
+         * @return Builder
+         */
+        public Builder ipAddress(String ipAddress) {
+            this.ipAddress = ipAddress;
+            return this;
+        }
+
+        /**
          * Setter for groupName.
          * @param  groupName  String value for groupName.
          * @return Builder
@@ -534,9 +622,9 @@ public class GoToStateRequest {
          * @return {@link GoToStateRequest}
          */
         public GoToStateRequest build() {
-            return new GoToStateRequest(devices, filter, serviceName, stateName, servicePlan,
-                    mdnZIpCode, carrierIpPoolName, publicIpRestriction, skuNumber, customFields,
-                    groupName, primaryPlaceOfUse);
+            return new GoToStateRequest(serviceName, stateName, servicePlan, mdnZipCode, devices,
+                    filter, carrierIpPoolName, publicIpRestriction, skuNumber, customFields,
+                    devicesWithServiceAddress, ipAddress, groupName, primaryPlaceOfUse);
         }
     }
 }

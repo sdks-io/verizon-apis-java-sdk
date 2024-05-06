@@ -11,13 +11,13 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonSetter;
 
 /**
- * This is a model class for SubscrIpTion type.
+ * This is a model class for Subscription type.
  */
-public class SubscrIpTion {
+public class Subscription {
     private Integer configurationfailures;
     private String createdon;
     private String delegateid;
-    private String descrIpTion;
+    private String description;
     private Boolean disabled;
     private String email;
     private String filter;
@@ -38,7 +38,7 @@ public class SubscrIpTion {
     /**
      * Default constructor.
      */
-    public SubscrIpTion() {
+    public Subscription() {
     }
 
     /**
@@ -46,7 +46,7 @@ public class SubscrIpTion {
      * @param  configurationfailures  Integer value for configurationfailures.
      * @param  createdon  String value for createdon.
      * @param  delegateid  String value for delegateid.
-     * @param  descrIpTion  String value for descrIpTion.
+     * @param  description  String value for description.
      * @param  disabled  Boolean value for disabled.
      * @param  email  String value for email.
      * @param  filter  String value for filter.
@@ -64,11 +64,11 @@ public class SubscrIpTion {
      * @param  version  String value for version.
      * @param  versionid  String value for versionid.
      */
-    public SubscrIpTion(
+    public Subscription(
             Integer configurationfailures,
             String createdon,
             String delegateid,
-            String descrIpTion,
+            String description,
             Boolean disabled,
             String email,
             String filter,
@@ -88,7 +88,7 @@ public class SubscrIpTion {
         this.configurationfailures = configurationfailures;
         this.createdon = createdon;
         this.delegateid = delegateid;
-        this.descrIpTion = descrIpTion;
+        this.description = description;
         this.disabled = disabled;
         this.email = email;
         this.filter = filter;
@@ -171,24 +171,24 @@ public class SubscrIpTion {
     }
 
     /**
-     * Getter for DescrIpTion.
+     * Getter for Description.
      * Description of the subscription.
      * @return Returns the String
      */
     @JsonGetter("description")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getDescrIpTion() {
-        return descrIpTion;
+    public String getDescription() {
+        return description;
     }
 
     /**
-     * Setter for DescrIpTion.
+     * Setter for Description.
      * Description of the subscription.
-     * @param descrIpTion Value for String
+     * @param description Value for String
      */
     @JsonSetter("description")
-    public void setDescrIpTion(String descrIpTion) {
-        this.descrIpTion = descrIpTion;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     /**
@@ -524,13 +524,13 @@ public class SubscrIpTion {
     }
 
     /**
-     * Converts this SubscrIpTion into string format.
+     * Converts this Subscription into string format.
      * @return String representation of this class
      */
     @Override
     public String toString() {
-        return "SubscrIpTion [" + "configurationfailures=" + configurationfailures + ", createdon="
-                + createdon + ", delegateid=" + delegateid + ", descrIpTion=" + descrIpTion
+        return "Subscription [" + "configurationfailures=" + configurationfailures + ", createdon="
+                + createdon + ", delegateid=" + delegateid + ", description=" + description
                 + ", disabled=" + disabled + ", email=" + email + ", filter=" + filter + ", id="
                 + id + ", kind=" + kind + ", laststreamingstatus=" + laststreamingstatus
                 + ", laststreamingtime=" + laststreamingtime + ", lastupdated=" + lastupdated
@@ -541,16 +541,16 @@ public class SubscrIpTion {
     }
 
     /**
-     * Builds a new {@link SubscrIpTion.Builder} object.
+     * Builds a new {@link Subscription.Builder} object.
      * Creates the instance with the state of the current model.
-     * @return a new {@link SubscrIpTion.Builder} object
+     * @return a new {@link Subscription.Builder} object
      */
     public Builder toBuilder() {
         Builder builder = new Builder()
                 .configurationfailures(getConfigurationfailures())
                 .createdon(getCreatedon())
                 .delegateid(getDelegateid())
-                .descrIpTion(getDescrIpTion())
+                .description(getDescription())
                 .disabled(getDisabled())
                 .email(getEmail())
                 .filter(getFilter())
@@ -571,13 +571,13 @@ public class SubscrIpTion {
     }
 
     /**
-     * Class to build instances of {@link SubscrIpTion}.
+     * Class to build instances of {@link Subscription}.
      */
     public static class Builder {
         private Integer configurationfailures;
         private String createdon;
         private String delegateid;
-        private String descrIpTion;
+        private String description;
         private Boolean disabled;
         private String email;
         private String filter;
@@ -628,12 +628,12 @@ public class SubscrIpTion {
         }
 
         /**
-         * Setter for descrIpTion.
-         * @param  descrIpTion  String value for descrIpTion.
+         * Setter for description.
+         * @param  description  String value for description.
          * @return Builder
          */
-        public Builder descrIpTion(String descrIpTion) {
-            this.descrIpTion = descrIpTion;
+        public Builder description(String description) {
+            this.description = description;
             return this;
         }
 
@@ -798,11 +798,11 @@ public class SubscrIpTion {
         }
 
         /**
-         * Builds a new {@link SubscrIpTion} object using the set fields.
-         * @return {@link SubscrIpTion}
+         * Builds a new {@link Subscription} object using the set fields.
+         * @return {@link Subscription}
          */
-        public SubscrIpTion build() {
-            return new SubscrIpTion(configurationfailures, createdon, delegateid, descrIpTion,
+        public Subscription build() {
+            return new Subscription(configurationfailures, createdon, delegateid, description,
                     disabled, email, filter, id, kind, laststreamingstatus, laststreamingtime,
                     lastupdated, name, networkfailures, streamfailures, streamkind, targetid,
                     targettype, version, versionid);

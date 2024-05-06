@@ -11,16 +11,16 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonSetter;
 
 /**
- * This is a model class for SecuritySubscrIpTionRequest type.
+ * This is a model class for SecuritySubscriptionRequest type.
  */
-public class SecuritySubscrIpTionRequest {
+public class SecuritySubscriptionRequest {
     private String accountName;
     private String skuNumber;
 
     /**
      * Default constructor.
      */
-    public SecuritySubscrIpTionRequest() {
+    public SecuritySubscriptionRequest() {
     }
 
     /**
@@ -28,7 +28,7 @@ public class SecuritySubscrIpTionRequest {
      * @param  accountName  String value for accountName.
      * @param  skuNumber  String value for skuNumber.
      */
-    public SecuritySubscrIpTionRequest(
+    public SecuritySubscriptionRequest(
             String accountName,
             String skuNumber) {
         this.accountName = accountName;
@@ -88,19 +88,19 @@ public class SecuritySubscrIpTionRequest {
     }
 
     /**
-     * Converts this SecuritySubscrIpTionRequest into string format.
+     * Converts this SecuritySubscriptionRequest into string format.
      * @return String representation of this class
      */
     @Override
     public String toString() {
-        return "SecuritySubscrIpTionRequest [" + "accountName=" + accountName + ", skuNumber="
+        return "SecuritySubscriptionRequest [" + "accountName=" + accountName + ", skuNumber="
                 + skuNumber + "]";
     }
 
     /**
-     * Builds a new {@link SecuritySubscrIpTionRequest.Builder} object.
+     * Builds a new {@link SecuritySubscriptionRequest.Builder} object.
      * Creates the instance with the state of the current model.
-     * @return a new {@link SecuritySubscrIpTionRequest.Builder} object
+     * @return a new {@link SecuritySubscriptionRequest.Builder} object
      */
     public Builder toBuilder() {
         Builder builder = new Builder()
@@ -110,7 +110,7 @@ public class SecuritySubscrIpTionRequest {
     }
 
     /**
-     * Class to build instances of {@link SecuritySubscrIpTionRequest}.
+     * Class to build instances of {@link SecuritySubscriptionRequest}.
      */
     public static class Builder {
         private String accountName;
@@ -139,11 +139,11 @@ public class SecuritySubscrIpTionRequest {
         }
 
         /**
-         * Builds a new {@link SecuritySubscrIpTionRequest} object using the set fields.
-         * @return {@link SecuritySubscrIpTionRequest}
+         * Builds a new {@link SecuritySubscriptionRequest} object using the set fields.
+         * @return {@link SecuritySubscriptionRequest}
          */
-        public SecuritySubscrIpTionRequest build() {
-            return new SecuritySubscrIpTionRequest(accountName, skuNumber);
+        public SecuritySubscriptionRequest build() {
+            return new SecuritySubscriptionRequest(accountName, skuNumber);
         }
     }
 }

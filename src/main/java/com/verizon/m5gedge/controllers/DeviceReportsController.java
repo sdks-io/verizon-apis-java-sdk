@@ -41,80 +41,6 @@ public final class DeviceReportsController extends BaseController {
 
     /**
      * Calculate aggregated report per day with number of sessions and usage information. User will
-     * receive synchronous response for specified list of devices (Max 10) and date range (Max 180
-     * days).
-     * @param  body  Required parameter: Aggregated report request.
-     * @return    Returns the AggregateSessionReport wrapped in ApiResponse response from the API call
-     * @throws    ApiException    Represents error response from the server.
-     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
-     */
-    public ApiResponse<AggregateSessionReport> calculateAggregatedReportSynchronous(
-            final AggregateSessionReportRequest body) throws ApiException, IOException {
-        return prepareCalculateAggregatedReportSynchronousRequest(body).execute();
-    }
-
-    /**
-     * Calculate aggregated report per day with number of sessions and usage information. User will
-     * receive synchronous response for specified list of devices (Max 10) and date range (Max 180
-     * days).
-     * @param  body  Required parameter: Aggregated report request.
-     * @return    Returns the AggregateSessionReport wrapped in ApiResponse response from the API call
-     */
-    public CompletableFuture<ApiResponse<AggregateSessionReport>> calculateAggregatedReportSynchronousAsync(
-            final AggregateSessionReportRequest body) {
-        try { 
-            return prepareCalculateAggregatedReportSynchronousRequest(body).executeAsync(); 
-        } catch (Exception e) {  
-            throw new CompletionException(e); 
-        }
-    }
-
-    /**
-     * Builds the ApiCall object for calculateAggregatedReportSynchronous.
-     */
-    private ApiCall<ApiResponse<AggregateSessionReport>, ApiException> prepareCalculateAggregatedReportSynchronousRequest(
-            final AggregateSessionReportRequest body) throws JsonProcessingException, IOException {
-        return new ApiCall.Builder<ApiResponse<AggregateSessionReport>, ApiException>()
-                .globalConfig(getGlobalConfiguration())
-                .requestBuilder(requestBuilder -> requestBuilder
-                        .server(Server.HYPER_PRECISE_LOCATION.value())
-                        .path("/report/aggregate")
-                        .bodyParam(param -> param.value(body))
-                        .bodySerializer(() ->  ApiHelper.serialize(body))
-                        .headerParam(param -> param.key("Content-Type")
-                                .value("application/json").isRequired(false))
-                        .headerParam(param -> param.key("accept").value("application/json"))
-                        .authenticationKey(BaseController.AUTHENTICATION_KEY)
-                        .httpMethod(HttpMethod.POST))
-                .responseHandler(responseHandler -> responseHandler
-                        .responseClassType(ResponseClassType.API_RESPONSE)
-                        .apiResponseDeserializer(
-                                response -> ApiHelper.deserialize(response, AggregateSessionReport.class))
-                        .nullify404(false)
-                        .localErrorCase("400",
-                                 ErrorCase.setReason("Bad request.",
-                                (reason, context) -> new HyperPreciseLocationResultException(reason, context)))
-                        .localErrorCase("401",
-                                 ErrorCase.setReason("Unauthorized request. Access token is missing or invalid.",
-                                (reason, context) -> new HyperPreciseLocationResultException(reason, context)))
-                        .localErrorCase("403",
-                                 ErrorCase.setReason("Forbidden request.",
-                                (reason, context) -> new HyperPreciseLocationResultException(reason, context)))
-                        .localErrorCase("404",
-                                 ErrorCase.setReason("Bad request. Not found.",
-                                (reason, context) -> new HyperPreciseLocationResultException(reason, context)))
-                        .localErrorCase("409",
-                                 ErrorCase.setReason("Bad request. Conflict state.",
-                                (reason, context) -> new HyperPreciseLocationResultException(reason, context)))
-                        .localErrorCase("500",
-                                 ErrorCase.setReason("Internal Server Error.",
-                                (reason, context) -> new HyperPreciseLocationResultException(reason, context)))
-                        .globalErrorCase(GLOBAL_ERROR_CASES))
-                .build();
-    }
-
-    /**
-     * Calculate aggregated report per day with number of sessions and usage information. User will
      * receive an asynchronous callback for the specified list of devices (Max 10000) and date range
      * (Max 180 days).
      * @param  body  Required parameter: Aggregated session report request.
@@ -158,12 +84,88 @@ public final class DeviceReportsController extends BaseController {
                         .headerParam(param -> param.key("Content-Type")
                                 .value("application/json").isRequired(false))
                         .headerParam(param -> param.key("accept").value("application/json"))
-                        .authenticationKey(BaseController.AUTHENTICATION_KEY)
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
                         .httpMethod(HttpMethod.POST))
                 .responseHandler(responseHandler -> responseHandler
                         .responseClassType(ResponseClassType.API_RESPONSE)
                         .apiResponseDeserializer(
                                 response -> ApiHelper.deserialize(response, AggregatedReportCallbackResult.class))
+                        .nullify404(false)
+                        .localErrorCase("400",
+                                 ErrorCase.setReason("Bad request.",
+                                (reason, context) -> new HyperPreciseLocationResultException(reason, context)))
+                        .localErrorCase("401",
+                                 ErrorCase.setReason("Unauthorized request. Access token is missing or invalid.",
+                                (reason, context) -> new HyperPreciseLocationResultException(reason, context)))
+                        .localErrorCase("403",
+                                 ErrorCase.setReason("Forbidden request.",
+                                (reason, context) -> new HyperPreciseLocationResultException(reason, context)))
+                        .localErrorCase("404",
+                                 ErrorCase.setReason("Bad request. Not found.",
+                                (reason, context) -> new HyperPreciseLocationResultException(reason, context)))
+                        .localErrorCase("409",
+                                 ErrorCase.setReason("Bad request. Conflict state.",
+                                (reason, context) -> new HyperPreciseLocationResultException(reason, context)))
+                        .localErrorCase("500",
+                                 ErrorCase.setReason("Internal Server Error.",
+                                (reason, context) -> new HyperPreciseLocationResultException(reason, context)))
+                        .globalErrorCase(GLOBAL_ERROR_CASES))
+                .build();
+    }
+
+    /**
+     * Calculate aggregated report per day with number of sessions and usage information. User will
+     * receive synchronous response for specified list of devices (Max 10) and date range (Max 180
+     * days).
+     * @param  body  Required parameter: Aggregated report request.
+     * @return    Returns the AggregateSessionReport wrapped in ApiResponse response from the API call
+     * @throws    ApiException    Represents error response from the server.
+     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
+     */
+    public ApiResponse<AggregateSessionReport> calculateAggregatedReportSynchronous(
+            final AggregateSessionReportRequest body) throws ApiException, IOException {
+        return prepareCalculateAggregatedReportSynchronousRequest(body).execute();
+    }
+
+    /**
+     * Calculate aggregated report per day with number of sessions and usage information. User will
+     * receive synchronous response for specified list of devices (Max 10) and date range (Max 180
+     * days).
+     * @param  body  Required parameter: Aggregated report request.
+     * @return    Returns the AggregateSessionReport wrapped in ApiResponse response from the API call
+     */
+    public CompletableFuture<ApiResponse<AggregateSessionReport>> calculateAggregatedReportSynchronousAsync(
+            final AggregateSessionReportRequest body) {
+        try { 
+            return prepareCalculateAggregatedReportSynchronousRequest(body).executeAsync(); 
+        } catch (Exception e) {  
+            throw new CompletionException(e); 
+        }
+    }
+
+    /**
+     * Builds the ApiCall object for calculateAggregatedReportSynchronous.
+     */
+    private ApiCall<ApiResponse<AggregateSessionReport>, ApiException> prepareCalculateAggregatedReportSynchronousRequest(
+            final AggregateSessionReportRequest body) throws JsonProcessingException, IOException {
+        return new ApiCall.Builder<ApiResponse<AggregateSessionReport>, ApiException>()
+                .globalConfig(getGlobalConfiguration())
+                .requestBuilder(requestBuilder -> requestBuilder
+                        .server(Server.HYPER_PRECISE_LOCATION.value())
+                        .path("/report/aggregate")
+                        .bodyParam(param -> param.value(body))
+                        .bodySerializer(() ->  ApiHelper.serialize(body))
+                        .headerParam(param -> param.key("Content-Type")
+                                .value("application/json").isRequired(false))
+                        .headerParam(param -> param.key("accept").value("application/json"))
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
+                        .httpMethod(HttpMethod.POST))
+                .responseHandler(responseHandler -> responseHandler
+                        .responseClassType(ResponseClassType.API_RESPONSE)
+                        .apiResponseDeserializer(
+                                response -> ApiHelper.deserialize(response, AggregateSessionReport.class))
                         .nullify404(false)
                         .localErrorCase("400",
                                  ErrorCase.setReason("Bad request.",
@@ -228,7 +230,8 @@ public final class DeviceReportsController extends BaseController {
                         .headerParam(param -> param.key("Content-Type")
                                 .value("application/json").isRequired(false))
                         .headerParam(param -> param.key("accept").value("application/json"))
-                        .authenticationKey(BaseController.AUTHENTICATION_KEY)
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
                         .httpMethod(HttpMethod.POST))
                 .responseHandler(responseHandler -> responseHandler
                         .responseClassType(ResponseClassType.API_RESPONSE)

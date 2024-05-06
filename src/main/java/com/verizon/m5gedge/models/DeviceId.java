@@ -7,7 +7,6 @@
 package com.verizon.m5gedge.models;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonSetter;
 
 /**
@@ -41,7 +40,6 @@ public class DeviceId {
      * @return Returns the String
      */
     @JsonGetter("id")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     public String getId() {
         return id;
     }
@@ -63,7 +61,6 @@ public class DeviceId {
      * @return Returns the String
      */
     @JsonGetter("kind")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     public String getKind() {
         return kind;
     }
@@ -94,9 +91,7 @@ public class DeviceId {
      * @return a new {@link DeviceId.Builder} object
      */
     public Builder toBuilder() {
-        Builder builder = new Builder()
-                .id(getId())
-                .kind(getKind());
+        Builder builder = new Builder(id, kind);
         return builder;
     }
 
@@ -107,7 +102,21 @@ public class DeviceId {
         private String id;
         private String kind;
 
+        /**
+         * Initialization constructor.
+         */
+        public Builder() {
+        }
 
+        /**
+         * Initialization constructor.
+         * @param  id  String value for id.
+         * @param  kind  String value for kind.
+         */
+        public Builder(String id, String kind) {
+            this.id = id;
+            this.kind = kind;
+        }
 
         /**
          * Setter for id.

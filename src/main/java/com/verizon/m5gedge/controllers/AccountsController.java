@@ -37,6 +37,71 @@ public final class AccountsController extends BaseController {
     }
 
     /**
+     * When HTTP status is 202, a URL will be returned in the Location header of the form
+     * /leads/{aname}?next={token}. This URL can be used to request the next set of leads.
+     * @param  aname  Required parameter: Account name.
+     * @param  next  Optional parameter: Continue the previous query from the pageUrl in Location
+     *         Header.
+     * @return    Returns the AccountLeadsResult wrapped in ApiResponse response from the API call
+     * @throws    ApiException    Represents error response from the server.
+     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
+     */
+    public ApiResponse<AccountLeadsResult> listAccountLeads(
+            final String aname,
+            final Long next) throws ApiException, IOException {
+        return prepareListAccountLeadsRequest(aname, next).execute();
+    }
+
+    /**
+     * When HTTP status is 202, a URL will be returned in the Location header of the form
+     * /leads/{aname}?next={token}. This URL can be used to request the next set of leads.
+     * @param  aname  Required parameter: Account name.
+     * @param  next  Optional parameter: Continue the previous query from the pageUrl in Location
+     *         Header.
+     * @return    Returns the AccountLeadsResult wrapped in ApiResponse response from the API call
+     */
+    public CompletableFuture<ApiResponse<AccountLeadsResult>> listAccountLeadsAsync(
+            final String aname,
+            final Long next) {
+        try { 
+            return prepareListAccountLeadsRequest(aname, next).executeAsync(); 
+        } catch (Exception e) {  
+            throw new CompletionException(e); 
+        }
+    }
+
+    /**
+     * Builds the ApiCall object for listAccountLeads.
+     */
+    private ApiCall<ApiResponse<AccountLeadsResult>, ApiException> prepareListAccountLeadsRequest(
+            final String aname,
+            final Long next) throws IOException {
+        return new ApiCall.Builder<ApiResponse<AccountLeadsResult>, ApiException>()
+                .globalConfig(getGlobalConfiguration())
+                .requestBuilder(requestBuilder -> requestBuilder
+                        .server(Server.THINGSPACE.value())
+                        .path("/m2m/v1/leads/{aname}")
+                        .queryParam(param -> param.key("next")
+                                .value(next).isRequired(false))
+                        .templateParam(param -> param.key("aname").value(aname)
+                                .shouldEncode(true))
+                        .headerParam(param -> param.key("accept").value("application/json"))
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
+                        .httpMethod(HttpMethod.GET))
+                .responseHandler(responseHandler -> responseHandler
+                        .responseClassType(ResponseClassType.API_RESPONSE)
+                        .apiResponseDeserializer(
+                                response -> ApiHelper.deserialize(response, AccountLeadsResult.class))
+                        .nullify404(false)
+                        .localErrorCase("400",
+                                 ErrorCase.setReason("Error response.",
+                                (reason, context) -> new ConnectivityManagementResultException(reason, context)))
+                        .globalErrorCase(GLOBAL_ERROR_CASES))
+                .build();
+    }
+
+    /**
      * Returns information about a specified account.
      * @param  aname  Required parameter: Account name.
      * @return    Returns the Account wrapped in ApiResponse response from the API call
@@ -75,7 +140,8 @@ public final class AccountsController extends BaseController {
                         .templateParam(param -> param.key("aname").value(aname)
                                 .shouldEncode(true))
                         .headerParam(param -> param.key("accept").value("application/json"))
-                        .authenticationKey(BaseController.AUTHENTICATION_KEY)
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
                         .httpMethod(HttpMethod.GET))
                 .responseHandler(responseHandler -> responseHandler
                         .responseClassType(ResponseClassType.API_RESPONSE)
@@ -128,76 +194,13 @@ public final class AccountsController extends BaseController {
                         .templateParam(param -> param.key("aname").value(aname)
                                 .shouldEncode(true))
                         .headerParam(param -> param.key("accept").value("application/json"))
-                        .authenticationKey(BaseController.AUTHENTICATION_KEY)
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
                         .httpMethod(HttpMethod.GET))
                 .responseHandler(responseHandler -> responseHandler
                         .responseClassType(ResponseClassType.API_RESPONSE)
                         .apiResponseDeserializer(
                                 response -> ApiHelper.deserialize(response, AccountStatesAndServices.class))
-                        .nullify404(false)
-                        .localErrorCase("400",
-                                 ErrorCase.setReason("Error response.",
-                                (reason, context) -> new ConnectivityManagementResultException(reason, context)))
-                        .globalErrorCase(GLOBAL_ERROR_CASES))
-                .build();
-    }
-
-    /**
-     * When HTTP status is 202, a URL will be returned in the Location header of the form
-     * /leads/{aname}?next={token}. This URL can be used to request the next set of leads.
-     * @param  aname  Required parameter: Account name.
-     * @param  next  Optional parameter: Continue the previous query from the pageUrl in Location
-     *         Header.
-     * @return    Returns the AccountLeadsResult wrapped in ApiResponse response from the API call
-     * @throws    ApiException    Represents error response from the server.
-     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
-     */
-    public ApiResponse<AccountLeadsResult> listAccountLeads(
-            final String aname,
-            final Long next) throws ApiException, IOException {
-        return prepareListAccountLeadsRequest(aname, next).execute();
-    }
-
-    /**
-     * When HTTP status is 202, a URL will be returned in the Location header of the form
-     * /leads/{aname}?next={token}. This URL can be used to request the next set of leads.
-     * @param  aname  Required parameter: Account name.
-     * @param  next  Optional parameter: Continue the previous query from the pageUrl in Location
-     *         Header.
-     * @return    Returns the AccountLeadsResult wrapped in ApiResponse response from the API call
-     */
-    public CompletableFuture<ApiResponse<AccountLeadsResult>> listAccountLeadsAsync(
-            final String aname,
-            final Long next) {
-        try { 
-            return prepareListAccountLeadsRequest(aname, next).executeAsync(); 
-        } catch (Exception e) {  
-            throw new CompletionException(e); 
-        }
-    }
-
-    /**
-     * Builds the ApiCall object for listAccountLeads.
-     */
-    private ApiCall<ApiResponse<AccountLeadsResult>, ApiException> prepareListAccountLeadsRequest(
-            final String aname,
-            final Long next) throws IOException {
-        return new ApiCall.Builder<ApiResponse<AccountLeadsResult>, ApiException>()
-                .globalConfig(getGlobalConfiguration())
-                .requestBuilder(requestBuilder -> requestBuilder
-                        .server(Server.THINGSPACE.value())
-                        .path("/m2m/v1/leads/{aname}")
-                        .queryParam(param -> param.key("next")
-                                .value(next).isRequired(false))
-                        .templateParam(param -> param.key("aname").value(aname)
-                                .shouldEncode(true))
-                        .headerParam(param -> param.key("accept").value("application/json"))
-                        .authenticationKey(BaseController.AUTHENTICATION_KEY)
-                        .httpMethod(HttpMethod.GET))
-                .responseHandler(responseHandler -> responseHandler
-                        .responseClassType(ResponseClassType.API_RESPONSE)
-                        .apiResponseDeserializer(
-                                response -> ApiHelper.deserialize(response, AccountLeadsResult.class))
                         .nullify404(false)
                         .localErrorCase("400",
                                  ErrorCase.setReason("Error response.",

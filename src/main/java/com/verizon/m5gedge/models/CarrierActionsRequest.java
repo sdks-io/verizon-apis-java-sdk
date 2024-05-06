@@ -18,6 +18,7 @@ public class CarrierActionsRequest {
     private String accountName;
     private List<CustomFields> customFields;
     private List<AccountDeviceList> devices;
+    private Boolean withBilling;
     private String groupName;
     private String servicePlan;
 
@@ -32,6 +33,7 @@ public class CarrierActionsRequest {
      * @param  accountName  String value for accountName.
      * @param  customFields  List of CustomFields value for customFields.
      * @param  devices  List of AccountDeviceList value for devices.
+     * @param  withBilling  Boolean value for withBilling.
      * @param  groupName  String value for groupName.
      * @param  servicePlan  String value for servicePlan.
      */
@@ -39,11 +41,13 @@ public class CarrierActionsRequest {
             String accountName,
             List<CustomFields> customFields,
             List<AccountDeviceList> devices,
+            Boolean withBilling,
             String groupName,
             String servicePlan) {
         this.accountName = accountName;
         this.customFields = customFields;
         this.devices = devices;
+        this.withBilling = withBilling;
         this.groupName = groupName;
         this.servicePlan = servicePlan;
     }
@@ -112,6 +116,27 @@ public class CarrierActionsRequest {
     }
 
     /**
+     * Getter for WithBilling.
+     * set to "true" to suspend with billing, set to "false" to suspend without billing
+     * @return Returns the Boolean
+     */
+    @JsonGetter("withBilling")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public Boolean getWithBilling() {
+        return withBilling;
+    }
+
+    /**
+     * Setter for WithBilling.
+     * set to "true" to suspend with billing, set to "false" to suspend without billing
+     * @param withBilling Value for Boolean
+     */
+    @JsonSetter("withBilling")
+    public void setWithBilling(Boolean withBilling) {
+        this.withBilling = withBilling;
+    }
+
+    /**
      * Getter for GroupName.
      * The name of a device group, if you want to restore service for all devices in that group.
      * @return Returns the String
@@ -160,8 +185,8 @@ public class CarrierActionsRequest {
     @Override
     public String toString() {
         return "CarrierActionsRequest [" + "accountName=" + accountName + ", customFields="
-                + customFields + ", devices=" + devices + ", groupName=" + groupName
-                + ", servicePlan=" + servicePlan + "]";
+                + customFields + ", devices=" + devices + ", withBilling=" + withBilling
+                + ", groupName=" + groupName + ", servicePlan=" + servicePlan + "]";
     }
 
     /**
@@ -174,6 +199,7 @@ public class CarrierActionsRequest {
                 .accountName(getAccountName())
                 .customFields(getCustomFields())
                 .devices(getDevices())
+                .withBilling(getWithBilling())
                 .groupName(getGroupName())
                 .servicePlan(getServicePlan());
         return builder;
@@ -186,6 +212,7 @@ public class CarrierActionsRequest {
         private String accountName;
         private List<CustomFields> customFields;
         private List<AccountDeviceList> devices;
+        private Boolean withBilling;
         private String groupName;
         private String servicePlan;
 
@@ -222,6 +249,16 @@ public class CarrierActionsRequest {
         }
 
         /**
+         * Setter for withBilling.
+         * @param  withBilling  Boolean value for withBilling.
+         * @return Builder
+         */
+        public Builder withBilling(Boolean withBilling) {
+            this.withBilling = withBilling;
+            return this;
+        }
+
+        /**
          * Setter for groupName.
          * @param  groupName  String value for groupName.
          * @return Builder
@@ -246,8 +283,8 @@ public class CarrierActionsRequest {
          * @return {@link CarrierActionsRequest}
          */
         public CarrierActionsRequest build() {
-            return new CarrierActionsRequest(accountName, customFields, devices, groupName,
-                    servicePlan);
+            return new CarrierActionsRequest(accountName, customFields, devices, withBilling,
+                    groupName, servicePlan);
         }
     }
 }

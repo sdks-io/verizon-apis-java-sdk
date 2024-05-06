@@ -83,74 +83,13 @@ public final class SoftwareManagementLicensesV3Controller extends BaseController
                         .templateParam(param -> param.key("acc").value(acc)
                                 .shouldEncode(true))
                         .headerParam(param -> param.key("accept").value("application/json"))
-                        .authenticationKey(BaseController.AUTHENTICATION_KEY)
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
                         .httpMethod(HttpMethod.GET))
                 .responseHandler(responseHandler -> responseHandler
                         .responseClassType(ResponseClassType.API_RESPONSE)
                         .apiResponseDeserializer(
                                 response -> ApiHelper.deserialize(response, V3LicenseSummary.class))
-                        .nullify404(false)
-                        .localErrorCase("400",
-                                 ErrorCase.setReason("Unexpected error.",
-                                (reason, context) -> new FotaV3ResultException(reason, context)))
-                        .globalErrorCase(GLOBAL_ERROR_CASES))
-                .build();
-    }
-
-    /**
-     * This endpoint allows user to assign licenses to a list of devices.
-     * @param  acc  Required parameter: Account identifier.
-     * @param  body  Required parameter: License assignment.
-     * @return    Returns the V3LicenseAssignedRemovedResult wrapped in ApiResponse response from the API call
-     * @throws    ApiException    Represents error response from the server.
-     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
-     */
-    public ApiResponse<V3LicenseAssignedRemovedResult> assignLicensesToDevices(
-            final String acc,
-            final V3LicenseIMEI body) throws ApiException, IOException {
-        return prepareAssignLicensesToDevicesRequest(acc, body).execute();
-    }
-
-    /**
-     * This endpoint allows user to assign licenses to a list of devices.
-     * @param  acc  Required parameter: Account identifier.
-     * @param  body  Required parameter: License assignment.
-     * @return    Returns the V3LicenseAssignedRemovedResult wrapped in ApiResponse response from the API call
-     */
-    public CompletableFuture<ApiResponse<V3LicenseAssignedRemovedResult>> assignLicensesToDevicesAsync(
-            final String acc,
-            final V3LicenseIMEI body) {
-        try { 
-            return prepareAssignLicensesToDevicesRequest(acc, body).executeAsync(); 
-        } catch (Exception e) {  
-            throw new CompletionException(e); 
-        }
-    }
-
-    /**
-     * Builds the ApiCall object for assignLicensesToDevices.
-     */
-    private ApiCall<ApiResponse<V3LicenseAssignedRemovedResult>, ApiException> prepareAssignLicensesToDevicesRequest(
-            final String acc,
-            final V3LicenseIMEI body) throws JsonProcessingException, IOException {
-        return new ApiCall.Builder<ApiResponse<V3LicenseAssignedRemovedResult>, ApiException>()
-                .globalConfig(getGlobalConfiguration())
-                .requestBuilder(requestBuilder -> requestBuilder
-                        .server(Server.SOFTWARE_MANAGEMENT_V3.value())
-                        .path("/licenses/{acc}/assign")
-                        .bodyParam(param -> param.value(body))
-                        .bodySerializer(() ->  ApiHelper.serialize(body))
-                        .templateParam(param -> param.key("acc").value(acc)
-                                .shouldEncode(true))
-                        .headerParam(param -> param.key("Content-Type")
-                                .value("application/json").isRequired(false))
-                        .headerParam(param -> param.key("accept").value("application/json"))
-                        .authenticationKey(BaseController.AUTHENTICATION_KEY)
-                        .httpMethod(HttpMethod.POST))
-                .responseHandler(responseHandler -> responseHandler
-                        .responseClassType(ResponseClassType.API_RESPONSE)
-                        .apiResponseDeserializer(
-                                response -> ApiHelper.deserialize(response, V3LicenseAssignedRemovedResult.class))
                         .nullify404(false)
                         .localErrorCase("400",
                                  ErrorCase.setReason("Unexpected error.",
@@ -207,7 +146,71 @@ public final class SoftwareManagementLicensesV3Controller extends BaseController
                         .headerParam(param -> param.key("Content-Type")
                                 .value("application/json").isRequired(false))
                         .headerParam(param -> param.key("accept").value("application/json"))
-                        .authenticationKey(BaseController.AUTHENTICATION_KEY)
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
+                        .httpMethod(HttpMethod.POST))
+                .responseHandler(responseHandler -> responseHandler
+                        .responseClassType(ResponseClassType.API_RESPONSE)
+                        .apiResponseDeserializer(
+                                response -> ApiHelper.deserialize(response, V3LicenseAssignedRemovedResult.class))
+                        .nullify404(false)
+                        .localErrorCase("400",
+                                 ErrorCase.setReason("Unexpected error.",
+                                (reason, context) -> new FotaV3ResultException(reason, context)))
+                        .globalErrorCase(GLOBAL_ERROR_CASES))
+                .build();
+    }
+
+    /**
+     * This endpoint allows user to assign licenses to a list of devices.
+     * @param  acc  Required parameter: Account identifier.
+     * @param  body  Required parameter: License assignment.
+     * @return    Returns the V3LicenseAssignedRemovedResult wrapped in ApiResponse response from the API call
+     * @throws    ApiException    Represents error response from the server.
+     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
+     */
+    public ApiResponse<V3LicenseAssignedRemovedResult> assignLicensesToDevices(
+            final String acc,
+            final V3LicenseIMEI body) throws ApiException, IOException {
+        return prepareAssignLicensesToDevicesRequest(acc, body).execute();
+    }
+
+    /**
+     * This endpoint allows user to assign licenses to a list of devices.
+     * @param  acc  Required parameter: Account identifier.
+     * @param  body  Required parameter: License assignment.
+     * @return    Returns the V3LicenseAssignedRemovedResult wrapped in ApiResponse response from the API call
+     */
+    public CompletableFuture<ApiResponse<V3LicenseAssignedRemovedResult>> assignLicensesToDevicesAsync(
+            final String acc,
+            final V3LicenseIMEI body) {
+        try { 
+            return prepareAssignLicensesToDevicesRequest(acc, body).executeAsync(); 
+        } catch (Exception e) {  
+            throw new CompletionException(e); 
+        }
+    }
+
+    /**
+     * Builds the ApiCall object for assignLicensesToDevices.
+     */
+    private ApiCall<ApiResponse<V3LicenseAssignedRemovedResult>, ApiException> prepareAssignLicensesToDevicesRequest(
+            final String acc,
+            final V3LicenseIMEI body) throws JsonProcessingException, IOException {
+        return new ApiCall.Builder<ApiResponse<V3LicenseAssignedRemovedResult>, ApiException>()
+                .globalConfig(getGlobalConfiguration())
+                .requestBuilder(requestBuilder -> requestBuilder
+                        .server(Server.SOFTWARE_MANAGEMENT_V3.value())
+                        .path("/licenses/{acc}/assign")
+                        .bodyParam(param -> param.value(body))
+                        .bodySerializer(() ->  ApiHelper.serialize(body))
+                        .templateParam(param -> param.key("acc").value(acc)
+                                .shouldEncode(true))
+                        .headerParam(param -> param.key("Content-Type")
+                                .value("application/json").isRequired(false))
+                        .headerParam(param -> param.key("accept").value("application/json"))
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
                         .httpMethod(HttpMethod.POST))
                 .responseHandler(responseHandler -> responseHandler
                         .responseClassType(ResponseClassType.API_RESPONSE)

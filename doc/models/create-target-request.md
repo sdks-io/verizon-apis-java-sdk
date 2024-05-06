@@ -17,7 +17,7 @@ Details of the target that you want to create.
 | `Address` | `String` | Optional | The endpoint for notifications or data streams. The format depends on the selected `addressscheme`.<br />`streamrest` requires a `host:port` value <br />`streamawsiot` requres a valid ARN. | String getAddress() | setAddress(String address) |
 | `Addressscheme` | `String` | Optional | The transport format. Valid values are: <br />streamawsiot - streamed data to an AWS account <br />streamrest - streamed REST data to a defined endpoint. | String getAddressscheme() | setAddressscheme(String addressscheme) |
 | `Fields` | [`CreateTargetRequestFields`](../../doc/models/create-target-request-fields.md) | Optional | - | CreateTargetRequestFields getFields() | setFields(CreateTargetRequestFields fields) |
-| `DescrIpTion` | `String` | Optional | Descriptive information about the target. | String getDescrIpTion() | setDescrIpTion(String descrIpTion) |
+| `Description` | `String` | Optional | Descriptive information about the target. | String getDescription() | setDescription(String description) |
 | `Externalid` | `String` | Optional | Security identification string created by a POST /targets/actions/newextid request. | String getExternalid() | setExternalid(String externalid) |
 | `Name` | `String` | Optional | Name of the target. | String getName() | setName(String name) |
 | `Region` | `String` | Optional | AWS region value. | String getRegion() | setRegion(String region) |

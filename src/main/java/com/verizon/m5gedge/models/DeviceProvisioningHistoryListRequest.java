@@ -7,7 +7,6 @@
 package com.verizon.m5gedge.models;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonSetter;
 
 /**
@@ -45,7 +44,6 @@ public class DeviceProvisioningHistoryListRequest {
      * @return Returns the DeviceId
      */
     @JsonGetter("deviceId")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     public DeviceId getDeviceId() {
         return deviceId;
     }
@@ -66,7 +64,6 @@ public class DeviceProvisioningHistoryListRequest {
      * @return Returns the String
      */
     @JsonGetter("earliest")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     public String getEarliest() {
         return earliest;
     }
@@ -87,7 +84,6 @@ public class DeviceProvisioningHistoryListRequest {
      * @return Returns the String
      */
     @JsonGetter("latest")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     public String getLatest() {
         return latest;
     }
@@ -118,10 +114,7 @@ public class DeviceProvisioningHistoryListRequest {
      * @return a new {@link DeviceProvisioningHistoryListRequest.Builder} object
      */
     public Builder toBuilder() {
-        Builder builder = new Builder()
-                .deviceId(getDeviceId())
-                .earliest(getEarliest())
-                .latest(getLatest());
+        Builder builder = new Builder(deviceId, earliest, latest);
         return builder;
     }
 
@@ -133,7 +126,23 @@ public class DeviceProvisioningHistoryListRequest {
         private String earliest;
         private String latest;
 
+        /**
+         * Initialization constructor.
+         */
+        public Builder() {
+        }
 
+        /**
+         * Initialization constructor.
+         * @param  deviceId  DeviceId value for deviceId.
+         * @param  earliest  String value for earliest.
+         * @param  latest  String value for latest.
+         */
+        public Builder(DeviceId deviceId, String earliest, String latest) {
+            this.deviceId = deviceId;
+            this.earliest = earliest;
+            this.latest = latest;
+        }
 
         /**
          * Setter for deviceId.

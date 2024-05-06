@@ -16,8 +16,8 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 public class NotificationReportStatusRequest {
     private String accountName;
     private DeviceId device;
-    private String requestExpirationTime;
     private String requestType;
+    private String requestExpirationTime;
 
     /**
      * Default constructor.
@@ -29,18 +29,18 @@ public class NotificationReportStatusRequest {
      * Initialization constructor.
      * @param  accountName  String value for accountName.
      * @param  device  DeviceId value for device.
-     * @param  requestExpirationTime  String value for requestExpirationTime.
      * @param  requestType  String value for requestType.
+     * @param  requestExpirationTime  String value for requestExpirationTime.
      */
     public NotificationReportStatusRequest(
             String accountName,
             DeviceId device,
-            String requestExpirationTime,
-            String requestType) {
+            String requestType,
+            String requestExpirationTime) {
         this.accountName = accountName;
         this.device = device;
-        this.requestExpirationTime = requestExpirationTime;
         this.requestType = requestType;
+        this.requestExpirationTime = requestExpirationTime;
     }
 
     /**
@@ -49,7 +49,6 @@ public class NotificationReportStatusRequest {
      * @return Returns the String
      */
     @JsonGetter("accountName")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     public String getAccountName() {
         return accountName;
     }
@@ -70,7 +69,6 @@ public class NotificationReportStatusRequest {
      * @return Returns the DeviceId
      */
     @JsonGetter("device")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     public DeviceId getDevice() {
         return device;
     }
@@ -83,6 +81,26 @@ public class NotificationReportStatusRequest {
     @JsonSetter("device")
     public void setDevice(DeviceId device) {
         this.device = device;
+    }
+
+    /**
+     * Getter for RequestType.
+     * The type of request.
+     * @return Returns the String
+     */
+    @JsonGetter("requestType")
+    public String getRequestType() {
+        return requestType;
+    }
+
+    /**
+     * Setter for RequestType.
+     * The type of request.
+     * @param requestType Value for String
+     */
+    @JsonSetter("requestType")
+    public void setRequestType(String requestType) {
+        this.requestType = requestType;
     }
 
     /**
@@ -107,35 +125,14 @@ public class NotificationReportStatusRequest {
     }
 
     /**
-     * Getter for RequestType.
-     * The type of request.
-     * @return Returns the String
-     */
-    @JsonGetter("requestType")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getRequestType() {
-        return requestType;
-    }
-
-    /**
-     * Setter for RequestType.
-     * The type of request.
-     * @param requestType Value for String
-     */
-    @JsonSetter("requestType")
-    public void setRequestType(String requestType) {
-        this.requestType = requestType;
-    }
-
-    /**
      * Converts this NotificationReportStatusRequest into string format.
      * @return String representation of this class
      */
     @Override
     public String toString() {
         return "NotificationReportStatusRequest [" + "accountName=" + accountName + ", device="
-                + device + ", requestExpirationTime=" + requestExpirationTime + ", requestType="
-                + requestType + "]";
+                + device + ", requestType=" + requestType + ", requestExpirationTime="
+                + requestExpirationTime + "]";
     }
 
     /**
@@ -144,11 +141,8 @@ public class NotificationReportStatusRequest {
      * @return a new {@link NotificationReportStatusRequest.Builder} object
      */
     public Builder toBuilder() {
-        Builder builder = new Builder()
-                .accountName(getAccountName())
-                .device(getDevice())
-                .requestExpirationTime(getRequestExpirationTime())
-                .requestType(getRequestType());
+        Builder builder = new Builder(accountName, device, requestType)
+                .requestExpirationTime(getRequestExpirationTime());
         return builder;
     }
 
@@ -158,10 +152,26 @@ public class NotificationReportStatusRequest {
     public static class Builder {
         private String accountName;
         private DeviceId device;
-        private String requestExpirationTime;
         private String requestType;
+        private String requestExpirationTime;
 
+        /**
+         * Initialization constructor.
+         */
+        public Builder() {
+        }
 
+        /**
+         * Initialization constructor.
+         * @param  accountName  String value for accountName.
+         * @param  device  DeviceId value for device.
+         * @param  requestType  String value for requestType.
+         */
+        public Builder(String accountName, DeviceId device, String requestType) {
+            this.accountName = accountName;
+            this.device = device;
+            this.requestType = requestType;
+        }
 
         /**
          * Setter for accountName.
@@ -184,16 +194,6 @@ public class NotificationReportStatusRequest {
         }
 
         /**
-         * Setter for requestExpirationTime.
-         * @param  requestExpirationTime  String value for requestExpirationTime.
-         * @return Builder
-         */
-        public Builder requestExpirationTime(String requestExpirationTime) {
-            this.requestExpirationTime = requestExpirationTime;
-            return this;
-        }
-
-        /**
          * Setter for requestType.
          * @param  requestType  String value for requestType.
          * @return Builder
@@ -204,12 +204,22 @@ public class NotificationReportStatusRequest {
         }
 
         /**
+         * Setter for requestExpirationTime.
+         * @param  requestExpirationTime  String value for requestExpirationTime.
+         * @return Builder
+         */
+        public Builder requestExpirationTime(String requestExpirationTime) {
+            this.requestExpirationTime = requestExpirationTime;
+            return this;
+        }
+
+        /**
          * Builds a new {@link NotificationReportStatusRequest} object using the set fields.
          * @return {@link NotificationReportStatusRequest}
          */
         public NotificationReportStatusRequest build() {
-            return new NotificationReportStatusRequest(accountName, device, requestExpirationTime,
-                    requestType);
+            return new NotificationReportStatusRequest(accountName, device, requestType,
+                    requestExpirationTime);
         }
     }
 }

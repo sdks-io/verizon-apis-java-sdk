@@ -7,7 +7,6 @@
 package com.verizon.m5gedge.models;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonSetter;
 
 /**
@@ -41,7 +40,6 @@ public class CustomFields {
      * @return Returns the String
      */
     @JsonGetter("key")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     public String getKey() {
         return key;
     }
@@ -62,7 +60,6 @@ public class CustomFields {
      * @return Returns the String
      */
     @JsonGetter("value")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     public String getValue() {
         return value;
     }
@@ -92,9 +89,7 @@ public class CustomFields {
      * @return a new {@link CustomFields.Builder} object
      */
     public Builder toBuilder() {
-        Builder builder = new Builder()
-                .key(getKey())
-                .value(getValue());
+        Builder builder = new Builder(key, value);
         return builder;
     }
 
@@ -105,7 +100,21 @@ public class CustomFields {
         private String key;
         private String value;
 
+        /**
+         * Initialization constructor.
+         */
+        public Builder() {
+        }
 
+        /**
+         * Initialization constructor.
+         * @param  key  String value for key.
+         * @param  value  String value for value.
+         */
+        public Builder(String key, String value) {
+            this.key = key;
+            this.value = value;
+        }
 
         /**
          * Setter for key.

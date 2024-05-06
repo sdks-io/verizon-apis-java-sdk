@@ -42,7 +42,6 @@ public class AccountDeviceList {
      * @return Returns the List of DeviceId
      */
     @JsonGetter("deviceIds")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     public List<DeviceId> getDeviceIds() {
         return deviceIds;
     }
@@ -91,8 +90,7 @@ public class AccountDeviceList {
      * @return a new {@link AccountDeviceList.Builder} object
      */
     public Builder toBuilder() {
-        Builder builder = new Builder()
-                .deviceIds(getDeviceIds())
+        Builder builder = new Builder(deviceIds)
                 .ipAddress(getIpAddress());
         return builder;
     }
@@ -104,7 +102,19 @@ public class AccountDeviceList {
         private List<DeviceId> deviceIds;
         private String ipAddress;
 
+        /**
+         * Initialization constructor.
+         */
+        public Builder() {
+        }
 
+        /**
+         * Initialization constructor.
+         * @param  deviceIds  List of DeviceId value for deviceIds.
+         */
+        public Builder(List<DeviceId> deviceIds) {
+            this.deviceIds = deviceIds;
+        }
 
         /**
          * Setter for deviceIds.

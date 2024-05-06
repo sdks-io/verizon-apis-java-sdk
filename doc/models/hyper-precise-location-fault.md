@@ -13,7 +13,7 @@ Fault occurred while responding.
 |  --- | --- | --- | --- | --- | --- |
 | `Code` | `String` | Optional | Hyper precise location fault code. | String getCode() | setCode(String code) |
 | `Message` | `String` | Optional | Hyper precise location fault message. | String getMessage() | setMessage(String message) |
-| `DescrIpTion` | `String` | Optional | Hyper precise location fault description. | String getDescrIpTion() | setDescrIpTion(String descrIpTion) |
+| `Description` | `String` | Optional | Hyper precise location fault description. | String getDescription() | setDescription(String description) |
 
 ## Example (as JSON)
 

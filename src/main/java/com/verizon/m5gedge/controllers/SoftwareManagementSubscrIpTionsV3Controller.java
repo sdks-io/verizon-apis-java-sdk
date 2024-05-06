@@ -12,7 +12,7 @@ import com.verizon.m5gedge.exceptions.ApiException;
 import com.verizon.m5gedge.exceptions.FotaV3ResultException;
 import com.verizon.m5gedge.http.request.HttpMethod;
 import com.verizon.m5gedge.http.response.ApiResponse;
-import com.verizon.m5gedge.models.FotaV3SubscrIpTion;
+import com.verizon.m5gedge.models.FotaV3Subscription;
 import io.apimatic.core.ApiCall;
 import io.apimatic.core.ErrorCase;
 import io.apimatic.core.GlobalConfiguration;
@@ -24,48 +24,48 @@ import java.util.concurrent.CompletionException;
 /**
  * This class lists all the endpoints of the groups.
  */
-public final class SoftwareManagementSubscrIpTionsV3Controller extends BaseController {
+public final class SoftwareManagementSubscriptionsV3Controller extends BaseController {
 
     /**
      * Initializes the controller.
      * @param globalConfig    Configurations added in client.
      */
-    public SoftwareManagementSubscrIpTionsV3Controller(GlobalConfiguration globalConfig) {
+    public SoftwareManagementSubscriptionsV3Controller(GlobalConfiguration globalConfig) {
         super(globalConfig);
     }
 
     /**
      * This endpoint retrieves a FOTA subscription by account.
      * @param  acc  Required parameter: Account identifier.
-     * @return    Returns the FotaV3SubscrIpTion wrapped in ApiResponse response from the API call
+     * @return    Returns the FotaV3Subscription wrapped in ApiResponse response from the API call
      * @throws    ApiException    Represents error response from the server.
      * @throws    IOException    Signals that an I/O exception of some sort has occurred.
      */
-    public ApiResponse<FotaV3SubscrIpTion> getAccountSubscrIpTionStatus(
+    public ApiResponse<FotaV3Subscription> getAccountSubscriptionStatus(
             final String acc) throws ApiException, IOException {
-        return prepareGetAccountSubscrIpTionStatusRequest(acc).execute();
+        return prepareGetAccountSubscriptionStatusRequest(acc).execute();
     }
 
     /**
      * This endpoint retrieves a FOTA subscription by account.
      * @param  acc  Required parameter: Account identifier.
-     * @return    Returns the FotaV3SubscrIpTion wrapped in ApiResponse response from the API call
+     * @return    Returns the FotaV3Subscription wrapped in ApiResponse response from the API call
      */
-    public CompletableFuture<ApiResponse<FotaV3SubscrIpTion>> getAccountSubscrIpTionStatusAsync(
+    public CompletableFuture<ApiResponse<FotaV3Subscription>> getAccountSubscriptionStatusAsync(
             final String acc) {
         try { 
-            return prepareGetAccountSubscrIpTionStatusRequest(acc).executeAsync(); 
+            return prepareGetAccountSubscriptionStatusRequest(acc).executeAsync(); 
         } catch (Exception e) {  
             throw new CompletionException(e); 
         }
     }
 
     /**
-     * Builds the ApiCall object for getAccountSubscrIpTionStatus.
+     * Builds the ApiCall object for getAccountSubscriptionStatus.
      */
-    private ApiCall<ApiResponse<FotaV3SubscrIpTion>, ApiException> prepareGetAccountSubscrIpTionStatusRequest(
+    private ApiCall<ApiResponse<FotaV3Subscription>, ApiException> prepareGetAccountSubscriptionStatusRequest(
             final String acc) throws IOException {
-        return new ApiCall.Builder<ApiResponse<FotaV3SubscrIpTion>, ApiException>()
+        return new ApiCall.Builder<ApiResponse<FotaV3Subscription>, ApiException>()
                 .globalConfig(getGlobalConfiguration())
                 .requestBuilder(requestBuilder -> requestBuilder
                         .server(Server.SOFTWARE_MANAGEMENT_V3.value())
@@ -73,12 +73,13 @@ public final class SoftwareManagementSubscrIpTionsV3Controller extends BaseContr
                         .templateParam(param -> param.key("acc").value(acc)
                                 .shouldEncode(true))
                         .headerParam(param -> param.key("accept").value("application/json"))
-                        .authenticationKey(BaseController.AUTHENTICATION_KEY)
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
                         .httpMethod(HttpMethod.GET))
                 .responseHandler(responseHandler -> responseHandler
                         .responseClassType(ResponseClassType.API_RESPONSE)
                         .apiResponseDeserializer(
-                                response -> ApiHelper.deserialize(response, FotaV3SubscrIpTion.class))
+                                response -> ApiHelper.deserialize(response, FotaV3Subscription.class))
                         .nullify404(false)
                         .localErrorCase("400",
                                  ErrorCase.setReason("Unexpected error.",

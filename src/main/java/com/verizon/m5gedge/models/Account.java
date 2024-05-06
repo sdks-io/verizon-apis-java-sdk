@@ -21,7 +21,7 @@ public class Account {
     private Boolean isProvisioningAllowed;
     private List<String> carriers;
     private List<String> features;
-    private List<IpPool> ipPools;
+    private List<IPPool> iPPools;
     private List<ServicePlan> servicePlans;
 
     /**
@@ -38,7 +38,7 @@ public class Account {
      * @param  isProvisioningAllowed  Boolean value for isProvisioningAllowed.
      * @param  carriers  List of String value for carriers.
      * @param  features  List of String value for features.
-     * @param  ipPools  List of IpPool value for ipPools.
+     * @param  iPPools  List of IPPool value for iPPools.
      * @param  servicePlans  List of ServicePlan value for servicePlans.
      */
     public Account(
@@ -48,7 +48,7 @@ public class Account {
             Boolean isProvisioningAllowed,
             List<String> carriers,
             List<String> features,
-            List<IpPool> ipPools,
+            List<IPPool> iPPools,
             List<ServicePlan> servicePlans) {
         this.accountName = accountName;
         this.accountNumber = accountNumber;
@@ -56,7 +56,7 @@ public class Account {
         this.isProvisioningAllowed = isProvisioningAllowed;
         this.carriers = carriers;
         this.features = features;
-        this.ipPools = ipPools;
+        this.iPPools = iPPools;
         this.servicePlans = servicePlans;
     }
 
@@ -189,24 +189,24 @@ public class Account {
     }
 
     /**
-     * Getter for IpPools.
+     * Getter for IPPools.
      * Array of IP pools that are available to the account.
-     * @return Returns the List of IpPool
+     * @return Returns the List of IPPool
      */
     @JsonGetter("iPPools")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public List<IpPool> getIpPools() {
-        return ipPools;
+    public List<IPPool> getIPPools() {
+        return iPPools;
     }
 
     /**
-     * Setter for IpPools.
+     * Setter for IPPools.
      * Array of IP pools that are available to the account.
-     * @param ipPools Value for List of IpPool
+     * @param iPPools Value for List of IPPool
      */
     @JsonSetter("iPPools")
-    public void setIpPools(List<IpPool> ipPools) {
-        this.ipPools = ipPools;
+    public void setIPPools(List<IPPool> iPPools) {
+        this.iPPools = iPPools;
     }
 
     /**
@@ -239,7 +239,7 @@ public class Account {
         return "Account [" + "accountName=" + accountName + ", accountNumber=" + accountNumber
                 + ", organizationName=" + organizationName + ", isProvisioningAllowed="
                 + isProvisioningAllowed + ", carriers=" + carriers + ", features=" + features
-                + ", ipPools=" + ipPools + ", servicePlans=" + servicePlans + "]";
+                + ", iPPools=" + iPPools + ", servicePlans=" + servicePlans + "]";
     }
 
     /**
@@ -255,7 +255,7 @@ public class Account {
                 .isProvisioningAllowed(getIsProvisioningAllowed())
                 .carriers(getCarriers())
                 .features(getFeatures())
-                .ipPools(getIpPools())
+                .iPPools(getIPPools())
                 .servicePlans(getServicePlans());
         return builder;
     }
@@ -270,7 +270,7 @@ public class Account {
         private Boolean isProvisioningAllowed;
         private List<String> carriers;
         private List<String> features;
-        private List<IpPool> ipPools;
+        private List<IPPool> iPPools;
         private List<ServicePlan> servicePlans;
 
 
@@ -336,12 +336,12 @@ public class Account {
         }
 
         /**
-         * Setter for ipPools.
-         * @param  ipPools  List of IpPool value for ipPools.
+         * Setter for iPPools.
+         * @param  iPPools  List of IPPool value for iPPools.
          * @return Builder
          */
-        public Builder ipPools(List<IpPool> ipPools) {
-            this.ipPools = ipPools;
+        public Builder iPPools(List<IPPool> iPPools) {
+            this.iPPools = iPPools;
             return this;
         }
 
@@ -361,7 +361,7 @@ public class Account {
          */
         public Account build() {
             return new Account(accountName, accountNumber, organizationName, isProvisioningAllowed,
-                    carriers, features, ipPools, servicePlans);
+                    carriers, features, iPPools, servicePlans);
         }
     }
 }

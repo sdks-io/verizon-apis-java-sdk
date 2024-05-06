@@ -11,8 +11,8 @@ Request to list of all 4G devices with an ICCID (SIM) that was not activated wit
 
 | Name | Type | Tags | Description | Getter | Setter |
 |  --- | --- | --- | --- | --- | --- |
+| `Filter` | [`DateFilter`](../../doc/models/date-filter.md) | Required | Filter out the dates. | DateFilter getFilter() | setFilter(DateFilter filter) |
 | `Devices` | [`List<AccountDeviceList>`](../../doc/models/account-device-list.md) | Optional | A list of specific devices that you want to check, specified by ICCID or MDN. | List<AccountDeviceList> getDevices() | setDevices(List<AccountDeviceList> devices) |
-| `Filter` | [`DateFilter`](../../doc/models/date-filter.md) | Optional | Filter out the dates. | DateFilter getFilter() | setFilter(DateFilter filter) |
 | `AccountName` | `String` | Optional | The account that you want to search for mismatched devices. If you don't specify an accountName, the search includes all devices to which you have access. | String getAccountName() | setAccountName(String accountName) |
 | `GroupName` | `String` | Optional | The name of a device group, to only include devices in that group. | String getGroupName() | setGroupName(String groupName) |
 

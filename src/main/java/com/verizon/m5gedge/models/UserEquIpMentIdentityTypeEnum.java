@@ -14,19 +14,19 @@ import java.util.TreeMap;
 
 
 /**
- * UserEquIpMentIdentityTypeEnum to be used.
+ * UserEquipmentIdentityTypeEnum to be used.
  */
-public enum UserEquIpMentIdentityTypeEnum {
-    IP_ADDRESS;
+public enum UserEquipmentIdentityTypeEnum {
+    IPADDRESS;
 
 
-    private static TreeMap<String, UserEquIpMentIdentityTypeEnum> valueMap = new TreeMap<>();
+    private static TreeMap<String, UserEquipmentIdentityTypeEnum> valueMap = new TreeMap<>();
     private String value;
 
     static {
-        IP_ADDRESS.value = "IPAddress";
+        IPADDRESS.value = "IPAddress";
 
-        valueMap.put("IPAddress", IP_ADDRESS);
+        valueMap.put("IPAddress", IPADDRESS);
     }
 
     /**
@@ -36,10 +36,9 @@ public enum UserEquIpMentIdentityTypeEnum {
      * @throws IOException when provided value is not mapped to any enum member.
      */
     @JsonCreator
-    public static UserEquIpMentIdentityTypeEnum constructFromString(String toConvert) throws IOException {
-        UserEquIpMentIdentityTypeEnum enumValue = fromString(toConvert);
-        if (enumValue == null)
-        {
+    public static UserEquipmentIdentityTypeEnum constructFromString(String toConvert) throws IOException {
+        UserEquipmentIdentityTypeEnum enumValue = fromString(toConvert);
+        if (enumValue == null) {
             throw new IOException("Unable to create enum instance with value: " + toConvert);
         }
         return enumValue;
@@ -50,7 +49,7 @@ public enum UserEquIpMentIdentityTypeEnum {
      * @param toConvert String value to get enum member.
      * @return The enum member against the given string value.
      */
-    public static UserEquIpMentIdentityTypeEnum fromString(String toConvert) {
+    public static UserEquipmentIdentityTypeEnum fromString(String toConvert) {
         return valueMap.get(toConvert);
     }
 
@@ -72,16 +71,16 @@ public enum UserEquIpMentIdentityTypeEnum {
     }
 
     /**
-     * Convert list of UserEquIpMentIdentityTypeEnum values to list of string values.
-     * @param toConvert The list of UserEquIpMentIdentityTypeEnum values to convert.
+     * Convert list of UserEquipmentIdentityTypeEnum values to list of string values.
+     * @param toConvert The list of UserEquipmentIdentityTypeEnum values to convert.
      * @return List of representative string values.
      */
-    public static List<String> toValue(List<UserEquIpMentIdentityTypeEnum> toConvert) {
+    public static List<String> toValue(List<UserEquipmentIdentityTypeEnum> toConvert) {
         if (toConvert == null) {
             return null;
         }
         List<String> convertedValues = new ArrayList<>();
-        for (UserEquIpMentIdentityTypeEnum enumValue : toConvert) {
+        for (UserEquipmentIdentityTypeEnum enumValue : toConvert) {
             convertedValues.add(enumValue.value);
         }
         return convertedValues;

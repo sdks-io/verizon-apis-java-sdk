@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 public class HyperPreciseLocationFault {
     private String code;
     private String message;
-    private String descrIpTion;
+    private String description;
 
     /**
      * Default constructor.
@@ -28,15 +28,15 @@ public class HyperPreciseLocationFault {
      * Initialization constructor.
      * @param  code  String value for code.
      * @param  message  String value for message.
-     * @param  descrIpTion  String value for descrIpTion.
+     * @param  description  String value for description.
      */
     public HyperPreciseLocationFault(
             String code,
             String message,
-            String descrIpTion) {
+            String description) {
         this.code = code;
         this.message = message;
-        this.descrIpTion = descrIpTion;
+        this.description = description;
     }
 
     /**
@@ -82,24 +82,24 @@ public class HyperPreciseLocationFault {
     }
 
     /**
-     * Getter for DescrIpTion.
+     * Getter for Description.
      * Hyper precise location fault description.
      * @return Returns the String
      */
     @JsonGetter("description")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getDescrIpTion() {
-        return descrIpTion;
+    public String getDescription() {
+        return description;
     }
 
     /**
-     * Setter for DescrIpTion.
+     * Setter for Description.
      * Hyper precise location fault description.
-     * @param descrIpTion Value for String
+     * @param description Value for String
      */
     @JsonSetter("description")
-    public void setDescrIpTion(String descrIpTion) {
-        this.descrIpTion = descrIpTion;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     /**
@@ -109,7 +109,7 @@ public class HyperPreciseLocationFault {
     @Override
     public String toString() {
         return "HyperPreciseLocationFault [" + "code=" + code + ", message=" + message
-                + ", descrIpTion=" + descrIpTion + "]";
+                + ", description=" + description + "]";
     }
 
     /**
@@ -121,7 +121,7 @@ public class HyperPreciseLocationFault {
         Builder builder = new Builder()
                 .code(getCode())
                 .message(getMessage())
-                .descrIpTion(getDescrIpTion());
+                .description(getDescription());
         return builder;
     }
 
@@ -131,7 +131,7 @@ public class HyperPreciseLocationFault {
     public static class Builder {
         private String code;
         private String message;
-        private String descrIpTion;
+        private String description;
 
 
 
@@ -156,12 +156,12 @@ public class HyperPreciseLocationFault {
         }
 
         /**
-         * Setter for descrIpTion.
-         * @param  descrIpTion  String value for descrIpTion.
+         * Setter for description.
+         * @param  description  String value for description.
          * @return Builder
          */
-        public Builder descrIpTion(String descrIpTion) {
-            this.descrIpTion = descrIpTion;
+        public Builder description(String description) {
+            this.description = description;
             return this;
         }
 
@@ -170,7 +170,7 @@ public class HyperPreciseLocationFault {
          * @return {@link HyperPreciseLocationFault}
          */
         public HyperPreciseLocationFault build() {
-            return new HyperPreciseLocationFault(code, message, descrIpTion);
+            return new HyperPreciseLocationFault(code, message, description);
         }
     }
 }

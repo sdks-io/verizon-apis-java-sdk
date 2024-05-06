@@ -16,12 +16,12 @@ import java.util.List;
  */
 public class SMSSendRequest {
     private String accountName;
+    private String smsMessage;
     private List<CustomFields> customFields;
     private String dataEncoding;
     private List<DeviceId> deviceIds;
     private String groupName;
     private String servicePlan;
-    private String smsMessage;
 
     /**
      * Default constructor.
@@ -32,28 +32,28 @@ public class SMSSendRequest {
     /**
      * Initialization constructor.
      * @param  accountName  String value for accountName.
+     * @param  smsMessage  String value for smsMessage.
      * @param  customFields  List of CustomFields value for customFields.
      * @param  dataEncoding  String value for dataEncoding.
      * @param  deviceIds  List of DeviceId value for deviceIds.
      * @param  groupName  String value for groupName.
      * @param  servicePlan  String value for servicePlan.
-     * @param  smsMessage  String value for smsMessage.
      */
     public SMSSendRequest(
             String accountName,
+            String smsMessage,
             List<CustomFields> customFields,
             String dataEncoding,
             List<DeviceId> deviceIds,
             String groupName,
-            String servicePlan,
-            String smsMessage) {
+            String servicePlan) {
         this.accountName = accountName;
+        this.smsMessage = smsMessage;
         this.customFields = customFields;
         this.dataEncoding = dataEncoding;
         this.deviceIds = deviceIds;
         this.groupName = groupName;
         this.servicePlan = servicePlan;
-        this.smsMessage = smsMessage;
     }
 
     /**
@@ -62,7 +62,6 @@ public class SMSSendRequest {
      * @return Returns the String
      */
     @JsonGetter("accountName")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     public String getAccountName() {
         return accountName;
     }
@@ -75,6 +74,28 @@ public class SMSSendRequest {
     @JsonSetter("accountName")
     public void setAccountName(String accountName) {
         this.accountName = accountName;
+    }
+
+    /**
+     * Getter for SmsMessage.
+     * The contents of the SMS message. The SMS message is limited to 160 characters in 7-bit
+     * format, or 140 characters in 8-bit format.
+     * @return Returns the String
+     */
+    @JsonGetter("smsMessage")
+    public String getSmsMessage() {
+        return smsMessage;
+    }
+
+    /**
+     * Setter for SmsMessage.
+     * The contents of the SMS message. The SMS message is limited to 160 characters in 7-bit
+     * format, or 140 characters in 8-bit format.
+     * @param smsMessage Value for String
+     */
+    @JsonSetter("smsMessage")
+    public void setSmsMessage(String smsMessage) {
+        this.smsMessage = smsMessage;
     }
 
     /**
@@ -187,37 +208,15 @@ public class SMSSendRequest {
     }
 
     /**
-     * Getter for SmsMessage.
-     * The contents of the SMS message. The SMS message is limited to 160 characters in 7-bit
-     * format, or 140 characters in 8-bit format.
-     * @return Returns the String
-     */
-    @JsonGetter("smsMessage")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getSmsMessage() {
-        return smsMessage;
-    }
-
-    /**
-     * Setter for SmsMessage.
-     * The contents of the SMS message. The SMS message is limited to 160 characters in 7-bit
-     * format, or 140 characters in 8-bit format.
-     * @param smsMessage Value for String
-     */
-    @JsonSetter("smsMessage")
-    public void setSmsMessage(String smsMessage) {
-        this.smsMessage = smsMessage;
-    }
-
-    /**
      * Converts this SMSSendRequest into string format.
      * @return String representation of this class
      */
     @Override
     public String toString() {
-        return "SMSSendRequest [" + "accountName=" + accountName + ", customFields=" + customFields
-                + ", dataEncoding=" + dataEncoding + ", deviceIds=" + deviceIds + ", groupName="
-                + groupName + ", servicePlan=" + servicePlan + ", smsMessage=" + smsMessage + "]";
+        return "SMSSendRequest [" + "accountName=" + accountName + ", smsMessage=" + smsMessage
+                + ", customFields=" + customFields + ", dataEncoding=" + dataEncoding
+                + ", deviceIds=" + deviceIds + ", groupName=" + groupName + ", servicePlan="
+                + servicePlan + "]";
     }
 
     /**
@@ -226,14 +225,12 @@ public class SMSSendRequest {
      * @return a new {@link SMSSendRequest.Builder} object
      */
     public Builder toBuilder() {
-        Builder builder = new Builder()
-                .accountName(getAccountName())
+        Builder builder = new Builder(accountName, smsMessage)
                 .customFields(getCustomFields())
                 .dataEncoding(getDataEncoding())
                 .deviceIds(getDeviceIds())
                 .groupName(getGroupName())
-                .servicePlan(getServicePlan())
-                .smsMessage(getSmsMessage());
+                .servicePlan(getServicePlan());
         return builder;
     }
 
@@ -242,14 +239,28 @@ public class SMSSendRequest {
      */
     public static class Builder {
         private String accountName;
+        private String smsMessage;
         private List<CustomFields> customFields;
         private String dataEncoding;
         private List<DeviceId> deviceIds;
         private String groupName;
         private String servicePlan;
-        private String smsMessage;
 
+        /**
+         * Initialization constructor.
+         */
+        public Builder() {
+        }
 
+        /**
+         * Initialization constructor.
+         * @param  accountName  String value for accountName.
+         * @param  smsMessage  String value for smsMessage.
+         */
+        public Builder(String accountName, String smsMessage) {
+            this.accountName = accountName;
+            this.smsMessage = smsMessage;
+        }
 
         /**
          * Setter for accountName.
@@ -258,6 +269,16 @@ public class SMSSendRequest {
          */
         public Builder accountName(String accountName) {
             this.accountName = accountName;
+            return this;
+        }
+
+        /**
+         * Setter for smsMessage.
+         * @param  smsMessage  String value for smsMessage.
+         * @return Builder
+         */
+        public Builder smsMessage(String smsMessage) {
+            this.smsMessage = smsMessage;
             return this;
         }
 
@@ -312,22 +333,12 @@ public class SMSSendRequest {
         }
 
         /**
-         * Setter for smsMessage.
-         * @param  smsMessage  String value for smsMessage.
-         * @return Builder
-         */
-        public Builder smsMessage(String smsMessage) {
-            this.smsMessage = smsMessage;
-            return this;
-        }
-
-        /**
          * Builds a new {@link SMSSendRequest} object using the set fields.
          * @return {@link SMSSendRequest}
          */
         public SMSSendRequest build() {
-            return new SMSSendRequest(accountName, customFields, dataEncoding, deviceIds, groupName,
-                    servicePlan, smsMessage);
+            return new SMSSendRequest(accountName, smsMessage, customFields, dataEncoding,
+                    deviceIds, groupName, servicePlan);
         }
     }
 }

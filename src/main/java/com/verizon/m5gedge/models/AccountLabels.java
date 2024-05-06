@@ -41,7 +41,6 @@ public class AccountLabels {
      * @return Returns the List of DeviceList
      */
     @JsonGetter("devices")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     public List<DeviceList> getDevices() {
         return devices;
     }
@@ -89,8 +88,7 @@ public class AccountLabels {
      * @return a new {@link AccountLabels.Builder} object
      */
     public Builder toBuilder() {
-        Builder builder = new Builder()
-                .devices(getDevices())
+        Builder builder = new Builder(devices)
                 .label(getLabel());
         return builder;
     }
@@ -102,7 +100,19 @@ public class AccountLabels {
         private List<DeviceList> devices;
         private List<DeviceLabels> label;
 
+        /**
+         * Initialization constructor.
+         */
+        public Builder() {
+        }
 
+        /**
+         * Initialization constructor.
+         * @param  devices  List of DeviceList value for devices.
+         */
+        public Builder(List<DeviceList> devices) {
+            this.devices = devices;
+        }
 
         /**
          * Setter for devices.

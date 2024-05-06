@@ -10,11 +10,62 @@ ServiceProfilesController serviceProfilesController = client.getServiceProfilesC
 
 ## Methods
 
-* [Create Service Profile](../../doc/controllers/service-profiles.md#create-service-profile)
 * [List Service Profiles](../../doc/controllers/service-profiles.md#list-service-profiles)
+* [Create Service Profile](../../doc/controllers/service-profiles.md#create-service-profile)
 * [Get Service Profile](../../doc/controllers/service-profiles.md#get-service-profile)
-* [Update Service Profile](../../doc/controllers/service-profiles.md#update-service-profile)
 * [Delete Service Profile](../../doc/controllers/service-profiles.md#delete-service-profile)
+* [Update Service Profile](../../doc/controllers/service-profiles.md#update-service-profile)
+
+
+# List Service Profiles
+
+List all service profiles registered under your API key.
+
+```java
+CompletableFuture<ApiResponse<ListServiceProfilesResult>> listServiceProfilesAsync()
+```
+
+## Requires scope
+
+### oAuth2
+
+`discovery:read`, `serviceprofile:read`, `serviceprofile:write`, `serviceregistry:read`, `serviceregistry:write`, `ts.application.ro`, `ts.mec.fullaccess`, `ts.mec.limitaccess`
+
+## Response Type
+
+[`ListServiceProfilesResult`](../../doc/models/list-service-profiles-result.md)
+
+## Example Usage
+
+```java
+serviceProfilesController.listServiceProfilesAsync().thenAccept(result -> {
+    // TODO success callback handler
+    System.out.println(result);
+}).exceptionally(exception -> {
+    // TODO failure callback handler
+    exception.printStackTrace();
+    return null;
+});
+```
+
+## Example Response *(as JSON)*
+
+```json
+{
+  "status": "Success",
+  "data": [
+    "serviceProfileId"
+  ]
+}
+```
+
+## Errors
+
+| HTTP Status Code | Error Description | Exception Class |
+|  --- | --- | --- |
+| 400 | HTTP 400 Bad Request. | [`EdgeDiscoveryResultException`](../../doc/models/edge-discovery-result-exception.md) |
+| 401 | HTTP 401 Unauthorized. | [`EdgeDiscoveryResultException`](../../doc/models/edge-discovery-result-exception.md) |
+| Default | HTTP 500 Internal Server Error. | [`EdgeDiscoveryResultException`](../../doc/models/edge-discovery-result-exception.md) |
 
 
 # Create Service Profile
@@ -34,7 +85,9 @@ CompletableFuture<ApiResponse<CreateServiceProfileResult>> createServiceProfileA
 
 ## Requires scope
 
-`EDGEDISCOVERYREAD`, `EDGESERVICEPROFILEREAD`, `EDGESERVICEPROFILEWRITE`, `EDGESERVICEREGISTRYREAD`, `EDGESERVICEREGISTRYWRITE`, `TS_APPLICATION_RO`, `TS_MEC_FULLACCESS`, `TS_MEC_LIMITACCESS`
+### oAuth2
+
+`discovery:read`, `serviceprofile:read`, `serviceprofile:write`, `serviceregistry:read`, `serviceregistry:write`, `ts.application.ro`, `ts.mec.fullaccess`, `ts.mec.limitaccess`
 
 ## Response Type
 
@@ -88,55 +141,6 @@ serviceProfilesController.createServiceProfileAsync(body).thenAccept(result -> {
 | Default | HTTP 500 Internal Server Error. | [`EdgeDiscoveryResultException`](../../doc/models/edge-discovery-result-exception.md) |
 
 
-# List Service Profiles
-
-List all service profiles registered under your API key.
-
-```java
-CompletableFuture<ApiResponse<ListServiceProfilesResult>> listServiceProfilesAsync()
-```
-
-## Requires scope
-
-`EDGEDISCOVERYREAD`, `EDGESERVICEPROFILEREAD`, `EDGESERVICEPROFILEWRITE`, `EDGESERVICEREGISTRYREAD`, `EDGESERVICEREGISTRYWRITE`, `TS_APPLICATION_RO`, `TS_MEC_FULLACCESS`, `TS_MEC_LIMITACCESS`
-
-## Response Type
-
-[`ListServiceProfilesResult`](../../doc/models/list-service-profiles-result.md)
-
-## Example Usage
-
-```java
-serviceProfilesController.listServiceProfilesAsync().thenAccept(result -> {
-    // TODO success callback handler
-    System.out.println(result);
-}).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
-    return null;
-});
-```
-
-## Example Response *(as JSON)*
-
-```json
-{
-  "status": "Success",
-  "data": [
-    "serviceProfileId"
-  ]
-}
-```
-
-## Errors
-
-| HTTP Status Code | Error Description | Exception Class |
-|  --- | --- | --- |
-| 400 | HTTP 400 Bad Request. | [`EdgeDiscoveryResultException`](../../doc/models/edge-discovery-result-exception.md) |
-| 401 | HTTP 401 Unauthorized. | [`EdgeDiscoveryResultException`](../../doc/models/edge-discovery-result-exception.md) |
-| Default | HTTP 500 Internal Server Error. | [`EdgeDiscoveryResultException`](../../doc/models/edge-discovery-result-exception.md) |
-
-
 # Get Service Profile
 
 Returns a specified service profile.
@@ -150,11 +154,13 @@ CompletableFuture<ApiResponse<ResourcesServiceProfileWithId>> getServiceProfileA
 
 | Parameter | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `serviceProfileId` | `String` | Template, Required | **Constraints**: *Maximum Length*: `36`, *Pattern*: `^[a-zA-Z0-9!@#$&()\-`.+,/"]{3,36}$` |
+| `serviceProfileId` | `String` | Template, Required | - |
 
 ## Requires scope
 
-`EDGEDISCOVERYREAD`, `EDGESERVICEPROFILEREAD`, `EDGESERVICEPROFILEWRITE`, `EDGESERVICEREGISTRYREAD`, `EDGESERVICEREGISTRYWRITE`, `TS_APPLICATION_RO`, `TS_MEC_FULLACCESS`, `TS_MEC_LIMITACCESS`
+### oAuth2
+
+`discovery:read`, `serviceprofile:read`, `serviceprofile:write`, `serviceregistry:read`, `serviceregistry:write`, `ts.application.ro`, `ts.mec.fullaccess`, `ts.mec.limitaccess`
 
 ## Response Type
 
@@ -213,6 +219,64 @@ serviceProfilesController.getServiceProfileAsync(serviceProfileId).thenAccept(re
 | Default | HTTP 500 Internal Server Error. | [`EdgeDiscoveryResultException`](../../doc/models/edge-discovery-result-exception.md) |
 
 
+# Delete Service Profile
+
+Delete Service Profile based on unique service profile ID.
+
+```java
+CompletableFuture<ApiResponse<DeleteServiceProfileResult>> deleteServiceProfileAsync(
+    final String serviceProfileId)
+```
+
+## Parameters
+
+| Parameter | Type | Tags | Description |
+|  --- | --- | --- | --- |
+| `serviceProfileId` | `String` | Template, Required | - |
+
+## Requires scope
+
+### oAuth2
+
+`discovery:read`, `serviceprofile:read`, `serviceprofile:write`, `serviceregistry:read`, `serviceregistry:write`, `ts.application.ro`, `ts.mec.fullaccess`, `ts.mec.limitaccess`
+
+## Response Type
+
+[`DeleteServiceProfileResult`](../../doc/models/delete-service-profile-result.md)
+
+## Example Usage
+
+```java
+String serviceProfileId = "serviceProfileId2";
+
+serviceProfilesController.deleteServiceProfileAsync(serviceProfileId).thenAccept(result -> {
+    // TODO success callback handler
+    System.out.println(result);
+}).exceptionally(exception -> {
+    // TODO failure callback handler
+    exception.printStackTrace();
+    return null;
+});
+```
+
+## Example Response *(as JSON)*
+
+```json
+{
+  "status": "Success",
+  "message": "Service Profile Deleted"
+}
+```
+
+## Errors
+
+| HTTP Status Code | Error Description | Exception Class |
+|  --- | --- | --- |
+| 400 | HTTP 400 Bad Request. | [`EdgeDiscoveryResultException`](../../doc/models/edge-discovery-result-exception.md) |
+| 401 | HTTP 401 Unauthorized. | [`EdgeDiscoveryResultException`](../../doc/models/edge-discovery-result-exception.md) |
+| Default | HTTP 500 Internal Server Error. | [`EdgeDiscoveryResultException`](../../doc/models/edge-discovery-result-exception.md) |
+
+
 # Update Service Profile
 
 Update the definition of a Service Profile.
@@ -227,12 +291,14 @@ CompletableFuture<ApiResponse<UpdateServiceProfileResult>> updateServiceProfileA
 
 | Parameter | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `serviceProfileId` | `String` | Template, Required | **Constraints**: *Maximum Length*: `36`, *Pattern*: `^[a-zA-Z0-9!@#$&()\-`.+,/"]{3,36}$` |
+| `serviceProfileId` | `String` | Template, Required | - |
 | `body` | [`ResourcesServiceProfile`](../../doc/models/resources-service-profile.md) | Body, Required | The request body passes the rest of the needed parameters to create a service profile. The `maxLatencyMs` and `clientType` parameters are both required in the request body. **Note:** The `maxLatencyMs` value must be submitted in multiples of 5. Additionally, "GPU" is future functionality and the values are not captured. Default values to use are shown. |
 
 ## Requires scope
 
-`EDGEDISCOVERYREAD`, `EDGESERVICEPROFILEREAD`, `EDGESERVICEPROFILEWRITE`, `EDGESERVICEREGISTRYREAD`, `EDGESERVICEREGISTRYWRITE`, `TS_APPLICATION_RO`, `TS_MEC_FULLACCESS`, `TS_MEC_LIMITACCESS`
+### oAuth2
+
+`discovery:read`, `serviceprofile:read`, `serviceprofile:write`, `serviceregistry:read`, `serviceregistry:write`, `ts.application.ro`, `ts.mec.fullaccess`, `ts.mec.limitaccess`
 
 ## Response Type
 
@@ -281,62 +347,6 @@ serviceProfilesController.updateServiceProfileAsync(serviceProfileId, body).then
 {
   "status": "Success",
   "message": "Service Profile Updated"
-}
-```
-
-## Errors
-
-| HTTP Status Code | Error Description | Exception Class |
-|  --- | --- | --- |
-| 400 | HTTP 400 Bad Request. | [`EdgeDiscoveryResultException`](../../doc/models/edge-discovery-result-exception.md) |
-| 401 | HTTP 401 Unauthorized. | [`EdgeDiscoveryResultException`](../../doc/models/edge-discovery-result-exception.md) |
-| Default | HTTP 500 Internal Server Error. | [`EdgeDiscoveryResultException`](../../doc/models/edge-discovery-result-exception.md) |
-
-
-# Delete Service Profile
-
-Delete Service Profile based on unique service profile ID.
-
-```java
-CompletableFuture<ApiResponse<DeleteServiceProfileResult>> deleteServiceProfileAsync(
-    final String serviceProfileId)
-```
-
-## Parameters
-
-| Parameter | Type | Tags | Description |
-|  --- | --- | --- | --- |
-| `serviceProfileId` | `String` | Template, Required | **Constraints**: *Maximum Length*: `36`, *Pattern*: `^[a-zA-Z0-9!@#$&()\-`.+,/"]{3,36}$` |
-
-## Requires scope
-
-`EDGEDISCOVERYREAD`, `EDGESERVICEPROFILEREAD`, `EDGESERVICEPROFILEWRITE`, `EDGESERVICEREGISTRYREAD`, `EDGESERVICEREGISTRYWRITE`, `TS_APPLICATION_RO`, `TS_MEC_FULLACCESS`, `TS_MEC_LIMITACCESS`
-
-## Response Type
-
-[`DeleteServiceProfileResult`](../../doc/models/delete-service-profile-result.md)
-
-## Example Usage
-
-```java
-String serviceProfileId = "serviceProfileId2";
-
-serviceProfilesController.deleteServiceProfileAsync(serviceProfileId).thenAccept(result -> {
-    // TODO success callback handler
-    System.out.println(result);
-}).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
-    return null;
-});
-```
-
-## Example Response *(as JSON)*
-
-```json
-{
-  "status": "Success",
-  "message": "Service Profile Deleted"
 }
 ```
 
