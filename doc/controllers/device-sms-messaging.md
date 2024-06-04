@@ -10,26 +10,26 @@ DeviceSMSMessagingController deviceSMSMessagingController = client.getDeviceSMSM
 
 ## Methods
 
-* [Start Sms Message Delivery](../../doc/controllers/device-sms-messaging.md#start-sms-message-delivery)
-* [Get Sms Messages](../../doc/controllers/device-sms-messaging.md#get-sms-messages)
 * [Send an Sms Message](../../doc/controllers/device-sms-messaging.md#send-an-sms-message)
+* [Get Sms Messages](../../doc/controllers/device-sms-messaging.md#get-sms-messages)
+* [Start Sms Message Delivery](../../doc/controllers/device-sms-messaging.md#start-sms-message-delivery)
 * [List Sms Message History](../../doc/controllers/device-sms-messaging.md#list-sms-message-history)
 
 
-# Start Sms Message Delivery
+# Send an Sms Message
 
-Starts delivery of SMS messages for the specified account.
+Sends an SMS message to one device. Messages are queued on the M2M MC Platform and sent as soon as possible, but they may be delayed due to traffic and routing considerations.
 
 ```java
-CompletableFuture<ApiResponse<SuccessResponse>> startSmsMessageDeliveryAsync(
-    final String accountName)
+CompletableFuture<ApiResponse<GIORequestResponse>> sendAnSmsMessageAsync(
+    final GIOSMSSendRequest body)
 ```
 
 ## Parameters
 
 | Parameter | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `accountName` | `String` | Template, Required | Numeric account name |
+| `body` | [`GIOSMSSendRequest`](../../doc/models/giosms-send-request.md) | Body, Required | SMS message to an indiividual device. |
 
 ## Server
 
@@ -37,14 +37,24 @@ CompletableFuture<ApiResponse<SuccessResponse>> startSmsMessageDeliveryAsync(
 
 ## Response Type
 
-[`SuccessResponse`](../../doc/models/success-response.md)
+[`GIORequestResponse`](../../doc/models/gio-request-response.md)
 
 ## Example Usage
 
 ```java
-String accountName = "0000123456-00001";
+GIOSMSSendRequest body = new GIOSMSSendRequest.Builder(
+    Arrays.asList(
+        new GIODeviceId.Builder(
+            "eid",
+            "12345678901234567890123456789012"
+        )
+        .build()
+    ),
+    "A text message"
+)
+.build();
 
-deviceSMSMessagingController.startSmsMessageDeliveryAsync(accountName).thenAccept(result -> {
+deviceSMSMessagingController.sendAnSmsMessageAsync(body).thenAccept(result -> {
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
@@ -109,20 +119,20 @@ deviceSMSMessagingController.getSmsMessagesAsync(accountName, next).thenAccept(r
 | Default | Error response | [`GIORestErrorResponseException`](../../doc/models/gio-rest-error-response-exception.md) |
 
 
-# Send an Sms Message
+# Start Sms Message Delivery
 
-Sends an SMS message to one device. Messages are queued on the M2M MC Platform and sent as soon as possible, but they may be delayed due to traffic and routing considerations.
+Starts delivery of SMS messages for the specified account.
 
 ```java
-CompletableFuture<ApiResponse<GIORequestResponse>> sendAnSmsMessageAsync(
-    final GIOSMSSendRequest body)
+CompletableFuture<ApiResponse<SuccessResponse>> startSmsMessageDeliveryAsync(
+    final String accountName)
 ```
 
 ## Parameters
 
 | Parameter | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `body` | [`GIOSMSSendRequest`](../../doc/models/giosms-send-request.md) | Body, Required | SMS message to an indiividual device. |
+| `accountName` | `String` | Template, Required | Numeric account name |
 
 ## Server
 
@@ -130,24 +140,14 @@ CompletableFuture<ApiResponse<GIORequestResponse>> sendAnSmsMessageAsync(
 
 ## Response Type
 
-[`GIORequestResponse`](../../doc/models/gio-request-response.md)
+[`SuccessResponse`](../../doc/models/success-response.md)
 
 ## Example Usage
 
 ```java
-GIOSMSSendRequest body = new GIOSMSSendRequest.Builder(
-    Arrays.asList(
-        new GIODeviceId.Builder(
-            "eid",
-            "12345678901234567890123456789012"
-        )
-        .build()
-    ),
-    "A text message"
-)
-.build();
+String accountName = "0000123456-00001";
 
-deviceSMSMessagingController.sendAnSmsMessageAsync(body).thenAccept(result -> {
+deviceSMSMessagingController.startSmsMessageDeliveryAsync(accountName).thenAccept(result -> {
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {

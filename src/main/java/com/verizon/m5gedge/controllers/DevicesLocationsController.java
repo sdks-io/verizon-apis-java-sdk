@@ -43,6 +43,63 @@ public final class DevicesLocationsController extends BaseController {
     }
 
     /**
+     * This locations endpoint retrieves the locations for a list of devices.
+     * @param  body  Required parameter: Request to obtain location of devices.
+     * @return    Returns the List of Location wrapped in ApiResponse response from the API call
+     * @throws    ApiException    Represents error response from the server.
+     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
+     */
+    public ApiResponse<List<Location>> listDevicesLocationsSynchronous(
+            final LocationRequest body) throws ApiException, IOException {
+        return prepareListDevicesLocationsSynchronousRequest(body).execute();
+    }
+
+    /**
+     * This locations endpoint retrieves the locations for a list of devices.
+     * @param  body  Required parameter: Request to obtain location of devices.
+     * @return    Returns the List of Location wrapped in ApiResponse response from the API call
+     */
+    public CompletableFuture<ApiResponse<List<Location>>> listDevicesLocationsSynchronousAsync(
+            final LocationRequest body) {
+        try { 
+            return prepareListDevicesLocationsSynchronousRequest(body).executeAsync(); 
+        } catch (Exception e) {  
+            throw new CompletionException(e); 
+        }
+    }
+
+    /**
+     * Builds the ApiCall object for listDevicesLocationsSynchronous.
+     */
+    private ApiCall<ApiResponse<List<Location>>, ApiException> prepareListDevicesLocationsSynchronousRequest(
+            final LocationRequest body) throws JsonProcessingException, IOException {
+        return new ApiCall.Builder<ApiResponse<List<Location>>, ApiException>()
+                .globalConfig(getGlobalConfiguration())
+                .requestBuilder(requestBuilder -> requestBuilder
+                        .server(Server.DEVICE_LOCATION.value())
+                        .path("/locations")
+                        .bodyParam(param -> param.value(body))
+                        .bodySerializer(() ->  ApiHelper.serialize(body))
+                        .headerParam(param -> param.key("Content-Type")
+                                .value("application/json").isRequired(false))
+                        .headerParam(param -> param.key("accept").value("application/json"))
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
+                        .httpMethod(HttpMethod.POST))
+                .responseHandler(responseHandler -> responseHandler
+                        .responseClassType(ResponseClassType.API_RESPONSE)
+                        .apiResponseDeserializer(
+                                response -> ApiHelper.deserializeArray(response,
+                                        Location[].class))
+                        .nullify404(false)
+                        .localErrorCase(ErrorCase.DEFAULT,
+                                 ErrorCase.setReason("Unexpected error.",
+                                (reason, context) -> new DeviceLocationResultException(reason, context)))
+                        .globalErrorCase(GLOBAL_ERROR_CASES))
+                .build();
+    }
+
+    /**
      * Requests the current or cached location of up to 10,000 IoT or consumer devices (phones,
      * tablets. etc.). This request returns a synchronous transaction ID, and the location
      * information for each device is returned asynchronously as a DeviceLocation callback message.
@@ -94,124 +151,6 @@ public final class DevicesLocationsController extends BaseController {
                         .responseClassType(ResponseClassType.API_RESPONSE)
                         .apiResponseDeserializer(
                                 response -> ApiHelper.deserialize(response, SynchronousLocationRequestResult.class))
-                        .nullify404(false)
-                        .localErrorCase(ErrorCase.DEFAULT,
-                                 ErrorCase.setReason("Unexpected error.",
-                                (reason, context) -> new DeviceLocationResultException(reason, context)))
-                        .globalErrorCase(GLOBAL_ERROR_CASES))
-                .build();
-    }
-
-    /**
-     * Cancel a queued device location report.
-     * @param  account  Required parameter: Account identifier in "##########-#####".
-     * @param  txid  Required parameter: Transaction ID of the report to cancel.
-     * @return    Returns the TransactionID wrapped in ApiResponse response from the API call
-     * @throws    ApiException    Represents error response from the server.
-     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
-     */
-    public ApiResponse<TransactionID> cancelQueuedLocationReportGeneration(
-            final String account,
-            final String txid) throws ApiException, IOException {
-        return prepareCancelQueuedLocationReportGenerationRequest(account, txid).execute();
-    }
-
-    /**
-     * Cancel a queued device location report.
-     * @param  account  Required parameter: Account identifier in "##########-#####".
-     * @param  txid  Required parameter: Transaction ID of the report to cancel.
-     * @return    Returns the TransactionID wrapped in ApiResponse response from the API call
-     */
-    public CompletableFuture<ApiResponse<TransactionID>> cancelQueuedLocationReportGenerationAsync(
-            final String account,
-            final String txid) {
-        try { 
-            return prepareCancelQueuedLocationReportGenerationRequest(account, txid).executeAsync(); 
-        } catch (Exception e) {  
-            throw new CompletionException(e); 
-        }
-    }
-
-    /**
-     * Builds the ApiCall object for cancelQueuedLocationReportGeneration.
-     */
-    private ApiCall<ApiResponse<TransactionID>, ApiException> prepareCancelQueuedLocationReportGenerationRequest(
-            final String account,
-            final String txid) throws IOException {
-        return new ApiCall.Builder<ApiResponse<TransactionID>, ApiException>()
-                .globalConfig(getGlobalConfiguration())
-                .requestBuilder(requestBuilder -> requestBuilder
-                        .server(Server.DEVICE_LOCATION.value())
-                        .path("/locationreports/{account}/report/{txid}")
-                        .templateParam(param -> param.key("account").value(account)
-                                .shouldEncode(true))
-                        .templateParam(param -> param.key("txid").value(txid)
-                                .shouldEncode(true))
-                        .headerParam(param -> param.key("accept").value("application/json"))
-                        .withAuth(auth -> auth
-                                .add("oAuth2"))
-                        .httpMethod(HttpMethod.DELETE))
-                .responseHandler(responseHandler -> responseHandler
-                        .responseClassType(ResponseClassType.API_RESPONSE)
-                        .apiResponseDeserializer(
-                                response -> ApiHelper.deserialize(response, TransactionID.class))
-                        .nullify404(false)
-                        .localErrorCase(ErrorCase.DEFAULT,
-                                 ErrorCase.setReason("Unexpected error.",
-                                (reason, context) -> new DeviceLocationResultException(reason, context)))
-                        .globalErrorCase(GLOBAL_ERROR_CASES))
-                .build();
-    }
-
-    /**
-     * This locations endpoint retrieves the locations for a list of devices.
-     * @param  body  Required parameter: Request to obtain location of devices.
-     * @return    Returns the List of Location wrapped in ApiResponse response from the API call
-     * @throws    ApiException    Represents error response from the server.
-     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
-     */
-    public ApiResponse<List<Location>> listDevicesLocationsSynchronous(
-            final LocationRequest body) throws ApiException, IOException {
-        return prepareListDevicesLocationsSynchronousRequest(body).execute();
-    }
-
-    /**
-     * This locations endpoint retrieves the locations for a list of devices.
-     * @param  body  Required parameter: Request to obtain location of devices.
-     * @return    Returns the List of Location wrapped in ApiResponse response from the API call
-     */
-    public CompletableFuture<ApiResponse<List<Location>>> listDevicesLocationsSynchronousAsync(
-            final LocationRequest body) {
-        try { 
-            return prepareListDevicesLocationsSynchronousRequest(body).executeAsync(); 
-        } catch (Exception e) {  
-            throw new CompletionException(e); 
-        }
-    }
-
-    /**
-     * Builds the ApiCall object for listDevicesLocationsSynchronous.
-     */
-    private ApiCall<ApiResponse<List<Location>>, ApiException> prepareListDevicesLocationsSynchronousRequest(
-            final LocationRequest body) throws JsonProcessingException, IOException {
-        return new ApiCall.Builder<ApiResponse<List<Location>>, ApiException>()
-                .globalConfig(getGlobalConfiguration())
-                .requestBuilder(requestBuilder -> requestBuilder
-                        .server(Server.DEVICE_LOCATION.value())
-                        .path("/locations")
-                        .bodyParam(param -> param.value(body))
-                        .bodySerializer(() ->  ApiHelper.serialize(body))
-                        .headerParam(param -> param.key("Content-Type")
-                                .value("application/json").isRequired(false))
-                        .headerParam(param -> param.key("accept").value("application/json"))
-                        .withAuth(auth -> auth
-                                .add("oAuth2"))
-                        .httpMethod(HttpMethod.POST))
-                .responseHandler(responseHandler -> responseHandler
-                        .responseClassType(ResponseClassType.API_RESPONSE)
-                        .apiResponseDeserializer(
-                                response -> ApiHelper.deserializeArray(response,
-                                        Location[].class))
                         .nullify404(false)
                         .localErrorCase(ErrorCase.DEFAULT,
                                  ErrorCase.setReason("Unexpected error.",
@@ -275,6 +214,62 @@ public final class DevicesLocationsController extends BaseController {
                         .responseClassType(ResponseClassType.API_RESPONSE)
                         .apiResponseDeserializer(
                                 response -> ApiHelper.deserialize(response, TransactionID.class))
+                        .nullify404(false)
+                        .localErrorCase(ErrorCase.DEFAULT,
+                                 ErrorCase.setReason("Unexpected error.",
+                                (reason, context) -> new DeviceLocationResultException(reason, context)))
+                        .globalErrorCase(GLOBAL_ERROR_CASES))
+                .build();
+    }
+
+    /**
+     * Request an asynchronous device location report.
+     * @param  body  Required parameter: Request for device location report.
+     * @return    Returns the AsynchronousLocationRequestResult wrapped in ApiResponse response from the API call
+     * @throws    ApiException    Represents error response from the server.
+     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
+     */
+    public ApiResponse<AsynchronousLocationRequestResult> createLocationReport(
+            final LocationRequest body) throws ApiException, IOException {
+        return prepareCreateLocationReportRequest(body).execute();
+    }
+
+    /**
+     * Request an asynchronous device location report.
+     * @param  body  Required parameter: Request for device location report.
+     * @return    Returns the AsynchronousLocationRequestResult wrapped in ApiResponse response from the API call
+     */
+    public CompletableFuture<ApiResponse<AsynchronousLocationRequestResult>> createLocationReportAsync(
+            final LocationRequest body) {
+        try { 
+            return prepareCreateLocationReportRequest(body).executeAsync(); 
+        } catch (Exception e) {  
+            throw new CompletionException(e); 
+        }
+    }
+
+    /**
+     * Builds the ApiCall object for createLocationReport.
+     */
+    private ApiCall<ApiResponse<AsynchronousLocationRequestResult>, ApiException> prepareCreateLocationReportRequest(
+            final LocationRequest body) throws JsonProcessingException, IOException {
+        return new ApiCall.Builder<ApiResponse<AsynchronousLocationRequestResult>, ApiException>()
+                .globalConfig(getGlobalConfiguration())
+                .requestBuilder(requestBuilder -> requestBuilder
+                        .server(Server.DEVICE_LOCATION.value())
+                        .path("/locationreports")
+                        .bodyParam(param -> param.value(body))
+                        .bodySerializer(() ->  ApiHelper.serialize(body))
+                        .headerParam(param -> param.key("Content-Type")
+                                .value("*/*").isRequired(false))
+                        .headerParam(param -> param.key("accept").value("application/json"))
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
+                        .httpMethod(HttpMethod.POST))
+                .responseHandler(responseHandler -> responseHandler
+                        .responseClassType(ResponseClassType.API_RESPONSE)
+                        .apiResponseDeserializer(
+                                response -> ApiHelper.deserialize(response, AsynchronousLocationRequestResult.class))
                         .nullify404(false)
                         .localErrorCase(ErrorCase.DEFAULT,
                                  ErrorCase.setReason("Unexpected error.",
@@ -352,62 +347,6 @@ public final class DevicesLocationsController extends BaseController {
     }
 
     /**
-     * Request an asynchronous device location report.
-     * @param  body  Required parameter: Request for device location report.
-     * @return    Returns the AsynchronousLocationRequestResult wrapped in ApiResponse response from the API call
-     * @throws    ApiException    Represents error response from the server.
-     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
-     */
-    public ApiResponse<AsynchronousLocationRequestResult> createLocationReport(
-            final LocationRequest body) throws ApiException, IOException {
-        return prepareCreateLocationReportRequest(body).execute();
-    }
-
-    /**
-     * Request an asynchronous device location report.
-     * @param  body  Required parameter: Request for device location report.
-     * @return    Returns the AsynchronousLocationRequestResult wrapped in ApiResponse response from the API call
-     */
-    public CompletableFuture<ApiResponse<AsynchronousLocationRequestResult>> createLocationReportAsync(
-            final LocationRequest body) {
-        try { 
-            return prepareCreateLocationReportRequest(body).executeAsync(); 
-        } catch (Exception e) {  
-            throw new CompletionException(e); 
-        }
-    }
-
-    /**
-     * Builds the ApiCall object for createLocationReport.
-     */
-    private ApiCall<ApiResponse<AsynchronousLocationRequestResult>, ApiException> prepareCreateLocationReportRequest(
-            final LocationRequest body) throws JsonProcessingException, IOException {
-        return new ApiCall.Builder<ApiResponse<AsynchronousLocationRequestResult>, ApiException>()
-                .globalConfig(getGlobalConfiguration())
-                .requestBuilder(requestBuilder -> requestBuilder
-                        .server(Server.DEVICE_LOCATION.value())
-                        .path("/locationreports")
-                        .bodyParam(param -> param.value(body))
-                        .bodySerializer(() ->  ApiHelper.serialize(body))
-                        .headerParam(param -> param.key("Content-Type")
-                                .value("*/*").isRequired(false))
-                        .headerParam(param -> param.key("accept").value("application/json"))
-                        .withAuth(auth -> auth
-                                .add("oAuth2"))
-                        .httpMethod(HttpMethod.POST))
-                .responseHandler(responseHandler -> responseHandler
-                        .responseClassType(ResponseClassType.API_RESPONSE)
-                        .apiResponseDeserializer(
-                                response -> ApiHelper.deserialize(response, AsynchronousLocationRequestResult.class))
-                        .nullify404(false)
-                        .localErrorCase(ErrorCase.DEFAULT,
-                                 ErrorCase.setReason("Unexpected error.",
-                                (reason, context) -> new DeviceLocationResultException(reason, context)))
-                        .globalErrorCase(GLOBAL_ERROR_CASES))
-                .build();
-    }
-
-    /**
      * Returns the current status of a requested device location report.
      * @param  account  Required parameter: Account identifier in "##########-#####".
      * @param  txid  Required parameter: Transaction ID of the report.
@@ -460,6 +399,67 @@ public final class DevicesLocationsController extends BaseController {
                         .responseClassType(ResponseClassType.API_RESPONSE)
                         .apiResponseDeserializer(
                                 response -> ApiHelper.deserialize(response, LocationReportStatus.class))
+                        .nullify404(false)
+                        .localErrorCase(ErrorCase.DEFAULT,
+                                 ErrorCase.setReason("Unexpected error.",
+                                (reason, context) -> new DeviceLocationResultException(reason, context)))
+                        .globalErrorCase(GLOBAL_ERROR_CASES))
+                .build();
+    }
+
+    /**
+     * Cancel a queued device location report.
+     * @param  account  Required parameter: Account identifier in "##########-#####".
+     * @param  txid  Required parameter: Transaction ID of the report to cancel.
+     * @return    Returns the TransactionID wrapped in ApiResponse response from the API call
+     * @throws    ApiException    Represents error response from the server.
+     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
+     */
+    public ApiResponse<TransactionID> cancelQueuedLocationReportGeneration(
+            final String account,
+            final String txid) throws ApiException, IOException {
+        return prepareCancelQueuedLocationReportGenerationRequest(account, txid).execute();
+    }
+
+    /**
+     * Cancel a queued device location report.
+     * @param  account  Required parameter: Account identifier in "##########-#####".
+     * @param  txid  Required parameter: Transaction ID of the report to cancel.
+     * @return    Returns the TransactionID wrapped in ApiResponse response from the API call
+     */
+    public CompletableFuture<ApiResponse<TransactionID>> cancelQueuedLocationReportGenerationAsync(
+            final String account,
+            final String txid) {
+        try { 
+            return prepareCancelQueuedLocationReportGenerationRequest(account, txid).executeAsync(); 
+        } catch (Exception e) {  
+            throw new CompletionException(e); 
+        }
+    }
+
+    /**
+     * Builds the ApiCall object for cancelQueuedLocationReportGeneration.
+     */
+    private ApiCall<ApiResponse<TransactionID>, ApiException> prepareCancelQueuedLocationReportGenerationRequest(
+            final String account,
+            final String txid) throws IOException {
+        return new ApiCall.Builder<ApiResponse<TransactionID>, ApiException>()
+                .globalConfig(getGlobalConfiguration())
+                .requestBuilder(requestBuilder -> requestBuilder
+                        .server(Server.DEVICE_LOCATION.value())
+                        .path("/locationreports/{account}/report/{txid}")
+                        .templateParam(param -> param.key("account").value(account)
+                                .shouldEncode(true))
+                        .templateParam(param -> param.key("txid").value(txid)
+                                .shouldEncode(true))
+                        .headerParam(param -> param.key("accept").value("application/json"))
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
+                        .httpMethod(HttpMethod.DELETE))
+                .responseHandler(responseHandler -> responseHandler
+                        .responseClassType(ResponseClassType.API_RESPONSE)
+                        .apiResponseDeserializer(
+                                response -> ApiHelper.deserialize(response, TransactionID.class))
                         .nullify404(false)
                         .localErrorCase(ErrorCase.DEFAULT,
                                  ErrorCase.setReason("Unexpected error.",

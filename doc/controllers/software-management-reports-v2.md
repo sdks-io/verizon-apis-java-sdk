@@ -10,11 +10,75 @@ SoftwareManagementReportsV2Controller softwareManagementReportsV2Controller = cl
 
 ## Methods
 
+* [List Available Software](../../doc/controllers/software-management-reports-v2.md#list-available-software)
 * [List Account Devices](../../doc/controllers/software-management-reports-v2.md#list-account-devices)
 * [Get Device Firmware Upgrade History](../../doc/controllers/software-management-reports-v2.md#get-device-firmware-upgrade-history)
 * [Get Campaign History by Status](../../doc/controllers/software-management-reports-v2.md#get-campaign-history-by-status)
 * [Get Campaign Device Status](../../doc/controllers/software-management-reports-v2.md#get-campaign-device-status)
-* [List Available Software](../../doc/controllers/software-management-reports-v2.md#list-available-software)
+
+
+# List Available Software
+
+This endpoint allows user to list a certain type of software of an account.
+
+```java
+CompletableFuture<ApiResponse<List<SoftwarePackage>>> listAvailableSoftwareAsync(
+    final String account,
+    final String distributionType)
+```
+
+## Parameters
+
+| Parameter | Type | Tags | Description |
+|  --- | --- | --- | --- |
+| `account` | `String` | Template, Required | Account identifier. |
+| `distributionType` | `String` | Query, Optional | Filter distributionType to get specific type of software. Value is LWM2M, OMD-DM or HTTP. |
+
+## Server
+
+`Server.SOFTWARE_MANAGEMENT_V2`
+
+## Response Type
+
+[`List<SoftwarePackage>`](../../doc/models/software-package.md)
+
+## Example Usage
+
+```java
+String account = "0000123456-00001";
+String distributionType = "HTTP";
+
+softwareManagementReportsV2Controller.listAvailableSoftwareAsync(account, distributionType).thenAccept(result -> {
+    // TODO success callback handler
+    System.out.println(result);
+}).exceptionally(exception -> {
+    // TODO failure callback handler
+    exception.printStackTrace();
+    return null;
+});
+```
+
+## Example Response *(as JSON)*
+
+```json
+[
+  {
+    "softwareName": "FOTA_Verizon_Model-A_02To03_HF",
+    "launchDate": "2020-08-31",
+    "releaseNote": "",
+    "model": "Model-A",
+    "make": "Verizon",
+    "distributionType": "HTTP",
+    "devicePlatformId": "IoT"
+  }
+]
+```
+
+## Errors
+
+| HTTP Status Code | Error Description | Exception Class |
+|  --- | --- | --- |
+| 400 | Unexpected error. | [`FotaV2ResultException`](../../doc/models/fota-v2-result-exception.md) |
 
 
 # List Account Devices
@@ -377,70 +441,6 @@ softwareManagementReportsV2Controller.getCampaignDeviceStatusAsync(account, camp
     }
   ]
 }
-```
-
-## Errors
-
-| HTTP Status Code | Error Description | Exception Class |
-|  --- | --- | --- |
-| 400 | Unexpected error. | [`FotaV2ResultException`](../../doc/models/fota-v2-result-exception.md) |
-
-
-# List Available Software
-
-This endpoint allows user to list a certain type of software of an account.
-
-```java
-CompletableFuture<ApiResponse<List<SoftwarePackage>>> listAvailableSoftwareAsync(
-    final String account,
-    final String distributionType)
-```
-
-## Parameters
-
-| Parameter | Type | Tags | Description |
-|  --- | --- | --- | --- |
-| `account` | `String` | Template, Required | Account identifier. |
-| `distributionType` | `String` | Query, Optional | Filter distributionType to get specific type of software. Value is LWM2M, OMD-DM or HTTP. |
-
-## Server
-
-`Server.SOFTWARE_MANAGEMENT_V2`
-
-## Response Type
-
-[`List<SoftwarePackage>`](../../doc/models/software-package.md)
-
-## Example Usage
-
-```java
-String account = "0000123456-00001";
-String distributionType = "HTTP";
-
-softwareManagementReportsV2Controller.listAvailableSoftwareAsync(account, distributionType).thenAccept(result -> {
-    // TODO success callback handler
-    System.out.println(result);
-}).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
-    return null;
-});
-```
-
-## Example Response *(as JSON)*
-
-```json
-[
-  {
-    "softwareName": "FOTA_Verizon_Model-A_02To03_HF",
-    "launchDate": "2020-08-31",
-    "releaseNote": "",
-    "model": "Model-A",
-    "make": "Verizon",
-    "distributionType": "HTTP",
-    "devicePlatformId": "IoT"
-  }
-]
 ```
 
 ## Errors

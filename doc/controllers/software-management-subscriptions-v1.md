@@ -10,8 +10,65 @@ SoftwareManagementSubscriptionsV1Controller softwareManagementSubscriptionsV1Con
 
 ## Methods
 
-* [Get Account License Status](../../doc/controllers/software-management-subscriptions-v1.md#get-account-license-status)
 * [Get Account Subscription Status](../../doc/controllers/software-management-subscriptions-v1.md#get-account-subscription-status)
+* [Get Account License Status](../../doc/controllers/software-management-subscriptions-v1.md#get-account-license-status)
+
+
+# Get Account Subscription Status
+
+This subscriptions endpoint retrieves an account's current Software Management Service subscription status.
+
+```java
+CompletableFuture<ApiResponse<V1AccountSubscription>> getAccountSubscriptionStatusAsync(
+    final String account)
+```
+
+## Parameters
+
+| Parameter | Type | Tags | Description |
+|  --- | --- | --- | --- |
+| `account` | `String` | Template, Required | Account identifier in "##########-#####". |
+
+## Server
+
+`Server.SOFTWARE_MANAGEMENT_V1`
+
+## Response Type
+
+[`V1AccountSubscription`](../../doc/models/v1-account-subscription.md)
+
+## Example Usage
+
+```java
+String account = "0402196254-00001";
+
+softwareManagementSubscriptionsV1Controller.getAccountSubscriptionStatusAsync(account).thenAccept(result -> {
+    // TODO success callback handler
+    System.out.println(result);
+}).exceptionally(exception -> {
+    // TODO failure callback handler
+    exception.printStackTrace();
+    return null;
+});
+```
+
+## Example Response *(as JSON)*
+
+```json
+{
+  "accountName": "0402196254-00001",
+  "purchaseType": "TS-HFOTA-EVNT,TS-HFOTA-MRC",
+  "licenseCount": 9000,
+  "licenseUsedCount": 1000,
+  "updateTime": "2018-03-02T16:03:06.000Z"
+}
+```
+
+## Errors
+
+| HTTP Status Code | Error Description | Exception Class |
+|  --- | --- | --- |
+| 400 | Unexpected error. | [`FotaV1ResultException`](../../doc/models/fota-v1-result-exception.md) |
 
 
 # Get Account License Status
@@ -82,63 +139,6 @@ softwareManagementSubscriptionsV1Controller.getAccountLicenseStatusAsync(account
       "assignmentTime": "2016-11-29T15:03:36.000Z"
     }
   ]
-}
-```
-
-## Errors
-
-| HTTP Status Code | Error Description | Exception Class |
-|  --- | --- | --- |
-| 400 | Unexpected error. | [`FotaV1ResultException`](../../doc/models/fota-v1-result-exception.md) |
-
-
-# Get Account Subscription Status
-
-This subscriptions endpoint retrieves an account's current Software Management Service subscription status.
-
-```java
-CompletableFuture<ApiResponse<V1AccountSubscription>> getAccountSubscriptionStatusAsync(
-    final String account)
-```
-
-## Parameters
-
-| Parameter | Type | Tags | Description |
-|  --- | --- | --- | --- |
-| `account` | `String` | Template, Required | Account identifier in "##########-#####". |
-
-## Server
-
-`Server.SOFTWARE_MANAGEMENT_V1`
-
-## Response Type
-
-[`V1AccountSubscription`](../../doc/models/v1-account-subscription.md)
-
-## Example Usage
-
-```java
-String account = "0402196254-00001";
-
-softwareManagementSubscriptionsV1Controller.getAccountSubscriptionStatusAsync(account).thenAccept(result -> {
-    // TODO success callback handler
-    System.out.println(result);
-}).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
-    return null;
-});
-```
-
-## Example Response *(as JSON)*
-
-```json
-{
-  "accountName": "0402196254-00001",
-  "purchaseType": "TS-HFOTA-EVNT,TS-HFOTA-MRC",
-  "licenseCount": 9000,
-  "licenseUsedCount": 1000,
-  "updateTime": "2018-03-02T16:03:06.000Z"
 }
 ```
 

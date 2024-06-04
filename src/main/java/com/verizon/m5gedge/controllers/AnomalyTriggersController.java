@@ -106,6 +106,80 @@ public final class AnomalyTriggersController extends BaseController {
     }
 
     /**
+     * This corresponds to the M2M-MC SOAP interface, ```UpdateTriggerRequest```.
+     * @param  body  Required parameter: Update Trigger Request
+     * @return    Returns the AnomalyDetectionTrigger wrapped in ApiResponse response from the API call
+     * @throws    ApiException    Represents error response from the server.
+     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
+     */
+    public ApiResponse<AnomalyDetectionTrigger> updateAnomalyDetectionTrigger(
+            final UpdateTriggerRequest body) throws ApiException, IOException {
+        return prepareUpdateAnomalyDetectionTriggerRequest(body).execute();
+    }
+
+    /**
+     * This corresponds to the M2M-MC SOAP interface, ```UpdateTriggerRequest```.
+     * @param  body  Required parameter: Update Trigger Request
+     * @return    Returns the AnomalyDetectionTrigger wrapped in ApiResponse response from the API call
+     */
+    public CompletableFuture<ApiResponse<AnomalyDetectionTrigger>> updateAnomalyDetectionTriggerAsync(
+            final UpdateTriggerRequest body) {
+        try { 
+            return prepareUpdateAnomalyDetectionTriggerRequest(body).executeAsync(); 
+        } catch (Exception e) {  
+            throw new CompletionException(e); 
+        }
+    }
+
+    /**
+     * Builds the ApiCall object for updateAnomalyDetectionTrigger.
+     */
+    private ApiCall<ApiResponse<AnomalyDetectionTrigger>, ApiException> prepareUpdateAnomalyDetectionTriggerRequest(
+            final UpdateTriggerRequest body) throws JsonProcessingException, IOException {
+        return new ApiCall.Builder<ApiResponse<AnomalyDetectionTrigger>, ApiException>()
+                .globalConfig(getGlobalConfiguration())
+                .requestBuilder(requestBuilder -> requestBuilder
+                        .server(Server.THINGSPACE.value())
+                        .path("/m2m/v1/triggers")
+                        .bodyParam(param -> param.value(body))
+                        .bodySerializer(() ->  ApiHelper.serialize(body))
+                        .headerParam(param -> param.key("Content-Type")
+                                .value("application/json").isRequired(false))
+                        .headerParam(param -> param.key("accept").value("application/json"))
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
+                        .httpMethod(HttpMethod.PUT))
+                .responseHandler(responseHandler -> responseHandler
+                        .responseClassType(ResponseClassType.API_RESPONSE)
+                        .apiResponseDeserializer(
+                                response -> ApiHelper.deserialize(response, AnomalyDetectionTrigger.class))
+                        .nullify404(false)
+                        .localErrorCase("400",
+                                 ErrorCase.setReason("Bad request",
+                                (reason, context) -> new IntelligenceResultException(reason, context)))
+                        .localErrorCase("401",
+                                 ErrorCase.setReason("Unauthorized",
+                                (reason, context) -> new IntelligenceResultException(reason, context)))
+                        .localErrorCase("403",
+                                 ErrorCase.setReason("Forbidden",
+                                (reason, context) -> new IntelligenceResultException(reason, context)))
+                        .localErrorCase("404",
+                                 ErrorCase.setReason("Not Found / Does not exist",
+                                (reason, context) -> new IntelligenceResultException(reason, context)))
+                        .localErrorCase("406",
+                                 ErrorCase.setReason("Format / Request Unacceptable",
+                                (reason, context) -> new IntelligenceResultException(reason, context)))
+                        .localErrorCase("429",
+                                 ErrorCase.setReason("Too many requests",
+                                (reason, context) -> new IntelligenceResultException(reason, context)))
+                        .localErrorCase(ErrorCase.DEFAULT,
+                                 ErrorCase.setReason("Error response",
+                                (reason, context) -> new IntelligenceResultException(reason, context)))
+                        .globalErrorCase(GLOBAL_ERROR_CASES))
+                .build();
+    }
+
+    /**
      * This corresponds to the M2M-MC SOAP interface, ```CreateTrigger```.
      * @param  body  Required parameter: Create Trigger Request
      * @return    Returns the AnomalyDetectionTrigger wrapped in ApiResponse response from the API call
@@ -172,60 +246,6 @@ public final class AnomalyTriggersController extends BaseController {
                         .localErrorCase("429",
                                  ErrorCase.setReason("Too many requests",
                                 (reason, context) -> new IntelligenceResultException(reason, context)))
-                        .localErrorCase(ErrorCase.DEFAULT,
-                                 ErrorCase.setReason("Error response",
-                                (reason, context) -> new IntelligenceResultException(reason, context)))
-                        .globalErrorCase(GLOBAL_ERROR_CASES))
-                .build();
-    }
-
-    /**
-     * Deletes a specific trigger ID.
-     * @param  triggerId  Required parameter: The trigger ID to be deleted
-     * @return    Returns the AnomalyDetectionTrigger wrapped in ApiResponse response from the API call
-     * @throws    ApiException    Represents error response from the server.
-     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
-     */
-    public ApiResponse<AnomalyDetectionTrigger> deleteAnomalyDetectionTrigger(
-            final String triggerId) throws ApiException, IOException {
-        return prepareDeleteAnomalyDetectionTriggerRequest(triggerId).execute();
-    }
-
-    /**
-     * Deletes a specific trigger ID.
-     * @param  triggerId  Required parameter: The trigger ID to be deleted
-     * @return    Returns the AnomalyDetectionTrigger wrapped in ApiResponse response from the API call
-     */
-    public CompletableFuture<ApiResponse<AnomalyDetectionTrigger>> deleteAnomalyDetectionTriggerAsync(
-            final String triggerId) {
-        try { 
-            return prepareDeleteAnomalyDetectionTriggerRequest(triggerId).executeAsync(); 
-        } catch (Exception e) {  
-            throw new CompletionException(e); 
-        }
-    }
-
-    /**
-     * Builds the ApiCall object for deleteAnomalyDetectionTrigger.
-     */
-    private ApiCall<ApiResponse<AnomalyDetectionTrigger>, ApiException> prepareDeleteAnomalyDetectionTriggerRequest(
-            final String triggerId) throws IOException {
-        return new ApiCall.Builder<ApiResponse<AnomalyDetectionTrigger>, ApiException>()
-                .globalConfig(getGlobalConfiguration())
-                .requestBuilder(requestBuilder -> requestBuilder
-                        .server(Server.THINGSPACE.value())
-                        .path("/m2m/v1/triggers/{triggerId}")
-                        .templateParam(param -> param.key("triggerId").value(triggerId)
-                                .shouldEncode(true))
-                        .headerParam(param -> param.key("accept").value("application/json"))
-                        .withAuth(auth -> auth
-                                .add("oAuth2"))
-                        .httpMethod(HttpMethod.DELETE))
-                .responseHandler(responseHandler -> responseHandler
-                        .responseClassType(ResponseClassType.API_RESPONSE)
-                        .apiResponseDeserializer(
-                                response -> ApiHelper.deserialize(response, AnomalyDetectionTrigger.class))
-                        .nullify404(false)
                         .localErrorCase(ErrorCase.DEFAULT,
                                  ErrorCase.setReason("Error response",
                                 (reason, context) -> new IntelligenceResultException(reason, context)))
@@ -307,72 +327,52 @@ public final class AnomalyTriggersController extends BaseController {
     }
 
     /**
-     * This corresponds to the M2M-MC SOAP interface, ```UpdateTriggerRequest```.
-     * @param  body  Required parameter: Update Trigger Request
+     * Deletes a specific trigger ID.
+     * @param  triggerId  Required parameter: The trigger ID to be deleted
      * @return    Returns the AnomalyDetectionTrigger wrapped in ApiResponse response from the API call
      * @throws    ApiException    Represents error response from the server.
      * @throws    IOException    Signals that an I/O exception of some sort has occurred.
      */
-    public ApiResponse<AnomalyDetectionTrigger> updateAnomalyDetectionTrigger(
-            final UpdateTriggerRequest body) throws ApiException, IOException {
-        return prepareUpdateAnomalyDetectionTriggerRequest(body).execute();
+    public ApiResponse<AnomalyDetectionTrigger> deleteAnomalyDetectionTrigger(
+            final String triggerId) throws ApiException, IOException {
+        return prepareDeleteAnomalyDetectionTriggerRequest(triggerId).execute();
     }
 
     /**
-     * This corresponds to the M2M-MC SOAP interface, ```UpdateTriggerRequest```.
-     * @param  body  Required parameter: Update Trigger Request
+     * Deletes a specific trigger ID.
+     * @param  triggerId  Required parameter: The trigger ID to be deleted
      * @return    Returns the AnomalyDetectionTrigger wrapped in ApiResponse response from the API call
      */
-    public CompletableFuture<ApiResponse<AnomalyDetectionTrigger>> updateAnomalyDetectionTriggerAsync(
-            final UpdateTriggerRequest body) {
+    public CompletableFuture<ApiResponse<AnomalyDetectionTrigger>> deleteAnomalyDetectionTriggerAsync(
+            final String triggerId) {
         try { 
-            return prepareUpdateAnomalyDetectionTriggerRequest(body).executeAsync(); 
+            return prepareDeleteAnomalyDetectionTriggerRequest(triggerId).executeAsync(); 
         } catch (Exception e) {  
             throw new CompletionException(e); 
         }
     }
 
     /**
-     * Builds the ApiCall object for updateAnomalyDetectionTrigger.
+     * Builds the ApiCall object for deleteAnomalyDetectionTrigger.
      */
-    private ApiCall<ApiResponse<AnomalyDetectionTrigger>, ApiException> prepareUpdateAnomalyDetectionTriggerRequest(
-            final UpdateTriggerRequest body) throws JsonProcessingException, IOException {
+    private ApiCall<ApiResponse<AnomalyDetectionTrigger>, ApiException> prepareDeleteAnomalyDetectionTriggerRequest(
+            final String triggerId) throws IOException {
         return new ApiCall.Builder<ApiResponse<AnomalyDetectionTrigger>, ApiException>()
                 .globalConfig(getGlobalConfiguration())
                 .requestBuilder(requestBuilder -> requestBuilder
                         .server(Server.THINGSPACE.value())
-                        .path("/m2m/v1/triggers")
-                        .bodyParam(param -> param.value(body))
-                        .bodySerializer(() ->  ApiHelper.serialize(body))
-                        .headerParam(param -> param.key("Content-Type")
-                                .value("application/json").isRequired(false))
+                        .path("/m2m/v1/triggers/{triggerId}")
+                        .templateParam(param -> param.key("triggerId").value(triggerId)
+                                .shouldEncode(true))
                         .headerParam(param -> param.key("accept").value("application/json"))
                         .withAuth(auth -> auth
                                 .add("oAuth2"))
-                        .httpMethod(HttpMethod.PUT))
+                        .httpMethod(HttpMethod.DELETE))
                 .responseHandler(responseHandler -> responseHandler
                         .responseClassType(ResponseClassType.API_RESPONSE)
                         .apiResponseDeserializer(
                                 response -> ApiHelper.deserialize(response, AnomalyDetectionTrigger.class))
                         .nullify404(false)
-                        .localErrorCase("400",
-                                 ErrorCase.setReason("Bad request",
-                                (reason, context) -> new IntelligenceResultException(reason, context)))
-                        .localErrorCase("401",
-                                 ErrorCase.setReason("Unauthorized",
-                                (reason, context) -> new IntelligenceResultException(reason, context)))
-                        .localErrorCase("403",
-                                 ErrorCase.setReason("Forbidden",
-                                (reason, context) -> new IntelligenceResultException(reason, context)))
-                        .localErrorCase("404",
-                                 ErrorCase.setReason("Not Found / Does not exist",
-                                (reason, context) -> new IntelligenceResultException(reason, context)))
-                        .localErrorCase("406",
-                                 ErrorCase.setReason("Format / Request Unacceptable",
-                                (reason, context) -> new IntelligenceResultException(reason, context)))
-                        .localErrorCase("429",
-                                 ErrorCase.setReason("Too many requests",
-                                (reason, context) -> new IntelligenceResultException(reason, context)))
                         .localErrorCase(ErrorCase.DEFAULT,
                                  ErrorCase.setReason("Error response",
                                 (reason, context) -> new IntelligenceResultException(reason, context)))

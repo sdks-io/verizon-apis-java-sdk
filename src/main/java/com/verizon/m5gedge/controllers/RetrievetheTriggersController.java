@@ -137,6 +137,55 @@ public final class RetrievetheTriggersController extends BaseController {
     }
 
     /**
+     * Retrieves all of the triggers for the specified account associated with the PromoAlert
+     * category.
+     * @return    Returns the TriggerValueResponse2 wrapped in ApiResponse response from the API call
+     * @throws    ApiException    Represents error response from the server.
+     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
+     */
+    public ApiResponse<TriggerValueResponse2> getAllTriggersByTriggerCategory() throws ApiException, IOException {
+        return prepareGetAllTriggersByTriggerCategoryRequest().execute();
+    }
+
+    /**
+     * Retrieves all of the triggers for the specified account associated with the PromoAlert
+     * category.
+     * @return    Returns the TriggerValueResponse2 wrapped in ApiResponse response from the API call
+     */
+    public CompletableFuture<ApiResponse<TriggerValueResponse2>> getAllTriggersByTriggerCategoryAsync() {
+        try { 
+            return prepareGetAllTriggersByTriggerCategoryRequest().executeAsync(); 
+        } catch (Exception e) {  
+            throw new CompletionException(e); 
+        }
+    }
+
+    /**
+     * Builds the ApiCall object for getAllTriggersByTriggerCategory.
+     */
+    private ApiCall<ApiResponse<TriggerValueResponse2>, ApiException> prepareGetAllTriggersByTriggerCategoryRequest() throws IOException {
+        return new ApiCall.Builder<ApiResponse<TriggerValueResponse2>, ApiException>()
+                .globalConfig(getGlobalConfiguration())
+                .requestBuilder(requestBuilder -> requestBuilder
+                        .server(Server.THINGSPACE.value())
+                        .path("/m2m/v2/triggers/categories/PromoAlerts")
+                        .headerParam(param -> param.key("accept").value("application/json"))
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
+                        .httpMethod(HttpMethod.GET))
+                .responseHandler(responseHandler -> responseHandler
+                        .responseClassType(ResponseClassType.API_RESPONSE)
+                        .apiResponseDeserializer(
+                                response -> ApiHelper.deserialize(response, TriggerValueResponse2.class))
+                        .nullify404(false)
+                        .localErrorCase(ErrorCase.DEFAULT,
+                                 ErrorCase.setReason("Error response",
+                                (reason, context) -> new ReadySimRestErrorResponseException(reason, context)))
+                        .globalErrorCase(GLOBAL_ERROR_CASES))
+                .build();
+    }
+
+    /**
      * Retrives a specific trigger by its ID.
      * @param  triggerId  Required parameter: The ID of a specific trigger
      * @return    Returns the TriggerValueResponse2 wrapped in ApiResponse response from the API call
@@ -174,55 +223,6 @@ public final class RetrievetheTriggersController extends BaseController {
                         .path("/m2m/v2/triggers/{triggerId}")
                         .templateParam(param -> param.key("triggerId").value(triggerId)
                                 .shouldEncode(true))
-                        .headerParam(param -> param.key("accept").value("application/json"))
-                        .withAuth(auth -> auth
-                                .add("oAuth2"))
-                        .httpMethod(HttpMethod.GET))
-                .responseHandler(responseHandler -> responseHandler
-                        .responseClassType(ResponseClassType.API_RESPONSE)
-                        .apiResponseDeserializer(
-                                response -> ApiHelper.deserialize(response, TriggerValueResponse2.class))
-                        .nullify404(false)
-                        .localErrorCase(ErrorCase.DEFAULT,
-                                 ErrorCase.setReason("Error response",
-                                (reason, context) -> new ReadySimRestErrorResponseException(reason, context)))
-                        .globalErrorCase(GLOBAL_ERROR_CASES))
-                .build();
-    }
-
-    /**
-     * Retrieves all of the triggers for the specified account associated with the PromoAlert
-     * category.
-     * @return    Returns the TriggerValueResponse2 wrapped in ApiResponse response from the API call
-     * @throws    ApiException    Represents error response from the server.
-     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
-     */
-    public ApiResponse<TriggerValueResponse2> getAllTriggersByTriggerCategory() throws ApiException, IOException {
-        return prepareGetAllTriggersByTriggerCategoryRequest().execute();
-    }
-
-    /**
-     * Retrieves all of the triggers for the specified account associated with the PromoAlert
-     * category.
-     * @return    Returns the TriggerValueResponse2 wrapped in ApiResponse response from the API call
-     */
-    public CompletableFuture<ApiResponse<TriggerValueResponse2>> getAllTriggersByTriggerCategoryAsync() {
-        try { 
-            return prepareGetAllTriggersByTriggerCategoryRequest().executeAsync(); 
-        } catch (Exception e) {  
-            throw new CompletionException(e); 
-        }
-    }
-
-    /**
-     * Builds the ApiCall object for getAllTriggersByTriggerCategory.
-     */
-    private ApiCall<ApiResponse<TriggerValueResponse2>, ApiException> prepareGetAllTriggersByTriggerCategoryRequest() throws IOException {
-        return new ApiCall.Builder<ApiResponse<TriggerValueResponse2>, ApiException>()
-                .globalConfig(getGlobalConfiguration())
-                .requestBuilder(requestBuilder -> requestBuilder
-                        .server(Server.THINGSPACE.value())
-                        .path("/m2m/v2/triggers/categories/PromoAlerts")
                         .headerParam(param -> param.key("accept").value("application/json"))
                         .withAuth(auth -> auth
                                 .add("oAuth2"))

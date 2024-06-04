@@ -10,64 +10,8 @@ M5gEdgePlatformsController m5gEdgePlatformsController = client.getM5gEdgePlatfor
 
 ## Methods
 
-* [List Regions](../../doc/controllers/5g-edge-platforms.md#list-regions)
 * [List MEC Platforms](../../doc/controllers/5g-edge-platforms.md#list-mec-platforms)
-
-
-# List Regions
-
-List the geographical regions available, based on the user's bearer token. **Note:** Country code, Metropolitan area, Area and Zone are future functionality and will currently return a "null" value.
-
-```java
-CompletableFuture<ApiResponse<ListRegionsResult>> listRegionsAsync()
-```
-
-## Requires scope
-
-### oAuth2
-
-`discovery:read`, `serviceprofile:read`, `serviceprofile:write`, `serviceregistry:read`, `serviceregistry:write`, `ts.application.ro`, `ts.mec.fullaccess`, `ts.mec.limitaccess`
-
-## Response Type
-
-[`ListRegionsResult`](../../doc/models/list-regions-result.md)
-
-## Example Usage
-
-```java
-m5gEdgePlatformsController.listRegionsAsync().thenAccept(result -> {
-    // TODO success callback handler
-    System.out.println(result);
-}).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
-    return null;
-});
-```
-
-## Example Response *(as JSON)*
-
-```json
-{
-  "regions": [
-    {
-      "regionId": "consectetur",
-      "name": "US_EAST_1",
-      "countryCode": "nr",
-      "metro": "e1D",
-      "area": "IdUESF"
-    }
-  ]
-}
-```
-
-## Errors
-
-| HTTP Status Code | Error Description | Exception Class |
-|  --- | --- | --- |
-| 400 | HTTP 400 Bad Request. | [`EdgeDiscoveryResultException`](../../doc/models/edge-discovery-result-exception.md) |
-| 401 | HTTP 401 Unauthorized. | [`EdgeDiscoveryResultException`](../../doc/models/edge-discovery-result-exception.md) |
-| Default | HTTP 500 Internal Server Error. | [`EdgeDiscoveryResultException`](../../doc/models/edge-discovery-result-exception.md) |
+* [List Regions](../../doc/controllers/5g-edge-platforms.md#list-regions)
 
 
 # List MEC Platforms
@@ -130,6 +74,62 @@ m5gEdgePlatformsController.listMECPlatformsAsync(region, null, null, uEIdentityT
       "zone": "e5oV52kMGjDLhnJSsLJZL",
       "region": "US_WEST_2",
       "status": "unknown"
+    }
+  ]
+}
+```
+
+## Errors
+
+| HTTP Status Code | Error Description | Exception Class |
+|  --- | --- | --- |
+| 400 | HTTP 400 Bad Request. | [`EdgeDiscoveryResultException`](../../doc/models/edge-discovery-result-exception.md) |
+| 401 | HTTP 401 Unauthorized. | [`EdgeDiscoveryResultException`](../../doc/models/edge-discovery-result-exception.md) |
+| Default | HTTP 500 Internal Server Error. | [`EdgeDiscoveryResultException`](../../doc/models/edge-discovery-result-exception.md) |
+
+
+# List Regions
+
+List the geographical regions available, based on the user's bearer token. **Note:** Country code, Metropolitan area, Area and Zone are future functionality and will currently return a "null" value.
+
+```java
+CompletableFuture<ApiResponse<ListRegionsResult>> listRegionsAsync()
+```
+
+## Requires scope
+
+### oAuth2
+
+`discovery:read`, `serviceprofile:read`, `serviceprofile:write`, `serviceregistry:read`, `serviceregistry:write`, `ts.application.ro`, `ts.mec.fullaccess`, `ts.mec.limitaccess`
+
+## Response Type
+
+[`ListRegionsResult`](../../doc/models/list-regions-result.md)
+
+## Example Usage
+
+```java
+m5gEdgePlatformsController.listRegionsAsync().thenAccept(result -> {
+    // TODO success callback handler
+    System.out.println(result);
+}).exceptionally(exception -> {
+    // TODO failure callback handler
+    exception.printStackTrace();
+    return null;
+});
+```
+
+## Example Response *(as JSON)*
+
+```json
+{
+  "regions": [
+    {
+      "regionId": "consectetur",
+      "name": "US_EAST_1",
+      "countryCode": "nr",
+      "metro": "e1D",
+      "area": "IdUESF"
     }
   ]
 }

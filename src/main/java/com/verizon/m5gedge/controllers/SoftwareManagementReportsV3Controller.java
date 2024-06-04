@@ -39,68 +39,6 @@ public final class SoftwareManagementReportsV3Controller extends BaseController 
     }
 
     /**
-     * Retrieve campaign history for a specific device.
-     * @param  acc  Required parameter: Account identifier.
-     * @param  deviceId  Required parameter: Device IMEI identifier.
-     * @return    Returns the List of DeviceFirmwareUpgrade wrapped in ApiResponse response from the API call
-     * @throws    ApiException    Represents error response from the server.
-     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
-     */
-    public ApiResponse<List<DeviceFirmwareUpgrade>> getDeviceFirmwareUpgradeHistory(
-            final String acc,
-            final String deviceId) throws ApiException, IOException {
-        return prepareGetDeviceFirmwareUpgradeHistoryRequest(acc, deviceId).execute();
-    }
-
-    /**
-     * Retrieve campaign history for a specific device.
-     * @param  acc  Required parameter: Account identifier.
-     * @param  deviceId  Required parameter: Device IMEI identifier.
-     * @return    Returns the List of DeviceFirmwareUpgrade wrapped in ApiResponse response from the API call
-     */
-    public CompletableFuture<ApiResponse<List<DeviceFirmwareUpgrade>>> getDeviceFirmwareUpgradeHistoryAsync(
-            final String acc,
-            final String deviceId) {
-        try { 
-            return prepareGetDeviceFirmwareUpgradeHistoryRequest(acc, deviceId).executeAsync(); 
-        } catch (Exception e) {  
-            throw new CompletionException(e); 
-        }
-    }
-
-    /**
-     * Builds the ApiCall object for getDeviceFirmwareUpgradeHistory.
-     */
-    private ApiCall<ApiResponse<List<DeviceFirmwareUpgrade>>, ApiException> prepareGetDeviceFirmwareUpgradeHistoryRequest(
-            final String acc,
-            final String deviceId) throws IOException {
-        return new ApiCall.Builder<ApiResponse<List<DeviceFirmwareUpgrade>>, ApiException>()
-                .globalConfig(getGlobalConfiguration())
-                .requestBuilder(requestBuilder -> requestBuilder
-                        .server(Server.SOFTWARE_MANAGEMENT_V3.value())
-                        .path("/reports/{acc}/devices/{deviceId}")
-                        .templateParam(param -> param.key("acc").value(acc)
-                                .shouldEncode(true))
-                        .templateParam(param -> param.key("deviceId").value(deviceId)
-                                .shouldEncode(true))
-                        .headerParam(param -> param.key("accept").value("application/json"))
-                        .withAuth(auth -> auth
-                                .add("oAuth2"))
-                        .httpMethod(HttpMethod.GET))
-                .responseHandler(responseHandler -> responseHandler
-                        .responseClassType(ResponseClassType.API_RESPONSE)
-                        .apiResponseDeserializer(
-                                response -> ApiHelper.deserializeArray(response,
-                                        DeviceFirmwareUpgrade[].class))
-                        .nullify404(false)
-                        .localErrorCase("400",
-                                 ErrorCase.setReason("Unexpected error.",
-                                (reason, context) -> new FotaV3ResultException(reason, context)))
-                        .globalErrorCase(GLOBAL_ERROR_CASES))
-                .build();
-    }
-
-    /**
      * Retrieve a list of campaigns for an account that have a specified campaign status.
      * @param  acc  Required parameter: Account identifier.
      * @param  campaignStatus  Required parameter: Campaign status.
@@ -162,6 +100,68 @@ public final class SoftwareManagementReportsV3Controller extends BaseController 
                         .responseClassType(ResponseClassType.API_RESPONSE)
                         .apiResponseDeserializer(
                                 response -> ApiHelper.deserialize(response, V3CampaignHistory.class))
+                        .nullify404(false)
+                        .localErrorCase("400",
+                                 ErrorCase.setReason("Unexpected error.",
+                                (reason, context) -> new FotaV3ResultException(reason, context)))
+                        .globalErrorCase(GLOBAL_ERROR_CASES))
+                .build();
+    }
+
+    /**
+     * Retrieve campaign history for a specific device.
+     * @param  acc  Required parameter: Account identifier.
+     * @param  deviceId  Required parameter: Device IMEI identifier.
+     * @return    Returns the List of DeviceFirmwareUpgrade wrapped in ApiResponse response from the API call
+     * @throws    ApiException    Represents error response from the server.
+     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
+     */
+    public ApiResponse<List<DeviceFirmwareUpgrade>> getDeviceFirmwareUpgradeHistory(
+            final String acc,
+            final String deviceId) throws ApiException, IOException {
+        return prepareGetDeviceFirmwareUpgradeHistoryRequest(acc, deviceId).execute();
+    }
+
+    /**
+     * Retrieve campaign history for a specific device.
+     * @param  acc  Required parameter: Account identifier.
+     * @param  deviceId  Required parameter: Device IMEI identifier.
+     * @return    Returns the List of DeviceFirmwareUpgrade wrapped in ApiResponse response from the API call
+     */
+    public CompletableFuture<ApiResponse<List<DeviceFirmwareUpgrade>>> getDeviceFirmwareUpgradeHistoryAsync(
+            final String acc,
+            final String deviceId) {
+        try { 
+            return prepareGetDeviceFirmwareUpgradeHistoryRequest(acc, deviceId).executeAsync(); 
+        } catch (Exception e) {  
+            throw new CompletionException(e); 
+        }
+    }
+
+    /**
+     * Builds the ApiCall object for getDeviceFirmwareUpgradeHistory.
+     */
+    private ApiCall<ApiResponse<List<DeviceFirmwareUpgrade>>, ApiException> prepareGetDeviceFirmwareUpgradeHistoryRequest(
+            final String acc,
+            final String deviceId) throws IOException {
+        return new ApiCall.Builder<ApiResponse<List<DeviceFirmwareUpgrade>>, ApiException>()
+                .globalConfig(getGlobalConfiguration())
+                .requestBuilder(requestBuilder -> requestBuilder
+                        .server(Server.SOFTWARE_MANAGEMENT_V3.value())
+                        .path("/reports/{acc}/devices/{deviceId}")
+                        .templateParam(param -> param.key("acc").value(acc)
+                                .shouldEncode(true))
+                        .templateParam(param -> param.key("deviceId").value(deviceId)
+                                .shouldEncode(true))
+                        .headerParam(param -> param.key("accept").value("application/json"))
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
+                        .httpMethod(HttpMethod.GET))
+                .responseHandler(responseHandler -> responseHandler
+                        .responseClassType(ResponseClassType.API_RESPONSE)
+                        .apiResponseDeserializer(
+                                response -> ApiHelper.deserializeArray(response,
+                                        DeviceFirmwareUpgrade[].class))
                         .nullify404(false)
                         .localErrorCase("400",
                                  ErrorCase.setReason("Unexpected error.",

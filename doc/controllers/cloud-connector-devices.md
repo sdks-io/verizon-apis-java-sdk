@@ -10,30 +10,28 @@ CloudConnectorDevicesController cloudConnectorDevicesController = client.getClou
 
 ## Methods
 
-* [Search Sensor Readings](../../doc/controllers/cloud-connector-devices.md#search-sensor-readings)
-* [Delete Device From Account](../../doc/controllers/cloud-connector-devices.md#delete-device-from-account)
-* [Find Device by Property Values](../../doc/controllers/cloud-connector-devices.md#find-device-by-property-values)
 * [Update Devices Configuration Value](../../doc/controllers/cloud-connector-devices.md#update-devices-configuration-value)
+* [Find Device by Property Values](../../doc/controllers/cloud-connector-devices.md#find-device-by-property-values)
 * [Search Devices Resources by Property Values](../../doc/controllers/cloud-connector-devices.md#search-devices-resources-by-property-values)
 * [Search Device Event History](../../doc/controllers/cloud-connector-devices.md#search-device-event-history)
+* [Search Sensor Readings](../../doc/controllers/cloud-connector-devices.md#search-sensor-readings)
+* [Delete Device From Account](../../doc/controllers/cloud-connector-devices.md#delete-device-from-account)
 
 
-# Search Sensor Readings
+# Update Devices Configuration Value
 
-Returns the readings of a specified sensor, with the most recent reading first. Sensor readings are stored as events; this request an array of events.
+Change configuration values on a device, such as setting how often a device records and reports sensor readings.
 
 ```java
-CompletableFuture<ApiResponse<SearchSensorHistoryResponseList>> searchSensorReadingsAsync(
-    final String fieldname,
-    final SearchSensorHistoryRequest body)
+CompletableFuture<ApiResponse<ChangeConfigurationResponse>> updateDevicesConfigurationValueAsync(
+    final ChangeConfigurationRequest body)
 ```
 
 ## Parameters
 
 | Parameter | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `fieldname` | `String` | Template, Required | The name of the sensor. |
-| `body` | [`SearchSensorHistoryRequest`](../../doc/models/search-sensor-history-request.md) | Body, Required | The device identifier and fields to match in the search. |
+| `body` | [`ChangeConfigurationRequest`](../../doc/models/change-configuration-request.md) | Body, Required | The request body changes configuration values on a device. |
 
 ## Server
 
@@ -41,24 +39,24 @@ CompletableFuture<ApiResponse<SearchSensorHistoryResponseList>> searchSensorRead
 
 ## Response Type
 
-[`SearchSensorHistoryResponseList`](../../doc/models/search-sensor-history-response-list.md)
+[`ChangeConfigurationResponse`](../../doc/models/change-configuration-response.md)
 
 ## Example Usage
 
 ```java
-String fieldname = "fieldname8";
-SearchSensorHistoryRequest body = new SearchSensorHistoryRequest.Builder(
-    new AccountIdentifier.Builder()
+ChangeConfigurationRequest body = new ChangeConfigurationRequest.Builder()
+    .accountidentifier(new AccountIdentifier.Builder()
         .billingaccountid("1223334444-00001")
-        .build(),
-    new ResourceIdentifier.Builder()
-        .imei("864508030084997")
-        .build()
-)
-.limitnumber(2)
-.build();
+        .build())
+    .resourceidentifier(new ResourceIdentifier.Builder()
+        .imei("864508030147323")
+        .build())
+    .configuration(new Configuration.Builder()
+        .frequency("Low")
+        .build())
+    .build();
 
-cloudConnectorDevicesController.searchSensorReadingsAsync(fieldname, body).thenAccept(result -> {
+cloudConnectorDevicesController.updateDevicesConfigurationValueAsync(body).thenAccept(result -> {
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
@@ -72,94 +70,23 @@ cloudConnectorDevicesController.searchSensorReadingsAsync(fieldname, body).thenA
 
 ```json
 {
-  "SearchSensorHistory": [
-    {
-      "action": "update",
-      "createdon": "2019-02-22T04:05:26Z",
-      "deviceid": "8461f530-2e31-6e87-e357-6c38251d4d01",
-      "fields": {
-        "temperature": "18.4"
-      },
-      "id": "4521b7a7-7de1-6e68-f020-1345ef3b764a",
-      "kind": "ts.event",
-      "lastupdated": "2019-02-22T04:05:49.786Z",
-      "state": "update",
-      "tagids": [
-        "4d110e4f-7a7c-6b26-eaac-31cc34c6e1d4",
-        "cd81ed16-18ae-6c7d-eaba-2883b0395387"
-      ],
-      "transactionid": "864508030084997-OnBoard-c05f946c-3f5c-4527-b4d0-5aca256fc3dd",
-      "version": "1.0",
-      "versionid": "238addb9-3657-11e9-8848-02420a951f13"
-    },
-    {
-      "action": "update",
-      "createdon": "2019-02-22T03:05:26Z",
-      "deviceid": "8461f530-2e31-6e87-e357-6c38251d4d01",
-      "fields": {
-        "temperature": "19.0"
-      },
-      "id": "05b1ea7b-4bf2-6af6-ea8b-414595f2c3e9",
-      "kind": "ts.event",
-      "lastupdated": "2019-02-22T03:05:48.483Z",
-      "state": "update",
-      "tagids": [
-        "4d110e4f-7a7c-6b26-eaac-31cc34c6e1d4",
-        "cd81ed16-18ae-6c7d-eaba-2883b0395387"
-      ],
-      "transactionid": "864508030084997-OnBoard-5f71f47d-4464-4f69-a3ee-5c243f0ef5b8",
-      "version": "1.0",
-      "versionid": "c0ffa4b5-364e-11e9-a3ee-02420a8c0d14"
+  "action": "set",
+  "createdon": "2019-02-14T01:41:03.619217664Z",
+  "deviceid": "8461f530-2e31-6e87-e357-6c38251d4d01",
+  "fields": {
+    "configuration": {
+      "frequency": "Low"
     }
-  ]
+  },
+  "foreignid": "e1f15861-7de7-69cb-ed7d-b4a92e091bc4",
+  "id": "05c12adc-50c0-6ebb-feb0-b9f9637a1dba",
+  "kind": "ts.event.configuration",
+  "lastupdated": "2019-02-14T01:41:03.619217727Z",
+  "name": "SetConfigurationReq",
+  "state": "pending",
+  "transactionid": "1d38aae7-558d-4cb9-8269-e8d4c0519045",
+  "version": "1.0"
 }
-```
-
-
-# Delete Device From Account
-
-Remove a device from a ThingSpace account.
-
-```java
-CompletableFuture<ApiResponse<Void>> deleteDeviceFromAccountAsync(
-    final RemoveDeviceRequest body)
-```
-
-## Parameters
-
-| Parameter | Type | Tags | Description |
-|  --- | --- | --- | --- |
-| `body` | [`RemoveDeviceRequest`](../../doc/models/remove-device-request.md) | Body, Required | The request body identifies the device to delete. |
-
-## Server
-
-`Server.CLOUD_CONNECTOR`
-
-## Response Type
-
-`void`
-
-## Example Usage
-
-```java
-RemoveDeviceRequest body = new RemoveDeviceRequest.Builder(
-    new AccountIdentifier.Builder()
-        .billingaccountid("1223334444-00001")
-        .build(),
-    new ResourceIdentifier.Builder()
-        .imei("864508030084997")
-        .build()
-)
-.build();
-
-cloudConnectorDevicesController.deleteDeviceFromAccountAsync(body).thenAccept(result -> {
-    // TODO success callback handler
-    System.out.println(result);
-}).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
-    return null;
-});
 ```
 
 
@@ -246,78 +173,6 @@ cloudConnectorDevicesController.findDeviceByPropertyValuesAsync(body).thenAccept
       "versionid": "fd835cc9-0486-11e9-a7da-02420a481608"
     }
   ]
-}
-```
-
-
-# Update Devices Configuration Value
-
-Change configuration values on a device, such as setting how often a device records and reports sensor readings.
-
-```java
-CompletableFuture<ApiResponse<ChangeConfigurationResponse>> updateDevicesConfigurationValueAsync(
-    final ChangeConfigurationRequest body)
-```
-
-## Parameters
-
-| Parameter | Type | Tags | Description |
-|  --- | --- | --- | --- |
-| `body` | [`ChangeConfigurationRequest`](../../doc/models/change-configuration-request.md) | Body, Required | The request body changes configuration values on a device. |
-
-## Server
-
-`Server.CLOUD_CONNECTOR`
-
-## Response Type
-
-[`ChangeConfigurationResponse`](../../doc/models/change-configuration-response.md)
-
-## Example Usage
-
-```java
-ChangeConfigurationRequest body = new ChangeConfigurationRequest.Builder()
-    .accountidentifier(new AccountIdentifier.Builder()
-        .billingaccountid("1223334444-00001")
-        .build())
-    .resourceidentifier(new ResourceIdentifier.Builder()
-        .imei("864508030147323")
-        .build())
-    .configuration(new Configuration.Builder()
-        .frequency("Low")
-        .build())
-    .build();
-
-cloudConnectorDevicesController.updateDevicesConfigurationValueAsync(body).thenAccept(result -> {
-    // TODO success callback handler
-    System.out.println(result);
-}).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
-    return null;
-});
-```
-
-## Example Response *(as JSON)*
-
-```json
-{
-  "action": "set",
-  "createdon": "2019-02-14T01:41:03.619217664Z",
-  "deviceid": "8461f530-2e31-6e87-e357-6c38251d4d01",
-  "fields": {
-    "configuration": {
-      "frequency": "Low"
-    }
-  },
-  "foreignid": "e1f15861-7de7-69cb-ed7d-b4a92e091bc4",
-  "id": "05c12adc-50c0-6ebb-feb0-b9f9637a1dba",
-  "kind": "ts.event.configuration",
-  "lastupdated": "2019-02-14T01:41:03.619217727Z",
-  "name": "SetConfigurationReq",
-  "state": "pending",
-  "transactionid": "1d38aae7-558d-4cb9-8269-e8d4c0519045",
-  "version": "1.0"
 }
 ```
 
@@ -483,5 +338,150 @@ cloudConnectorDevicesController.searchDeviceEventHistoryAsync(body).thenAccept(r
     }
   ]
 }
+```
+
+
+# Search Sensor Readings
+
+Returns the readings of a specified sensor, with the most recent reading first. Sensor readings are stored as events; this request an array of events.
+
+```java
+CompletableFuture<ApiResponse<SearchSensorHistoryResponseList>> searchSensorReadingsAsync(
+    final String fieldname,
+    final SearchSensorHistoryRequest body)
+```
+
+## Parameters
+
+| Parameter | Type | Tags | Description |
+|  --- | --- | --- | --- |
+| `fieldname` | `String` | Template, Required | The name of the sensor. |
+| `body` | [`SearchSensorHistoryRequest`](../../doc/models/search-sensor-history-request.md) | Body, Required | The device identifier and fields to match in the search. |
+
+## Server
+
+`Server.CLOUD_CONNECTOR`
+
+## Response Type
+
+[`SearchSensorHistoryResponseList`](../../doc/models/search-sensor-history-response-list.md)
+
+## Example Usage
+
+```java
+String fieldname = "fieldname8";
+SearchSensorHistoryRequest body = new SearchSensorHistoryRequest.Builder(
+    new AccountIdentifier.Builder()
+        .billingaccountid("1223334444-00001")
+        .build(),
+    new ResourceIdentifier.Builder()
+        .imei("864508030084997")
+        .build()
+)
+.limitnumber(2)
+.build();
+
+cloudConnectorDevicesController.searchSensorReadingsAsync(fieldname, body).thenAccept(result -> {
+    // TODO success callback handler
+    System.out.println(result);
+}).exceptionally(exception -> {
+    // TODO failure callback handler
+    exception.printStackTrace();
+    return null;
+});
+```
+
+## Example Response *(as JSON)*
+
+```json
+{
+  "SearchSensorHistory": [
+    {
+      "action": "update",
+      "createdon": "2019-02-22T04:05:26Z",
+      "deviceid": "8461f530-2e31-6e87-e357-6c38251d4d01",
+      "fields": {
+        "temperature": "18.4"
+      },
+      "id": "4521b7a7-7de1-6e68-f020-1345ef3b764a",
+      "kind": "ts.event",
+      "lastupdated": "2019-02-22T04:05:49.786Z",
+      "state": "update",
+      "tagids": [
+        "4d110e4f-7a7c-6b26-eaac-31cc34c6e1d4",
+        "cd81ed16-18ae-6c7d-eaba-2883b0395387"
+      ],
+      "transactionid": "864508030084997-OnBoard-c05f946c-3f5c-4527-b4d0-5aca256fc3dd",
+      "version": "1.0",
+      "versionid": "238addb9-3657-11e9-8848-02420a951f13"
+    },
+    {
+      "action": "update",
+      "createdon": "2019-02-22T03:05:26Z",
+      "deviceid": "8461f530-2e31-6e87-e357-6c38251d4d01",
+      "fields": {
+        "temperature": "19.0"
+      },
+      "id": "05b1ea7b-4bf2-6af6-ea8b-414595f2c3e9",
+      "kind": "ts.event",
+      "lastupdated": "2019-02-22T03:05:48.483Z",
+      "state": "update",
+      "tagids": [
+        "4d110e4f-7a7c-6b26-eaac-31cc34c6e1d4",
+        "cd81ed16-18ae-6c7d-eaba-2883b0395387"
+      ],
+      "transactionid": "864508030084997-OnBoard-5f71f47d-4464-4f69-a3ee-5c243f0ef5b8",
+      "version": "1.0",
+      "versionid": "c0ffa4b5-364e-11e9-a3ee-02420a8c0d14"
+    }
+  ]
+}
+```
+
+
+# Delete Device From Account
+
+Remove a device from a ThingSpace account.
+
+```java
+CompletableFuture<ApiResponse<Void>> deleteDeviceFromAccountAsync(
+    final RemoveDeviceRequest body)
+```
+
+## Parameters
+
+| Parameter | Type | Tags | Description |
+|  --- | --- | --- | --- |
+| `body` | [`RemoveDeviceRequest`](../../doc/models/remove-device-request.md) | Body, Required | The request body identifies the device to delete. |
+
+## Server
+
+`Server.CLOUD_CONNECTOR`
+
+## Response Type
+
+`void`
+
+## Example Usage
+
+```java
+RemoveDeviceRequest body = new RemoveDeviceRequest.Builder(
+    new AccountIdentifier.Builder()
+        .billingaccountid("1223334444-00001")
+        .build(),
+    new ResourceIdentifier.Builder()
+        .imei("864508030084997")
+        .build()
+)
+.build();
+
+cloudConnectorDevicesController.deleteDeviceFromAccountAsync(body).thenAccept(result -> {
+    // TODO success callback handler
+    System.out.println(result);
+}).exceptionally(exception -> {
+    // TODO failure callback handler
+    exception.printStackTrace();
+    return null;
+});
 ```
 

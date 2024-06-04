@@ -36,6 +36,62 @@ public final class SoftwareManagementSubscriptionsV1Controller extends BaseContr
     }
 
     /**
+     * This subscriptions endpoint retrieves an account's current Software Management Service
+     * subscription status.
+     * @param  account  Required parameter: Account identifier in "##########-#####".
+     * @return    Returns the V1AccountSubscription wrapped in ApiResponse response from the API call
+     * @throws    ApiException    Represents error response from the server.
+     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
+     */
+    public ApiResponse<V1AccountSubscription> getAccountSubscriptionStatus(
+            final String account) throws ApiException, IOException {
+        return prepareGetAccountSubscriptionStatusRequest(account).execute();
+    }
+
+    /**
+     * This subscriptions endpoint retrieves an account's current Software Management Service
+     * subscription status.
+     * @param  account  Required parameter: Account identifier in "##########-#####".
+     * @return    Returns the V1AccountSubscription wrapped in ApiResponse response from the API call
+     */
+    public CompletableFuture<ApiResponse<V1AccountSubscription>> getAccountSubscriptionStatusAsync(
+            final String account) {
+        try { 
+            return prepareGetAccountSubscriptionStatusRequest(account).executeAsync(); 
+        } catch (Exception e) {  
+            throw new CompletionException(e); 
+        }
+    }
+
+    /**
+     * Builds the ApiCall object for getAccountSubscriptionStatus.
+     */
+    private ApiCall<ApiResponse<V1AccountSubscription>, ApiException> prepareGetAccountSubscriptionStatusRequest(
+            final String account) throws IOException {
+        return new ApiCall.Builder<ApiResponse<V1AccountSubscription>, ApiException>()
+                .globalConfig(getGlobalConfiguration())
+                .requestBuilder(requestBuilder -> requestBuilder
+                        .server(Server.SOFTWARE_MANAGEMENT_V1.value())
+                        .path("/subscriptions/{account}")
+                        .templateParam(param -> param.key("account").value(account)
+                                .shouldEncode(true))
+                        .headerParam(param -> param.key("accept").value("application/json"))
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
+                        .httpMethod(HttpMethod.GET))
+                .responseHandler(responseHandler -> responseHandler
+                        .responseClassType(ResponseClassType.API_RESPONSE)
+                        .apiResponseDeserializer(
+                                response -> ApiHelper.deserialize(response, V1AccountSubscription.class))
+                        .nullify404(false)
+                        .localErrorCase("400",
+                                 ErrorCase.setReason("Unexpected error.",
+                                (reason, context) -> new FotaV1ResultException(reason, context)))
+                        .globalErrorCase(GLOBAL_ERROR_CASES))
+                .build();
+    }
+
+    /**
      * Returns information about an account's Software Management Services licenses and a list of
      * licensed devices.
      * @param  account  Required parameter: Account identifier in "##########-#####".
@@ -96,62 +152,6 @@ public final class SoftwareManagementSubscriptionsV1Controller extends BaseContr
                         .responseClassType(ResponseClassType.API_RESPONSE)
                         .apiResponseDeserializer(
                                 response -> ApiHelper.deserialize(response, AccountLicenseInfo.class))
-                        .nullify404(false)
-                        .localErrorCase("400",
-                                 ErrorCase.setReason("Unexpected error.",
-                                (reason, context) -> new FotaV1ResultException(reason, context)))
-                        .globalErrorCase(GLOBAL_ERROR_CASES))
-                .build();
-    }
-
-    /**
-     * This subscriptions endpoint retrieves an account's current Software Management Service
-     * subscription status.
-     * @param  account  Required parameter: Account identifier in "##########-#####".
-     * @return    Returns the V1AccountSubscription wrapped in ApiResponse response from the API call
-     * @throws    ApiException    Represents error response from the server.
-     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
-     */
-    public ApiResponse<V1AccountSubscription> getAccountSubscriptionStatus(
-            final String account) throws ApiException, IOException {
-        return prepareGetAccountSubscriptionStatusRequest(account).execute();
-    }
-
-    /**
-     * This subscriptions endpoint retrieves an account's current Software Management Service
-     * subscription status.
-     * @param  account  Required parameter: Account identifier in "##########-#####".
-     * @return    Returns the V1AccountSubscription wrapped in ApiResponse response from the API call
-     */
-    public CompletableFuture<ApiResponse<V1AccountSubscription>> getAccountSubscriptionStatusAsync(
-            final String account) {
-        try { 
-            return prepareGetAccountSubscriptionStatusRequest(account).executeAsync(); 
-        } catch (Exception e) {  
-            throw new CompletionException(e); 
-        }
-    }
-
-    /**
-     * Builds the ApiCall object for getAccountSubscriptionStatus.
-     */
-    private ApiCall<ApiResponse<V1AccountSubscription>, ApiException> prepareGetAccountSubscriptionStatusRequest(
-            final String account) throws IOException {
-        return new ApiCall.Builder<ApiResponse<V1AccountSubscription>, ApiException>()
-                .globalConfig(getGlobalConfiguration())
-                .requestBuilder(requestBuilder -> requestBuilder
-                        .server(Server.SOFTWARE_MANAGEMENT_V1.value())
-                        .path("/subscriptions/{account}")
-                        .templateParam(param -> param.key("account").value(account)
-                                .shouldEncode(true))
-                        .headerParam(param -> param.key("accept").value("application/json"))
-                        .withAuth(auth -> auth
-                                .add("oAuth2"))
-                        .httpMethod(HttpMethod.GET))
-                .responseHandler(responseHandler -> responseHandler
-                        .responseClassType(ResponseClassType.API_RESPONSE)
-                        .apiResponseDeserializer(
-                                response -> ApiHelper.deserialize(response, V1AccountSubscription.class))
                         .nullify404(false)
                         .localErrorCase("400",
                                  ErrorCase.setReason("Unexpected error.",

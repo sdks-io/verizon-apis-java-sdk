@@ -42,6 +42,109 @@ public final class TargetsController extends BaseController {
     }
 
     /**
+     * Search for targets by property values. Returns an array of all matching target resources.
+     * @param  body  Required parameter: Search for targets by property values.
+     * @return    Returns the List of Target wrapped in ApiResponse response from the API call
+     * @throws    ApiException    Represents error response from the server.
+     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
+     */
+    public ApiResponse<List<Target>> queryTarget(
+            final QueryTargetRequest body) throws ApiException, IOException {
+        return prepareQueryTargetRequest(body).execute();
+    }
+
+    /**
+     * Search for targets by property values. Returns an array of all matching target resources.
+     * @param  body  Required parameter: Search for targets by property values.
+     * @return    Returns the List of Target wrapped in ApiResponse response from the API call
+     */
+    public CompletableFuture<ApiResponse<List<Target>>> queryTargetAsync(
+            final QueryTargetRequest body) {
+        try { 
+            return prepareQueryTargetRequest(body).executeAsync(); 
+        } catch (Exception e) {  
+            throw new CompletionException(e); 
+        }
+    }
+
+    /**
+     * Builds the ApiCall object for queryTarget.
+     */
+    private ApiCall<ApiResponse<List<Target>>, ApiException> prepareQueryTargetRequest(
+            final QueryTargetRequest body) throws JsonProcessingException, IOException {
+        return new ApiCall.Builder<ApiResponse<List<Target>>, ApiException>()
+                .globalConfig(getGlobalConfiguration())
+                .requestBuilder(requestBuilder -> requestBuilder
+                        .server(Server.CLOUD_CONNECTOR.value())
+                        .path("/targets/actions/query")
+                        .bodyParam(param -> param.value(body))
+                        .bodySerializer(() ->  ApiHelper.serialize(body))
+                        .headerParam(param -> param.key("Content-Type")
+                                .value("application/json").isRequired(false))
+                        .headerParam(param -> param.key("accept").value("application/json"))
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
+                        .httpMethod(HttpMethod.POST))
+                .responseHandler(responseHandler -> responseHandler
+                        .responseClassType(ResponseClassType.API_RESPONSE)
+                        .apiResponseDeserializer(
+                                response -> ApiHelper.deserializeArray(response,
+                                        Target[].class))
+                        .nullify404(false)
+                        .globalErrorCase(GLOBAL_ERROR_CASES))
+                .build();
+    }
+
+    /**
+     * Remove a target from a ThingSpace account.
+     * @param  body  Required parameter: The request body identifies the target to delete.
+     * @throws    ApiException    Represents error response from the server.
+     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
+     */
+    public ApiResponse<Void> deleteTarget(
+            final DeleteTargetRequest body) throws ApiException, IOException {
+        return prepareDeleteTargetRequest(body).execute();
+    }
+
+    /**
+     * Remove a target from a ThingSpace account.
+     * @param  body  Required parameter: The request body identifies the target to delete.
+     * @return    Returns the Void wrapped in ApiResponse response from the API call
+     */
+    public CompletableFuture<ApiResponse<Void>> deleteTargetAsync(
+            final DeleteTargetRequest body) {
+        try { 
+            return prepareDeleteTargetRequest(body).executeAsync(); 
+        } catch (Exception e) {  
+            throw new CompletionException(e); 
+        }
+    }
+
+    /**
+     * Builds the ApiCall object for deleteTarget.
+     */
+    private ApiCall<ApiResponse<Void>, ApiException> prepareDeleteTargetRequest(
+            final DeleteTargetRequest body) throws JsonProcessingException, IOException {
+        return new ApiCall.Builder<ApiResponse<Void>, ApiException>()
+                .globalConfig(getGlobalConfiguration())
+                .requestBuilder(requestBuilder -> requestBuilder
+                        .server(Server.CLOUD_CONNECTOR.value())
+                        .path("/targets/actions/delete")
+                        .bodyParam(param -> param.value(body))
+                        .bodySerializer(() ->  ApiHelper.serialize(body))
+                        .headerParam(param -> param.key("Content-Type")
+                                .value("application/json").isRequired(false))
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
+                        .httpMethod(HttpMethod.POST))
+                .responseHandler(responseHandler -> responseHandler
+                        .responseClassType(ResponseClassType.API_RESPONSE)
+                        .nullify404(false)
+                        .globalErrorCase(GLOBAL_ERROR_CASES))
+                .build();
+    }
+
+    /**
      * Define a target to receive data streams, alerts, or callbacks. After creating the target
      * resource, use its ID in a subscription to set up a data stream.
      * @param  body  Required parameter: The request body provides the details of the target that
@@ -99,55 +202,6 @@ public final class TargetsController extends BaseController {
     }
 
     /**
-     * Remove a target from a ThingSpace account.
-     * @param  body  Required parameter: The request body identifies the target to delete.
-     * @throws    ApiException    Represents error response from the server.
-     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
-     */
-    public ApiResponse<Void> deleteTarget(
-            final DeleteTargetRequest body) throws ApiException, IOException {
-        return prepareDeleteTargetRequest(body).execute();
-    }
-
-    /**
-     * Remove a target from a ThingSpace account.
-     * @param  body  Required parameter: The request body identifies the target to delete.
-     * @return    Returns the Void wrapped in ApiResponse response from the API call
-     */
-    public CompletableFuture<ApiResponse<Void>> deleteTargetAsync(
-            final DeleteTargetRequest body) {
-        try { 
-            return prepareDeleteTargetRequest(body).executeAsync(); 
-        } catch (Exception e) {  
-            throw new CompletionException(e); 
-        }
-    }
-
-    /**
-     * Builds the ApiCall object for deleteTarget.
-     */
-    private ApiCall<ApiResponse<Void>, ApiException> prepareDeleteTargetRequest(
-            final DeleteTargetRequest body) throws JsonProcessingException, IOException {
-        return new ApiCall.Builder<ApiResponse<Void>, ApiException>()
-                .globalConfig(getGlobalConfiguration())
-                .requestBuilder(requestBuilder -> requestBuilder
-                        .server(Server.CLOUD_CONNECTOR.value())
-                        .path("/targets/actions/delete")
-                        .bodyParam(param -> param.value(body))
-                        .bodySerializer(() ->  ApiHelper.serialize(body))
-                        .headerParam(param -> param.key("Content-Type")
-                                .value("application/json").isRequired(false))
-                        .withAuth(auth -> auth
-                                .add("oAuth2"))
-                        .httpMethod(HttpMethod.POST))
-                .responseHandler(responseHandler -> responseHandler
-                        .responseClassType(ResponseClassType.API_RESPONSE)
-                        .nullify404(false)
-                        .globalErrorCase(GLOBAL_ERROR_CASES))
-                .build();
-    }
-
-    /**
      * Create a unique string that ThingSpace will pass to AWS for increased security.
      * @param  body  Required parameter: The request body only contains the authenticating account.
      * @return    Returns the GenerateExternalIDResult wrapped in ApiResponse response from the API call
@@ -193,60 +247,6 @@ public final class TargetsController extends BaseController {
                         .responseClassType(ResponseClassType.API_RESPONSE)
                         .apiResponseDeserializer(
                                 response -> ApiHelper.deserialize(response, GenerateExternalIDResult.class))
-                        .nullify404(false)
-                        .globalErrorCase(GLOBAL_ERROR_CASES))
-                .build();
-    }
-
-    /**
-     * Search for targets by property values. Returns an array of all matching target resources.
-     * @param  body  Required parameter: Search for targets by property values.
-     * @return    Returns the List of Target wrapped in ApiResponse response from the API call
-     * @throws    ApiException    Represents error response from the server.
-     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
-     */
-    public ApiResponse<List<Target>> queryTarget(
-            final QueryTargetRequest body) throws ApiException, IOException {
-        return prepareQueryTargetRequest(body).execute();
-    }
-
-    /**
-     * Search for targets by property values. Returns an array of all matching target resources.
-     * @param  body  Required parameter: Search for targets by property values.
-     * @return    Returns the List of Target wrapped in ApiResponse response from the API call
-     */
-    public CompletableFuture<ApiResponse<List<Target>>> queryTargetAsync(
-            final QueryTargetRequest body) {
-        try { 
-            return prepareQueryTargetRequest(body).executeAsync(); 
-        } catch (Exception e) {  
-            throw new CompletionException(e); 
-        }
-    }
-
-    /**
-     * Builds the ApiCall object for queryTarget.
-     */
-    private ApiCall<ApiResponse<List<Target>>, ApiException> prepareQueryTargetRequest(
-            final QueryTargetRequest body) throws JsonProcessingException, IOException {
-        return new ApiCall.Builder<ApiResponse<List<Target>>, ApiException>()
-                .globalConfig(getGlobalConfiguration())
-                .requestBuilder(requestBuilder -> requestBuilder
-                        .server(Server.CLOUD_CONNECTOR.value())
-                        .path("/targets/actions/query")
-                        .bodyParam(param -> param.value(body))
-                        .bodySerializer(() ->  ApiHelper.serialize(body))
-                        .headerParam(param -> param.key("Content-Type")
-                                .value("application/json").isRequired(false))
-                        .headerParam(param -> param.key("accept").value("application/json"))
-                        .withAuth(auth -> auth
-                                .add("oAuth2"))
-                        .httpMethod(HttpMethod.POST))
-                .responseHandler(responseHandler -> responseHandler
-                        .responseClassType(ResponseClassType.API_RESPONSE)
-                        .apiResponseDeserializer(
-                                response -> ApiHelper.deserializeArray(response,
-                                        Target[].class))
                         .nullify404(false)
                         .globalErrorCase(GLOBAL_ERROR_CASES))
                 .build();

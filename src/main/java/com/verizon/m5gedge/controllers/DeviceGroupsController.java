@@ -99,78 +99,6 @@ public final class DeviceGroupsController extends BaseController {
     }
 
     /**
-     * Make changes to a device group, including changing the name and description, and adding or
-     * removing devices.
-     * @param  aname  Required parameter: Account name.
-     * @param  gname  Required parameter: Group name.
-     * @param  body  Required parameter: Request to update device group.
-     * @return    Returns the ConnectivityManagementSuccessResult wrapped in ApiResponse response from the API call
-     * @throws    ApiException    Represents error response from the server.
-     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
-     */
-    public ApiResponse<ConnectivityManagementSuccessResult> updateDeviceGroup(
-            final String aname,
-            final String gname,
-            final DeviceGroupUpdateRequest body) throws ApiException, IOException {
-        return prepareUpdateDeviceGroupRequest(aname, gname, body).execute();
-    }
-
-    /**
-     * Make changes to a device group, including changing the name and description, and adding or
-     * removing devices.
-     * @param  aname  Required parameter: Account name.
-     * @param  gname  Required parameter: Group name.
-     * @param  body  Required parameter: Request to update device group.
-     * @return    Returns the ConnectivityManagementSuccessResult wrapped in ApiResponse response from the API call
-     */
-    public CompletableFuture<ApiResponse<ConnectivityManagementSuccessResult>> updateDeviceGroupAsync(
-            final String aname,
-            final String gname,
-            final DeviceGroupUpdateRequest body) {
-        try { 
-            return prepareUpdateDeviceGroupRequest(aname, gname, body).executeAsync(); 
-        } catch (Exception e) {  
-            throw new CompletionException(e); 
-        }
-    }
-
-    /**
-     * Builds the ApiCall object for updateDeviceGroup.
-     */
-    private ApiCall<ApiResponse<ConnectivityManagementSuccessResult>, ApiException> prepareUpdateDeviceGroupRequest(
-            final String aname,
-            final String gname,
-            final DeviceGroupUpdateRequest body) throws JsonProcessingException, IOException {
-        return new ApiCall.Builder<ApiResponse<ConnectivityManagementSuccessResult>, ApiException>()
-                .globalConfig(getGlobalConfiguration())
-                .requestBuilder(requestBuilder -> requestBuilder
-                        .server(Server.THINGSPACE.value())
-                        .path("/m2m/v1/groups/{aname}/name/{gname}")
-                        .bodyParam(param -> param.value(body))
-                        .bodySerializer(() ->  ApiHelper.serialize(body))
-                        .templateParam(param -> param.key("aname").value(aname)
-                                .shouldEncode(true))
-                        .templateParam(param -> param.key("gname").value(gname)
-                                .shouldEncode(true))
-                        .headerParam(param -> param.key("Content-Type")
-                                .value("application/json").isRequired(false))
-                        .headerParam(param -> param.key("accept").value("application/json"))
-                        .withAuth(auth -> auth
-                                .add("oAuth2"))
-                        .httpMethod(HttpMethod.PUT))
-                .responseHandler(responseHandler -> responseHandler
-                        .responseClassType(ResponseClassType.API_RESPONSE)
-                        .apiResponseDeserializer(
-                                response -> ApiHelper.deserialize(response, ConnectivityManagementSuccessResult.class))
-                        .nullify404(false)
-                        .localErrorCase("400",
-                                 ErrorCase.setReason("Error response.",
-                                (reason, context) -> new ConnectivityManagementResultException(reason, context)))
-                        .globalErrorCase(GLOBAL_ERROR_CASES))
-                .build();
-    }
-
-    /**
      * Returns a list of all device groups in a specified account.
      * @param  aname  Required parameter: Account name.
      * @return    Returns the List of DeviceGroup wrapped in ApiResponse response from the API call
@@ -217,69 +145,6 @@ public final class DeviceGroupsController extends BaseController {
                         .apiResponseDeserializer(
                                 response -> ApiHelper.deserializeArray(response,
                                         DeviceGroup[].class))
-                        .nullify404(false)
-                        .localErrorCase("400",
-                                 ErrorCase.setReason("Error response.",
-                                (reason, context) -> new ConnectivityManagementResultException(reason, context)))
-                        .globalErrorCase(GLOBAL_ERROR_CASES))
-                .build();
-    }
-
-    /**
-     * Deletes a device group from the account. Devices in the group are moved to the default device
-     * group and are not deleted from the account.
-     * @param  aname  Required parameter: Account name.
-     * @param  gname  Required parameter: Group name.
-     * @return    Returns the ConnectivityManagementSuccessResult wrapped in ApiResponse response from the API call
-     * @throws    ApiException    Represents error response from the server.
-     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
-     */
-    public ApiResponse<ConnectivityManagementSuccessResult> deleteDeviceGroup(
-            final String aname,
-            final String gname) throws ApiException, IOException {
-        return prepareDeleteDeviceGroupRequest(aname, gname).execute();
-    }
-
-    /**
-     * Deletes a device group from the account. Devices in the group are moved to the default device
-     * group and are not deleted from the account.
-     * @param  aname  Required parameter: Account name.
-     * @param  gname  Required parameter: Group name.
-     * @return    Returns the ConnectivityManagementSuccessResult wrapped in ApiResponse response from the API call
-     */
-    public CompletableFuture<ApiResponse<ConnectivityManagementSuccessResult>> deleteDeviceGroupAsync(
-            final String aname,
-            final String gname) {
-        try { 
-            return prepareDeleteDeviceGroupRequest(aname, gname).executeAsync(); 
-        } catch (Exception e) {  
-            throw new CompletionException(e); 
-        }
-    }
-
-    /**
-     * Builds the ApiCall object for deleteDeviceGroup.
-     */
-    private ApiCall<ApiResponse<ConnectivityManagementSuccessResult>, ApiException> prepareDeleteDeviceGroupRequest(
-            final String aname,
-            final String gname) throws IOException {
-        return new ApiCall.Builder<ApiResponse<ConnectivityManagementSuccessResult>, ApiException>()
-                .globalConfig(getGlobalConfiguration())
-                .requestBuilder(requestBuilder -> requestBuilder
-                        .server(Server.THINGSPACE.value())
-                        .path("/m2m/v1/groups/{aname}/name/{gname}")
-                        .templateParam(param -> param.key("aname").value(aname)
-                                .shouldEncode(true))
-                        .templateParam(param -> param.key("gname").value(gname)
-                                .shouldEncode(true))
-                        .headerParam(param -> param.key("accept").value("application/json"))
-                        .withAuth(auth -> auth
-                                .add("oAuth2"))
-                        .httpMethod(HttpMethod.DELETE))
-                .responseHandler(responseHandler -> responseHandler
-                        .responseClassType(ResponseClassType.API_RESPONSE)
-                        .apiResponseDeserializer(
-                                response -> ApiHelper.deserialize(response, ConnectivityManagementSuccessResult.class))
                         .nullify404(false)
                         .localErrorCase("400",
                                  ErrorCase.setReason("Error response.",
@@ -352,6 +217,141 @@ public final class DeviceGroupsController extends BaseController {
                         .responseClassType(ResponseClassType.API_RESPONSE)
                         .apiResponseDeserializer(
                                 response -> ApiHelper.deserialize(response, DeviceGroupDevicesData.class))
+                        .nullify404(false)
+                        .localErrorCase("400",
+                                 ErrorCase.setReason("Error response.",
+                                (reason, context) -> new ConnectivityManagementResultException(reason, context)))
+                        .globalErrorCase(GLOBAL_ERROR_CASES))
+                .build();
+    }
+
+    /**
+     * Make changes to a device group, including changing the name and description, and adding or
+     * removing devices.
+     * @param  aname  Required parameter: Account name.
+     * @param  gname  Required parameter: Group name.
+     * @param  body  Required parameter: Request to update device group.
+     * @return    Returns the ConnectivityManagementSuccessResult wrapped in ApiResponse response from the API call
+     * @throws    ApiException    Represents error response from the server.
+     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
+     */
+    public ApiResponse<ConnectivityManagementSuccessResult> updateDeviceGroup(
+            final String aname,
+            final String gname,
+            final DeviceGroupUpdateRequest body) throws ApiException, IOException {
+        return prepareUpdateDeviceGroupRequest(aname, gname, body).execute();
+    }
+
+    /**
+     * Make changes to a device group, including changing the name and description, and adding or
+     * removing devices.
+     * @param  aname  Required parameter: Account name.
+     * @param  gname  Required parameter: Group name.
+     * @param  body  Required parameter: Request to update device group.
+     * @return    Returns the ConnectivityManagementSuccessResult wrapped in ApiResponse response from the API call
+     */
+    public CompletableFuture<ApiResponse<ConnectivityManagementSuccessResult>> updateDeviceGroupAsync(
+            final String aname,
+            final String gname,
+            final DeviceGroupUpdateRequest body) {
+        try { 
+            return prepareUpdateDeviceGroupRequest(aname, gname, body).executeAsync(); 
+        } catch (Exception e) {  
+            throw new CompletionException(e); 
+        }
+    }
+
+    /**
+     * Builds the ApiCall object for updateDeviceGroup.
+     */
+    private ApiCall<ApiResponse<ConnectivityManagementSuccessResult>, ApiException> prepareUpdateDeviceGroupRequest(
+            final String aname,
+            final String gname,
+            final DeviceGroupUpdateRequest body) throws JsonProcessingException, IOException {
+        return new ApiCall.Builder<ApiResponse<ConnectivityManagementSuccessResult>, ApiException>()
+                .globalConfig(getGlobalConfiguration())
+                .requestBuilder(requestBuilder -> requestBuilder
+                        .server(Server.THINGSPACE.value())
+                        .path("/m2m/v1/groups/{aname}/name/{gname}")
+                        .bodyParam(param -> param.value(body))
+                        .bodySerializer(() ->  ApiHelper.serialize(body))
+                        .templateParam(param -> param.key("aname").value(aname)
+                                .shouldEncode(true))
+                        .templateParam(param -> param.key("gname").value(gname)
+                                .shouldEncode(true))
+                        .headerParam(param -> param.key("Content-Type")
+                                .value("application/json").isRequired(false))
+                        .headerParam(param -> param.key("accept").value("application/json"))
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
+                        .httpMethod(HttpMethod.PUT))
+                .responseHandler(responseHandler -> responseHandler
+                        .responseClassType(ResponseClassType.API_RESPONSE)
+                        .apiResponseDeserializer(
+                                response -> ApiHelper.deserialize(response, ConnectivityManagementSuccessResult.class))
+                        .nullify404(false)
+                        .localErrorCase("400",
+                                 ErrorCase.setReason("Error response.",
+                                (reason, context) -> new ConnectivityManagementResultException(reason, context)))
+                        .globalErrorCase(GLOBAL_ERROR_CASES))
+                .build();
+    }
+
+    /**
+     * Deletes a device group from the account. Devices in the group are moved to the default device
+     * group and are not deleted from the account.
+     * @param  aname  Required parameter: Account name.
+     * @param  gname  Required parameter: Group name.
+     * @return    Returns the ConnectivityManagementSuccessResult wrapped in ApiResponse response from the API call
+     * @throws    ApiException    Represents error response from the server.
+     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
+     */
+    public ApiResponse<ConnectivityManagementSuccessResult> deleteDeviceGroup(
+            final String aname,
+            final String gname) throws ApiException, IOException {
+        return prepareDeleteDeviceGroupRequest(aname, gname).execute();
+    }
+
+    /**
+     * Deletes a device group from the account. Devices in the group are moved to the default device
+     * group and are not deleted from the account.
+     * @param  aname  Required parameter: Account name.
+     * @param  gname  Required parameter: Group name.
+     * @return    Returns the ConnectivityManagementSuccessResult wrapped in ApiResponse response from the API call
+     */
+    public CompletableFuture<ApiResponse<ConnectivityManagementSuccessResult>> deleteDeviceGroupAsync(
+            final String aname,
+            final String gname) {
+        try { 
+            return prepareDeleteDeviceGroupRequest(aname, gname).executeAsync(); 
+        } catch (Exception e) {  
+            throw new CompletionException(e); 
+        }
+    }
+
+    /**
+     * Builds the ApiCall object for deleteDeviceGroup.
+     */
+    private ApiCall<ApiResponse<ConnectivityManagementSuccessResult>, ApiException> prepareDeleteDeviceGroupRequest(
+            final String aname,
+            final String gname) throws IOException {
+        return new ApiCall.Builder<ApiResponse<ConnectivityManagementSuccessResult>, ApiException>()
+                .globalConfig(getGlobalConfiguration())
+                .requestBuilder(requestBuilder -> requestBuilder
+                        .server(Server.THINGSPACE.value())
+                        .path("/m2m/v1/groups/{aname}/name/{gname}")
+                        .templateParam(param -> param.key("aname").value(aname)
+                                .shouldEncode(true))
+                        .templateParam(param -> param.key("gname").value(gname)
+                                .shouldEncode(true))
+                        .headerParam(param -> param.key("accept").value("application/json"))
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
+                        .httpMethod(HttpMethod.DELETE))
+                .responseHandler(responseHandler -> responseHandler
+                        .responseClassType(ResponseClassType.API_RESPONSE)
+                        .apiResponseDeserializer(
+                                response -> ApiHelper.deserialize(response, ConnectivityManagementSuccessResult.class))
                         .nullify404(false)
                         .localErrorCase("400",
                                  ErrorCase.setReason("Error response.",

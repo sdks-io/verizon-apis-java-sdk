@@ -12,75 +12,9 @@ ExclusionsController exclusionsController = client.getExclusionsController();
 
 ## Methods
 
-* [List Excluded Devices](../../doc/controllers/exclusions.md#list-excluded-devices)
 * [Exclude Devices](../../doc/controllers/exclusions.md#exclude-devices)
 * [Remove Devices From Exclusion List](../../doc/controllers/exclusions.md#remove-devices-from-exclusion-list)
-
-
-# List Excluded Devices
-
-This consents endpoint retrieves a list of excluded devices in an account.
-
-```java
-CompletableFuture<ApiResponse<DevicesConsentResult>> listExcludedDevicesAsync(
-    final String account,
-    final String startIndex)
-```
-
-## Parameters
-
-| Parameter | Type | Tags | Description |
-|  --- | --- | --- | --- |
-| `account` | `String` | Template, Required | Account identifier in "##########-#####". |
-| `startIndex` | `String` | Template, Required | Zero-based number of the first record to return. |
-
-## Server
-
-`Server.DEVICE_LOCATION`
-
-## Response Type
-
-[`DevicesConsentResult`](../../doc/models/devices-consent-result.md)
-
-## Example Usage
-
-```java
-String account = "0252012345-00001";
-String startIndex = "0";
-
-exclusionsController.listExcludedDevicesAsync(account, startIndex).thenAccept(result -> {
-    // TODO success callback handler
-    System.out.println(result);
-}).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
-    return null;
-});
-```
-
-## Example Response *(as JSON)*
-
-```json
-{
-  "accountName": "2024009649-00001",
-  "allDevice": false,
-  "hasMoreData": false,
-  "totalCount": 4,
-  "updateTime": "2018-05-18 19:20:50.076 +0000 UTC",
-  "exclusion": [
-    "990003420535375",
-    "420535399000375",
-    "A100003861E585",
-    "205353759900034"
-  ]
-}
-```
-
-## Errors
-
-| HTTP Status Code | Error Description | Exception Class |
-|  --- | --- | --- |
-| 400 | Unexpected error. | [`DeviceLocationResultException`](../../doc/models/device-location-result-exception.md) |
+* [List Excluded Devices](../../doc/controllers/exclusions.md#list-excluded-devices)
 
 
 # Exclude Devices
@@ -184,6 +118,72 @@ exclusionsController.removeDevicesFromExclusionListAsync(accountName, deviceList
 ```json
 {
   "success": true
+}
+```
+
+## Errors
+
+| HTTP Status Code | Error Description | Exception Class |
+|  --- | --- | --- |
+| 400 | Unexpected error. | [`DeviceLocationResultException`](../../doc/models/device-location-result-exception.md) |
+
+
+# List Excluded Devices
+
+This consents endpoint retrieves a list of excluded devices in an account.
+
+```java
+CompletableFuture<ApiResponse<DevicesConsentResult>> listExcludedDevicesAsync(
+    final String account,
+    final String startIndex)
+```
+
+## Parameters
+
+| Parameter | Type | Tags | Description |
+|  --- | --- | --- | --- |
+| `account` | `String` | Template, Required | Account identifier in "##########-#####". |
+| `startIndex` | `String` | Template, Required | Zero-based number of the first record to return. |
+
+## Server
+
+`Server.DEVICE_LOCATION`
+
+## Response Type
+
+[`DevicesConsentResult`](../../doc/models/devices-consent-result.md)
+
+## Example Usage
+
+```java
+String account = "0252012345-00001";
+String startIndex = "0";
+
+exclusionsController.listExcludedDevicesAsync(account, startIndex).thenAccept(result -> {
+    // TODO success callback handler
+    System.out.println(result);
+}).exceptionally(exception -> {
+    // TODO failure callback handler
+    exception.printStackTrace();
+    return null;
+});
+```
+
+## Example Response *(as JSON)*
+
+```json
+{
+  "accountName": "2024009649-00001",
+  "allDevice": false,
+  "hasMoreData": false,
+  "totalCount": 4,
+  "updateTime": "2018-05-18 19:20:50.076 +0000 UTC",
+  "exclusion": [
+    "990003420535375",
+    "420535399000375",
+    "A100003861E585",
+    "205353759900034"
+  ]
 }
 ```
 

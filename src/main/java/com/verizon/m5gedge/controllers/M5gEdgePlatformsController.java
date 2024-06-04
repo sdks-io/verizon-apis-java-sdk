@@ -37,63 +37,6 @@ public final class M5gEdgePlatformsController extends BaseController {
     }
 
     /**
-     * List the geographical regions available, based on the user's bearer token. **Note:** Country
-     * code, Metropolitan area, Area and Zone are future functionality and will currently return a
-     * "null" value.
-     * @return    Returns the ListRegionsResult wrapped in ApiResponse response from the API call
-     * @throws    ApiException    Represents error response from the server.
-     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
-     */
-    public ApiResponse<ListRegionsResult> listRegions() throws ApiException, IOException {
-        return prepareListRegionsRequest().execute();
-    }
-
-    /**
-     * List the geographical regions available, based on the user's bearer token. **Note:** Country
-     * code, Metropolitan area, Area and Zone are future functionality and will currently return a
-     * "null" value.
-     * @return    Returns the ListRegionsResult wrapped in ApiResponse response from the API call
-     */
-    public CompletableFuture<ApiResponse<ListRegionsResult>> listRegionsAsync() {
-        try { 
-            return prepareListRegionsRequest().executeAsync(); 
-        } catch (Exception e) {  
-            throw new CompletionException(e); 
-        }
-    }
-
-    /**
-     * Builds the ApiCall object for listRegions.
-     */
-    private ApiCall<ApiResponse<ListRegionsResult>, ApiException> prepareListRegionsRequest() throws IOException {
-        return new ApiCall.Builder<ApiResponse<ListRegionsResult>, ApiException>()
-                .globalConfig(getGlobalConfiguration())
-                .requestBuilder(requestBuilder -> requestBuilder
-                        .server(Server.EDGE_DISCOVERY.value())
-                        .path("/regions")
-                        .headerParam(param -> param.key("accept").value("application/json"))
-                        .withAuth(auth -> auth
-                                .add("oAuth2"))
-                        .httpMethod(HttpMethod.GET))
-                .responseHandler(responseHandler -> responseHandler
-                        .responseClassType(ResponseClassType.API_RESPONSE)
-                        .apiResponseDeserializer(
-                                response -> ApiHelper.deserialize(response, ListRegionsResult.class))
-                        .nullify404(false)
-                        .localErrorCase("400",
-                                 ErrorCase.setReason("HTTP 400 Bad Request.",
-                                (reason, context) -> new EdgeDiscoveryResultException(reason, context)))
-                        .localErrorCase("401",
-                                 ErrorCase.setReason("HTTP 401 Unauthorized.",
-                                (reason, context) -> new EdgeDiscoveryResultException(reason, context)))
-                        .localErrorCase(ErrorCase.DEFAULT,
-                                 ErrorCase.setReason("HTTP 500 Internal Server Error.",
-                                (reason, context) -> new EdgeDiscoveryResultException(reason, context)))
-                        .globalErrorCase(GLOBAL_ERROR_CASES))
-                .build();
-    }
-
-    /**
      * Returns a list of optimal MEC Platforms where you can register your deployed application.
      * **Note:** If a query is sent with all of the parameters, it will fail with a "400" error. You
      * can search based on the following parameter combinations - region plus Service Profile ID and
@@ -187,6 +130,63 @@ public final class M5gEdgePlatformsController extends BaseController {
                         .responseClassType(ResponseClassType.API_RESPONSE)
                         .apiResponseDeserializer(
                                 response -> ApiHelper.deserialize(response, ListMECPlatformsResult.class))
+                        .nullify404(false)
+                        .localErrorCase("400",
+                                 ErrorCase.setReason("HTTP 400 Bad Request.",
+                                (reason, context) -> new EdgeDiscoveryResultException(reason, context)))
+                        .localErrorCase("401",
+                                 ErrorCase.setReason("HTTP 401 Unauthorized.",
+                                (reason, context) -> new EdgeDiscoveryResultException(reason, context)))
+                        .localErrorCase(ErrorCase.DEFAULT,
+                                 ErrorCase.setReason("HTTP 500 Internal Server Error.",
+                                (reason, context) -> new EdgeDiscoveryResultException(reason, context)))
+                        .globalErrorCase(GLOBAL_ERROR_CASES))
+                .build();
+    }
+
+    /**
+     * List the geographical regions available, based on the user's bearer token. **Note:** Country
+     * code, Metropolitan area, Area and Zone are future functionality and will currently return a
+     * "null" value.
+     * @return    Returns the ListRegionsResult wrapped in ApiResponse response from the API call
+     * @throws    ApiException    Represents error response from the server.
+     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
+     */
+    public ApiResponse<ListRegionsResult> listRegions() throws ApiException, IOException {
+        return prepareListRegionsRequest().execute();
+    }
+
+    /**
+     * List the geographical regions available, based on the user's bearer token. **Note:** Country
+     * code, Metropolitan area, Area and Zone are future functionality and will currently return a
+     * "null" value.
+     * @return    Returns the ListRegionsResult wrapped in ApiResponse response from the API call
+     */
+    public CompletableFuture<ApiResponse<ListRegionsResult>> listRegionsAsync() {
+        try { 
+            return prepareListRegionsRequest().executeAsync(); 
+        } catch (Exception e) {  
+            throw new CompletionException(e); 
+        }
+    }
+
+    /**
+     * Builds the ApiCall object for listRegions.
+     */
+    private ApiCall<ApiResponse<ListRegionsResult>, ApiException> prepareListRegionsRequest() throws IOException {
+        return new ApiCall.Builder<ApiResponse<ListRegionsResult>, ApiException>()
+                .globalConfig(getGlobalConfiguration())
+                .requestBuilder(requestBuilder -> requestBuilder
+                        .server(Server.EDGE_DISCOVERY.value())
+                        .path("/regions")
+                        .headerParam(param -> param.key("accept").value("application/json"))
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
+                        .httpMethod(HttpMethod.GET))
+                .responseHandler(responseHandler -> responseHandler
+                        .responseClassType(ResponseClassType.API_RESPONSE)
+                        .apiResponseDeserializer(
+                                response -> ApiHelper.deserialize(response, ListRegionsResult.class))
                         .nullify404(false)
                         .localErrorCase("400",
                                  ErrorCase.setReason("HTTP 400 Bad Request.",

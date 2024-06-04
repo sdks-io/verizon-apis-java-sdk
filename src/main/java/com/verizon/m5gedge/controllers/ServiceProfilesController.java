@@ -41,59 +41,6 @@ public final class ServiceProfilesController extends BaseController {
     }
 
     /**
-     * List all service profiles registered under your API key.
-     * @return    Returns the ListServiceProfilesResult wrapped in ApiResponse response from the API call
-     * @throws    ApiException    Represents error response from the server.
-     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
-     */
-    public ApiResponse<ListServiceProfilesResult> listServiceProfiles() throws ApiException, IOException {
-        return prepareListServiceProfilesRequest().execute();
-    }
-
-    /**
-     * List all service profiles registered under your API key.
-     * @return    Returns the ListServiceProfilesResult wrapped in ApiResponse response from the API call
-     */
-    public CompletableFuture<ApiResponse<ListServiceProfilesResult>> listServiceProfilesAsync() {
-        try { 
-            return prepareListServiceProfilesRequest().executeAsync(); 
-        } catch (Exception e) {  
-            throw new CompletionException(e); 
-        }
-    }
-
-    /**
-     * Builds the ApiCall object for listServiceProfiles.
-     */
-    private ApiCall<ApiResponse<ListServiceProfilesResult>, ApiException> prepareListServiceProfilesRequest() throws IOException {
-        return new ApiCall.Builder<ApiResponse<ListServiceProfilesResult>, ApiException>()
-                .globalConfig(getGlobalConfiguration())
-                .requestBuilder(requestBuilder -> requestBuilder
-                        .server(Server.EDGE_DISCOVERY.value())
-                        .path("/serviceprofiles")
-                        .headerParam(param -> param.key("accept").value("application/json"))
-                        .withAuth(auth -> auth
-                                .add("oAuth2"))
-                        .httpMethod(HttpMethod.GET))
-                .responseHandler(responseHandler -> responseHandler
-                        .responseClassType(ResponseClassType.API_RESPONSE)
-                        .apiResponseDeserializer(
-                                response -> ApiHelper.deserialize(response, ListServiceProfilesResult.class))
-                        .nullify404(false)
-                        .localErrorCase("400",
-                                 ErrorCase.setReason("HTTP 400 Bad Request.",
-                                (reason, context) -> new EdgeDiscoveryResultException(reason, context)))
-                        .localErrorCase("401",
-                                 ErrorCase.setReason("HTTP 401 Unauthorized.",
-                                (reason, context) -> new EdgeDiscoveryResultException(reason, context)))
-                        .localErrorCase(ErrorCase.DEFAULT,
-                                 ErrorCase.setReason("HTTP 500 Internal Server Error.",
-                                (reason, context) -> new EdgeDiscoveryResultException(reason, context)))
-                        .globalErrorCase(GLOBAL_ERROR_CASES))
-                .build();
-    }
-
-    /**
      * Creates a service profile that describes the resource requirements of a service.
      * @param  body  Required parameter: The request body passes all of the needed parameters to
      *         create a service profile. Parameters will be edited here rather than the
@@ -166,6 +113,59 @@ public final class ServiceProfilesController extends BaseController {
     }
 
     /**
+     * List all service profiles registered under your API key.
+     * @return    Returns the ListServiceProfilesResult wrapped in ApiResponse response from the API call
+     * @throws    ApiException    Represents error response from the server.
+     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
+     */
+    public ApiResponse<ListServiceProfilesResult> listServiceProfiles() throws ApiException, IOException {
+        return prepareListServiceProfilesRequest().execute();
+    }
+
+    /**
+     * List all service profiles registered under your API key.
+     * @return    Returns the ListServiceProfilesResult wrapped in ApiResponse response from the API call
+     */
+    public CompletableFuture<ApiResponse<ListServiceProfilesResult>> listServiceProfilesAsync() {
+        try { 
+            return prepareListServiceProfilesRequest().executeAsync(); 
+        } catch (Exception e) {  
+            throw new CompletionException(e); 
+        }
+    }
+
+    /**
+     * Builds the ApiCall object for listServiceProfiles.
+     */
+    private ApiCall<ApiResponse<ListServiceProfilesResult>, ApiException> prepareListServiceProfilesRequest() throws IOException {
+        return new ApiCall.Builder<ApiResponse<ListServiceProfilesResult>, ApiException>()
+                .globalConfig(getGlobalConfiguration())
+                .requestBuilder(requestBuilder -> requestBuilder
+                        .server(Server.EDGE_DISCOVERY.value())
+                        .path("/serviceprofiles")
+                        .headerParam(param -> param.key("accept").value("application/json"))
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
+                        .httpMethod(HttpMethod.GET))
+                .responseHandler(responseHandler -> responseHandler
+                        .responseClassType(ResponseClassType.API_RESPONSE)
+                        .apiResponseDeserializer(
+                                response -> ApiHelper.deserialize(response, ListServiceProfilesResult.class))
+                        .nullify404(false)
+                        .localErrorCase("400",
+                                 ErrorCase.setReason("HTTP 400 Bad Request.",
+                                (reason, context) -> new EdgeDiscoveryResultException(reason, context)))
+                        .localErrorCase("401",
+                                 ErrorCase.setReason("HTTP 401 Unauthorized.",
+                                (reason, context) -> new EdgeDiscoveryResultException(reason, context)))
+                        .localErrorCase(ErrorCase.DEFAULT,
+                                 ErrorCase.setReason("HTTP 500 Internal Server Error.",
+                                (reason, context) -> new EdgeDiscoveryResultException(reason, context)))
+                        .globalErrorCase(GLOBAL_ERROR_CASES))
+                .build();
+    }
+
+    /**
      * Returns a specified service profile.
      * @param  serviceProfileId  Required parameter: Example:
      * @return    Returns the ResourcesServiceProfileWithId wrapped in ApiResponse response from the API call
@@ -211,66 +211,6 @@ public final class ServiceProfilesController extends BaseController {
                         .responseClassType(ResponseClassType.API_RESPONSE)
                         .apiResponseDeserializer(
                                 response -> ApiHelper.deserialize(response, ResourcesServiceProfileWithId.class))
-                        .nullify404(false)
-                        .localErrorCase("400",
-                                 ErrorCase.setReason("HTTP 400 Bad Request.",
-                                (reason, context) -> new EdgeDiscoveryResultException(reason, context)))
-                        .localErrorCase("401",
-                                 ErrorCase.setReason("HTTP 401 Unauthorized.",
-                                (reason, context) -> new EdgeDiscoveryResultException(reason, context)))
-                        .localErrorCase(ErrorCase.DEFAULT,
-                                 ErrorCase.setReason("HTTP 500 Internal Server Error.",
-                                (reason, context) -> new EdgeDiscoveryResultException(reason, context)))
-                        .globalErrorCase(GLOBAL_ERROR_CASES))
-                .build();
-    }
-
-    /**
-     * Delete Service Profile based on unique service profile ID.
-     * @param  serviceProfileId  Required parameter: Example:
-     * @return    Returns the DeleteServiceProfileResult wrapped in ApiResponse response from the API call
-     * @throws    ApiException    Represents error response from the server.
-     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
-     */
-    public ApiResponse<DeleteServiceProfileResult> deleteServiceProfile(
-            final String serviceProfileId) throws ApiException, IOException {
-        return prepareDeleteServiceProfileRequest(serviceProfileId).execute();
-    }
-
-    /**
-     * Delete Service Profile based on unique service profile ID.
-     * @param  serviceProfileId  Required parameter: Example:
-     * @return    Returns the DeleteServiceProfileResult wrapped in ApiResponse response from the API call
-     */
-    public CompletableFuture<ApiResponse<DeleteServiceProfileResult>> deleteServiceProfileAsync(
-            final String serviceProfileId) {
-        try { 
-            return prepareDeleteServiceProfileRequest(serviceProfileId).executeAsync(); 
-        } catch (Exception e) {  
-            throw new CompletionException(e); 
-        }
-    }
-
-    /**
-     * Builds the ApiCall object for deleteServiceProfile.
-     */
-    private ApiCall<ApiResponse<DeleteServiceProfileResult>, ApiException> prepareDeleteServiceProfileRequest(
-            final String serviceProfileId) throws IOException {
-        return new ApiCall.Builder<ApiResponse<DeleteServiceProfileResult>, ApiException>()
-                .globalConfig(getGlobalConfiguration())
-                .requestBuilder(requestBuilder -> requestBuilder
-                        .server(Server.EDGE_DISCOVERY.value())
-                        .path("/serviceprofiles/{serviceProfileId}")
-                        .templateParam(param -> param.key("serviceProfileId").value(serviceProfileId)
-                                .shouldEncode(true))
-                        .headerParam(param -> param.key("accept").value("application/json"))
-                        .withAuth(auth -> auth
-                                .add("oAuth2"))
-                        .httpMethod(HttpMethod.DELETE))
-                .responseHandler(responseHandler -> responseHandler
-                        .responseClassType(ResponseClassType.API_RESPONSE)
-                        .apiResponseDeserializer(
-                                response -> ApiHelper.deserialize(response, DeleteServiceProfileResult.class))
                         .nullify404(false)
                         .localErrorCase("400",
                                  ErrorCase.setReason("HTTP 400 Bad Request.",
@@ -348,6 +288,66 @@ public final class ServiceProfilesController extends BaseController {
                         .responseClassType(ResponseClassType.API_RESPONSE)
                         .apiResponseDeserializer(
                                 response -> ApiHelper.deserialize(response, UpdateServiceProfileResult.class))
+                        .nullify404(false)
+                        .localErrorCase("400",
+                                 ErrorCase.setReason("HTTP 400 Bad Request.",
+                                (reason, context) -> new EdgeDiscoveryResultException(reason, context)))
+                        .localErrorCase("401",
+                                 ErrorCase.setReason("HTTP 401 Unauthorized.",
+                                (reason, context) -> new EdgeDiscoveryResultException(reason, context)))
+                        .localErrorCase(ErrorCase.DEFAULT,
+                                 ErrorCase.setReason("HTTP 500 Internal Server Error.",
+                                (reason, context) -> new EdgeDiscoveryResultException(reason, context)))
+                        .globalErrorCase(GLOBAL_ERROR_CASES))
+                .build();
+    }
+
+    /**
+     * Delete Service Profile based on unique service profile ID.
+     * @param  serviceProfileId  Required parameter: Example:
+     * @return    Returns the DeleteServiceProfileResult wrapped in ApiResponse response from the API call
+     * @throws    ApiException    Represents error response from the server.
+     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
+     */
+    public ApiResponse<DeleteServiceProfileResult> deleteServiceProfile(
+            final String serviceProfileId) throws ApiException, IOException {
+        return prepareDeleteServiceProfileRequest(serviceProfileId).execute();
+    }
+
+    /**
+     * Delete Service Profile based on unique service profile ID.
+     * @param  serviceProfileId  Required parameter: Example:
+     * @return    Returns the DeleteServiceProfileResult wrapped in ApiResponse response from the API call
+     */
+    public CompletableFuture<ApiResponse<DeleteServiceProfileResult>> deleteServiceProfileAsync(
+            final String serviceProfileId) {
+        try { 
+            return prepareDeleteServiceProfileRequest(serviceProfileId).executeAsync(); 
+        } catch (Exception e) {  
+            throw new CompletionException(e); 
+        }
+    }
+
+    /**
+     * Builds the ApiCall object for deleteServiceProfile.
+     */
+    private ApiCall<ApiResponse<DeleteServiceProfileResult>, ApiException> prepareDeleteServiceProfileRequest(
+            final String serviceProfileId) throws IOException {
+        return new ApiCall.Builder<ApiResponse<DeleteServiceProfileResult>, ApiException>()
+                .globalConfig(getGlobalConfiguration())
+                .requestBuilder(requestBuilder -> requestBuilder
+                        .server(Server.EDGE_DISCOVERY.value())
+                        .path("/serviceprofiles/{serviceProfileId}")
+                        .templateParam(param -> param.key("serviceProfileId").value(serviceProfileId)
+                                .shouldEncode(true))
+                        .headerParam(param -> param.key("accept").value("application/json"))
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
+                        .httpMethod(HttpMethod.DELETE))
+                .responseHandler(responseHandler -> responseHandler
+                        .responseClassType(ResponseClassType.API_RESPONSE)
+                        .apiResponseDeserializer(
+                                response -> ApiHelper.deserialize(response, DeleteServiceProfileResult.class))
                         .nullify404(false)
                         .localErrorCase("400",
                                  ErrorCase.setReason("HTTP 400 Bad Request.",

@@ -40,120 +40,6 @@ public final class WirelessNetworkPerformanceController extends BaseController {
     }
 
     /**
-     * Run a report to view the latest device experience score for specific devices.
-     * @param  body  Required parameter: Request for bulk latest history details.
-     * @return    Returns the WNPRequestResponse wrapped in ApiResponse response from the API call
-     * @throws    ApiException    Represents error response from the server.
-     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
-     */
-    public ApiResponse<WNPRequestResponse> deviceExperienceBulkLatest(
-            final GetDeviceExperienceScoreBulkRequest body) throws ApiException, IOException {
-        return prepareDeviceExperienceBulkLatestRequest(body).execute();
-    }
-
-    /**
-     * Run a report to view the latest device experience score for specific devices.
-     * @param  body  Required parameter: Request for bulk latest history details.
-     * @return    Returns the WNPRequestResponse wrapped in ApiResponse response from the API call
-     */
-    public CompletableFuture<ApiResponse<WNPRequestResponse>> deviceExperienceBulkLatestAsync(
-            final GetDeviceExperienceScoreBulkRequest body) {
-        try { 
-            return prepareDeviceExperienceBulkLatestRequest(body).executeAsync(); 
-        } catch (Exception e) {  
-            throw new CompletionException(e); 
-        }
-    }
-
-    /**
-     * Builds the ApiCall object for deviceExperienceBulkLatest.
-     */
-    private ApiCall<ApiResponse<WNPRequestResponse>, ApiException> prepareDeviceExperienceBulkLatestRequest(
-            final GetDeviceExperienceScoreBulkRequest body) throws JsonProcessingException, IOException {
-        return new ApiCall.Builder<ApiResponse<WNPRequestResponse>, ApiException>()
-                .globalConfig(getGlobalConfiguration())
-                .requestBuilder(requestBuilder -> requestBuilder
-                        .server(Server.THINGSPACE.value())
-                        .path("/m2m/v1/intelligence/device-experience/bulk/latest")
-                        .bodyParam(param -> param.value(body))
-                        .bodySerializer(() ->  ApiHelper.serialize(body))
-                        .headerParam(param -> param.key("Content-Type")
-                                .value("application/json").isRequired(false))
-                        .headerParam(param -> param.key("accept").value("application/json"))
-                        .withAuth(auth -> auth
-                                .add("oAuth2"))
-                        .httpMethod(HttpMethod.POST))
-                .responseHandler(responseHandler -> responseHandler
-                        .responseClassType(ResponseClassType.API_RESPONSE)
-                        .apiResponseDeserializer(
-                                response -> ApiHelper.deserialize(response, WNPRequestResponse.class))
-                        .nullify404(false)
-                        .localErrorCase(ErrorCase.DEFAULT,
-                                 ErrorCase.setReason("Error response",
-                                (reason, context) -> new WNPRestErrorResponseException(reason, context)))
-                        .globalErrorCase(GLOBAL_ERROR_CASES))
-                .build();
-    }
-
-    /**
-     * Identify the direction and general distance of nearby cell sites and the technology supported
-     * by the equipment.
-     * @param  body  Required parameter: Request for cell site proximity.
-     * @return    Returns the WNPRequestResponse wrapped in ApiResponse response from the API call
-     * @throws    ApiException    Represents error response from the server.
-     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
-     */
-    public ApiResponse<WNPRequestResponse> siteProximity(
-            final GetNetworkConditionsRequest body) throws ApiException, IOException {
-        return prepareSiteProximityRequest(body).execute();
-    }
-
-    /**
-     * Identify the direction and general distance of nearby cell sites and the technology supported
-     * by the equipment.
-     * @param  body  Required parameter: Request for cell site proximity.
-     * @return    Returns the WNPRequestResponse wrapped in ApiResponse response from the API call
-     */
-    public CompletableFuture<ApiResponse<WNPRequestResponse>> siteProximityAsync(
-            final GetNetworkConditionsRequest body) {
-        try { 
-            return prepareSiteProximityRequest(body).executeAsync(); 
-        } catch (Exception e) {  
-            throw new CompletionException(e); 
-        }
-    }
-
-    /**
-     * Builds the ApiCall object for siteProximity.
-     */
-    private ApiCall<ApiResponse<WNPRequestResponse>, ApiException> prepareSiteProximityRequest(
-            final GetNetworkConditionsRequest body) throws JsonProcessingException, IOException {
-        return new ApiCall.Builder<ApiResponse<WNPRequestResponse>, ApiException>()
-                .globalConfig(getGlobalConfiguration())
-                .requestBuilder(requestBuilder -> requestBuilder
-                        .server(Server.THINGSPACE.value())
-                        .path("/m2m/v1/intelligence/site-proximity/action/list")
-                        .bodyParam(param -> param.value(body))
-                        .bodySerializer(() ->  ApiHelper.serialize(body))
-                        .headerParam(param -> param.key("Content-Type")
-                                .value("application/json").isRequired(false))
-                        .headerParam(param -> param.key("accept").value("application/json"))
-                        .withAuth(auth -> auth
-                                .add("oAuth2"))
-                        .httpMethod(HttpMethod.POST))
-                .responseHandler(responseHandler -> responseHandler
-                        .responseClassType(ResponseClassType.API_RESPONSE)
-                        .apiResponseDeserializer(
-                                response -> ApiHelper.deserialize(response, WNPRequestResponse.class))
-                        .nullify404(false)
-                        .localErrorCase(ErrorCase.DEFAULT,
-                                 ErrorCase.setReason("Error response",
-                                (reason, context) -> new WNPRestErrorResponseException(reason, context)))
-                        .globalErrorCase(GLOBAL_ERROR_CASES))
-                .build();
-    }
-
-    /**
      * WNP Query for current network condition.
      * @param  body  Required parameter: Request for current network health.
      * @return    Returns the WNPRequestResponse wrapped in ApiResponse response from the API call
@@ -268,6 +154,64 @@ public final class WirelessNetworkPerformanceController extends BaseController {
     }
 
     /**
+     * Identify the direction and general distance of nearby cell sites and the technology supported
+     * by the equipment.
+     * @param  body  Required parameter: Request for cell site proximity.
+     * @return    Returns the WNPRequestResponse wrapped in ApiResponse response from the API call
+     * @throws    ApiException    Represents error response from the server.
+     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
+     */
+    public ApiResponse<WNPRequestResponse> siteProximity(
+            final GetNetworkConditionsRequest body) throws ApiException, IOException {
+        return prepareSiteProximityRequest(body).execute();
+    }
+
+    /**
+     * Identify the direction and general distance of nearby cell sites and the technology supported
+     * by the equipment.
+     * @param  body  Required parameter: Request for cell site proximity.
+     * @return    Returns the WNPRequestResponse wrapped in ApiResponse response from the API call
+     */
+    public CompletableFuture<ApiResponse<WNPRequestResponse>> siteProximityAsync(
+            final GetNetworkConditionsRequest body) {
+        try { 
+            return prepareSiteProximityRequest(body).executeAsync(); 
+        } catch (Exception e) {  
+            throw new CompletionException(e); 
+        }
+    }
+
+    /**
+     * Builds the ApiCall object for siteProximity.
+     */
+    private ApiCall<ApiResponse<WNPRequestResponse>, ApiException> prepareSiteProximityRequest(
+            final GetNetworkConditionsRequest body) throws JsonProcessingException, IOException {
+        return new ApiCall.Builder<ApiResponse<WNPRequestResponse>, ApiException>()
+                .globalConfig(getGlobalConfiguration())
+                .requestBuilder(requestBuilder -> requestBuilder
+                        .server(Server.THINGSPACE.value())
+                        .path("/m2m/v1/intelligence/site-proximity/action/list")
+                        .bodyParam(param -> param.value(body))
+                        .bodySerializer(() ->  ApiHelper.serialize(body))
+                        .headerParam(param -> param.key("Content-Type")
+                                .value("application/json").isRequired(false))
+                        .headerParam(param -> param.key("accept").value("application/json"))
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
+                        .httpMethod(HttpMethod.POST))
+                .responseHandler(responseHandler -> responseHandler
+                        .responseClassType(ResponseClassType.API_RESPONSE)
+                        .apiResponseDeserializer(
+                                response -> ApiHelper.deserialize(response, WNPRequestResponse.class))
+                        .nullify404(false)
+                        .localErrorCase(ErrorCase.DEFAULT,
+                                 ErrorCase.setReason("Error response",
+                                (reason, context) -> new WNPRestErrorResponseException(reason, context)))
+                        .globalErrorCase(GLOBAL_ERROR_CASES))
+                .build();
+    }
+
+    /**
      * A report of a specific device's service scores over a 30 day period.
      * @param  body  Required parameter: Request for a device's 30 day experience.
      * @return    Returns the WNPRequestResponse wrapped in ApiResponse response from the API call
@@ -303,6 +247,62 @@ public final class WirelessNetworkPerformanceController extends BaseController {
                 .requestBuilder(requestBuilder -> requestBuilder
                         .server(Server.THINGSPACE.value())
                         .path("/m2m/v1/intelligence/device-experience/history/30-days")
+                        .bodyParam(param -> param.value(body))
+                        .bodySerializer(() ->  ApiHelper.serialize(body))
+                        .headerParam(param -> param.key("Content-Type")
+                                .value("application/json").isRequired(false))
+                        .headerParam(param -> param.key("accept").value("application/json"))
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
+                        .httpMethod(HttpMethod.POST))
+                .responseHandler(responseHandler -> responseHandler
+                        .responseClassType(ResponseClassType.API_RESPONSE)
+                        .apiResponseDeserializer(
+                                response -> ApiHelper.deserialize(response, WNPRequestResponse.class))
+                        .nullify404(false)
+                        .localErrorCase(ErrorCase.DEFAULT,
+                                 ErrorCase.setReason("Error response",
+                                (reason, context) -> new WNPRestErrorResponseException(reason, context)))
+                        .globalErrorCase(GLOBAL_ERROR_CASES))
+                .build();
+    }
+
+    /**
+     * Run a report to view the latest device experience score for specific devices.
+     * @param  body  Required parameter: Request for bulk latest history details.
+     * @return    Returns the WNPRequestResponse wrapped in ApiResponse response from the API call
+     * @throws    ApiException    Represents error response from the server.
+     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
+     */
+    public ApiResponse<WNPRequestResponse> deviceExperienceBulkLatest(
+            final GetDeviceExperienceScoreBulkRequest body) throws ApiException, IOException {
+        return prepareDeviceExperienceBulkLatestRequest(body).execute();
+    }
+
+    /**
+     * Run a report to view the latest device experience score for specific devices.
+     * @param  body  Required parameter: Request for bulk latest history details.
+     * @return    Returns the WNPRequestResponse wrapped in ApiResponse response from the API call
+     */
+    public CompletableFuture<ApiResponse<WNPRequestResponse>> deviceExperienceBulkLatestAsync(
+            final GetDeviceExperienceScoreBulkRequest body) {
+        try { 
+            return prepareDeviceExperienceBulkLatestRequest(body).executeAsync(); 
+        } catch (Exception e) {  
+            throw new CompletionException(e); 
+        }
+    }
+
+    /**
+     * Builds the ApiCall object for deviceExperienceBulkLatest.
+     */
+    private ApiCall<ApiResponse<WNPRequestResponse>, ApiException> prepareDeviceExperienceBulkLatestRequest(
+            final GetDeviceExperienceScoreBulkRequest body) throws JsonProcessingException, IOException {
+        return new ApiCall.Builder<ApiResponse<WNPRequestResponse>, ApiException>()
+                .globalConfig(getGlobalConfiguration())
+                .requestBuilder(requestBuilder -> requestBuilder
+                        .server(Server.THINGSPACE.value())
+                        .path("/m2m/v1/intelligence/device-experience/bulk/latest")
                         .bodyParam(param -> param.value(body))
                         .bodySerializer(() ->  ApiHelper.serialize(body))
                         .headerParam(param -> param.key("Content-Type")

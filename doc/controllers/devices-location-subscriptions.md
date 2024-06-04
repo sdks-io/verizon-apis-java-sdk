@@ -10,8 +10,64 @@ DevicesLocationSubscriptionsController devicesLocationSubscriptionsController = 
 
 ## Methods
 
-* [Get Location Service Usage](../../doc/controllers/devices-location-subscriptions.md#get-location-service-usage)
 * [Get Location Service Subscription Status](../../doc/controllers/devices-location-subscriptions.md#get-location-service-subscription-status)
+* [Get Location Service Usage](../../doc/controllers/devices-location-subscriptions.md#get-location-service-usage)
+
+
+# Get Location Service Subscription Status
+
+This subscriptions endpoint retrieves an account's current location subscription status.
+
+```java
+CompletableFuture<ApiResponse<DeviceLocationSubscription>> getLocationServiceSubscriptionStatusAsync(
+    final String account)
+```
+
+## Parameters
+
+| Parameter | Type | Tags | Description |
+|  --- | --- | --- | --- |
+| `account` | `String` | Template, Required | Account identifier in "##########-#####". |
+
+## Server
+
+`Server.DEVICE_LOCATION`
+
+## Response Type
+
+[`DeviceLocationSubscription`](../../doc/models/device-location-subscription.md)
+
+## Example Usage
+
+```java
+String account = "0000123456-00001";
+
+devicesLocationSubscriptionsController.getLocationServiceSubscriptionStatusAsync(account).thenAccept(result -> {
+    // TODO success callback handler
+    System.out.println(result);
+}).exceptionally(exception -> {
+    // TODO failure callback handler
+    exception.printStackTrace();
+    return null;
+});
+```
+
+## Example Response *(as JSON)*
+
+```json
+{
+  "accountName": "2024009649-00001",
+  "locType": "TS-LOC-COARSE-CellID-5K",
+  "maxAllowance": "5000",
+  "purchaseTime": "2017-05-10 06:25:25.171 +0000 UTC"
+}
+```
+
+## Errors
+
+| HTTP Status Code | Error Description | Exception Class |
+|  --- | --- | --- |
+| 400 | Unexpected error. | [`DeviceLocationResultException`](../../doc/models/device-location-result-exception.md) |
 
 
 # Get Location Service Usage
@@ -72,62 +128,6 @@ devicesLocationSubscriptionsController.getLocationServiceUsageAsync(body).thenAc
     "transactionsCount": "125"
   },
   "ManagedAccounts": []
-}
-```
-
-## Errors
-
-| HTTP Status Code | Error Description | Exception Class |
-|  --- | --- | --- |
-| 400 | Unexpected error. | [`DeviceLocationResultException`](../../doc/models/device-location-result-exception.md) |
-
-
-# Get Location Service Subscription Status
-
-This subscriptions endpoint retrieves an account's current location subscription status.
-
-```java
-CompletableFuture<ApiResponse<DeviceLocationSubscription>> getLocationServiceSubscriptionStatusAsync(
-    final String account)
-```
-
-## Parameters
-
-| Parameter | Type | Tags | Description |
-|  --- | --- | --- | --- |
-| `account` | `String` | Template, Required | Account identifier in "##########-#####". |
-
-## Server
-
-`Server.DEVICE_LOCATION`
-
-## Response Type
-
-[`DeviceLocationSubscription`](../../doc/models/device-location-subscription.md)
-
-## Example Usage
-
-```java
-String account = "0000123456-00001";
-
-devicesLocationSubscriptionsController.getLocationServiceSubscriptionStatusAsync(account).thenAccept(result -> {
-    // TODO success callback handler
-    System.out.println(result);
-}).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
-    return null;
-});
-```
-
-## Example Response *(as JSON)*
-
-```json
-{
-  "accountName": "2024009649-00001",
-  "locType": "TS-LOC-COARSE-CellID-5K",
-  "maxAllowance": "5000",
-  "purchaseTime": "2017-05-10 06:25:25.171 +0000 UTC"
 }
 ```
 

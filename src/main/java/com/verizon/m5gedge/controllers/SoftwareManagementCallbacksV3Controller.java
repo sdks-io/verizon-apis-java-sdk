@@ -39,37 +39,37 @@ public final class SoftwareManagementCallbacksV3Controller extends BaseControlle
     }
 
     /**
-     * This endpoint allows user to delete a previously registered callback URL.
+     * This endpoint allows user to get the registered callback information.
      * @param  acc  Required parameter: Account identifier.
-     * @return    Returns the FotaV3SuccessResult wrapped in ApiResponse response from the API call
+     * @return    Returns the FotaV3CallbackSummary wrapped in ApiResponse response from the API call
      * @throws    ApiException    Represents error response from the server.
      * @throws    IOException    Signals that an I/O exception of some sort has occurred.
      */
-    public ApiResponse<FotaV3SuccessResult> deregisterCallback(
+    public ApiResponse<FotaV3CallbackSummary> listRegisteredCallbacks(
             final String acc) throws ApiException, IOException {
-        return prepareDeregisterCallbackRequest(acc).execute();
+        return prepareListRegisteredCallbacksRequest(acc).execute();
     }
 
     /**
-     * This endpoint allows user to delete a previously registered callback URL.
+     * This endpoint allows user to get the registered callback information.
      * @param  acc  Required parameter: Account identifier.
-     * @return    Returns the FotaV3SuccessResult wrapped in ApiResponse response from the API call
+     * @return    Returns the FotaV3CallbackSummary wrapped in ApiResponse response from the API call
      */
-    public CompletableFuture<ApiResponse<FotaV3SuccessResult>> deregisterCallbackAsync(
+    public CompletableFuture<ApiResponse<FotaV3CallbackSummary>> listRegisteredCallbacksAsync(
             final String acc) {
         try { 
-            return prepareDeregisterCallbackRequest(acc).executeAsync(); 
+            return prepareListRegisteredCallbacksRequest(acc).executeAsync(); 
         } catch (Exception e) {  
             throw new CompletionException(e); 
         }
     }
 
     /**
-     * Builds the ApiCall object for deregisterCallback.
+     * Builds the ApiCall object for listRegisteredCallbacks.
      */
-    private ApiCall<ApiResponse<FotaV3SuccessResult>, ApiException> prepareDeregisterCallbackRequest(
+    private ApiCall<ApiResponse<FotaV3CallbackSummary>, ApiException> prepareListRegisteredCallbacksRequest(
             final String acc) throws IOException {
-        return new ApiCall.Builder<ApiResponse<FotaV3SuccessResult>, ApiException>()
+        return new ApiCall.Builder<ApiResponse<FotaV3CallbackSummary>, ApiException>()
                 .globalConfig(getGlobalConfiguration())
                 .requestBuilder(requestBuilder -> requestBuilder
                         .server(Server.SOFTWARE_MANAGEMENT_V3.value())
@@ -79,11 +79,11 @@ public final class SoftwareManagementCallbacksV3Controller extends BaseControlle
                         .headerParam(param -> param.key("accept").value("application/json"))
                         .withAuth(auth -> auth
                                 .add("oAuth2"))
-                        .httpMethod(HttpMethod.DELETE))
+                        .httpMethod(HttpMethod.GET))
                 .responseHandler(responseHandler -> responseHandler
                         .responseClassType(ResponseClassType.API_RESPONSE)
                         .apiResponseDeserializer(
-                                response -> ApiHelper.deserialize(response, FotaV3SuccessResult.class))
+                                response -> ApiHelper.deserialize(response, FotaV3CallbackSummary.class))
                         .nullify404(false)
                         .localErrorCase("400",
                                  ErrorCase.setReason("Unexpected error.",
@@ -219,37 +219,37 @@ public final class SoftwareManagementCallbacksV3Controller extends BaseControlle
     }
 
     /**
-     * This endpoint allows user to get the registered callback information.
+     * This endpoint allows user to delete a previously registered callback URL.
      * @param  acc  Required parameter: Account identifier.
-     * @return    Returns the FotaV3CallbackSummary wrapped in ApiResponse response from the API call
+     * @return    Returns the FotaV3SuccessResult wrapped in ApiResponse response from the API call
      * @throws    ApiException    Represents error response from the server.
      * @throws    IOException    Signals that an I/O exception of some sort has occurred.
      */
-    public ApiResponse<FotaV3CallbackSummary> listRegisteredCallbacks(
+    public ApiResponse<FotaV3SuccessResult> deregisterCallback(
             final String acc) throws ApiException, IOException {
-        return prepareListRegisteredCallbacksRequest(acc).execute();
+        return prepareDeregisterCallbackRequest(acc).execute();
     }
 
     /**
-     * This endpoint allows user to get the registered callback information.
+     * This endpoint allows user to delete a previously registered callback URL.
      * @param  acc  Required parameter: Account identifier.
-     * @return    Returns the FotaV3CallbackSummary wrapped in ApiResponse response from the API call
+     * @return    Returns the FotaV3SuccessResult wrapped in ApiResponse response from the API call
      */
-    public CompletableFuture<ApiResponse<FotaV3CallbackSummary>> listRegisteredCallbacksAsync(
+    public CompletableFuture<ApiResponse<FotaV3SuccessResult>> deregisterCallbackAsync(
             final String acc) {
         try { 
-            return prepareListRegisteredCallbacksRequest(acc).executeAsync(); 
+            return prepareDeregisterCallbackRequest(acc).executeAsync(); 
         } catch (Exception e) {  
             throw new CompletionException(e); 
         }
     }
 
     /**
-     * Builds the ApiCall object for listRegisteredCallbacks.
+     * Builds the ApiCall object for deregisterCallback.
      */
-    private ApiCall<ApiResponse<FotaV3CallbackSummary>, ApiException> prepareListRegisteredCallbacksRequest(
+    private ApiCall<ApiResponse<FotaV3SuccessResult>, ApiException> prepareDeregisterCallbackRequest(
             final String acc) throws IOException {
-        return new ApiCall.Builder<ApiResponse<FotaV3CallbackSummary>, ApiException>()
+        return new ApiCall.Builder<ApiResponse<FotaV3SuccessResult>, ApiException>()
                 .globalConfig(getGlobalConfiguration())
                 .requestBuilder(requestBuilder -> requestBuilder
                         .server(Server.SOFTWARE_MANAGEMENT_V3.value())
@@ -259,11 +259,11 @@ public final class SoftwareManagementCallbacksV3Controller extends BaseControlle
                         .headerParam(param -> param.key("accept").value("application/json"))
                         .withAuth(auth -> auth
                                 .add("oAuth2"))
-                        .httpMethod(HttpMethod.GET))
+                        .httpMethod(HttpMethod.DELETE))
                 .responseHandler(responseHandler -> responseHandler
                         .responseClassType(ResponseClassType.API_RESPONSE)
                         .apiResponseDeserializer(
-                                response -> ApiHelper.deserialize(response, FotaV3CallbackSummary.class))
+                                response -> ApiHelper.deserialize(response, FotaV3SuccessResult.class))
                         .nullify404(false)
                         .localErrorCase("400",
                                  ErrorCase.setReason("Unexpected error.",

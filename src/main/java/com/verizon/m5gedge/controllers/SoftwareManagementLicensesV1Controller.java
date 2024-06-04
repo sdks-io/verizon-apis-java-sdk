@@ -41,81 +41,6 @@ public final class SoftwareManagementLicensesV1Controller extends BaseController
     }
 
     /**
-     * Returns a list of devices from which licenses will be removed if the number of MRC licenses
-     * becomes less than the number of assigned licenses.
-     * @deprecated
-     * 
-     * @param  account  Required parameter: Account identifier in "##########-#####".
-     * @param  startIndex  Required parameter: The zero-based number of the first record to return.
-     *         Set startIndex=0 for the first request. If there are more than 1,000 devices in the
-     *         response, set startIndex=1000 for the second request, 2000 for the third request,
-     *         etc.
-     * @return    Returns the V1ListOfLicensesToRemove wrapped in ApiResponse response from the API call
-     * @throws    ApiException    Represents error response from the server.
-     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
-     */
-    @Deprecated
-    public ApiResponse<V1ListOfLicensesToRemove> listLicensesToRemove(
-            final String account,
-            final String startIndex) throws ApiException, IOException {
-        return prepareListLicensesToRemoveRequest(account, startIndex).execute();
-    }
-
-    /**
-     * Returns a list of devices from which licenses will be removed if the number of MRC licenses
-     * becomes less than the number of assigned licenses.
-     * @deprecated
-     * 
-     * @param  account  Required parameter: Account identifier in "##########-#####".
-     * @param  startIndex  Required parameter: The zero-based number of the first record to return.
-     *         Set startIndex=0 for the first request. If there are more than 1,000 devices in the
-     *         response, set startIndex=1000 for the second request, 2000 for the third request,
-     *         etc.
-     * @return    Returns the V1ListOfLicensesToRemove wrapped in ApiResponse response from the API call
-     */
-    @Deprecated
-    public CompletableFuture<ApiResponse<V1ListOfLicensesToRemove>> listLicensesToRemoveAsync(
-            final String account,
-            final String startIndex) {
-        try { 
-            return prepareListLicensesToRemoveRequest(account, startIndex).executeAsync(); 
-        } catch (Exception e) {  
-            throw new CompletionException(e); 
-        }
-    }
-
-    /**
-     * Builds the ApiCall object for listLicensesToRemove.
-     */
-    private ApiCall<ApiResponse<V1ListOfLicensesToRemove>, ApiException> prepareListLicensesToRemoveRequest(
-            final String account,
-            final String startIndex) throws IOException {
-        return new ApiCall.Builder<ApiResponse<V1ListOfLicensesToRemove>, ApiException>()
-                .globalConfig(getGlobalConfiguration())
-                .requestBuilder(requestBuilder -> requestBuilder
-                        .server(Server.SOFTWARE_MANAGEMENT_V1.value())
-                        .path("/licenses/{account}/cancel/index/{startIndex}")
-                        .templateParam(param -> param.key("account").value(account)
-                                .shouldEncode(true))
-                        .templateParam(param -> param.key("startIndex").value(startIndex)
-                                .shouldEncode(true))
-                        .headerParam(param -> param.key("accept").value("application/json"))
-                        .withAuth(auth -> auth
-                                .add("oAuth2"))
-                        .httpMethod(HttpMethod.GET))
-                .responseHandler(responseHandler -> responseHandler
-                        .responseClassType(ResponseClassType.API_RESPONSE)
-                        .apiResponseDeserializer(
-                                response -> ApiHelper.deserialize(response, V1ListOfLicensesToRemove.class))
-                        .nullify404(false)
-                        .localErrorCase("400",
-                                 ErrorCase.setReason("Unexpected error.",
-                                (reason, context) -> new FotaV1ResultException(reason, context)))
-                        .globalErrorCase(GLOBAL_ERROR_CASES))
-                .build();
-    }
-
-    /**
      * Assigns licenses to a specified list of devices so that firmware upgrades can be scheduled
      * for those devices.
      * @deprecated
@@ -378,6 +303,81 @@ public final class SoftwareManagementLicensesV1Controller extends BaseController
                         .responseClassType(ResponseClassType.API_RESPONSE)
                         .apiResponseDeserializer(
                                 response -> ApiHelper.deserialize(response, FotaV1SuccessResult.class))
+                        .nullify404(false)
+                        .localErrorCase("400",
+                                 ErrorCase.setReason("Unexpected error.",
+                                (reason, context) -> new FotaV1ResultException(reason, context)))
+                        .globalErrorCase(GLOBAL_ERROR_CASES))
+                .build();
+    }
+
+    /**
+     * Returns a list of devices from which licenses will be removed if the number of MRC licenses
+     * becomes less than the number of assigned licenses.
+     * @deprecated
+     * 
+     * @param  account  Required parameter: Account identifier in "##########-#####".
+     * @param  startIndex  Required parameter: The zero-based number of the first record to return.
+     *         Set startIndex=0 for the first request. If there are more than 1,000 devices in the
+     *         response, set startIndex=1000 for the second request, 2000 for the third request,
+     *         etc.
+     * @return    Returns the V1ListOfLicensesToRemove wrapped in ApiResponse response from the API call
+     * @throws    ApiException    Represents error response from the server.
+     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
+     */
+    @Deprecated
+    public ApiResponse<V1ListOfLicensesToRemove> listLicensesToRemove(
+            final String account,
+            final String startIndex) throws ApiException, IOException {
+        return prepareListLicensesToRemoveRequest(account, startIndex).execute();
+    }
+
+    /**
+     * Returns a list of devices from which licenses will be removed if the number of MRC licenses
+     * becomes less than the number of assigned licenses.
+     * @deprecated
+     * 
+     * @param  account  Required parameter: Account identifier in "##########-#####".
+     * @param  startIndex  Required parameter: The zero-based number of the first record to return.
+     *         Set startIndex=0 for the first request. If there are more than 1,000 devices in the
+     *         response, set startIndex=1000 for the second request, 2000 for the third request,
+     *         etc.
+     * @return    Returns the V1ListOfLicensesToRemove wrapped in ApiResponse response from the API call
+     */
+    @Deprecated
+    public CompletableFuture<ApiResponse<V1ListOfLicensesToRemove>> listLicensesToRemoveAsync(
+            final String account,
+            final String startIndex) {
+        try { 
+            return prepareListLicensesToRemoveRequest(account, startIndex).executeAsync(); 
+        } catch (Exception e) {  
+            throw new CompletionException(e); 
+        }
+    }
+
+    /**
+     * Builds the ApiCall object for listLicensesToRemove.
+     */
+    private ApiCall<ApiResponse<V1ListOfLicensesToRemove>, ApiException> prepareListLicensesToRemoveRequest(
+            final String account,
+            final String startIndex) throws IOException {
+        return new ApiCall.Builder<ApiResponse<V1ListOfLicensesToRemove>, ApiException>()
+                .globalConfig(getGlobalConfiguration())
+                .requestBuilder(requestBuilder -> requestBuilder
+                        .server(Server.SOFTWARE_MANAGEMENT_V1.value())
+                        .path("/licenses/{account}/cancel/index/{startIndex}")
+                        .templateParam(param -> param.key("account").value(account)
+                                .shouldEncode(true))
+                        .templateParam(param -> param.key("startIndex").value(startIndex)
+                                .shouldEncode(true))
+                        .headerParam(param -> param.key("accept").value("application/json"))
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
+                        .httpMethod(HttpMethod.GET))
+                .responseHandler(responseHandler -> responseHandler
+                        .responseClassType(ResponseClassType.API_RESPONSE)
+                        .apiResponseDeserializer(
+                                response -> ApiHelper.deserialize(response, V1ListOfLicensesToRemove.class))
                         .nullify404(false)
                         .localErrorCase("400",
                                  ErrorCase.setReason("Unexpected error.",

@@ -11,10 +11,10 @@ ServiceEndpointsController serviceEndpointsController = client.getServiceEndpoin
 ## Methods
 
 * [List Optimal Service Endpoints](../../doc/controllers/service-endpoints.md#list-optimal-service-endpoints)
-* [Update Service Endpoint](../../doc/controllers/service-endpoints.md#update-service-endpoint)
-* [Get Service Endpoint](../../doc/controllers/service-endpoints.md#get-service-endpoint)
-* [List All Service Endpoints](../../doc/controllers/service-endpoints.md#list-all-service-endpoints)
 * [Register Service Endpoints](../../doc/controllers/service-endpoints.md#register-service-endpoints)
+* [List All Service Endpoints](../../doc/controllers/service-endpoints.md#list-all-service-endpoints)
+* [Get Service Endpoint](../../doc/controllers/service-endpoints.md#get-service-endpoint)
+* [Update Service Endpoint](../../doc/controllers/service-endpoints.md#update-service-endpoint)
 * [Deregister Service Endpoint](../../doc/controllers/service-endpoints.md#deregister-service-endpoint)
 
 
@@ -100,13 +100,12 @@ serviceEndpointsController.listOptimalServiceEndpointsAsync(region, null, uEIden
 | Default | HTTP 500 Internal Server Error. | [`EdgeDiscoveryResultException`](../../doc/models/edge-discovery-result-exception.md) |
 
 
-# Update Service Endpoint
+# Register Service Endpoints
 
-Update registered Service Endpoint information.
+Register Service Endpoints of a deployed application to specified MEC Platforms.
 
 ```java
-CompletableFuture<ApiResponse<UpdateServiceEndpointResult>> updateServiceEndpointAsync(
-    final String serviceEndpointsId,
+CompletableFuture<ApiResponse<RegisterServiceEndpointResult>> registerServiceEndpointsAsync(
     final List<ResourcesEdgeHostedServiceWithProfileId> body)
 ```
 
@@ -114,8 +113,7 @@ CompletableFuture<ApiResponse<UpdateServiceEndpointResult>> updateServiceEndpoin
 
 | Parameter | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `serviceEndpointsId` | `String` | Template, Required | A system-defined string identifier representing one or more registered Service Endpoints. |
-| `body` | [`List<ResourcesEdgeHostedServiceWithProfileId>`](../../doc/models/resources-edge-hosted-service-with-profile-id.md) | Body, Required | Data needed for Service Endpoint information. The request body passes the rest of the needed parameters to create a service endpoint. Parameters other than `serviceEndpointsId` will be edited here rather than the **Parameters** section above. The `ern`,`applicationServerProviderId` and `applicationId` parameters are required. **Note:** Currently, the only valid value for `applicationServerProviderId`is **AWS**. |
+| `body` | [`List<ResourcesEdgeHostedServiceWithProfileId>`](../../doc/models/resources-edge-hosted-service-with-profile-id.md) | Body, Required | An array of Service Endpoint data for a deployed application. The request body passes all of the needed parameters to create a service endpoint. Parameters will be edited here rather than the **Parameters** section above. The `ern`,`applicationServerProviderId`, `applicationId` and `serviceProfileID` parameters are required. **Note:** Currently, the only valid value for `applicationServerProviderId`is **AWS**. Also, if you do not know one of the optional values (i.e. URI), you can erase the line from the query by back-spacing over it. |
 
 ## Requires scope
 
@@ -125,12 +123,11 @@ CompletableFuture<ApiResponse<UpdateServiceEndpointResult>> updateServiceEndpoin
 
 ## Response Type
 
-[`UpdateServiceEndpointResult`](../../doc/models/update-service-endpoint-result.md)
+[`RegisterServiceEndpointResult`](../../doc/models/register-service-endpoint-result.md)
 
 ## Example Usage
 
 ```java
-String serviceEndpointsId = "43f3f7bb-d6c5-4bad-b081-9a3a0df2db98";
 List<ResourcesEdgeHostedServiceWithProfileId> body = Arrays.asList(
     new ResourcesEdgeHostedServiceWithProfileId.Builder()
         .ern("us-east-1-wl1-atl-wlz-1")
@@ -148,7 +145,47 @@ List<ResourcesEdgeHostedServiceWithProfileId> body = Arrays.asList(
         .build()
 );
 
-serviceEndpointsController.updateServiceEndpointAsync(serviceEndpointsId, body).thenAccept(result -> {
+serviceEndpointsController.registerServiceEndpointsAsync(body).thenAccept(result -> {
+    // TODO success callback handler
+    System.out.println(result);
+}).exceptionally(exception -> {
+    // TODO failure callback handler
+    exception.printStackTrace();
+    return null;
+});
+```
+
+## Errors
+
+| HTTP Status Code | Error Description | Exception Class |
+|  --- | --- | --- |
+| 400 | HTTP 400 Bad Request. | [`EdgeDiscoveryResultException`](../../doc/models/edge-discovery-result-exception.md) |
+| 401 | HTTP 401 Unauthorized. | [`EdgeDiscoveryResultException`](../../doc/models/edge-discovery-result-exception.md) |
+| Default | HTTP 500 Internal Server Error. | [`EdgeDiscoveryResultException`](../../doc/models/edge-discovery-result-exception.md) |
+
+
+# List All Service Endpoints
+
+Returns a list of all registered service endpoints.
+
+```java
+CompletableFuture<ApiResponse<ListAllServiceEndpointsResult>> listAllServiceEndpointsAsync()
+```
+
+## Requires scope
+
+### oAuth2
+
+`discovery:read`, `serviceprofile:read`, `serviceprofile:write`, `serviceregistry:read`, `serviceregistry:write`, `ts.application.ro`, `ts.mec.fullaccess`, `ts.mec.limitaccess`
+
+## Response Type
+
+[`ListAllServiceEndpointsResult`](../../doc/models/list-all-service-endpoints-result.md)
+
+## Example Usage
+
+```java
+serviceEndpointsController.listAllServiceEndpointsAsync().thenAccept(result -> {
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
@@ -162,8 +199,10 @@ serviceEndpointsController.updateServiceEndpointAsync(serviceEndpointsId, body).
 
 ```json
 {
-  "status": "Success",
-  "message": "EdgeAppServices are updated"
+  "status": "success",
+  "data": [
+    "serviceEndpointsId"
+  ]
 }
 ```
 
@@ -246,63 +285,13 @@ serviceEndpointsController.getServiceEndpointAsync(serviceEndpointsId).thenAccep
 | Default | HTTP 500 Internal Server Error. | [`EdgeDiscoveryResultException`](../../doc/models/edge-discovery-result-exception.md) |
 
 
-# List All Service Endpoints
+# Update Service Endpoint
 
-Returns a list of all registered service endpoints.
-
-```java
-CompletableFuture<ApiResponse<ListAllServiceEndpointsResult>> listAllServiceEndpointsAsync()
-```
-
-## Requires scope
-
-### oAuth2
-
-`discovery:read`, `serviceprofile:read`, `serviceprofile:write`, `serviceregistry:read`, `serviceregistry:write`, `ts.application.ro`, `ts.mec.fullaccess`, `ts.mec.limitaccess`
-
-## Response Type
-
-[`ListAllServiceEndpointsResult`](../../doc/models/list-all-service-endpoints-result.md)
-
-## Example Usage
+Update registered Service Endpoint information.
 
 ```java
-serviceEndpointsController.listAllServiceEndpointsAsync().thenAccept(result -> {
-    // TODO success callback handler
-    System.out.println(result);
-}).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
-    return null;
-});
-```
-
-## Example Response *(as JSON)*
-
-```json
-{
-  "status": "success",
-  "data": [
-    "serviceEndpointsId"
-  ]
-}
-```
-
-## Errors
-
-| HTTP Status Code | Error Description | Exception Class |
-|  --- | --- | --- |
-| 400 | HTTP 400 Bad Request. | [`EdgeDiscoveryResultException`](../../doc/models/edge-discovery-result-exception.md) |
-| 401 | HTTP 401 Unauthorized. | [`EdgeDiscoveryResultException`](../../doc/models/edge-discovery-result-exception.md) |
-| Default | HTTP 500 Internal Server Error. | [`EdgeDiscoveryResultException`](../../doc/models/edge-discovery-result-exception.md) |
-
-
-# Register Service Endpoints
-
-Register Service Endpoints of a deployed application to specified MEC Platforms.
-
-```java
-CompletableFuture<ApiResponse<RegisterServiceEndpointResult>> registerServiceEndpointsAsync(
+CompletableFuture<ApiResponse<UpdateServiceEndpointResult>> updateServiceEndpointAsync(
+    final String serviceEndpointsId,
     final List<ResourcesEdgeHostedServiceWithProfileId> body)
 ```
 
@@ -310,7 +299,8 @@ CompletableFuture<ApiResponse<RegisterServiceEndpointResult>> registerServiceEnd
 
 | Parameter | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `body` | [`List<ResourcesEdgeHostedServiceWithProfileId>`](../../doc/models/resources-edge-hosted-service-with-profile-id.md) | Body, Required | An array of Service Endpoint data for a deployed application. The request body passes all of the needed parameters to create a service endpoint. Parameters will be edited here rather than the **Parameters** section above. The `ern`,`applicationServerProviderId`, `applicationId` and `serviceProfileID` parameters are required. **Note:** Currently, the only valid value for `applicationServerProviderId`is **AWS**. Also, if you do not know one of the optional values (i.e. URI), you can erase the line from the query by back-spacing over it. |
+| `serviceEndpointsId` | `String` | Template, Required | A system-defined string identifier representing one or more registered Service Endpoints. |
+| `body` | [`List<ResourcesEdgeHostedServiceWithProfileId>`](../../doc/models/resources-edge-hosted-service-with-profile-id.md) | Body, Required | Data needed for Service Endpoint information. The request body passes the rest of the needed parameters to create a service endpoint. Parameters other than `serviceEndpointsId` will be edited here rather than the **Parameters** section above. The `ern`,`applicationServerProviderId` and `applicationId` parameters are required. **Note:** Currently, the only valid value for `applicationServerProviderId`is **AWS**. |
 
 ## Requires scope
 
@@ -320,11 +310,12 @@ CompletableFuture<ApiResponse<RegisterServiceEndpointResult>> registerServiceEnd
 
 ## Response Type
 
-[`RegisterServiceEndpointResult`](../../doc/models/register-service-endpoint-result.md)
+[`UpdateServiceEndpointResult`](../../doc/models/update-service-endpoint-result.md)
 
 ## Example Usage
 
 ```java
+String serviceEndpointsId = "43f3f7bb-d6c5-4bad-b081-9a3a0df2db98";
 List<ResourcesEdgeHostedServiceWithProfileId> body = Arrays.asList(
     new ResourcesEdgeHostedServiceWithProfileId.Builder()
         .ern("us-east-1-wl1-atl-wlz-1")
@@ -342,7 +333,7 @@ List<ResourcesEdgeHostedServiceWithProfileId> body = Arrays.asList(
         .build()
 );
 
-serviceEndpointsController.registerServiceEndpointsAsync(body).thenAccept(result -> {
+serviceEndpointsController.updateServiceEndpointAsync(serviceEndpointsId, body).thenAccept(result -> {
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
@@ -350,6 +341,15 @@ serviceEndpointsController.registerServiceEndpointsAsync(body).thenAccept(result
     exception.printStackTrace();
     return null;
 });
+```
+
+## Example Response *(as JSON)*
+
+```json
+{
+  "status": "Success",
+  "message": "EdgeAppServices are updated"
+}
 ```
 
 ## Errors

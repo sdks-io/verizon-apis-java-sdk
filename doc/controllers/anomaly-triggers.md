@@ -11,10 +11,10 @@ AnomalyTriggersController anomalyTriggersController = client.getAnomalyTriggersC
 ## Methods
 
 * [List Anomaly Detection Triggers](../../doc/controllers/anomaly-triggers.md#list-anomaly-detection-triggers)
-* [Create Anomaly Detection Trigger](../../doc/controllers/anomaly-triggers.md#create-anomaly-detection-trigger)
-* [Delete Anomaly Detection Trigger](../../doc/controllers/anomaly-triggers.md#delete-anomaly-detection-trigger)
-* [List Anomaly Detection Trigger Settings](../../doc/controllers/anomaly-triggers.md#list-anomaly-detection-trigger-settings)
 * [Update Anomaly Detection Trigger](../../doc/controllers/anomaly-triggers.md#update-anomaly-detection-trigger)
+* [Create Anomaly Detection Trigger](../../doc/controllers/anomaly-triggers.md#create-anomaly-detection-trigger)
+* [List Anomaly Detection Trigger Settings](../../doc/controllers/anomaly-triggers.md#list-anomaly-detection-trigger-settings)
+* [Delete Anomaly Detection Trigger](../../doc/controllers/anomaly-triggers.md#delete-anomaly-detection-trigger)
 
 
 # List Anomaly Detection Triggers
@@ -37,6 +37,65 @@ CompletableFuture<ApiResponse<List<GetTriggerResponseList>>> listAnomalyDetectio
 
 ```java
 anomalyTriggersController.listAnomalyDetectionTriggersAsync().thenAccept(result -> {
+    // TODO success callback handler
+    System.out.println(result);
+}).exceptionally(exception -> {
+    // TODO failure callback handler
+    exception.printStackTrace();
+    return null;
+});
+```
+
+## Errors
+
+| HTTP Status Code | Error Description | Exception Class |
+|  --- | --- | --- |
+| 400 | Bad request | [`IntelligenceResultException`](../../doc/models/intelligence-result-exception.md) |
+| 401 | Unauthorized | [`IntelligenceResultException`](../../doc/models/intelligence-result-exception.md) |
+| 403 | Forbidden | [`IntelligenceResultException`](../../doc/models/intelligence-result-exception.md) |
+| 404 | Not Found / Does not exist | [`IntelligenceResultException`](../../doc/models/intelligence-result-exception.md) |
+| 406 | Format / Request Unacceptable | [`IntelligenceResultException`](../../doc/models/intelligence-result-exception.md) |
+| 429 | Too many requests | [`IntelligenceResultException`](../../doc/models/intelligence-result-exception.md) |
+| Default | Error response | [`IntelligenceResultException`](../../doc/models/intelligence-result-exception.md) |
+
+
+# Update Anomaly Detection Trigger
+
+This corresponds to the M2M-MC SOAP interface, `UpdateTriggerRequest`.
+
+```java
+CompletableFuture<ApiResponse<AnomalyDetectionTrigger>> updateAnomalyDetectionTriggerAsync(
+    final UpdateTriggerRequest body)
+```
+
+## Parameters
+
+| Parameter | Type | Tags | Description |
+|  --- | --- | --- | --- |
+| `body` | [`UpdateTriggerRequest`](../../doc/models/update-trigger-request.md) | Body, Required | Update Trigger Request |
+
+## Server
+
+`Server.THINGSPACE`
+
+## Response Type
+
+[`AnomalyDetectionTrigger`](../../doc/models/anomaly-detection-trigger.md)
+
+## Example Usage
+
+```java
+UpdateTriggerRequest body = new UpdateTriggerRequest.Builder()
+    .anomalyTriggerRequest(new AnomalyTriggerRequest.Builder()
+        .accountNames("0000123456-00001")
+        .includeAbnormal(true)
+        .includeVeryAbnormal(true)
+        .includeUnderExpectedUsage(true)
+        .includeOverExpectedUsage(true)
+        .build())
+    .build();
+
+anomalyTriggersController.updateAnomalyDetectionTriggerAsync(body).thenAccept(result -> {
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
@@ -118,51 +177,6 @@ anomalyTriggersController.createAnomalyDetectionTriggerAsync(body).thenAccept(re
 | Default | Error response | [`IntelligenceResultException`](../../doc/models/intelligence-result-exception.md) |
 
 
-# Delete Anomaly Detection Trigger
-
-Deletes a specific trigger ID
-
-```java
-CompletableFuture<ApiResponse<AnomalyDetectionTrigger>> deleteAnomalyDetectionTriggerAsync(
-    final String triggerId)
-```
-
-## Parameters
-
-| Parameter | Type | Tags | Description |
-|  --- | --- | --- | --- |
-| `triggerId` | `String` | Template, Required | The trigger ID to be deleted |
-
-## Server
-
-`Server.THINGSPACE`
-
-## Response Type
-
-[`AnomalyDetectionTrigger`](../../doc/models/anomaly-detection-trigger.md)
-
-## Example Usage
-
-```java
-String triggerId = "be1b5958-3e11-41db-9abd-b1b7618c0035";
-
-anomalyTriggersController.deleteAnomalyDetectionTriggerAsync(triggerId).thenAccept(result -> {
-    // TODO success callback handler
-    System.out.println(result);
-}).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
-    return null;
-});
-```
-
-## Errors
-
-| HTTP Status Code | Error Description | Exception Class |
-|  --- | --- | --- |
-| Default | Error response | [`IntelligenceResultException`](../../doc/models/intelligence-result-exception.md) |
-
-
 # List Anomaly Detection Trigger Settings
 
 This corresponds to the M2M-MC SOAP interface, `GetTriggers`.
@@ -214,20 +228,20 @@ anomalyTriggersController.listAnomalyDetectionTriggerSettingsAsync(triggerId).th
 | Default | Error response | [`IntelligenceResultException`](../../doc/models/intelligence-result-exception.md) |
 
 
-# Update Anomaly Detection Trigger
+# Delete Anomaly Detection Trigger
 
-This corresponds to the M2M-MC SOAP interface, `UpdateTriggerRequest`.
+Deletes a specific trigger ID
 
 ```java
-CompletableFuture<ApiResponse<AnomalyDetectionTrigger>> updateAnomalyDetectionTriggerAsync(
-    final UpdateTriggerRequest body)
+CompletableFuture<ApiResponse<AnomalyDetectionTrigger>> deleteAnomalyDetectionTriggerAsync(
+    final String triggerId)
 ```
 
 ## Parameters
 
 | Parameter | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `body` | [`UpdateTriggerRequest`](../../doc/models/update-trigger-request.md) | Body, Required | Update Trigger Request |
+| `triggerId` | `String` | Template, Required | The trigger ID to be deleted |
 
 ## Server
 
@@ -240,17 +254,9 @@ CompletableFuture<ApiResponse<AnomalyDetectionTrigger>> updateAnomalyDetectionTr
 ## Example Usage
 
 ```java
-UpdateTriggerRequest body = new UpdateTriggerRequest.Builder()
-    .anomalyTriggerRequest(new AnomalyTriggerRequest.Builder()
-        .accountNames("0000123456-00001")
-        .includeAbnormal(true)
-        .includeVeryAbnormal(true)
-        .includeUnderExpectedUsage(true)
-        .includeOverExpectedUsage(true)
-        .build())
-    .build();
+String triggerId = "be1b5958-3e11-41db-9abd-b1b7618c0035";
 
-anomalyTriggersController.updateAnomalyDetectionTriggerAsync(body).thenAccept(result -> {
+anomalyTriggersController.deleteAnomalyDetectionTriggerAsync(triggerId).thenAccept(result -> {
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
@@ -264,11 +270,5 @@ anomalyTriggersController.updateAnomalyDetectionTriggerAsync(body).thenAccept(re
 
 | HTTP Status Code | Error Description | Exception Class |
 |  --- | --- | --- |
-| 400 | Bad request | [`IntelligenceResultException`](../../doc/models/intelligence-result-exception.md) |
-| 401 | Unauthorized | [`IntelligenceResultException`](../../doc/models/intelligence-result-exception.md) |
-| 403 | Forbidden | [`IntelligenceResultException`](../../doc/models/intelligence-result-exception.md) |
-| 404 | Not Found / Does not exist | [`IntelligenceResultException`](../../doc/models/intelligence-result-exception.md) |
-| 406 | Format / Request Unacceptable | [`IntelligenceResultException`](../../doc/models/intelligence-result-exception.md) |
-| 429 | Too many requests | [`IntelligenceResultException`](../../doc/models/intelligence-result-exception.md) |
 | Default | Error response | [`IntelligenceResultException`](../../doc/models/intelligence-result-exception.md) |
 

@@ -10,8 +10,56 @@ ConfigurationFilesController configurationFilesController = client.getConfigurat
 
 ## Methods
 
-* [Upload Config File](../../doc/controllers/configuration-files.md#upload-config-file)
 * [Get List of Files](../../doc/controllers/configuration-files.md#get-list-of-files)
+* [Upload Config File](../../doc/controllers/configuration-files.md#upload-config-file)
+
+
+# Get List of Files
+
+You can retrieve a list of configuration or supplementary of files for an account.
+
+```java
+CompletableFuture<ApiResponse<RetrievesAvailableFilesResponseList>> getListOfFilesAsync(
+    final String acc,
+    final String distributionType)
+```
+
+## Parameters
+
+| Parameter | Type | Tags | Description |
+|  --- | --- | --- | --- |
+| `acc` | `String` | Template, Required | Account identifier. |
+| `distributionType` | `String` | Query, Required | Filter the distributionType to only retrieve files for a specific distribution type. |
+
+## Server
+
+`Server.SOFTWARE_MANAGEMENT_V2`
+
+## Response Type
+
+[`RetrievesAvailableFilesResponseList`](../../doc/models/retrieves-available-files-response-list.md)
+
+## Example Usage
+
+```java
+String acc = "0402196254-00001";
+String distributionType = "HTTP";
+
+configurationFilesController.getListOfFilesAsync(acc, distributionType).thenAccept(result -> {
+    // TODO success callback handler
+    System.out.println(result);
+}).exceptionally(exception -> {
+    // TODO failure callback handler
+    exception.printStackTrace();
+    return null;
+});
+```
+
+## Errors
+
+| HTTP Status Code | Error Description | Exception Class |
+|  --- | --- | --- |
+| 400 | Unexpected error. | [`FotaV2ResultException`](../../doc/models/fota-v2-result-exception.md) |
 
 
 # Upload Config File
@@ -57,54 +105,6 @@ String model = "VZW1";
 String localTargetPath = "/VZWFOTA/hello-world.txt";
 
 configurationFilesController.uploadConfigFileAsync(acc, null, fileVersion, make, model, localTargetPath).thenAccept(result -> {
-    // TODO success callback handler
-    System.out.println(result);
-}).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
-    return null;
-});
-```
-
-## Errors
-
-| HTTP Status Code | Error Description | Exception Class |
-|  --- | --- | --- |
-| 400 | Unexpected error. | [`FotaV2ResultException`](../../doc/models/fota-v2-result-exception.md) |
-
-
-# Get List of Files
-
-You can retrieve a list of configuration or supplementary of files for an account.
-
-```java
-CompletableFuture<ApiResponse<RetrievesAvailableFilesResponseList>> getListOfFilesAsync(
-    final String acc,
-    final String distributionType)
-```
-
-## Parameters
-
-| Parameter | Type | Tags | Description |
-|  --- | --- | --- | --- |
-| `acc` | `String` | Template, Required | Account identifier. |
-| `distributionType` | `String` | Query, Required | Filter the distributionType to only retrieve files for a specific distribution type. |
-
-## Server
-
-`Server.SOFTWARE_MANAGEMENT_V2`
-
-## Response Type
-
-[`RetrievesAvailableFilesResponseList`](../../doc/models/retrieves-available-files-response-list.md)
-
-## Example Usage
-
-```java
-String acc = "0402196254-00001";
-String distributionType = "HTTP";
-
-configurationFilesController.getListOfFilesAsync(acc, distributionType).thenAccept(result -> {
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {

@@ -10,79 +10,11 @@ SoftwareManagementLicensesV1Controller softwareManagementLicensesV1Controller = 
 
 ## Methods
 
-* [List Licenses to Remove](../../doc/controllers/software-management-licenses-v1.md#list-licenses-to-remove)
 * [Assign Licenses to Devices](../../doc/controllers/software-management-licenses-v1.md#assign-licenses-to-devices)
 * [Remove Licenses From Devices](../../doc/controllers/software-management-licenses-v1.md#remove-licenses-from-devices)
 * [Create List of Licenses to Remove](../../doc/controllers/software-management-licenses-v1.md#create-list-of-licenses-to-remove)
 * [Delete List of Licenses to Remove](../../doc/controllers/software-management-licenses-v1.md#delete-list-of-licenses-to-remove)
-
-
-# List Licenses to Remove
-
-**This endpoint is deprecated.**
-
-Returns a list of devices from which licenses will be removed if the number of MRC licenses becomes less than the number of assigned licenses.
-
-```java
-CompletableFuture<ApiResponse<V1ListOfLicensesToRemove>> listLicensesToRemoveAsync(
-    final String account,
-    final String startIndex)
-```
-
-## Parameters
-
-| Parameter | Type | Tags | Description |
-|  --- | --- | --- | --- |
-| `account` | `String` | Template, Required | Account identifier in "##########-#####". |
-| `startIndex` | `String` | Template, Required | The zero-based number of the first record to return. Set startIndex=0 for the first request. If there are more than 1,000 devices in the response, set startIndex=1000 for the second request, 2000 for the third request, etc. |
-
-## Server
-
-`Server.SOFTWARE_MANAGEMENT_V1`
-
-## Response Type
-
-[`V1ListOfLicensesToRemove`](../../doc/models/v1-list-of-licenses-to-remove.md)
-
-## Example Usage
-
-```java
-String account = "0242078689-00001";
-String startIndex = "startIndex4";
-
-softwareManagementLicensesV1Controller.listLicensesToRemoveAsync(account, startIndex).thenAccept(result -> {
-    // TODO success callback handler
-    System.out.println(result);
-}).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
-    return null;
-});
-```
-
-## Example Response *(as JSON)*
-
-```json
-{
-  "count": 6,
-  "hasMoreData": false,
-  "updateTime": "2018-03-22T12:06:06.000Z",
-  "deviceList": [
-    "990003425730535",
-    "990000473475989",
-    "990005733420535",
-    "990000347475989",
-    "990007303425535",
-    "990007590473489"
-  ]
-}
-```
-
-## Errors
-
-| HTTP Status Code | Error Description | Exception Class |
-|  --- | --- | --- |
-| 400 | Unexpected error. | [`FotaV1ResultException`](../../doc/models/fota-v1-result-exception.md) |
+* [List Licenses to Remove](../../doc/controllers/software-management-licenses-v1.md#list-licenses-to-remove)
 
 
 # Assign Licenses to Devices
@@ -361,6 +293,74 @@ softwareManagementLicensesV1Controller.deleteListOfLicensesToRemoveAsync(account
 ```json
 {
   "success": true
+}
+```
+
+## Errors
+
+| HTTP Status Code | Error Description | Exception Class |
+|  --- | --- | --- |
+| 400 | Unexpected error. | [`FotaV1ResultException`](../../doc/models/fota-v1-result-exception.md) |
+
+
+# List Licenses to Remove
+
+**This endpoint is deprecated.**
+
+Returns a list of devices from which licenses will be removed if the number of MRC licenses becomes less than the number of assigned licenses.
+
+```java
+CompletableFuture<ApiResponse<V1ListOfLicensesToRemove>> listLicensesToRemoveAsync(
+    final String account,
+    final String startIndex)
+```
+
+## Parameters
+
+| Parameter | Type | Tags | Description |
+|  --- | --- | --- | --- |
+| `account` | `String` | Template, Required | Account identifier in "##########-#####". |
+| `startIndex` | `String` | Template, Required | The zero-based number of the first record to return. Set startIndex=0 for the first request. If there are more than 1,000 devices in the response, set startIndex=1000 for the second request, 2000 for the third request, etc. |
+
+## Server
+
+`Server.SOFTWARE_MANAGEMENT_V1`
+
+## Response Type
+
+[`V1ListOfLicensesToRemove`](../../doc/models/v1-list-of-licenses-to-remove.md)
+
+## Example Usage
+
+```java
+String account = "0242078689-00001";
+String startIndex = "startIndex4";
+
+softwareManagementLicensesV1Controller.listLicensesToRemoveAsync(account, startIndex).thenAccept(result -> {
+    // TODO success callback handler
+    System.out.println(result);
+}).exceptionally(exception -> {
+    // TODO failure callback handler
+    exception.printStackTrace();
+    return null;
+});
+```
+
+## Example Response *(as JSON)*
+
+```json
+{
+  "count": 6,
+  "hasMoreData": false,
+  "updateTime": "2018-03-22T12:06:06.000Z",
+  "deviceList": [
+    "990003425730535",
+    "990000473475989",
+    "990005733420535",
+    "990000347475989",
+    "990007303425535",
+    "990007590473489"
+  ]
 }
 ```
 

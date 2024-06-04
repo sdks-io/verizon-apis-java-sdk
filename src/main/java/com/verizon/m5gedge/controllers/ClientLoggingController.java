@@ -94,6 +94,70 @@ public final class ClientLoggingController extends BaseController {
     }
 
     /**
+     * Each customer may have a maximum of 20 devices enabled for logging.
+     * @param  account  Required parameter: Account identifier.
+     * @param  body  Required parameter: Device logging information.
+     * @return    Returns the List of DeviceLoggingStatus wrapped in ApiResponse response from the API call
+     * @throws    ApiException    Represents error response from the server.
+     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
+     */
+    public ApiResponse<List<DeviceLoggingStatus>> enableLoggingForDevices(
+            final String account,
+            final DeviceLoggingRequest body) throws ApiException, IOException {
+        return prepareEnableLoggingForDevicesRequest(account, body).execute();
+    }
+
+    /**
+     * Each customer may have a maximum of 20 devices enabled for logging.
+     * @param  account  Required parameter: Account identifier.
+     * @param  body  Required parameter: Device logging information.
+     * @return    Returns the List of DeviceLoggingStatus wrapped in ApiResponse response from the API call
+     */
+    public CompletableFuture<ApiResponse<List<DeviceLoggingStatus>>> enableLoggingForDevicesAsync(
+            final String account,
+            final DeviceLoggingRequest body) {
+        try { 
+            return prepareEnableLoggingForDevicesRequest(account, body).executeAsync(); 
+        } catch (Exception e) {  
+            throw new CompletionException(e); 
+        }
+    }
+
+    /**
+     * Builds the ApiCall object for enableLoggingForDevices.
+     */
+    private ApiCall<ApiResponse<List<DeviceLoggingStatus>>, ApiException> prepareEnableLoggingForDevicesRequest(
+            final String account,
+            final DeviceLoggingRequest body) throws JsonProcessingException, IOException {
+        return new ApiCall.Builder<ApiResponse<List<DeviceLoggingStatus>>, ApiException>()
+                .globalConfig(getGlobalConfiguration())
+                .requestBuilder(requestBuilder -> requestBuilder
+                        .server(Server.SOFTWARE_MANAGEMENT_V2.value())
+                        .path("/logging/{account}/devices")
+                        .bodyParam(param -> param.value(body))
+                        .bodySerializer(() ->  ApiHelper.serialize(body))
+                        .templateParam(param -> param.key("account").value(account)
+                                .shouldEncode(true))
+                        .headerParam(param -> param.key("Content-Type")
+                                .value("*/*").isRequired(false))
+                        .headerParam(param -> param.key("accept").value("application/json"))
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
+                        .httpMethod(HttpMethod.PUT))
+                .responseHandler(responseHandler -> responseHandler
+                        .responseClassType(ResponseClassType.API_RESPONSE)
+                        .apiResponseDeserializer(
+                                response -> ApiHelper.deserializeArray(response,
+                                        DeviceLoggingStatus[].class))
+                        .nullify404(false)
+                        .localErrorCase("400",
+                                 ErrorCase.setReason("Unexpected error.",
+                                (reason, context) -> new FotaV2ResultException(reason, context)))
+                        .globalErrorCase(GLOBAL_ERROR_CASES))
+                .build();
+    }
+
+    /**
      * Turn logging off for a list of devices.
      * @param  account  Required parameter: Account identifier.
      * @param  deviceIds  Required parameter: The list of device IDs.
@@ -136,6 +200,124 @@ public final class ClientLoggingController extends BaseController {
                         .queryParam(param -> param.key("deviceIds")
                                 .value(deviceIds))
                         .templateParam(param -> param.key("account").value(account)
+                                .shouldEncode(true))
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
+                        .httpMethod(HttpMethod.DELETE))
+                .responseHandler(responseHandler -> responseHandler
+                        .responseClassType(ResponseClassType.API_RESPONSE)
+                        .nullify404(false)
+                        .localErrorCase("400",
+                                 ErrorCase.setReason("Unexpected error.",
+                                (reason, context) -> new FotaV2ResultException(reason, context)))
+                        .globalErrorCase(GLOBAL_ERROR_CASES))
+                .build();
+    }
+
+    /**
+     * Enables logging for a specific device.
+     * @param  account  Required parameter: Account identifier.
+     * @param  deviceId  Required parameter: Device IMEI identifier.
+     * @return    Returns the DeviceLoggingStatus wrapped in ApiResponse response from the API call
+     * @throws    ApiException    Represents error response from the server.
+     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
+     */
+    public ApiResponse<DeviceLoggingStatus> enableDeviceLogging(
+            final String account,
+            final String deviceId) throws ApiException, IOException {
+        return prepareEnableDeviceLoggingRequest(account, deviceId).execute();
+    }
+
+    /**
+     * Enables logging for a specific device.
+     * @param  account  Required parameter: Account identifier.
+     * @param  deviceId  Required parameter: Device IMEI identifier.
+     * @return    Returns the DeviceLoggingStatus wrapped in ApiResponse response from the API call
+     */
+    public CompletableFuture<ApiResponse<DeviceLoggingStatus>> enableDeviceLoggingAsync(
+            final String account,
+            final String deviceId) {
+        try { 
+            return prepareEnableDeviceLoggingRequest(account, deviceId).executeAsync(); 
+        } catch (Exception e) {  
+            throw new CompletionException(e); 
+        }
+    }
+
+    /**
+     * Builds the ApiCall object for enableDeviceLogging.
+     */
+    private ApiCall<ApiResponse<DeviceLoggingStatus>, ApiException> prepareEnableDeviceLoggingRequest(
+            final String account,
+            final String deviceId) throws IOException {
+        return new ApiCall.Builder<ApiResponse<DeviceLoggingStatus>, ApiException>()
+                .globalConfig(getGlobalConfiguration())
+                .requestBuilder(requestBuilder -> requestBuilder
+                        .server(Server.SOFTWARE_MANAGEMENT_V2.value())
+                        .path("/logging/{account}/devices/{deviceId}")
+                        .templateParam(param -> param.key("account").value(account)
+                                .shouldEncode(true))
+                        .templateParam(param -> param.key("deviceId").value(deviceId)
+                                .shouldEncode(true))
+                        .headerParam(param -> param.key("accept").value("application/json"))
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
+                        .httpMethod(HttpMethod.PUT))
+                .responseHandler(responseHandler -> responseHandler
+                        .responseClassType(ResponseClassType.API_RESPONSE)
+                        .apiResponseDeserializer(
+                                response -> ApiHelper.deserialize(response, DeviceLoggingStatus.class))
+                        .nullify404(false)
+                        .localErrorCase("400",
+                                 ErrorCase.setReason("Unexpected error.",
+                                (reason, context) -> new FotaV2ResultException(reason, context)))
+                        .globalErrorCase(GLOBAL_ERROR_CASES))
+                .build();
+    }
+
+    /**
+     * Disables logging for a specific device.
+     * @param  account  Required parameter: Account identifier.
+     * @param  deviceId  Required parameter: Device IMEI identifier.
+     * @throws    ApiException    Represents error response from the server.
+     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
+     */
+    public ApiResponse<Void> disableDeviceLogging(
+            final String account,
+            final String deviceId) throws ApiException, IOException {
+        return prepareDisableDeviceLoggingRequest(account, deviceId).execute();
+    }
+
+    /**
+     * Disables logging for a specific device.
+     * @param  account  Required parameter: Account identifier.
+     * @param  deviceId  Required parameter: Device IMEI identifier.
+     * @return    Returns the Void wrapped in ApiResponse response from the API call
+     */
+    public CompletableFuture<ApiResponse<Void>> disableDeviceLoggingAsync(
+            final String account,
+            final String deviceId) {
+        try { 
+            return prepareDisableDeviceLoggingRequest(account, deviceId).executeAsync(); 
+        } catch (Exception e) {  
+            throw new CompletionException(e); 
+        }
+    }
+
+    /**
+     * Builds the ApiCall object for disableDeviceLogging.
+     */
+    private ApiCall<ApiResponse<Void>, ApiException> prepareDisableDeviceLoggingRequest(
+            final String account,
+            final String deviceId) throws IOException {
+        return new ApiCall.Builder<ApiResponse<Void>, ApiException>()
+                .globalConfig(getGlobalConfiguration())
+                .requestBuilder(requestBuilder -> requestBuilder
+                        .server(Server.SOFTWARE_MANAGEMENT_V2.value())
+                        .path("/logging/{account}/devices/{deviceId}")
+                        .templateParam(param -> param.key("account").value(account)
+                                .shouldEncode(true))
+                        .templateParam(param -> param.key("deviceId").value(deviceId)
                                 .shouldEncode(true))
                         .withAuth(auth -> auth
                                 .add("oAuth2"))
@@ -204,188 +386,6 @@ public final class ClientLoggingController extends BaseController {
                         .apiResponseDeserializer(
                                 response -> ApiHelper.deserializeArray(response,
                                         DeviceLog[].class))
-                        .nullify404(false)
-                        .localErrorCase("400",
-                                 ErrorCase.setReason("Unexpected error.",
-                                (reason, context) -> new FotaV2ResultException(reason, context)))
-                        .globalErrorCase(GLOBAL_ERROR_CASES))
-                .build();
-    }
-
-    /**
-     * Disables logging for a specific device.
-     * @param  account  Required parameter: Account identifier.
-     * @param  deviceId  Required parameter: Device IMEI identifier.
-     * @throws    ApiException    Represents error response from the server.
-     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
-     */
-    public ApiResponse<Void> disableDeviceLogging(
-            final String account,
-            final String deviceId) throws ApiException, IOException {
-        return prepareDisableDeviceLoggingRequest(account, deviceId).execute();
-    }
-
-    /**
-     * Disables logging for a specific device.
-     * @param  account  Required parameter: Account identifier.
-     * @param  deviceId  Required parameter: Device IMEI identifier.
-     * @return    Returns the Void wrapped in ApiResponse response from the API call
-     */
-    public CompletableFuture<ApiResponse<Void>> disableDeviceLoggingAsync(
-            final String account,
-            final String deviceId) {
-        try { 
-            return prepareDisableDeviceLoggingRequest(account, deviceId).executeAsync(); 
-        } catch (Exception e) {  
-            throw new CompletionException(e); 
-        }
-    }
-
-    /**
-     * Builds the ApiCall object for disableDeviceLogging.
-     */
-    private ApiCall<ApiResponse<Void>, ApiException> prepareDisableDeviceLoggingRequest(
-            final String account,
-            final String deviceId) throws IOException {
-        return new ApiCall.Builder<ApiResponse<Void>, ApiException>()
-                .globalConfig(getGlobalConfiguration())
-                .requestBuilder(requestBuilder -> requestBuilder
-                        .server(Server.SOFTWARE_MANAGEMENT_V2.value())
-                        .path("/logging/{account}/devices/{deviceId}")
-                        .templateParam(param -> param.key("account").value(account)
-                                .shouldEncode(true))
-                        .templateParam(param -> param.key("deviceId").value(deviceId)
-                                .shouldEncode(true))
-                        .withAuth(auth -> auth
-                                .add("oAuth2"))
-                        .httpMethod(HttpMethod.DELETE))
-                .responseHandler(responseHandler -> responseHandler
-                        .responseClassType(ResponseClassType.API_RESPONSE)
-                        .nullify404(false)
-                        .localErrorCase("400",
-                                 ErrorCase.setReason("Unexpected error.",
-                                (reason, context) -> new FotaV2ResultException(reason, context)))
-                        .globalErrorCase(GLOBAL_ERROR_CASES))
-                .build();
-    }
-
-    /**
-     * Each customer may have a maximum of 20 devices enabled for logging.
-     * @param  account  Required parameter: Account identifier.
-     * @param  body  Required parameter: Device logging information.
-     * @return    Returns the List of DeviceLoggingStatus wrapped in ApiResponse response from the API call
-     * @throws    ApiException    Represents error response from the server.
-     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
-     */
-    public ApiResponse<List<DeviceLoggingStatus>> enableLoggingForDevices(
-            final String account,
-            final DeviceLoggingRequest body) throws ApiException, IOException {
-        return prepareEnableLoggingForDevicesRequest(account, body).execute();
-    }
-
-    /**
-     * Each customer may have a maximum of 20 devices enabled for logging.
-     * @param  account  Required parameter: Account identifier.
-     * @param  body  Required parameter: Device logging information.
-     * @return    Returns the List of DeviceLoggingStatus wrapped in ApiResponse response from the API call
-     */
-    public CompletableFuture<ApiResponse<List<DeviceLoggingStatus>>> enableLoggingForDevicesAsync(
-            final String account,
-            final DeviceLoggingRequest body) {
-        try { 
-            return prepareEnableLoggingForDevicesRequest(account, body).executeAsync(); 
-        } catch (Exception e) {  
-            throw new CompletionException(e); 
-        }
-    }
-
-    /**
-     * Builds the ApiCall object for enableLoggingForDevices.
-     */
-    private ApiCall<ApiResponse<List<DeviceLoggingStatus>>, ApiException> prepareEnableLoggingForDevicesRequest(
-            final String account,
-            final DeviceLoggingRequest body) throws JsonProcessingException, IOException {
-        return new ApiCall.Builder<ApiResponse<List<DeviceLoggingStatus>>, ApiException>()
-                .globalConfig(getGlobalConfiguration())
-                .requestBuilder(requestBuilder -> requestBuilder
-                        .server(Server.SOFTWARE_MANAGEMENT_V2.value())
-                        .path("/logging/{account}/devices")
-                        .bodyParam(param -> param.value(body))
-                        .bodySerializer(() ->  ApiHelper.serialize(body))
-                        .templateParam(param -> param.key("account").value(account)
-                                .shouldEncode(true))
-                        .headerParam(param -> param.key("Content-Type")
-                                .value("*/*").isRequired(false))
-                        .headerParam(param -> param.key("accept").value("application/json"))
-                        .withAuth(auth -> auth
-                                .add("oAuth2"))
-                        .httpMethod(HttpMethod.PUT))
-                .responseHandler(responseHandler -> responseHandler
-                        .responseClassType(ResponseClassType.API_RESPONSE)
-                        .apiResponseDeserializer(
-                                response -> ApiHelper.deserializeArray(response,
-                                        DeviceLoggingStatus[].class))
-                        .nullify404(false)
-                        .localErrorCase("400",
-                                 ErrorCase.setReason("Unexpected error.",
-                                (reason, context) -> new FotaV2ResultException(reason, context)))
-                        .globalErrorCase(GLOBAL_ERROR_CASES))
-                .build();
-    }
-
-    /**
-     * Enables logging for a specific device.
-     * @param  account  Required parameter: Account identifier.
-     * @param  deviceId  Required parameter: Device IMEI identifier.
-     * @return    Returns the DeviceLoggingStatus wrapped in ApiResponse response from the API call
-     * @throws    ApiException    Represents error response from the server.
-     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
-     */
-    public ApiResponse<DeviceLoggingStatus> enableDeviceLogging(
-            final String account,
-            final String deviceId) throws ApiException, IOException {
-        return prepareEnableDeviceLoggingRequest(account, deviceId).execute();
-    }
-
-    /**
-     * Enables logging for a specific device.
-     * @param  account  Required parameter: Account identifier.
-     * @param  deviceId  Required parameter: Device IMEI identifier.
-     * @return    Returns the DeviceLoggingStatus wrapped in ApiResponse response from the API call
-     */
-    public CompletableFuture<ApiResponse<DeviceLoggingStatus>> enableDeviceLoggingAsync(
-            final String account,
-            final String deviceId) {
-        try { 
-            return prepareEnableDeviceLoggingRequest(account, deviceId).executeAsync(); 
-        } catch (Exception e) {  
-            throw new CompletionException(e); 
-        }
-    }
-
-    /**
-     * Builds the ApiCall object for enableDeviceLogging.
-     */
-    private ApiCall<ApiResponse<DeviceLoggingStatus>, ApiException> prepareEnableDeviceLoggingRequest(
-            final String account,
-            final String deviceId) throws IOException {
-        return new ApiCall.Builder<ApiResponse<DeviceLoggingStatus>, ApiException>()
-                .globalConfig(getGlobalConfiguration())
-                .requestBuilder(requestBuilder -> requestBuilder
-                        .server(Server.SOFTWARE_MANAGEMENT_V2.value())
-                        .path("/logging/{account}/devices/{deviceId}")
-                        .templateParam(param -> param.key("account").value(account)
-                                .shouldEncode(true))
-                        .templateParam(param -> param.key("deviceId").value(deviceId)
-                                .shouldEncode(true))
-                        .headerParam(param -> param.key("accept").value("application/json"))
-                        .withAuth(auth -> auth
-                                .add("oAuth2"))
-                        .httpMethod(HttpMethod.PUT))
-                .responseHandler(responseHandler -> responseHandler
-                        .responseClassType(ResponseClassType.API_RESPONSE)
-                        .apiResponseDeserializer(
-                                response -> ApiHelper.deserialize(response, DeviceLoggingStatus.class))
                         .nullify404(false)
                         .localErrorCase("400",
                                  ErrorCase.setReason("Unexpected error.",

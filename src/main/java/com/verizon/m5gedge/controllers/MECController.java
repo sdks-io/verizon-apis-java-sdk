@@ -43,106 +43,6 @@ public final class MECController extends BaseController {
 
     /**
      * @param  aname  Required parameter: Account name.
-     * @return    Returns the MECProfileList wrapped in ApiResponse response from the API call
-     * @throws    ApiException    Represents error response from the server.
-     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
-     */
-    public ApiResponse<MECProfileList> getProfileList(
-            final String aname) throws ApiException, IOException {
-        return prepareGetProfileListRequest(aname).execute();
-    }
-
-    /**
-     * @param  aname  Required parameter: Account name.
-     * @return    Returns the MECProfileList wrapped in ApiResponse response from the API call
-     */
-    public CompletableFuture<ApiResponse<MECProfileList>> getProfileListAsync(
-            final String aname) {
-        try { 
-            return prepareGetProfileListRequest(aname).executeAsync(); 
-        } catch (Exception e) {  
-            throw new CompletionException(e); 
-        }
-    }
-
-    /**
-     * Builds the ApiCall object for getProfileList.
-     */
-    private ApiCall<ApiResponse<MECProfileList>, ApiException> prepareGetProfileListRequest(
-            final String aname) throws IOException {
-        return new ApiCall.Builder<ApiResponse<MECProfileList>, ApiException>()
-                .globalConfig(getGlobalConfiguration())
-                .requestBuilder(requestBuilder -> requestBuilder
-                        .server(Server.THINGSPACE.value())
-                        .path("/m2m/v1/devices/mec/profiles/list/{aname}")
-                        .templateParam(param -> param.key("aname").value(aname)
-                                .shouldEncode(true))
-                        .headerParam(param -> param.key("accept").value("application/json"))
-                        .withAuth(auth -> auth
-                                .add("oAuth2"))
-                        .httpMethod(HttpMethod.GET))
-                .responseHandler(responseHandler -> responseHandler
-                        .responseClassType(ResponseClassType.API_RESPONSE)
-                        .apiResponseDeserializer(
-                                response -> ApiHelper.deserialize(response, MECProfileList.class))
-                        .nullify404(false)
-                        .globalErrorCase(GLOBAL_ERROR_CASES))
-                .build();
-    }
-
-    /**
-     * @param  body  Required parameter: Example:
-     * @return    Returns the ChangeMecDeviceIPAddressResponse wrapped in ApiResponse response from the API call
-     * @throws    ApiException    Represents error response from the server.
-     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
-     */
-    public ApiResponse<ChangeMecDeviceIPAddressResponse> changePmecDeviceIPaddressBulk(
-            final ChangePmecDeviceStateBulkDeactivateRequest body) throws ApiException, IOException {
-        return prepareChangePmecDeviceIPaddressBulkRequest(body).execute();
-    }
-
-    /**
-     * @param  body  Required parameter: Example:
-     * @return    Returns the ChangeMecDeviceIPAddressResponse wrapped in ApiResponse response from the API call
-     */
-    public CompletableFuture<ApiResponse<ChangeMecDeviceIPAddressResponse>> changePmecDeviceIPaddressBulkAsync(
-            final ChangePmecDeviceStateBulkDeactivateRequest body) {
-        try { 
-            return prepareChangePmecDeviceIPaddressBulkRequest(body).executeAsync(); 
-        } catch (Exception e) {  
-            throw new CompletionException(e); 
-        }
-    }
-
-    /**
-     * Builds the ApiCall object for changePmecDeviceIPaddressBulk.
-     */
-    private ApiCall<ApiResponse<ChangeMecDeviceIPAddressResponse>, ApiException> prepareChangePmecDeviceIPaddressBulkRequest(
-            final ChangePmecDeviceStateBulkDeactivateRequest body) throws JsonProcessingException, IOException {
-        return new ApiCall.Builder<ApiResponse<ChangeMecDeviceIPAddressResponse>, ApiException>()
-                .globalConfig(getGlobalConfiguration())
-                .requestBuilder(requestBuilder -> requestBuilder
-                        .server(Server.THINGSPACE.value())
-                        .path("/m2m/v1/devices/mec/actions/ipaddress")
-                        .bodyParam(param -> param.value(body))
-                        .bodySerializer(() ->  ApiHelper.serialize(body))
-                        .headerParam(param -> param.key("Content-Type")
-                                .value("application/json").isRequired(false))
-                        .headerParam(param -> param.key("accept").value("application/json"))
-                        .withAuth(auth -> auth
-                                .add("oAuth2"))
-                        .httpMethod(HttpMethod.PUT))
-                .responseHandler(responseHandler -> responseHandler
-                        .responseClassType(ResponseClassType.API_RESPONSE)
-                        .apiResponseDeserializer(
-                                response -> ApiHelper.deserialize(response, ChangeMecDeviceIPAddressResponse.class))
-                        .nullify404(false)
-                        .globalErrorCase(GLOBAL_ERROR_CASES))
-                .build();
-    }
-
-    /**
-     * @param  aname  Required parameter: Account name.
      * @return    Returns the KPIInfoList wrapped in ApiResponse response from the API call
      * @throws    ApiException    Represents error response from the server.
      * @throws    IOException    Signals that an I/O exception of some sort has occurred.
@@ -192,38 +92,38 @@ public final class MECController extends BaseController {
 
     /**
      * @param  aname  Required parameter: Account name.
-     * @return    Returns the GetMECPerformanceConsentResponse wrapped in ApiResponse response from the API call
+     * @return    Returns the MECProfileList wrapped in ApiResponse response from the API call
      * @throws    ApiException    Represents error response from the server.
      * @throws    IOException    Signals that an I/O exception of some sort has occurred.
      */
-    public ApiResponse<GetMECPerformanceConsentResponse> getMECPerformanceConsent(
+    public ApiResponse<MECProfileList> getProfileList(
             final String aname) throws ApiException, IOException {
-        return prepareGetMECPerformanceConsentRequest(aname).execute();
+        return prepareGetProfileListRequest(aname).execute();
     }
 
     /**
      * @param  aname  Required parameter: Account name.
-     * @return    Returns the GetMECPerformanceConsentResponse wrapped in ApiResponse response from the API call
+     * @return    Returns the MECProfileList wrapped in ApiResponse response from the API call
      */
-    public CompletableFuture<ApiResponse<GetMECPerformanceConsentResponse>> getMECPerformanceConsentAsync(
+    public CompletableFuture<ApiResponse<MECProfileList>> getProfileListAsync(
             final String aname) {
         try { 
-            return prepareGetMECPerformanceConsentRequest(aname).executeAsync(); 
+            return prepareGetProfileListRequest(aname).executeAsync(); 
         } catch (Exception e) {  
             throw new CompletionException(e); 
         }
     }
 
     /**
-     * Builds the ApiCall object for getMECPerformanceConsent.
+     * Builds the ApiCall object for getProfileList.
      */
-    private ApiCall<ApiResponse<GetMECPerformanceConsentResponse>, ApiException> prepareGetMECPerformanceConsentRequest(
+    private ApiCall<ApiResponse<MECProfileList>, ApiException> prepareGetProfileListRequest(
             final String aname) throws IOException {
-        return new ApiCall.Builder<ApiResponse<GetMECPerformanceConsentResponse>, ApiException>()
+        return new ApiCall.Builder<ApiResponse<MECProfileList>, ApiException>()
                 .globalConfig(getGlobalConfiguration())
                 .requestBuilder(requestBuilder -> requestBuilder
                         .server(Server.THINGSPACE.value())
-                        .path("/m2m/v1/devices/mec/performance/consent/{aname}")
+                        .path("/m2m/v1/devices/mec/profiles/list/{aname}")
                         .templateParam(param -> param.key("aname").value(aname)
                                 .shouldEncode(true))
                         .headerParam(param -> param.key("accept").value("application/json"))
@@ -233,7 +133,7 @@ public final class MECController extends BaseController {
                 .responseHandler(responseHandler -> responseHandler
                         .responseClassType(ResponseClassType.API_RESPONSE)
                         .apiResponseDeserializer(
-                                response -> ApiHelper.deserialize(response, GetMECPerformanceConsentResponse.class))
+                                response -> ApiHelper.deserialize(response, MECProfileList.class))
                         .nullify404(false)
                         .globalErrorCase(GLOBAL_ERROR_CASES))
                 .build();
@@ -387,6 +287,106 @@ public final class MECController extends BaseController {
                         .responseClassType(ResponseClassType.API_RESPONSE)
                         .apiResponseDeserializer(
                                 response -> ApiHelper.deserialize(response, ChangeMecDeviceProfileResponse.class))
+                        .nullify404(false)
+                        .globalErrorCase(GLOBAL_ERROR_CASES))
+                .build();
+    }
+
+    /**
+     * @param  body  Required parameter: Example:
+     * @return    Returns the ChangeMecDeviceIPAddressResponse wrapped in ApiResponse response from the API call
+     * @throws    ApiException    Represents error response from the server.
+     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
+     */
+    public ApiResponse<ChangeMecDeviceIPAddressResponse> changePmecDeviceIPaddressBulk(
+            final ChangePmecDeviceStateBulkDeactivateRequest body) throws ApiException, IOException {
+        return prepareChangePmecDeviceIPaddressBulkRequest(body).execute();
+    }
+
+    /**
+     * @param  body  Required parameter: Example:
+     * @return    Returns the ChangeMecDeviceIPAddressResponse wrapped in ApiResponse response from the API call
+     */
+    public CompletableFuture<ApiResponse<ChangeMecDeviceIPAddressResponse>> changePmecDeviceIPaddressBulkAsync(
+            final ChangePmecDeviceStateBulkDeactivateRequest body) {
+        try { 
+            return prepareChangePmecDeviceIPaddressBulkRequest(body).executeAsync(); 
+        } catch (Exception e) {  
+            throw new CompletionException(e); 
+        }
+    }
+
+    /**
+     * Builds the ApiCall object for changePmecDeviceIPaddressBulk.
+     */
+    private ApiCall<ApiResponse<ChangeMecDeviceIPAddressResponse>, ApiException> prepareChangePmecDeviceIPaddressBulkRequest(
+            final ChangePmecDeviceStateBulkDeactivateRequest body) throws JsonProcessingException, IOException {
+        return new ApiCall.Builder<ApiResponse<ChangeMecDeviceIPAddressResponse>, ApiException>()
+                .globalConfig(getGlobalConfiguration())
+                .requestBuilder(requestBuilder -> requestBuilder
+                        .server(Server.THINGSPACE.value())
+                        .path("/m2m/v1/devices/mec/actions/ipaddress")
+                        .bodyParam(param -> param.value(body))
+                        .bodySerializer(() ->  ApiHelper.serialize(body))
+                        .headerParam(param -> param.key("Content-Type")
+                                .value("application/json").isRequired(false))
+                        .headerParam(param -> param.key("accept").value("application/json"))
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
+                        .httpMethod(HttpMethod.PUT))
+                .responseHandler(responseHandler -> responseHandler
+                        .responseClassType(ResponseClassType.API_RESPONSE)
+                        .apiResponseDeserializer(
+                                response -> ApiHelper.deserialize(response, ChangeMecDeviceIPAddressResponse.class))
+                        .nullify404(false)
+                        .globalErrorCase(GLOBAL_ERROR_CASES))
+                .build();
+    }
+
+    /**
+     * @param  aname  Required parameter: Account name.
+     * @return    Returns the GetMECPerformanceConsentResponse wrapped in ApiResponse response from the API call
+     * @throws    ApiException    Represents error response from the server.
+     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
+     */
+    public ApiResponse<GetMECPerformanceConsentResponse> getMECPerformanceConsent(
+            final String aname) throws ApiException, IOException {
+        return prepareGetMECPerformanceConsentRequest(aname).execute();
+    }
+
+    /**
+     * @param  aname  Required parameter: Account name.
+     * @return    Returns the GetMECPerformanceConsentResponse wrapped in ApiResponse response from the API call
+     */
+    public CompletableFuture<ApiResponse<GetMECPerformanceConsentResponse>> getMECPerformanceConsentAsync(
+            final String aname) {
+        try { 
+            return prepareGetMECPerformanceConsentRequest(aname).executeAsync(); 
+        } catch (Exception e) {  
+            throw new CompletionException(e); 
+        }
+    }
+
+    /**
+     * Builds the ApiCall object for getMECPerformanceConsent.
+     */
+    private ApiCall<ApiResponse<GetMECPerformanceConsentResponse>, ApiException> prepareGetMECPerformanceConsentRequest(
+            final String aname) throws IOException {
+        return new ApiCall.Builder<ApiResponse<GetMECPerformanceConsentResponse>, ApiException>()
+                .globalConfig(getGlobalConfiguration())
+                .requestBuilder(requestBuilder -> requestBuilder
+                        .server(Server.THINGSPACE.value())
+                        .path("/m2m/v1/devices/mec/performance/consent/{aname}")
+                        .templateParam(param -> param.key("aname").value(aname)
+                                .shouldEncode(true))
+                        .headerParam(param -> param.key("accept").value("application/json"))
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
+                        .httpMethod(HttpMethod.GET))
+                .responseHandler(responseHandler -> responseHandler
+                        .responseClassType(ResponseClassType.API_RESPONSE)
+                        .apiResponseDeserializer(
+                                response -> ApiHelper.deserialize(response, GetMECPerformanceConsentResponse.class))
                         .nullify404(false)
                         .globalErrorCase(GLOBAL_ERROR_CASES))
                 .build();

@@ -97,60 +97,6 @@ public final class AnomalyTriggersV2Controller extends BaseController {
     }
 
     /**
-     * Retrieves the values for a specific trigger ID.
-     * @param  triggerId  Required parameter: The trigger ID of a specific trigger.
-     * @return    Returns the AnomalyTriggerResult wrapped in ApiResponse response from the API call
-     * @throws    ApiException    Represents error response from the server.
-     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
-     */
-    public ApiResponse<AnomalyTriggerResult> listAnomalyDetectionTriggerSettingsV2(
-            final String triggerId) throws ApiException, IOException {
-        return prepareListAnomalyDetectionTriggerSettingsV2Request(triggerId).execute();
-    }
-
-    /**
-     * Retrieves the values for a specific trigger ID.
-     * @param  triggerId  Required parameter: The trigger ID of a specific trigger.
-     * @return    Returns the AnomalyTriggerResult wrapped in ApiResponse response from the API call
-     */
-    public CompletableFuture<ApiResponse<AnomalyTriggerResult>> listAnomalyDetectionTriggerSettingsV2Async(
-            final String triggerId) {
-        try { 
-            return prepareListAnomalyDetectionTriggerSettingsV2Request(triggerId).executeAsync(); 
-        } catch (Exception e) {  
-            throw new CompletionException(e); 
-        }
-    }
-
-    /**
-     * Builds the ApiCall object for listAnomalyDetectionTriggerSettingsV2.
-     */
-    private ApiCall<ApiResponse<AnomalyTriggerResult>, ApiException> prepareListAnomalyDetectionTriggerSettingsV2Request(
-            final String triggerId) throws IOException {
-        return new ApiCall.Builder<ApiResponse<AnomalyTriggerResult>, ApiException>()
-                .globalConfig(getGlobalConfiguration())
-                .requestBuilder(requestBuilder -> requestBuilder
-                        .server(Server.THINGSPACE.value())
-                        .path("/m2m/v2/triggers/{triggerId}")
-                        .templateParam(param -> param.key("triggerId").value(triggerId)
-                                .shouldEncode(true))
-                        .headerParam(param -> param.key("accept").value("application/json"))
-                        .withAuth(auth -> auth
-                                .add("oAuth2"))
-                        .httpMethod(HttpMethod.GET))
-                .responseHandler(responseHandler -> responseHandler
-                        .responseClassType(ResponseClassType.API_RESPONSE)
-                        .apiResponseDeserializer(
-                                response -> ApiHelper.deserialize(response, AnomalyTriggerResult.class))
-                        .nullify404(false)
-                        .localErrorCase(ErrorCase.DEFAULT,
-                                 ErrorCase.setReason("An error occurred.",
-                                (reason, context) -> new IntelligenceResultException(reason, context)))
-                        .globalErrorCase(GLOBAL_ERROR_CASES))
-                .build();
-    }
-
-    /**
      * Updates an existing trigger using the account name.
      * @param  body  Required parameter: Request to update existing trigger.
      * @return    Returns the IntelligenceSuccessResult wrapped in ApiResponse response from the API call
@@ -198,6 +144,60 @@ public final class AnomalyTriggersV2Controller extends BaseController {
                         .responseClassType(ResponseClassType.API_RESPONSE)
                         .apiResponseDeserializer(
                                 response -> ApiHelper.deserialize(response, IntelligenceSuccessResult.class))
+                        .nullify404(false)
+                        .localErrorCase(ErrorCase.DEFAULT,
+                                 ErrorCase.setReason("An error occurred.",
+                                (reason, context) -> new IntelligenceResultException(reason, context)))
+                        .globalErrorCase(GLOBAL_ERROR_CASES))
+                .build();
+    }
+
+    /**
+     * Retrieves the values for a specific trigger ID.
+     * @param  triggerId  Required parameter: The trigger ID of a specific trigger.
+     * @return    Returns the AnomalyTriggerResult wrapped in ApiResponse response from the API call
+     * @throws    ApiException    Represents error response from the server.
+     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
+     */
+    public ApiResponse<AnomalyTriggerResult> listAnomalyDetectionTriggerSettingsV2(
+            final String triggerId) throws ApiException, IOException {
+        return prepareListAnomalyDetectionTriggerSettingsV2Request(triggerId).execute();
+    }
+
+    /**
+     * Retrieves the values for a specific trigger ID.
+     * @param  triggerId  Required parameter: The trigger ID of a specific trigger.
+     * @return    Returns the AnomalyTriggerResult wrapped in ApiResponse response from the API call
+     */
+    public CompletableFuture<ApiResponse<AnomalyTriggerResult>> listAnomalyDetectionTriggerSettingsV2Async(
+            final String triggerId) {
+        try { 
+            return prepareListAnomalyDetectionTriggerSettingsV2Request(triggerId).executeAsync(); 
+        } catch (Exception e) {  
+            throw new CompletionException(e); 
+        }
+    }
+
+    /**
+     * Builds the ApiCall object for listAnomalyDetectionTriggerSettingsV2.
+     */
+    private ApiCall<ApiResponse<AnomalyTriggerResult>, ApiException> prepareListAnomalyDetectionTriggerSettingsV2Request(
+            final String triggerId) throws IOException {
+        return new ApiCall.Builder<ApiResponse<AnomalyTriggerResult>, ApiException>()
+                .globalConfig(getGlobalConfiguration())
+                .requestBuilder(requestBuilder -> requestBuilder
+                        .server(Server.THINGSPACE.value())
+                        .path("/m2m/v2/triggers/{triggerId}")
+                        .templateParam(param -> param.key("triggerId").value(triggerId)
+                                .shouldEncode(true))
+                        .headerParam(param -> param.key("accept").value("application/json"))
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
+                        .httpMethod(HttpMethod.GET))
+                .responseHandler(responseHandler -> responseHandler
+                        .responseClassType(ResponseClassType.API_RESPONSE)
+                        .apiResponseDeserializer(
+                                response -> ApiHelper.deserialize(response, AnomalyTriggerResult.class))
                         .nullify404(false)
                         .localErrorCase(ErrorCase.DEFAULT,
                                  ErrorCase.setReason("An error occurred.",

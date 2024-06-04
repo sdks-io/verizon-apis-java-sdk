@@ -151,64 +151,6 @@ public final class EUICCDeviceProfileManagementController extends BaseController
     }
 
     /**
-     * Delete a local profile from eUICC devices. If the local profile is enabled, it will first be
-     * disabled and the boot or default profile will be enabled.
-     * @param  body  Required parameter: Update state
-     * @return    Returns the RequestResponse wrapped in ApiResponse response from the API call
-     * @throws    ApiException    Represents error response from the server.
-     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
-     */
-    public ApiResponse<RequestResponse> deleteLocalProfile(
-            final ProfileChangeStateRequest body) throws ApiException, IOException {
-        return prepareDeleteLocalProfileRequest(body).execute();
-    }
-
-    /**
-     * Delete a local profile from eUICC devices. If the local profile is enabled, it will first be
-     * disabled and the boot or default profile will be enabled.
-     * @param  body  Required parameter: Update state
-     * @return    Returns the RequestResponse wrapped in ApiResponse response from the API call
-     */
-    public CompletableFuture<ApiResponse<RequestResponse>> deleteLocalProfileAsync(
-            final ProfileChangeStateRequest body) {
-        try { 
-            return prepareDeleteLocalProfileRequest(body).executeAsync(); 
-        } catch (Exception e) {  
-            throw new CompletionException(e); 
-        }
-    }
-
-    /**
-     * Builds the ApiCall object for deleteLocalProfile.
-     */
-    private ApiCall<ApiResponse<RequestResponse>, ApiException> prepareDeleteLocalProfileRequest(
-            final ProfileChangeStateRequest body) throws JsonProcessingException, IOException {
-        return new ApiCall.Builder<ApiResponse<RequestResponse>, ApiException>()
-                .globalConfig(getGlobalConfiguration())
-                .requestBuilder(requestBuilder -> requestBuilder
-                        .server(Server.THINGSPACE.value())
-                        .path("/m2m/v1/devices/profile/actions/delete")
-                        .bodyParam(param -> param.value(body))
-                        .bodySerializer(() ->  ApiHelper.serialize(body))
-                        .headerParam(param -> param.key("Content-Type")
-                                .value("application/json").isRequired(false))
-                        .headerParam(param -> param.key("accept").value("application/json"))
-                        .withAuth(auth -> auth
-                                .add("oAuth2"))
-                        .httpMethod(HttpMethod.POST))
-                .responseHandler(responseHandler -> responseHandler
-                        .responseClassType(ResponseClassType.API_RESPONSE)
-                        .apiResponseDeserializer(
-                                response -> ApiHelper.deserialize(response, RequestResponse.class))
-                        .nullify404(false)
-                        .localErrorCase("400",
-                                 ErrorCase.setReason("Error Response",
-                                (reason, context) -> new RestErrorResponseException(reason, context)))
-                        .globalErrorCase(GLOBAL_ERROR_CASES))
-                .build();
-    }
-
-    /**
      * Enable a local profile that has been downloaded to eUICC devices.
      * @param  body  Required parameter: Update state
      * @return    Returns the RequestResponse wrapped in ApiResponse response from the API call
@@ -302,6 +244,64 @@ public final class EUICCDeviceProfileManagementController extends BaseController
                 .requestBuilder(requestBuilder -> requestBuilder
                         .server(Server.THINGSPACE.value())
                         .path("/m2m/v1/devices/profile/actions/disable")
+                        .bodyParam(param -> param.value(body))
+                        .bodySerializer(() ->  ApiHelper.serialize(body))
+                        .headerParam(param -> param.key("Content-Type")
+                                .value("application/json").isRequired(false))
+                        .headerParam(param -> param.key("accept").value("application/json"))
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
+                        .httpMethod(HttpMethod.POST))
+                .responseHandler(responseHandler -> responseHandler
+                        .responseClassType(ResponseClassType.API_RESPONSE)
+                        .apiResponseDeserializer(
+                                response -> ApiHelper.deserialize(response, RequestResponse.class))
+                        .nullify404(false)
+                        .localErrorCase("400",
+                                 ErrorCase.setReason("Error Response",
+                                (reason, context) -> new RestErrorResponseException(reason, context)))
+                        .globalErrorCase(GLOBAL_ERROR_CASES))
+                .build();
+    }
+
+    /**
+     * Delete a local profile from eUICC devices. If the local profile is enabled, it will first be
+     * disabled and the boot or default profile will be enabled.
+     * @param  body  Required parameter: Update state
+     * @return    Returns the RequestResponse wrapped in ApiResponse response from the API call
+     * @throws    ApiException    Represents error response from the server.
+     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
+     */
+    public ApiResponse<RequestResponse> deleteLocalProfile(
+            final ProfileChangeStateRequest body) throws ApiException, IOException {
+        return prepareDeleteLocalProfileRequest(body).execute();
+    }
+
+    /**
+     * Delete a local profile from eUICC devices. If the local profile is enabled, it will first be
+     * disabled and the boot or default profile will be enabled.
+     * @param  body  Required parameter: Update state
+     * @return    Returns the RequestResponse wrapped in ApiResponse response from the API call
+     */
+    public CompletableFuture<ApiResponse<RequestResponse>> deleteLocalProfileAsync(
+            final ProfileChangeStateRequest body) {
+        try { 
+            return prepareDeleteLocalProfileRequest(body).executeAsync(); 
+        } catch (Exception e) {  
+            throw new CompletionException(e); 
+        }
+    }
+
+    /**
+     * Builds the ApiCall object for deleteLocalProfile.
+     */
+    private ApiCall<ApiResponse<RequestResponse>, ApiException> prepareDeleteLocalProfileRequest(
+            final ProfileChangeStateRequest body) throws JsonProcessingException, IOException {
+        return new ApiCall.Builder<ApiResponse<RequestResponse>, ApiException>()
+                .globalConfig(getGlobalConfiguration())
+                .requestBuilder(requestBuilder -> requestBuilder
+                        .server(Server.THINGSPACE.value())
+                        .path("/m2m/v1/devices/profile/actions/delete")
                         .bodyParam(param -> param.value(body))
                         .bodySerializer(() ->  ApiHelper.serialize(body))
                         .headerParam(param -> param.key("Content-Type")

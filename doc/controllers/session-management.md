@@ -10,53 +10,9 @@ SessionManagementController sessionManagementController = client.getSessionManag
 
 ## Methods
 
-* [End Connectivity Management Session](../../doc/controllers/session-management.md#end-connectivity-management-session)
 * [Start Connectivity Management Session](../../doc/controllers/session-management.md#start-connectivity-management-session)
+* [End Connectivity Management Session](../../doc/controllers/session-management.md#end-connectivity-management-session)
 * [Reset Connectivity Management Password](../../doc/controllers/session-management.md#reset-connectivity-management-password)
-
-
-# End Connectivity Management Session
-
-Ends a Connectivity Management session.
-
-```java
-CompletableFuture<ApiResponse<LogOutRequest>> endConnectivityManagementSessionAsync()
-```
-
-## Server
-
-`Server.THINGSPACE`
-
-## Response Type
-
-[`LogOutRequest`](../../doc/models/log-out-request.md)
-
-## Example Usage
-
-```java
-sessionManagementController.endConnectivityManagementSessionAsync().thenAccept(result -> {
-    // TODO success callback handler
-    System.out.println(result);
-}).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
-    return null;
-});
-```
-
-## Example Response *(as JSON)*
-
-```json
-{
-  "sessionToken": "bcce3ea6-fe4f-4952-bacf-eadd80718e83"
-}
-```
-
-## Errors
-
-| HTTP Status Code | Error Description | Exception Class |
-|  --- | --- | --- |
-| 400 | Error response. | [`ConnectivityManagementResultException`](../../doc/models/connectivity-management-result-exception.md) |
 
 
 # Start Connectivity Management Session
@@ -92,6 +48,50 @@ LogInRequest body = new LogInRequest.Builder(
 .build();
 
 sessionManagementController.startConnectivityManagementSessionAsync(body).thenAccept(result -> {
+    // TODO success callback handler
+    System.out.println(result);
+}).exceptionally(exception -> {
+    // TODO failure callback handler
+    exception.printStackTrace();
+    return null;
+});
+```
+
+## Example Response *(as JSON)*
+
+```json
+{
+  "sessionToken": "bcce3ea6-fe4f-4952-bacf-eadd80718e83"
+}
+```
+
+## Errors
+
+| HTTP Status Code | Error Description | Exception Class |
+|  --- | --- | --- |
+| 400 | Error response. | [`ConnectivityManagementResultException`](../../doc/models/connectivity-management-result-exception.md) |
+
+
+# End Connectivity Management Session
+
+Ends a Connectivity Management session.
+
+```java
+CompletableFuture<ApiResponse<LogOutRequest>> endConnectivityManagementSessionAsync()
+```
+
+## Server
+
+`Server.THINGSPACE`
+
+## Response Type
+
+[`LogOutRequest`](../../doc/models/log-out-request.md)
+
+## Example Usage
+
+```java
+sessionManagementController.endConnectivityManagementSessionAsync().thenAccept(result -> {
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {

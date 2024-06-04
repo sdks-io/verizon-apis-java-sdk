@@ -155,72 +155,120 @@ public final class ServiceEndpointsController extends BaseController {
     }
 
     /**
-     * Update registered Service Endpoint information.
-     * @param  serviceEndpointsId  Required parameter: A system-defined string identifier
-     *         representing one or more registered Service Endpoints.
-     * @param  body  Required parameter: Data needed for Service Endpoint information. The request
-     *         body passes the rest of the needed parameters to create a service endpoint.
-     *         Parameters other than `serviceEndpointsId` will be edited here rather than the
-     *         **Parameters** section above. The `ern`,`applicationServerProviderId` and
-     *         `applicationId` parameters are required. **Note:** Currently, the only valid value
-     *         for `applicationServerProviderId`is **AWS**.
-     * @return    Returns the UpdateServiceEndpointResult wrapped in ApiResponse response from the API call
+     * Register Service Endpoints of a deployed application to specified MEC Platforms.
+     * @param  body  Required parameter: An array of Service Endpoint data for a deployed
+     *         application. The request body passes all of the needed parameters to create a service
+     *         endpoint. Parameters will be edited here rather than the **Parameters** section
+     *         above. The `ern`,`applicationServerProviderId`, `applicationId` and
+     *         `serviceProfileID` parameters are required. **Note:** Currently, the only valid value
+     *         for `applicationServerProviderId`is **AWS**. Also, if you do not know one of the
+     *         optional values (i.e. URI), you can erase the line from the query by back-spacing
+     *         over it.
+     * @return    Returns the RegisterServiceEndpointResult wrapped in ApiResponse response from the API call
      * @throws    ApiException    Represents error response from the server.
      * @throws    IOException    Signals that an I/O exception of some sort has occurred.
      */
-    public ApiResponse<UpdateServiceEndpointResult> updateServiceEndpoint(
-            final String serviceEndpointsId,
+    public ApiResponse<RegisterServiceEndpointResult> registerServiceEndpoints(
             final List<ResourcesEdgeHostedServiceWithProfileId> body) throws ApiException, IOException {
-        return prepareUpdateServiceEndpointRequest(serviceEndpointsId, body).execute();
+        return prepareRegisterServiceEndpointsRequest(body).execute();
     }
 
     /**
-     * Update registered Service Endpoint information.
-     * @param  serviceEndpointsId  Required parameter: A system-defined string identifier
-     *         representing one or more registered Service Endpoints.
-     * @param  body  Required parameter: Data needed for Service Endpoint information. The request
-     *         body passes the rest of the needed parameters to create a service endpoint.
-     *         Parameters other than `serviceEndpointsId` will be edited here rather than the
-     *         **Parameters** section above. The `ern`,`applicationServerProviderId` and
-     *         `applicationId` parameters are required. **Note:** Currently, the only valid value
-     *         for `applicationServerProviderId`is **AWS**.
-     * @return    Returns the UpdateServiceEndpointResult wrapped in ApiResponse response from the API call
+     * Register Service Endpoints of a deployed application to specified MEC Platforms.
+     * @param  body  Required parameter: An array of Service Endpoint data for a deployed
+     *         application. The request body passes all of the needed parameters to create a service
+     *         endpoint. Parameters will be edited here rather than the **Parameters** section
+     *         above. The `ern`,`applicationServerProviderId`, `applicationId` and
+     *         `serviceProfileID` parameters are required. **Note:** Currently, the only valid value
+     *         for `applicationServerProviderId`is **AWS**. Also, if you do not know one of the
+     *         optional values (i.e. URI), you can erase the line from the query by back-spacing
+     *         over it.
+     * @return    Returns the RegisterServiceEndpointResult wrapped in ApiResponse response from the API call
      */
-    public CompletableFuture<ApiResponse<UpdateServiceEndpointResult>> updateServiceEndpointAsync(
-            final String serviceEndpointsId,
+    public CompletableFuture<ApiResponse<RegisterServiceEndpointResult>> registerServiceEndpointsAsync(
             final List<ResourcesEdgeHostedServiceWithProfileId> body) {
         try { 
-            return prepareUpdateServiceEndpointRequest(serviceEndpointsId, body).executeAsync(); 
+            return prepareRegisterServiceEndpointsRequest(body).executeAsync(); 
         } catch (Exception e) {  
             throw new CompletionException(e); 
         }
     }
 
     /**
-     * Builds the ApiCall object for updateServiceEndpoint.
+     * Builds the ApiCall object for registerServiceEndpoints.
      */
-    private ApiCall<ApiResponse<UpdateServiceEndpointResult>, ApiException> prepareUpdateServiceEndpointRequest(
-            final String serviceEndpointsId,
+    private ApiCall<ApiResponse<RegisterServiceEndpointResult>, ApiException> prepareRegisterServiceEndpointsRequest(
             final List<ResourcesEdgeHostedServiceWithProfileId> body) throws JsonProcessingException, IOException {
-        return new ApiCall.Builder<ApiResponse<UpdateServiceEndpointResult>, ApiException>()
+        return new ApiCall.Builder<ApiResponse<RegisterServiceEndpointResult>, ApiException>()
                 .globalConfig(getGlobalConfiguration())
                 .requestBuilder(requestBuilder -> requestBuilder
                         .server(Server.EDGE_DISCOVERY.value())
-                        .path("/serviceendpoints/{serviceEndpointsId}")
+                        .path("/serviceendpoints")
                         .bodyParam(param -> param.value(body))
                         .bodySerializer(() ->  ApiHelper.serialize(body))
-                        .templateParam(param -> param.key("serviceEndpointsId").value(serviceEndpointsId)
-                                .shouldEncode(true))
                         .headerParam(param -> param.key("Content-Type")
                                 .value("application/json").isRequired(false))
                         .headerParam(param -> param.key("accept").value("application/json"))
                         .withAuth(auth -> auth
                                 .add("oAuth2"))
-                        .httpMethod(HttpMethod.PUT))
+                        .httpMethod(HttpMethod.POST))
                 .responseHandler(responseHandler -> responseHandler
                         .responseClassType(ResponseClassType.API_RESPONSE)
                         .apiResponseDeserializer(
-                                response -> ApiHelper.deserialize(response, UpdateServiceEndpointResult.class))
+                                response -> ApiHelper.deserialize(response, RegisterServiceEndpointResult.class))
+                        .nullify404(false)
+                        .localErrorCase("400",
+                                 ErrorCase.setReason("HTTP 400 Bad Request.",
+                                (reason, context) -> new EdgeDiscoveryResultException(reason, context)))
+                        .localErrorCase("401",
+                                 ErrorCase.setReason("HTTP 401 Unauthorized.",
+                                (reason, context) -> new EdgeDiscoveryResultException(reason, context)))
+                        .localErrorCase(ErrorCase.DEFAULT,
+                                 ErrorCase.setReason("HTTP 500 Internal Server Error.",
+                                (reason, context) -> new EdgeDiscoveryResultException(reason, context)))
+                        .globalErrorCase(GLOBAL_ERROR_CASES))
+                .build();
+    }
+
+    /**
+     * Returns a list of all registered service endpoints.
+     * @return    Returns the ListAllServiceEndpointsResult wrapped in ApiResponse response from the API call
+     * @throws    ApiException    Represents error response from the server.
+     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
+     */
+    public ApiResponse<ListAllServiceEndpointsResult> listAllServiceEndpoints() throws ApiException, IOException {
+        return prepareListAllServiceEndpointsRequest().execute();
+    }
+
+    /**
+     * Returns a list of all registered service endpoints.
+     * @return    Returns the ListAllServiceEndpointsResult wrapped in ApiResponse response from the API call
+     */
+    public CompletableFuture<ApiResponse<ListAllServiceEndpointsResult>> listAllServiceEndpointsAsync() {
+        try { 
+            return prepareListAllServiceEndpointsRequest().executeAsync(); 
+        } catch (Exception e) {  
+            throw new CompletionException(e); 
+        }
+    }
+
+    /**
+     * Builds the ApiCall object for listAllServiceEndpoints.
+     */
+    private ApiCall<ApiResponse<ListAllServiceEndpointsResult>, ApiException> prepareListAllServiceEndpointsRequest() throws IOException {
+        return new ApiCall.Builder<ApiResponse<ListAllServiceEndpointsResult>, ApiException>()
+                .globalConfig(getGlobalConfiguration())
+                .requestBuilder(requestBuilder -> requestBuilder
+                        .server(Server.EDGE_DISCOVERY.value())
+                        .path("/serviceendpointsall")
+                        .headerParam(param -> param.key("accept").value("application/json"))
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
+                        .httpMethod(HttpMethod.GET))
+                .responseHandler(responseHandler -> responseHandler
+                        .responseClassType(ResponseClassType.API_RESPONSE)
+                        .apiResponseDeserializer(
+                                response -> ApiHelper.deserialize(response, ListAllServiceEndpointsResult.class))
                         .nullify404(false)
                         .localErrorCase("400",
                                  ErrorCase.setReason("HTTP 400 Bad Request.",
@@ -301,120 +349,72 @@ public final class ServiceEndpointsController extends BaseController {
     }
 
     /**
-     * Returns a list of all registered service endpoints.
-     * @return    Returns the ListAllServiceEndpointsResult wrapped in ApiResponse response from the API call
+     * Update registered Service Endpoint information.
+     * @param  serviceEndpointsId  Required parameter: A system-defined string identifier
+     *         representing one or more registered Service Endpoints.
+     * @param  body  Required parameter: Data needed for Service Endpoint information. The request
+     *         body passes the rest of the needed parameters to create a service endpoint.
+     *         Parameters other than `serviceEndpointsId` will be edited here rather than the
+     *         **Parameters** section above. The `ern`,`applicationServerProviderId` and
+     *         `applicationId` parameters are required. **Note:** Currently, the only valid value
+     *         for `applicationServerProviderId`is **AWS**.
+     * @return    Returns the UpdateServiceEndpointResult wrapped in ApiResponse response from the API call
      * @throws    ApiException    Represents error response from the server.
      * @throws    IOException    Signals that an I/O exception of some sort has occurred.
      */
-    public ApiResponse<ListAllServiceEndpointsResult> listAllServiceEndpoints() throws ApiException, IOException {
-        return prepareListAllServiceEndpointsRequest().execute();
-    }
-
-    /**
-     * Returns a list of all registered service endpoints.
-     * @return    Returns the ListAllServiceEndpointsResult wrapped in ApiResponse response from the API call
-     */
-    public CompletableFuture<ApiResponse<ListAllServiceEndpointsResult>> listAllServiceEndpointsAsync() {
-        try { 
-            return prepareListAllServiceEndpointsRequest().executeAsync(); 
-        } catch (Exception e) {  
-            throw new CompletionException(e); 
-        }
-    }
-
-    /**
-     * Builds the ApiCall object for listAllServiceEndpoints.
-     */
-    private ApiCall<ApiResponse<ListAllServiceEndpointsResult>, ApiException> prepareListAllServiceEndpointsRequest() throws IOException {
-        return new ApiCall.Builder<ApiResponse<ListAllServiceEndpointsResult>, ApiException>()
-                .globalConfig(getGlobalConfiguration())
-                .requestBuilder(requestBuilder -> requestBuilder
-                        .server(Server.EDGE_DISCOVERY.value())
-                        .path("/serviceendpointsall")
-                        .headerParam(param -> param.key("accept").value("application/json"))
-                        .withAuth(auth -> auth
-                                .add("oAuth2"))
-                        .httpMethod(HttpMethod.GET))
-                .responseHandler(responseHandler -> responseHandler
-                        .responseClassType(ResponseClassType.API_RESPONSE)
-                        .apiResponseDeserializer(
-                                response -> ApiHelper.deserialize(response, ListAllServiceEndpointsResult.class))
-                        .nullify404(false)
-                        .localErrorCase("400",
-                                 ErrorCase.setReason("HTTP 400 Bad Request.",
-                                (reason, context) -> new EdgeDiscoveryResultException(reason, context)))
-                        .localErrorCase("401",
-                                 ErrorCase.setReason("HTTP 401 Unauthorized.",
-                                (reason, context) -> new EdgeDiscoveryResultException(reason, context)))
-                        .localErrorCase(ErrorCase.DEFAULT,
-                                 ErrorCase.setReason("HTTP 500 Internal Server Error.",
-                                (reason, context) -> new EdgeDiscoveryResultException(reason, context)))
-                        .globalErrorCase(GLOBAL_ERROR_CASES))
-                .build();
-    }
-
-    /**
-     * Register Service Endpoints of a deployed application to specified MEC Platforms.
-     * @param  body  Required parameter: An array of Service Endpoint data for a deployed
-     *         application. The request body passes all of the needed parameters to create a service
-     *         endpoint. Parameters will be edited here rather than the **Parameters** section
-     *         above. The `ern`,`applicationServerProviderId`, `applicationId` and
-     *         `serviceProfileID` parameters are required. **Note:** Currently, the only valid value
-     *         for `applicationServerProviderId`is **AWS**. Also, if you do not know one of the
-     *         optional values (i.e. URI), you can erase the line from the query by back-spacing
-     *         over it.
-     * @return    Returns the RegisterServiceEndpointResult wrapped in ApiResponse response from the API call
-     * @throws    ApiException    Represents error response from the server.
-     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
-     */
-    public ApiResponse<RegisterServiceEndpointResult> registerServiceEndpoints(
+    public ApiResponse<UpdateServiceEndpointResult> updateServiceEndpoint(
+            final String serviceEndpointsId,
             final List<ResourcesEdgeHostedServiceWithProfileId> body) throws ApiException, IOException {
-        return prepareRegisterServiceEndpointsRequest(body).execute();
+        return prepareUpdateServiceEndpointRequest(serviceEndpointsId, body).execute();
     }
 
     /**
-     * Register Service Endpoints of a deployed application to specified MEC Platforms.
-     * @param  body  Required parameter: An array of Service Endpoint data for a deployed
-     *         application. The request body passes all of the needed parameters to create a service
-     *         endpoint. Parameters will be edited here rather than the **Parameters** section
-     *         above. The `ern`,`applicationServerProviderId`, `applicationId` and
-     *         `serviceProfileID` parameters are required. **Note:** Currently, the only valid value
-     *         for `applicationServerProviderId`is **AWS**. Also, if you do not know one of the
-     *         optional values (i.e. URI), you can erase the line from the query by back-spacing
-     *         over it.
-     * @return    Returns the RegisterServiceEndpointResult wrapped in ApiResponse response from the API call
+     * Update registered Service Endpoint information.
+     * @param  serviceEndpointsId  Required parameter: A system-defined string identifier
+     *         representing one or more registered Service Endpoints.
+     * @param  body  Required parameter: Data needed for Service Endpoint information. The request
+     *         body passes the rest of the needed parameters to create a service endpoint.
+     *         Parameters other than `serviceEndpointsId` will be edited here rather than the
+     *         **Parameters** section above. The `ern`,`applicationServerProviderId` and
+     *         `applicationId` parameters are required. **Note:** Currently, the only valid value
+     *         for `applicationServerProviderId`is **AWS**.
+     * @return    Returns the UpdateServiceEndpointResult wrapped in ApiResponse response from the API call
      */
-    public CompletableFuture<ApiResponse<RegisterServiceEndpointResult>> registerServiceEndpointsAsync(
+    public CompletableFuture<ApiResponse<UpdateServiceEndpointResult>> updateServiceEndpointAsync(
+            final String serviceEndpointsId,
             final List<ResourcesEdgeHostedServiceWithProfileId> body) {
         try { 
-            return prepareRegisterServiceEndpointsRequest(body).executeAsync(); 
+            return prepareUpdateServiceEndpointRequest(serviceEndpointsId, body).executeAsync(); 
         } catch (Exception e) {  
             throw new CompletionException(e); 
         }
     }
 
     /**
-     * Builds the ApiCall object for registerServiceEndpoints.
+     * Builds the ApiCall object for updateServiceEndpoint.
      */
-    private ApiCall<ApiResponse<RegisterServiceEndpointResult>, ApiException> prepareRegisterServiceEndpointsRequest(
+    private ApiCall<ApiResponse<UpdateServiceEndpointResult>, ApiException> prepareUpdateServiceEndpointRequest(
+            final String serviceEndpointsId,
             final List<ResourcesEdgeHostedServiceWithProfileId> body) throws JsonProcessingException, IOException {
-        return new ApiCall.Builder<ApiResponse<RegisterServiceEndpointResult>, ApiException>()
+        return new ApiCall.Builder<ApiResponse<UpdateServiceEndpointResult>, ApiException>()
                 .globalConfig(getGlobalConfiguration())
                 .requestBuilder(requestBuilder -> requestBuilder
                         .server(Server.EDGE_DISCOVERY.value())
-                        .path("/serviceendpoints")
+                        .path("/serviceendpoints/{serviceEndpointsId}")
                         .bodyParam(param -> param.value(body))
                         .bodySerializer(() ->  ApiHelper.serialize(body))
+                        .templateParam(param -> param.key("serviceEndpointsId").value(serviceEndpointsId)
+                                .shouldEncode(true))
                         .headerParam(param -> param.key("Content-Type")
                                 .value("application/json").isRequired(false))
                         .headerParam(param -> param.key("accept").value("application/json"))
                         .withAuth(auth -> auth
                                 .add("oAuth2"))
-                        .httpMethod(HttpMethod.POST))
+                        .httpMethod(HttpMethod.PUT))
                 .responseHandler(responseHandler -> responseHandler
                         .responseClassType(ResponseClassType.API_RESPONSE)
                         .apiResponseDeserializer(
-                                response -> ApiHelper.deserialize(response, RegisterServiceEndpointResult.class))
+                                response -> ApiHelper.deserialize(response, UpdateServiceEndpointResult.class))
                         .nullify404(false)
                         .localErrorCase("400",
                                  ErrorCase.setReason("HTTP 400 Bad Request.",

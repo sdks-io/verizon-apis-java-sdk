@@ -103,6 +103,75 @@ public final class SoftwareManagementLicensesV2Controller extends BaseController
     }
 
     /**
+     * This endpoint allows user to assign licenses to a list of devices.
+     * @deprecated
+     * 
+     * @param  account  Required parameter: Account identifier.
+     * @param  body  Required parameter: License assignment.
+     * @return    Returns the V2LicensesAssignedRemovedResult wrapped in ApiResponse response from the API call
+     * @throws    ApiException    Represents error response from the server.
+     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
+     */
+    @Deprecated
+    public ApiResponse<V2LicensesAssignedRemovedResult> assignLicensesToDevices(
+            final String account,
+            final V2LicenseIMEI body) throws ApiException, IOException {
+        return prepareAssignLicensesToDevicesRequest(account, body).execute();
+    }
+
+    /**
+     * This endpoint allows user to assign licenses to a list of devices.
+     * @deprecated
+     * 
+     * @param  account  Required parameter: Account identifier.
+     * @param  body  Required parameter: License assignment.
+     * @return    Returns the V2LicensesAssignedRemovedResult wrapped in ApiResponse response from the API call
+     */
+    @Deprecated
+    public CompletableFuture<ApiResponse<V2LicensesAssignedRemovedResult>> assignLicensesToDevicesAsync(
+            final String account,
+            final V2LicenseIMEI body) {
+        try { 
+            return prepareAssignLicensesToDevicesRequest(account, body).executeAsync(); 
+        } catch (Exception e) {  
+            throw new CompletionException(e); 
+        }
+    }
+
+    /**
+     * Builds the ApiCall object for assignLicensesToDevices.
+     */
+    private ApiCall<ApiResponse<V2LicensesAssignedRemovedResult>, ApiException> prepareAssignLicensesToDevicesRequest(
+            final String account,
+            final V2LicenseIMEI body) throws JsonProcessingException, IOException {
+        return new ApiCall.Builder<ApiResponse<V2LicensesAssignedRemovedResult>, ApiException>()
+                .globalConfig(getGlobalConfiguration())
+                .requestBuilder(requestBuilder -> requestBuilder
+                        .server(Server.SOFTWARE_MANAGEMENT_V2.value())
+                        .path("/licenses/{account}/assign")
+                        .bodyParam(param -> param.value(body))
+                        .bodySerializer(() ->  ApiHelper.serialize(body))
+                        .templateParam(param -> param.key("account").value(account)
+                                .shouldEncode(true))
+                        .headerParam(param -> param.key("Content-Type")
+                                .value("*/*").isRequired(false))
+                        .headerParam(param -> param.key("accept").value("application/json"))
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
+                        .httpMethod(HttpMethod.POST))
+                .responseHandler(responseHandler -> responseHandler
+                        .responseClassType(ResponseClassType.API_RESPONSE)
+                        .apiResponseDeserializer(
+                                response -> ApiHelper.deserialize(response, V2LicensesAssignedRemovedResult.class))
+                        .nullify404(false)
+                        .localErrorCase("400",
+                                 ErrorCase.setReason("Unexpected error.",
+                                (reason, context) -> new FotaV2ResultException(reason, context)))
+                        .globalErrorCase(GLOBAL_ERROR_CASES))
+                .build();
+    }
+
+    /**
      * This endpoint allows user to remove licenses from a list of devices.
      * @deprecated
      * 
@@ -163,66 +232,6 @@ public final class SoftwareManagementLicensesV2Controller extends BaseController
                         .responseClassType(ResponseClassType.API_RESPONSE)
                         .apiResponseDeserializer(
                                 response -> ApiHelper.deserialize(response, V2LicensesAssignedRemovedResult.class))
-                        .nullify404(false)
-                        .localErrorCase("400",
-                                 ErrorCase.setReason("Unexpected error.",
-                                (reason, context) -> new FotaV2ResultException(reason, context)))
-                        .globalErrorCase(GLOBAL_ERROR_CASES))
-                .build();
-    }
-
-    /**
-     * This endpoint allows user to delete a created cancel candidate device list.
-     * @deprecated
-     * 
-     * @param  account  Required parameter: Account identifier.
-     * @return    Returns the FotaV2SuccessResult wrapped in ApiResponse response from the API call
-     * @throws    ApiException    Represents error response from the server.
-     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
-     */
-    @Deprecated
-    public ApiResponse<FotaV2SuccessResult> deleteListOfLicensesToRemove(
-            final String account) throws ApiException, IOException {
-        return prepareDeleteListOfLicensesToRemoveRequest(account).execute();
-    }
-
-    /**
-     * This endpoint allows user to delete a created cancel candidate device list.
-     * @deprecated
-     * 
-     * @param  account  Required parameter: Account identifier.
-     * @return    Returns the FotaV2SuccessResult wrapped in ApiResponse response from the API call
-     */
-    @Deprecated
-    public CompletableFuture<ApiResponse<FotaV2SuccessResult>> deleteListOfLicensesToRemoveAsync(
-            final String account) {
-        try { 
-            return prepareDeleteListOfLicensesToRemoveRequest(account).executeAsync(); 
-        } catch (Exception e) {  
-            throw new CompletionException(e); 
-        }
-    }
-
-    /**
-     * Builds the ApiCall object for deleteListOfLicensesToRemove.
-     */
-    private ApiCall<ApiResponse<FotaV2SuccessResult>, ApiException> prepareDeleteListOfLicensesToRemoveRequest(
-            final String account) throws IOException {
-        return new ApiCall.Builder<ApiResponse<FotaV2SuccessResult>, ApiException>()
-                .globalConfig(getGlobalConfiguration())
-                .requestBuilder(requestBuilder -> requestBuilder
-                        .server(Server.SOFTWARE_MANAGEMENT_V2.value())
-                        .path("/licenses/{account}/cancel")
-                        .templateParam(param -> param.key("account").value(account)
-                                .shouldEncode(true))
-                        .headerParam(param -> param.key("accept").value("application/json"))
-                        .withAuth(auth -> auth
-                                .add("oAuth2"))
-                        .httpMethod(HttpMethod.DELETE))
-                .responseHandler(responseHandler -> responseHandler
-                        .responseClassType(ResponseClassType.API_RESPONSE)
-                        .apiResponseDeserializer(
-                                response -> ApiHelper.deserialize(response, FotaV2SuccessResult.class))
                         .nullify404(false)
                         .localErrorCase("400",
                                  ErrorCase.setReason("Unexpected error.",
@@ -301,75 +310,6 @@ public final class SoftwareManagementLicensesV2Controller extends BaseController
     }
 
     /**
-     * This endpoint allows user to assign licenses to a list of devices.
-     * @deprecated
-     * 
-     * @param  account  Required parameter: Account identifier.
-     * @param  body  Required parameter: License assignment.
-     * @return    Returns the V2LicensesAssignedRemovedResult wrapped in ApiResponse response from the API call
-     * @throws    ApiException    Represents error response from the server.
-     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
-     */
-    @Deprecated
-    public ApiResponse<V2LicensesAssignedRemovedResult> assignLicensesToDevices(
-            final String account,
-            final V2LicenseIMEI body) throws ApiException, IOException {
-        return prepareAssignLicensesToDevicesRequest(account, body).execute();
-    }
-
-    /**
-     * This endpoint allows user to assign licenses to a list of devices.
-     * @deprecated
-     * 
-     * @param  account  Required parameter: Account identifier.
-     * @param  body  Required parameter: License assignment.
-     * @return    Returns the V2LicensesAssignedRemovedResult wrapped in ApiResponse response from the API call
-     */
-    @Deprecated
-    public CompletableFuture<ApiResponse<V2LicensesAssignedRemovedResult>> assignLicensesToDevicesAsync(
-            final String account,
-            final V2LicenseIMEI body) {
-        try { 
-            return prepareAssignLicensesToDevicesRequest(account, body).executeAsync(); 
-        } catch (Exception e) {  
-            throw new CompletionException(e); 
-        }
-    }
-
-    /**
-     * Builds the ApiCall object for assignLicensesToDevices.
-     */
-    private ApiCall<ApiResponse<V2LicensesAssignedRemovedResult>, ApiException> prepareAssignLicensesToDevicesRequest(
-            final String account,
-            final V2LicenseIMEI body) throws JsonProcessingException, IOException {
-        return new ApiCall.Builder<ApiResponse<V2LicensesAssignedRemovedResult>, ApiException>()
-                .globalConfig(getGlobalConfiguration())
-                .requestBuilder(requestBuilder -> requestBuilder
-                        .server(Server.SOFTWARE_MANAGEMENT_V2.value())
-                        .path("/licenses/{account}/assign")
-                        .bodyParam(param -> param.value(body))
-                        .bodySerializer(() ->  ApiHelper.serialize(body))
-                        .templateParam(param -> param.key("account").value(account)
-                                .shouldEncode(true))
-                        .headerParam(param -> param.key("Content-Type")
-                                .value("*/*").isRequired(false))
-                        .headerParam(param -> param.key("accept").value("application/json"))
-                        .withAuth(auth -> auth
-                                .add("oAuth2"))
-                        .httpMethod(HttpMethod.POST))
-                .responseHandler(responseHandler -> responseHandler
-                        .responseClassType(ResponseClassType.API_RESPONSE)
-                        .apiResponseDeserializer(
-                                response -> ApiHelper.deserialize(response, V2LicensesAssignedRemovedResult.class))
-                        .nullify404(false)
-                        .localErrorCase("400",
-                                 ErrorCase.setReason("Unexpected error.",
-                                (reason, context) -> new FotaV2ResultException(reason, context)))
-                        .globalErrorCase(GLOBAL_ERROR_CASES))
-                .build();
-    }
-
-    /**
      * The license cancel endpoint allows user to create a list of license cancellation candidate
      * devices.
      * @deprecated
@@ -432,6 +372,66 @@ public final class SoftwareManagementLicensesV2Controller extends BaseController
                         .responseClassType(ResponseClassType.API_RESPONSE)
                         .apiResponseDeserializer(
                                 response -> ApiHelper.deserialize(response, V2ListOfLicensesToRemoveResult.class))
+                        .nullify404(false)
+                        .localErrorCase("400",
+                                 ErrorCase.setReason("Unexpected error.",
+                                (reason, context) -> new FotaV2ResultException(reason, context)))
+                        .globalErrorCase(GLOBAL_ERROR_CASES))
+                .build();
+    }
+
+    /**
+     * This endpoint allows user to delete a created cancel candidate device list.
+     * @deprecated
+     * 
+     * @param  account  Required parameter: Account identifier.
+     * @return    Returns the FotaV2SuccessResult wrapped in ApiResponse response from the API call
+     * @throws    ApiException    Represents error response from the server.
+     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
+     */
+    @Deprecated
+    public ApiResponse<FotaV2SuccessResult> deleteListOfLicensesToRemove(
+            final String account) throws ApiException, IOException {
+        return prepareDeleteListOfLicensesToRemoveRequest(account).execute();
+    }
+
+    /**
+     * This endpoint allows user to delete a created cancel candidate device list.
+     * @deprecated
+     * 
+     * @param  account  Required parameter: Account identifier.
+     * @return    Returns the FotaV2SuccessResult wrapped in ApiResponse response from the API call
+     */
+    @Deprecated
+    public CompletableFuture<ApiResponse<FotaV2SuccessResult>> deleteListOfLicensesToRemoveAsync(
+            final String account) {
+        try { 
+            return prepareDeleteListOfLicensesToRemoveRequest(account).executeAsync(); 
+        } catch (Exception e) {  
+            throw new CompletionException(e); 
+        }
+    }
+
+    /**
+     * Builds the ApiCall object for deleteListOfLicensesToRemove.
+     */
+    private ApiCall<ApiResponse<FotaV2SuccessResult>, ApiException> prepareDeleteListOfLicensesToRemoveRequest(
+            final String account) throws IOException {
+        return new ApiCall.Builder<ApiResponse<FotaV2SuccessResult>, ApiException>()
+                .globalConfig(getGlobalConfiguration())
+                .requestBuilder(requestBuilder -> requestBuilder
+                        .server(Server.SOFTWARE_MANAGEMENT_V2.value())
+                        .path("/licenses/{account}/cancel")
+                        .templateParam(param -> param.key("account").value(account)
+                                .shouldEncode(true))
+                        .headerParam(param -> param.key("accept").value("application/json"))
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
+                        .httpMethod(HttpMethod.DELETE))
+                .responseHandler(responseHandler -> responseHandler
+                        .responseClassType(ResponseClassType.API_RESPONSE)
+                        .apiResponseDeserializer(
+                                response -> ApiHelper.deserialize(response, FotaV2SuccessResult.class))
                         .nullify404(false)
                         .localErrorCase("400",
                                  ErrorCase.setReason("Unexpected error.",

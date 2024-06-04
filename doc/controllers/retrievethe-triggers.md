@@ -12,8 +12,8 @@ RetrievetheTriggersController retrievetheTriggersController = client.getRetrieve
 
 * [Get All Available Triggers](../../doc/controllers/retrievethe-triggers.md#get-all-available-triggers)
 * [Get All Triggers by Account Name](../../doc/controllers/retrievethe-triggers.md#get-all-triggers-by-account-name)
-* [Get Triggers by Id](../../doc/controllers/retrievethe-triggers.md#get-triggers-by-id)
 * [Get All Triggers by Trigger Category](../../doc/controllers/retrievethe-triggers.md#get-all-triggers-by-trigger-category)
+* [Get Triggers by Id](../../doc/controllers/retrievethe-triggers.md#get-triggers-by-id)
 
 
 # Get All Available Triggers
@@ -97,6 +97,42 @@ retrievetheTriggersController.getAllTriggersByAccountNameAsync(accountName).then
 | Default | Error response | [`ReadySimRestErrorResponseException`](../../doc/models/ready-sim-rest-error-response-exception.md) |
 
 
+# Get All Triggers by Trigger Category
+
+Retrieves all of the triggers for the specified account associated with the PromoAlert category
+
+```java
+CompletableFuture<ApiResponse<TriggerValueResponse2>> getAllTriggersByTriggerCategoryAsync()
+```
+
+## Server
+
+`Server.THINGSPACE`
+
+## Response Type
+
+[`TriggerValueResponse2`](../../doc/models/trigger-value-response-2.md)
+
+## Example Usage
+
+```java
+retrievetheTriggersController.getAllTriggersByTriggerCategoryAsync().thenAccept(result -> {
+    // TODO success callback handler
+    System.out.println(result);
+}).exceptionally(exception -> {
+    // TODO failure callback handler
+    exception.printStackTrace();
+    return null;
+});
+```
+
+## Errors
+
+| HTTP Status Code | Error Description | Exception Class |
+|  --- | --- | --- |
+| Default | Error response | [`ReadySimRestErrorResponseException`](../../doc/models/ready-sim-rest-error-response-exception.md) |
+
+
 # Get Triggers by Id
 
 Retrives a specific trigger by its ID.
@@ -126,42 +162,6 @@ CompletableFuture<ApiResponse<TriggerValueResponse2>> getTriggersByIdAsync(
 String triggerId = "2874DEC7-26CF-4797-9C6A-B5A2AC72D526";
 
 retrievetheTriggersController.getTriggersByIdAsync(triggerId).thenAccept(result -> {
-    // TODO success callback handler
-    System.out.println(result);
-}).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
-    return null;
-});
-```
-
-## Errors
-
-| HTTP Status Code | Error Description | Exception Class |
-|  --- | --- | --- |
-| Default | Error response | [`ReadySimRestErrorResponseException`](../../doc/models/ready-sim-rest-error-response-exception.md) |
-
-
-# Get All Triggers by Trigger Category
-
-Retrieves all of the triggers for the specified account associated with the PromoAlert category
-
-```java
-CompletableFuture<ApiResponse<TriggerValueResponse2>> getAllTriggersByTriggerCategoryAsync()
-```
-
-## Server
-
-`Server.THINGSPACE`
-
-## Response Type
-
-[`TriggerValueResponse2`](../../doc/models/trigger-value-response-2.md)
-
-## Example Usage
-
-```java
-retrievetheTriggersController.getAllTriggersByTriggerCategoryAsync().thenAccept(result -> {
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {

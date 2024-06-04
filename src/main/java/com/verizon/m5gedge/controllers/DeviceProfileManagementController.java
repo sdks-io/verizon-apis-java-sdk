@@ -40,62 +40,6 @@ public final class DeviceProfileManagementController extends BaseController {
     }
 
     /**
-     * Uses the profile to activate the device.
-     * @param  body  Required parameter: Device Profile Query
-     * @return    Returns the RequestResponse wrapped in ApiResponse response from the API call
-     * @throws    ApiException    Represents error response from the server.
-     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
-     */
-    public ApiResponse<RequestResponse> profileToActivateDevice(
-            final ProfileRequest body) throws ApiException, IOException {
-        return prepareProfileToActivateDeviceRequest(body).execute();
-    }
-
-    /**
-     * Uses the profile to activate the device.
-     * @param  body  Required parameter: Device Profile Query
-     * @return    Returns the RequestResponse wrapped in ApiResponse response from the API call
-     */
-    public CompletableFuture<ApiResponse<RequestResponse>> profileToActivateDeviceAsync(
-            final ProfileRequest body) {
-        try { 
-            return prepareProfileToActivateDeviceRequest(body).executeAsync(); 
-        } catch (Exception e) {  
-            throw new CompletionException(e); 
-        }
-    }
-
-    /**
-     * Builds the ApiCall object for profileToActivateDevice.
-     */
-    private ApiCall<ApiResponse<RequestResponse>, ApiException> prepareProfileToActivateDeviceRequest(
-            final ProfileRequest body) throws JsonProcessingException, IOException {
-        return new ApiCall.Builder<ApiResponse<RequestResponse>, ApiException>()
-                .globalConfig(getGlobalConfiguration())
-                .requestBuilder(requestBuilder -> requestBuilder
-                        .server(Server.THINGSPACE.value())
-                        .path("/m2m/v1/devices/profile/actions/activate")
-                        .bodyParam(param -> param.value(body))
-                        .bodySerializer(() ->  ApiHelper.serialize(body))
-                        .headerParam(param -> param.key("Content-Type")
-                                .value("application/json").isRequired(false))
-                        .headerParam(param -> param.key("accept").value("application/json"))
-                        .withAuth(auth -> auth
-                                .add("oAuth2"))
-                        .httpMethod(HttpMethod.POST))
-                .responseHandler(responseHandler -> responseHandler
-                        .responseClassType(ResponseClassType.API_RESPONSE)
-                        .apiResponseDeserializer(
-                                response -> ApiHelper.deserialize(response, RequestResponse.class))
-                        .nullify404(false)
-                        .localErrorCase("400",
-                                 ErrorCase.setReason("Bad request",
-                                (reason, context) -> new RestErrorResponseException(reason, context)))
-                        .globalErrorCase(GLOBAL_ERROR_CASES))
-                .build();
-    }
-
-    /**
      * Uses the profile to bring the device under management.
      * @param  body  Required parameter: Device Profile Query
      * @return    Returns the RequestResponse wrapped in ApiResponse response from the API call
@@ -131,6 +75,62 @@ public final class DeviceProfileManagementController extends BaseController {
                 .requestBuilder(requestBuilder -> requestBuilder
                         .server(Server.THINGSPACE.value())
                         .path("/m2m/v1/devices/profile/actions/activate_enable")
+                        .bodyParam(param -> param.value(body))
+                        .bodySerializer(() ->  ApiHelper.serialize(body))
+                        .headerParam(param -> param.key("Content-Type")
+                                .value("application/json").isRequired(false))
+                        .headerParam(param -> param.key("accept").value("application/json"))
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
+                        .httpMethod(HttpMethod.POST))
+                .responseHandler(responseHandler -> responseHandler
+                        .responseClassType(ResponseClassType.API_RESPONSE)
+                        .apiResponseDeserializer(
+                                response -> ApiHelper.deserialize(response, RequestResponse.class))
+                        .nullify404(false)
+                        .localErrorCase("400",
+                                 ErrorCase.setReason("Bad request",
+                                (reason, context) -> new RestErrorResponseException(reason, context)))
+                        .globalErrorCase(GLOBAL_ERROR_CASES))
+                .build();
+    }
+
+    /**
+     * Uses the profile to activate the device.
+     * @param  body  Required parameter: Device Profile Query
+     * @return    Returns the RequestResponse wrapped in ApiResponse response from the API call
+     * @throws    ApiException    Represents error response from the server.
+     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
+     */
+    public ApiResponse<RequestResponse> profileToActivateDevice(
+            final ProfileRequest body) throws ApiException, IOException {
+        return prepareProfileToActivateDeviceRequest(body).execute();
+    }
+
+    /**
+     * Uses the profile to activate the device.
+     * @param  body  Required parameter: Device Profile Query
+     * @return    Returns the RequestResponse wrapped in ApiResponse response from the API call
+     */
+    public CompletableFuture<ApiResponse<RequestResponse>> profileToActivateDeviceAsync(
+            final ProfileRequest body) {
+        try { 
+            return prepareProfileToActivateDeviceRequest(body).executeAsync(); 
+        } catch (Exception e) {  
+            throw new CompletionException(e); 
+        }
+    }
+
+    /**
+     * Builds the ApiCall object for profileToActivateDevice.
+     */
+    private ApiCall<ApiResponse<RequestResponse>, ApiException> prepareProfileToActivateDeviceRequest(
+            final ProfileRequest body) throws JsonProcessingException, IOException {
+        return new ApiCall.Builder<ApiResponse<RequestResponse>, ApiException>()
+                .globalConfig(getGlobalConfiguration())
+                .requestBuilder(requestBuilder -> requestBuilder
+                        .server(Server.THINGSPACE.value())
+                        .path("/m2m/v1/devices/profile/actions/activate")
                         .bodyParam(param -> param.value(body))
                         .bodySerializer(() ->  ApiHelper.serialize(body))
                         .headerParam(param -> param.key("Content-Type")

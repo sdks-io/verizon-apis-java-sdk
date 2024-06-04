@@ -10,77 +10,9 @@ DeviceReportsController deviceReportsController = client.getDeviceReportsControl
 
 ## Methods
 
-* [Calculate Aggregated Report Asynchronous](../../doc/controllers/device-reports.md#calculate-aggregated-report-asynchronous)
 * [Calculate Aggregated Report Synchronous](../../doc/controllers/device-reports.md#calculate-aggregated-report-synchronous)
+* [Calculate Aggregated Report Asynchronous](../../doc/controllers/device-reports.md#calculate-aggregated-report-asynchronous)
 * [Get Sessions Report](../../doc/controllers/device-reports.md#get-sessions-report)
-
-
-# Calculate Aggregated Report Asynchronous
-
-Calculate aggregated report per day with number of sessions and usage information. User will receive an asynchronous callback for the specified list of devices (Max 10000) and date range (Max 180 days).
-
-```java
-CompletableFuture<ApiResponse<AggregatedReportCallbackResult>> calculateAggregatedReportAsynchronousAsync(
-    final AggregateSessionReportRequest body)
-```
-
-## Parameters
-
-| Parameter | Type | Tags | Description |
-|  --- | --- | --- | --- |
-| `body` | [`AggregateSessionReportRequest`](../../doc/models/aggregate-session-report-request.md) | Body, Required | Aggregated session report request. |
-
-## Server
-
-`Server.HYPER_PRECISE_LOCATION`
-
-## Response Type
-
-[`AggregatedReportCallbackResult`](../../doc/models/aggregated-report-callback-result.md)
-
-## Example Usage
-
-```java
-AggregateSessionReportRequest body = new AggregateSessionReportRequest.Builder(
-    "0844021539-00001",
-    Arrays.asList(
-        "709312034493372"
-    )
-)
-.startDate("2022-12-09T22:01:06.217Z")
-.endDate("2022-12-09T22:01:08.734Z")
-.noSessionFlag("false")
-.build();
-
-deviceReportsController.calculateAggregatedReportAsynchronousAsync(body).thenAccept(result -> {
-    // TODO success callback handler
-    System.out.println(result);
-}).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
-    return null;
-});
-```
-
-## Example Response *(as JSON)*
-
-```json
-{
-  "txid": "60c07fff-470b-4d6d-afcc-75e6a7c238f6",
-  "status": "QUEUED"
-}
-```
-
-## Errors
-
-| HTTP Status Code | Error Description | Exception Class |
-|  --- | --- | --- |
-| 400 | Bad request. | [`HyperPreciseLocationResultException`](../../doc/models/hyper-precise-location-result-exception.md) |
-| 401 | Unauthorized request. Access token is missing or invalid. | [`HyperPreciseLocationResultException`](../../doc/models/hyper-precise-location-result-exception.md) |
-| 403 | Forbidden request. | [`HyperPreciseLocationResultException`](../../doc/models/hyper-precise-location-result-exception.md) |
-| 404 | Bad request. Not found. | [`HyperPreciseLocationResultException`](../../doc/models/hyper-precise-location-result-exception.md) |
-| 409 | Bad request. Conflict state. | [`HyperPreciseLocationResultException`](../../doc/models/hyper-precise-location-result-exception.md) |
-| 500 | Internal Server Error. | [`HyperPreciseLocationResultException`](../../doc/models/hyper-precise-location-result-exception.md) |
 
 
 # Calculate Aggregated Report Synchronous
@@ -142,6 +74,74 @@ deviceReportsController.calculateAggregatedReportSynchronousAsync(body).thenAcce
       "bytesTransferred": 2057
     }
   ]
+}
+```
+
+## Errors
+
+| HTTP Status Code | Error Description | Exception Class |
+|  --- | --- | --- |
+| 400 | Bad request. | [`HyperPreciseLocationResultException`](../../doc/models/hyper-precise-location-result-exception.md) |
+| 401 | Unauthorized request. Access token is missing or invalid. | [`HyperPreciseLocationResultException`](../../doc/models/hyper-precise-location-result-exception.md) |
+| 403 | Forbidden request. | [`HyperPreciseLocationResultException`](../../doc/models/hyper-precise-location-result-exception.md) |
+| 404 | Bad request. Not found. | [`HyperPreciseLocationResultException`](../../doc/models/hyper-precise-location-result-exception.md) |
+| 409 | Bad request. Conflict state. | [`HyperPreciseLocationResultException`](../../doc/models/hyper-precise-location-result-exception.md) |
+| 500 | Internal Server Error. | [`HyperPreciseLocationResultException`](../../doc/models/hyper-precise-location-result-exception.md) |
+
+
+# Calculate Aggregated Report Asynchronous
+
+Calculate aggregated report per day with number of sessions and usage information. User will receive an asynchronous callback for the specified list of devices (Max 10000) and date range (Max 180 days).
+
+```java
+CompletableFuture<ApiResponse<AggregatedReportCallbackResult>> calculateAggregatedReportAsynchronousAsync(
+    final AggregateSessionReportRequest body)
+```
+
+## Parameters
+
+| Parameter | Type | Tags | Description |
+|  --- | --- | --- | --- |
+| `body` | [`AggregateSessionReportRequest`](../../doc/models/aggregate-session-report-request.md) | Body, Required | Aggregated session report request. |
+
+## Server
+
+`Server.HYPER_PRECISE_LOCATION`
+
+## Response Type
+
+[`AggregatedReportCallbackResult`](../../doc/models/aggregated-report-callback-result.md)
+
+## Example Usage
+
+```java
+AggregateSessionReportRequest body = new AggregateSessionReportRequest.Builder(
+    "0844021539-00001",
+    Arrays.asList(
+        "709312034493372"
+    )
+)
+.startDate("2022-12-09T22:01:06.217Z")
+.endDate("2022-12-09T22:01:08.734Z")
+.noSessionFlag("false")
+.build();
+
+deviceReportsController.calculateAggregatedReportAsynchronousAsync(body).thenAccept(result -> {
+    // TODO success callback handler
+    System.out.println(result);
+}).exceptionally(exception -> {
+    // TODO failure callback handler
+    exception.printStackTrace();
+    return null;
+});
+```
+
+## Example Response *(as JSON)*
+
+```json
+{
+  "txid": "60c07fff-470b-4d6d-afcc-75e6a7c238f6",
+  "status": "QUEUED"
 }
 ```
 

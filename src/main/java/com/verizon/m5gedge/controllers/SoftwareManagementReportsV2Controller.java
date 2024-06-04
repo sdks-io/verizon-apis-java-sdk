@@ -40,6 +40,70 @@ public final class SoftwareManagementReportsV2Controller extends BaseController 
     }
 
     /**
+     * This endpoint allows user to list a certain type of software of an account.
+     * @param  account  Required parameter: Account identifier.
+     * @param  distributionType  Optional parameter: Filter distributionType to get specific type of
+     *         software. Value is LWM2M, OMD-DM or HTTP.
+     * @return    Returns the List of SoftwarePackage wrapped in ApiResponse response from the API call
+     * @throws    ApiException    Represents error response from the server.
+     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
+     */
+    public ApiResponse<List<SoftwarePackage>> listAvailableSoftware(
+            final String account,
+            final String distributionType) throws ApiException, IOException {
+        return prepareListAvailableSoftwareRequest(account, distributionType).execute();
+    }
+
+    /**
+     * This endpoint allows user to list a certain type of software of an account.
+     * @param  account  Required parameter: Account identifier.
+     * @param  distributionType  Optional parameter: Filter distributionType to get specific type of
+     *         software. Value is LWM2M, OMD-DM or HTTP.
+     * @return    Returns the List of SoftwarePackage wrapped in ApiResponse response from the API call
+     */
+    public CompletableFuture<ApiResponse<List<SoftwarePackage>>> listAvailableSoftwareAsync(
+            final String account,
+            final String distributionType) {
+        try { 
+            return prepareListAvailableSoftwareRequest(account, distributionType).executeAsync(); 
+        } catch (Exception e) {  
+            throw new CompletionException(e); 
+        }
+    }
+
+    /**
+     * Builds the ApiCall object for listAvailableSoftware.
+     */
+    private ApiCall<ApiResponse<List<SoftwarePackage>>, ApiException> prepareListAvailableSoftwareRequest(
+            final String account,
+            final String distributionType) throws IOException {
+        return new ApiCall.Builder<ApiResponse<List<SoftwarePackage>>, ApiException>()
+                .globalConfig(getGlobalConfiguration())
+                .requestBuilder(requestBuilder -> requestBuilder
+                        .server(Server.SOFTWARE_MANAGEMENT_V2.value())
+                        .path("/software/{account}")
+                        .queryParam(param -> param.key("distributionType")
+                                .value(distributionType).isRequired(false))
+                        .templateParam(param -> param.key("account").value(account)
+                                .shouldEncode(true))
+                        .headerParam(param -> param.key("accept").value("application/json"))
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
+                        .httpMethod(HttpMethod.GET))
+                .responseHandler(responseHandler -> responseHandler
+                        .responseClassType(ResponseClassType.API_RESPONSE)
+                        .apiResponseDeserializer(
+                                response -> ApiHelper.deserializeArray(response,
+                                        SoftwarePackage[].class))
+                        .nullify404(false)
+                        .localErrorCase("400",
+                                 ErrorCase.setReason("Unexpected error.",
+                                (reason, context) -> new FotaV2ResultException(reason, context)))
+                        .globalErrorCase(GLOBAL_ERROR_CASES))
+                .build();
+    }
+
+    /**
      * The device endpoint gets devices information of an account.
      * @param  account  Required parameter: Account identifier.
      * @param  lastSeenDeviceId  Optional parameter: Last seen device identifier.
@@ -305,70 +369,6 @@ public final class SoftwareManagementReportsV2Controller extends BaseController 
                         .responseClassType(ResponseClassType.API_RESPONSE)
                         .apiResponseDeserializer(
                                 response -> ApiHelper.deserialize(response, V2CampaignDevice.class))
-                        .nullify404(false)
-                        .localErrorCase("400",
-                                 ErrorCase.setReason("Unexpected error.",
-                                (reason, context) -> new FotaV2ResultException(reason, context)))
-                        .globalErrorCase(GLOBAL_ERROR_CASES))
-                .build();
-    }
-
-    /**
-     * This endpoint allows user to list a certain type of software of an account.
-     * @param  account  Required parameter: Account identifier.
-     * @param  distributionType  Optional parameter: Filter distributionType to get specific type of
-     *         software. Value is LWM2M, OMD-DM or HTTP.
-     * @return    Returns the List of SoftwarePackage wrapped in ApiResponse response from the API call
-     * @throws    ApiException    Represents error response from the server.
-     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
-     */
-    public ApiResponse<List<SoftwarePackage>> listAvailableSoftware(
-            final String account,
-            final String distributionType) throws ApiException, IOException {
-        return prepareListAvailableSoftwareRequest(account, distributionType).execute();
-    }
-
-    /**
-     * This endpoint allows user to list a certain type of software of an account.
-     * @param  account  Required parameter: Account identifier.
-     * @param  distributionType  Optional parameter: Filter distributionType to get specific type of
-     *         software. Value is LWM2M, OMD-DM or HTTP.
-     * @return    Returns the List of SoftwarePackage wrapped in ApiResponse response from the API call
-     */
-    public CompletableFuture<ApiResponse<List<SoftwarePackage>>> listAvailableSoftwareAsync(
-            final String account,
-            final String distributionType) {
-        try { 
-            return prepareListAvailableSoftwareRequest(account, distributionType).executeAsync(); 
-        } catch (Exception e) {  
-            throw new CompletionException(e); 
-        }
-    }
-
-    /**
-     * Builds the ApiCall object for listAvailableSoftware.
-     */
-    private ApiCall<ApiResponse<List<SoftwarePackage>>, ApiException> prepareListAvailableSoftwareRequest(
-            final String account,
-            final String distributionType) throws IOException {
-        return new ApiCall.Builder<ApiResponse<List<SoftwarePackage>>, ApiException>()
-                .globalConfig(getGlobalConfiguration())
-                .requestBuilder(requestBuilder -> requestBuilder
-                        .server(Server.SOFTWARE_MANAGEMENT_V2.value())
-                        .path("/software/{account}")
-                        .queryParam(param -> param.key("distributionType")
-                                .value(distributionType).isRequired(false))
-                        .templateParam(param -> param.key("account").value(account)
-                                .shouldEncode(true))
-                        .headerParam(param -> param.key("accept").value("application/json"))
-                        .withAuth(auth -> auth
-                                .add("oAuth2"))
-                        .httpMethod(HttpMethod.GET))
-                .responseHandler(responseHandler -> responseHandler
-                        .responseClassType(ResponseClassType.API_RESPONSE)
-                        .apiResponseDeserializer(
-                                response -> ApiHelper.deserializeArray(response,
-                                        SoftwarePackage[].class))
                         .nullify404(false)
                         .localErrorCase("400",
                                  ErrorCase.setReason("Unexpected error.",

@@ -43,52 +43,45 @@ public final class CloudConnectorDevicesController extends BaseController {
     }
 
     /**
-     * Returns the readings of a specified sensor, with the most recent reading first. Sensor
-     * readings are stored as events; this request an array of events.
-     * @param  fieldname  Required parameter: The name of the sensor.
-     * @param  body  Required parameter: The device identifier and fields to match in the search.
-     * @return    Returns the SearchSensorHistoryResponseList wrapped in ApiResponse response from the API call
+     * Change configuration values on a device, such as setting how often a device records and
+     * reports sensor readings.
+     * @param  body  Required parameter: The request body changes configuration values on a device.
+     * @return    Returns the ChangeConfigurationResponse wrapped in ApiResponse response from the API call
      * @throws    ApiException    Represents error response from the server.
      * @throws    IOException    Signals that an I/O exception of some sort has occurred.
      */
-    public ApiResponse<SearchSensorHistoryResponseList> searchSensorReadings(
-            final String fieldname,
-            final SearchSensorHistoryRequest body) throws ApiException, IOException {
-        return prepareSearchSensorReadingsRequest(fieldname, body).execute();
+    public ApiResponse<ChangeConfigurationResponse> updateDevicesConfigurationValue(
+            final ChangeConfigurationRequest body) throws ApiException, IOException {
+        return prepareUpdateDevicesConfigurationValueRequest(body).execute();
     }
 
     /**
-     * Returns the readings of a specified sensor, with the most recent reading first. Sensor
-     * readings are stored as events; this request an array of events.
-     * @param  fieldname  Required parameter: The name of the sensor.
-     * @param  body  Required parameter: The device identifier and fields to match in the search.
-     * @return    Returns the SearchSensorHistoryResponseList wrapped in ApiResponse response from the API call
+     * Change configuration values on a device, such as setting how often a device records and
+     * reports sensor readings.
+     * @param  body  Required parameter: The request body changes configuration values on a device.
+     * @return    Returns the ChangeConfigurationResponse wrapped in ApiResponse response from the API call
      */
-    public CompletableFuture<ApiResponse<SearchSensorHistoryResponseList>> searchSensorReadingsAsync(
-            final String fieldname,
-            final SearchSensorHistoryRequest body) {
+    public CompletableFuture<ApiResponse<ChangeConfigurationResponse>> updateDevicesConfigurationValueAsync(
+            final ChangeConfigurationRequest body) {
         try { 
-            return prepareSearchSensorReadingsRequest(fieldname, body).executeAsync(); 
+            return prepareUpdateDevicesConfigurationValueRequest(body).executeAsync(); 
         } catch (Exception e) {  
             throw new CompletionException(e); 
         }
     }
 
     /**
-     * Builds the ApiCall object for searchSensorReadings.
+     * Builds the ApiCall object for updateDevicesConfigurationValue.
      */
-    private ApiCall<ApiResponse<SearchSensorHistoryResponseList>, ApiException> prepareSearchSensorReadingsRequest(
-            final String fieldname,
-            final SearchSensorHistoryRequest body) throws JsonProcessingException, IOException {
-        return new ApiCall.Builder<ApiResponse<SearchSensorHistoryResponseList>, ApiException>()
+    private ApiCall<ApiResponse<ChangeConfigurationResponse>, ApiException> prepareUpdateDevicesConfigurationValueRequest(
+            final ChangeConfigurationRequest body) throws JsonProcessingException, IOException {
+        return new ApiCall.Builder<ApiResponse<ChangeConfigurationResponse>, ApiException>()
                 .globalConfig(getGlobalConfiguration())
                 .requestBuilder(requestBuilder -> requestBuilder
                         .server(Server.CLOUD_CONNECTOR.value())
-                        .path("/devices/fields/{fieldname}/actions/history")
+                        .path("/devices/configuration/actions/set")
                         .bodyParam(param -> param.value(body))
                         .bodySerializer(() ->  ApiHelper.serialize(body))
-                        .templateParam(param -> param.key("fieldname").value(fieldname)
-                                .shouldEncode(true))
                         .headerParam(param -> param.key("Content-Type")
                                 .value("application/json").isRequired(false))
                         .headerParam(param -> param.key("accept").value("application/json"))
@@ -98,56 +91,7 @@ public final class CloudConnectorDevicesController extends BaseController {
                 .responseHandler(responseHandler -> responseHandler
                         .responseClassType(ResponseClassType.API_RESPONSE)
                         .apiResponseDeserializer(
-                                response -> ApiHelper.deserialize(response, SearchSensorHistoryResponseList.class))
-                        .nullify404(false)
-                        .globalErrorCase(GLOBAL_ERROR_CASES))
-                .build();
-    }
-
-    /**
-     * Remove a device from a ThingSpace account.
-     * @param  body  Required parameter: The request body identifies the device to delete.
-     * @throws    ApiException    Represents error response from the server.
-     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
-     */
-    public ApiResponse<Void> deleteDeviceFromAccount(
-            final RemoveDeviceRequest body) throws ApiException, IOException {
-        return prepareDeleteDeviceFromAccountRequest(body).execute();
-    }
-
-    /**
-     * Remove a device from a ThingSpace account.
-     * @param  body  Required parameter: The request body identifies the device to delete.
-     * @return    Returns the Void wrapped in ApiResponse response from the API call
-     */
-    public CompletableFuture<ApiResponse<Void>> deleteDeviceFromAccountAsync(
-            final RemoveDeviceRequest body) {
-        try { 
-            return prepareDeleteDeviceFromAccountRequest(body).executeAsync(); 
-        } catch (Exception e) {  
-            throw new CompletionException(e); 
-        }
-    }
-
-    /**
-     * Builds the ApiCall object for deleteDeviceFromAccount.
-     */
-    private ApiCall<ApiResponse<Void>, ApiException> prepareDeleteDeviceFromAccountRequest(
-            final RemoveDeviceRequest body) throws JsonProcessingException, IOException {
-        return new ApiCall.Builder<ApiResponse<Void>, ApiException>()
-                .globalConfig(getGlobalConfiguration())
-                .requestBuilder(requestBuilder -> requestBuilder
-                        .server(Server.CLOUD_CONNECTOR.value())
-                        .path("/devices/actions/delete")
-                        .bodyParam(param -> param.value(body))
-                        .bodySerializer(() ->  ApiHelper.serialize(body))
-                        .headerParam(param -> param.key("Content-Type")
-                                .value("application/json").isRequired(false))
-                        .withAuth(auth -> auth
-                                .add("oAuth2"))
-                        .httpMethod(HttpMethod.POST))
-                .responseHandler(responseHandler -> responseHandler
-                        .responseClassType(ResponseClassType.API_RESPONSE)
+                                response -> ApiHelper.deserialize(response, ChangeConfigurationResponse.class))
                         .nullify404(false)
                         .globalErrorCase(GLOBAL_ERROR_CASES))
                 .build();
@@ -201,61 +145,6 @@ public final class CloudConnectorDevicesController extends BaseController {
                         .responseClassType(ResponseClassType.API_RESPONSE)
                         .apiResponseDeserializer(
                                 response -> ApiHelper.deserialize(response, FindDeviceByPropertyResponseList.class))
-                        .nullify404(false)
-                        .globalErrorCase(GLOBAL_ERROR_CASES))
-                .build();
-    }
-
-    /**
-     * Change configuration values on a device, such as setting how often a device records and
-     * reports sensor readings.
-     * @param  body  Required parameter: The request body changes configuration values on a device.
-     * @return    Returns the ChangeConfigurationResponse wrapped in ApiResponse response from the API call
-     * @throws    ApiException    Represents error response from the server.
-     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
-     */
-    public ApiResponse<ChangeConfigurationResponse> updateDevicesConfigurationValue(
-            final ChangeConfigurationRequest body) throws ApiException, IOException {
-        return prepareUpdateDevicesConfigurationValueRequest(body).execute();
-    }
-
-    /**
-     * Change configuration values on a device, such as setting how often a device records and
-     * reports sensor readings.
-     * @param  body  Required parameter: The request body changes configuration values on a device.
-     * @return    Returns the ChangeConfigurationResponse wrapped in ApiResponse response from the API call
-     */
-    public CompletableFuture<ApiResponse<ChangeConfigurationResponse>> updateDevicesConfigurationValueAsync(
-            final ChangeConfigurationRequest body) {
-        try { 
-            return prepareUpdateDevicesConfigurationValueRequest(body).executeAsync(); 
-        } catch (Exception e) {  
-            throw new CompletionException(e); 
-        }
-    }
-
-    /**
-     * Builds the ApiCall object for updateDevicesConfigurationValue.
-     */
-    private ApiCall<ApiResponse<ChangeConfigurationResponse>, ApiException> prepareUpdateDevicesConfigurationValueRequest(
-            final ChangeConfigurationRequest body) throws JsonProcessingException, IOException {
-        return new ApiCall.Builder<ApiResponse<ChangeConfigurationResponse>, ApiException>()
-                .globalConfig(getGlobalConfiguration())
-                .requestBuilder(requestBuilder -> requestBuilder
-                        .server(Server.CLOUD_CONNECTOR.value())
-                        .path("/devices/configuration/actions/set")
-                        .bodyParam(param -> param.value(body))
-                        .bodySerializer(() ->  ApiHelper.serialize(body))
-                        .headerParam(param -> param.key("Content-Type")
-                                .value("application/json").isRequired(false))
-                        .headerParam(param -> param.key("accept").value("application/json"))
-                        .withAuth(auth -> auth
-                                .add("oAuth2"))
-                        .httpMethod(HttpMethod.POST))
-                .responseHandler(responseHandler -> responseHandler
-                        .responseClassType(ResponseClassType.API_RESPONSE)
-                        .apiResponseDeserializer(
-                                response -> ApiHelper.deserialize(response, ChangeConfigurationResponse.class))
                         .nullify404(false)
                         .globalErrorCase(GLOBAL_ERROR_CASES))
                 .build();
@@ -364,6 +253,117 @@ public final class CloudConnectorDevicesController extends BaseController {
                         .responseClassType(ResponseClassType.API_RESPONSE)
                         .apiResponseDeserializer(
                                 response -> ApiHelper.deserialize(response, SearchDeviceEventHistoryResponseList.class))
+                        .nullify404(false)
+                        .globalErrorCase(GLOBAL_ERROR_CASES))
+                .build();
+    }
+
+    /**
+     * Returns the readings of a specified sensor, with the most recent reading first. Sensor
+     * readings are stored as events; this request an array of events.
+     * @param  fieldname  Required parameter: The name of the sensor.
+     * @param  body  Required parameter: The device identifier and fields to match in the search.
+     * @return    Returns the SearchSensorHistoryResponseList wrapped in ApiResponse response from the API call
+     * @throws    ApiException    Represents error response from the server.
+     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
+     */
+    public ApiResponse<SearchSensorHistoryResponseList> searchSensorReadings(
+            final String fieldname,
+            final SearchSensorHistoryRequest body) throws ApiException, IOException {
+        return prepareSearchSensorReadingsRequest(fieldname, body).execute();
+    }
+
+    /**
+     * Returns the readings of a specified sensor, with the most recent reading first. Sensor
+     * readings are stored as events; this request an array of events.
+     * @param  fieldname  Required parameter: The name of the sensor.
+     * @param  body  Required parameter: The device identifier and fields to match in the search.
+     * @return    Returns the SearchSensorHistoryResponseList wrapped in ApiResponse response from the API call
+     */
+    public CompletableFuture<ApiResponse<SearchSensorHistoryResponseList>> searchSensorReadingsAsync(
+            final String fieldname,
+            final SearchSensorHistoryRequest body) {
+        try { 
+            return prepareSearchSensorReadingsRequest(fieldname, body).executeAsync(); 
+        } catch (Exception e) {  
+            throw new CompletionException(e); 
+        }
+    }
+
+    /**
+     * Builds the ApiCall object for searchSensorReadings.
+     */
+    private ApiCall<ApiResponse<SearchSensorHistoryResponseList>, ApiException> prepareSearchSensorReadingsRequest(
+            final String fieldname,
+            final SearchSensorHistoryRequest body) throws JsonProcessingException, IOException {
+        return new ApiCall.Builder<ApiResponse<SearchSensorHistoryResponseList>, ApiException>()
+                .globalConfig(getGlobalConfiguration())
+                .requestBuilder(requestBuilder -> requestBuilder
+                        .server(Server.CLOUD_CONNECTOR.value())
+                        .path("/devices/fields/{fieldname}/actions/history")
+                        .bodyParam(param -> param.value(body))
+                        .bodySerializer(() ->  ApiHelper.serialize(body))
+                        .templateParam(param -> param.key("fieldname").value(fieldname)
+                                .shouldEncode(true))
+                        .headerParam(param -> param.key("Content-Type")
+                                .value("application/json").isRequired(false))
+                        .headerParam(param -> param.key("accept").value("application/json"))
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
+                        .httpMethod(HttpMethod.POST))
+                .responseHandler(responseHandler -> responseHandler
+                        .responseClassType(ResponseClassType.API_RESPONSE)
+                        .apiResponseDeserializer(
+                                response -> ApiHelper.deserialize(response, SearchSensorHistoryResponseList.class))
+                        .nullify404(false)
+                        .globalErrorCase(GLOBAL_ERROR_CASES))
+                .build();
+    }
+
+    /**
+     * Remove a device from a ThingSpace account.
+     * @param  body  Required parameter: The request body identifies the device to delete.
+     * @throws    ApiException    Represents error response from the server.
+     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
+     */
+    public ApiResponse<Void> deleteDeviceFromAccount(
+            final RemoveDeviceRequest body) throws ApiException, IOException {
+        return prepareDeleteDeviceFromAccountRequest(body).execute();
+    }
+
+    /**
+     * Remove a device from a ThingSpace account.
+     * @param  body  Required parameter: The request body identifies the device to delete.
+     * @return    Returns the Void wrapped in ApiResponse response from the API call
+     */
+    public CompletableFuture<ApiResponse<Void>> deleteDeviceFromAccountAsync(
+            final RemoveDeviceRequest body) {
+        try { 
+            return prepareDeleteDeviceFromAccountRequest(body).executeAsync(); 
+        } catch (Exception e) {  
+            throw new CompletionException(e); 
+        }
+    }
+
+    /**
+     * Builds the ApiCall object for deleteDeviceFromAccount.
+     */
+    private ApiCall<ApiResponse<Void>, ApiException> prepareDeleteDeviceFromAccountRequest(
+            final RemoveDeviceRequest body) throws JsonProcessingException, IOException {
+        return new ApiCall.Builder<ApiResponse<Void>, ApiException>()
+                .globalConfig(getGlobalConfiguration())
+                .requestBuilder(requestBuilder -> requestBuilder
+                        .server(Server.CLOUD_CONNECTOR.value())
+                        .path("/devices/actions/delete")
+                        .bodyParam(param -> param.value(body))
+                        .bodySerializer(() ->  ApiHelper.serialize(body))
+                        .headerParam(param -> param.key("Content-Type")
+                                .value("application/json").isRequired(false))
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
+                        .httpMethod(HttpMethod.POST))
+                .responseHandler(responseHandler -> responseHandler
+                        .responseClassType(ResponseClassType.API_RESPONSE)
                         .nullify404(false)
                         .globalErrorCase(GLOBAL_ERROR_CASES))
                 .build();

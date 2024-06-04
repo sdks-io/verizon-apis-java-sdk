@@ -11,8 +11,8 @@ AnomalyTriggersV2Controller anomalyTriggersV2Controller = client.getAnomalyTrigg
 ## Methods
 
 * [Create Anomaly Detection Trigger V2](../../doc/controllers/anomaly-triggers-v2.md#create-anomaly-detection-trigger-v2)
-* [List Anomaly Detection Trigger Settings V2](../../doc/controllers/anomaly-triggers-v2.md#list-anomaly-detection-trigger-settings-v2)
 * [Update Anomaly Detection Trigger V2](../../doc/controllers/anomaly-triggers-v2.md#update-anomaly-detection-trigger-v2)
+* [List Anomaly Detection Trigger Settings V2](../../doc/controllers/anomaly-triggers-v2.md#list-anomaly-detection-trigger-settings-v2)
 
 
 # Create Anomaly Detection Trigger V2
@@ -99,91 +99,6 @@ anomalyTriggersV2Controller.createAnomalyDetectionTriggerV2Async(body).thenAccep
 | Default | An error occurred. | [`IntelligenceResultException`](../../doc/models/intelligence-result-exception.md) |
 
 
-# List Anomaly Detection Trigger Settings V2
-
-Retrieves the values for a specific trigger ID.
-
-```java
-CompletableFuture<ApiResponse<AnomalyTriggerResult>> listAnomalyDetectionTriggerSettingsV2Async(
-    final String triggerId)
-```
-
-## Parameters
-
-| Parameter | Type | Tags | Description |
-|  --- | --- | --- | --- |
-| `triggerId` | `String` | Template, Required | The trigger ID of a specific trigger. |
-
-## Server
-
-`Server.THINGSPACE`
-
-## Response Type
-
-[`AnomalyTriggerResult`](../../doc/models/anomaly-trigger-result.md)
-
-## Example Usage
-
-```java
-String triggerId = "be1b5958-3e11-41db-9abd-b1b7618c0035";
-
-anomalyTriggersV2Controller.listAnomalyDetectionTriggerSettingsV2Async(triggerId).thenAccept(result -> {
-    // TODO success callback handler
-    System.out.println(result);
-}).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
-    return null;
-});
-```
-
-## Example Response *(as JSON)*
-
-```json
-{
-  "triggers": [
-    {
-      "triggerId": "BE1B5958-3E11-41DB-9ABD-B1B7618C0035",
-      "triggerName": "Anomaly Daily Usage REST Test-1",
-      "organizationName": "AnamolyDetectionRTRTest",
-      "triggerCategory": "UsageAnomaly",
-      "triggerAttributes": [
-        {
-          "key": "DataPercentage50",
-          "value": false
-        }
-      ],
-      "createdAt": "2021-10-21T23:57:03.397.0000Z",
-      "modifiedAt": "2021-10-21T23:57:03.397.0000Z",
-      "notification": {
-        "notificationType": "DailySummary",
-        "callback": true,
-        "emailNotification": true,
-        "notificationGroupName": "Anomaly Test API",
-        "notificationFrequencyFactor": -2147483648,
-        "externalEmailRecipients": "placeholder@verizon.com",
-        "smsNotification": true,
-        "smsNumbers": [
-          {
-            "carrier": "US Cellular",
-            "number": "9299280711"
-          }
-        ],
-        "reminder": false,
-        "severity": "Critical"
-      }
-    }
-  ]
-}
-```
-
-## Errors
-
-| HTTP Status Code | Error Description | Exception Class |
-|  --- | --- | --- |
-| Default | An error occurred. | [`IntelligenceResultException`](../../doc/models/intelligence-result-exception.md) |
-
-
 # Update Anomaly Detection Trigger V2
 
 Updates an existing trigger using the account name.
@@ -259,6 +174,91 @@ anomalyTriggersV2Controller.updateAnomalyDetectionTriggerV2Async(body).thenAccep
 ```json
 {
   "status": "Success"
+}
+```
+
+## Errors
+
+| HTTP Status Code | Error Description | Exception Class |
+|  --- | --- | --- |
+| Default | An error occurred. | [`IntelligenceResultException`](../../doc/models/intelligence-result-exception.md) |
+
+
+# List Anomaly Detection Trigger Settings V2
+
+Retrieves the values for a specific trigger ID.
+
+```java
+CompletableFuture<ApiResponse<AnomalyTriggerResult>> listAnomalyDetectionTriggerSettingsV2Async(
+    final String triggerId)
+```
+
+## Parameters
+
+| Parameter | Type | Tags | Description |
+|  --- | --- | --- | --- |
+| `triggerId` | `String` | Template, Required | The trigger ID of a specific trigger. |
+
+## Server
+
+`Server.THINGSPACE`
+
+## Response Type
+
+[`AnomalyTriggerResult`](../../doc/models/anomaly-trigger-result.md)
+
+## Example Usage
+
+```java
+String triggerId = "be1b5958-3e11-41db-9abd-b1b7618c0035";
+
+anomalyTriggersV2Controller.listAnomalyDetectionTriggerSettingsV2Async(triggerId).thenAccept(result -> {
+    // TODO success callback handler
+    System.out.println(result);
+}).exceptionally(exception -> {
+    // TODO failure callback handler
+    exception.printStackTrace();
+    return null;
+});
+```
+
+## Example Response *(as JSON)*
+
+```json
+{
+  "triggers": [
+    {
+      "triggerId": "BE1B5958-3E11-41DB-9ABD-B1B7618C0035",
+      "triggerName": "Anomaly Daily Usage REST Test-1",
+      "organizationName": "AnamolyDetectionRTRTest",
+      "triggerCategory": "UsageAnomaly",
+      "triggerAttributes": [
+        {
+          "key": "DataPercentage50",
+          "value": false
+        }
+      ],
+      "createdAt": "2021-10-21T23:57:03.397.0000Z",
+      "modifiedAt": "2021-10-21T23:57:03.397.0000Z",
+      "notification": {
+        "notificationType": "DailySummary",
+        "callback": true,
+        "emailNotification": true,
+        "notificationGroupName": "Anomaly Test API",
+        "notificationFrequencyFactor": -2147483648,
+        "externalEmailRecipients": "placeholder@verizon.com",
+        "smsNotification": true,
+        "smsNumbers": [
+          {
+            "carrier": "US Cellular",
+            "number": "9299280711"
+          }
+        ],
+        "reminder": false,
+        "severity": "Critical"
+      }
+    }
+  ]
 }
 ```
 

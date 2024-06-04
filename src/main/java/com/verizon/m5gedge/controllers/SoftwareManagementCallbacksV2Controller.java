@@ -39,6 +39,60 @@ public final class SoftwareManagementCallbacksV2Controller extends BaseControlle
     }
 
     /**
+     * This endpoint allows user to get the registered callback information.
+     * @param  account  Required parameter: Account identifier.
+     * @return    Returns the CallbackSummary wrapped in ApiResponse response from the API call
+     * @throws    ApiException    Represents error response from the server.
+     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
+     */
+    public ApiResponse<CallbackSummary> listRegisteredCallbacks(
+            final String account) throws ApiException, IOException {
+        return prepareListRegisteredCallbacksRequest(account).execute();
+    }
+
+    /**
+     * This endpoint allows user to get the registered callback information.
+     * @param  account  Required parameter: Account identifier.
+     * @return    Returns the CallbackSummary wrapped in ApiResponse response from the API call
+     */
+    public CompletableFuture<ApiResponse<CallbackSummary>> listRegisteredCallbacksAsync(
+            final String account) {
+        try { 
+            return prepareListRegisteredCallbacksRequest(account).executeAsync(); 
+        } catch (Exception e) {  
+            throw new CompletionException(e); 
+        }
+    }
+
+    /**
+     * Builds the ApiCall object for listRegisteredCallbacks.
+     */
+    private ApiCall<ApiResponse<CallbackSummary>, ApiException> prepareListRegisteredCallbacksRequest(
+            final String account) throws IOException {
+        return new ApiCall.Builder<ApiResponse<CallbackSummary>, ApiException>()
+                .globalConfig(getGlobalConfiguration())
+                .requestBuilder(requestBuilder -> requestBuilder
+                        .server(Server.SOFTWARE_MANAGEMENT_V2.value())
+                        .path("/callbacks/{account}")
+                        .templateParam(param -> param.key("account").value(account)
+                                .shouldEncode(true))
+                        .headerParam(param -> param.key("accept").value("application/json"))
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
+                        .httpMethod(HttpMethod.GET))
+                .responseHandler(responseHandler -> responseHandler
+                        .responseClassType(ResponseClassType.API_RESPONSE)
+                        .apiResponseDeserializer(
+                                response -> ApiHelper.deserialize(response, CallbackSummary.class))
+                        .nullify404(false)
+                        .localErrorCase("400",
+                                 ErrorCase.setReason("Unexpected error.",
+                                (reason, context) -> new FotaV2ResultException(reason, context)))
+                        .globalErrorCase(GLOBAL_ERROR_CASES))
+                .build();
+    }
+
+    /**
      * This endpoint allows user to update the HTTPS callback address.
      * @param  account  Required parameter: Account identifier.
      * @param  body  Required parameter: Callback URL registration.
@@ -156,60 +210,6 @@ public final class SoftwareManagementCallbacksV2Controller extends BaseControlle
                         .responseClassType(ResponseClassType.API_RESPONSE)
                         .apiResponseDeserializer(
                                 response -> ApiHelper.deserialize(response, FotaV2CallbackRegistrationResult.class))
-                        .nullify404(false)
-                        .localErrorCase("400",
-                                 ErrorCase.setReason("Unexpected error.",
-                                (reason, context) -> new FotaV2ResultException(reason, context)))
-                        .globalErrorCase(GLOBAL_ERROR_CASES))
-                .build();
-    }
-
-    /**
-     * This endpoint allows user to get the registered callback information.
-     * @param  account  Required parameter: Account identifier.
-     * @return    Returns the CallbackSummary wrapped in ApiResponse response from the API call
-     * @throws    ApiException    Represents error response from the server.
-     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
-     */
-    public ApiResponse<CallbackSummary> listRegisteredCallbacks(
-            final String account) throws ApiException, IOException {
-        return prepareListRegisteredCallbacksRequest(account).execute();
-    }
-
-    /**
-     * This endpoint allows user to get the registered callback information.
-     * @param  account  Required parameter: Account identifier.
-     * @return    Returns the CallbackSummary wrapped in ApiResponse response from the API call
-     */
-    public CompletableFuture<ApiResponse<CallbackSummary>> listRegisteredCallbacksAsync(
-            final String account) {
-        try { 
-            return prepareListRegisteredCallbacksRequest(account).executeAsync(); 
-        } catch (Exception e) {  
-            throw new CompletionException(e); 
-        }
-    }
-
-    /**
-     * Builds the ApiCall object for listRegisteredCallbacks.
-     */
-    private ApiCall<ApiResponse<CallbackSummary>, ApiException> prepareListRegisteredCallbacksRequest(
-            final String account) throws IOException {
-        return new ApiCall.Builder<ApiResponse<CallbackSummary>, ApiException>()
-                .globalConfig(getGlobalConfiguration())
-                .requestBuilder(requestBuilder -> requestBuilder
-                        .server(Server.SOFTWARE_MANAGEMENT_V2.value())
-                        .path("/callbacks/{account}")
-                        .templateParam(param -> param.key("account").value(account)
-                                .shouldEncode(true))
-                        .headerParam(param -> param.key("accept").value("application/json"))
-                        .withAuth(auth -> auth
-                                .add("oAuth2"))
-                        .httpMethod(HttpMethod.GET))
-                .responseHandler(responseHandler -> responseHandler
-                        .responseClassType(ResponseClassType.API_RESPONSE)
-                        .apiResponseDeserializer(
-                                response -> ApiHelper.deserialize(response, CallbackSummary.class))
                         .nullify404(false)
                         .localErrorCase("400",
                                  ErrorCase.setReason("Unexpected error.",

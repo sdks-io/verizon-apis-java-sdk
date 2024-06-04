@@ -11,10 +11,10 @@ DeviceGroupsController deviceGroupsController = client.getDeviceGroupsController
 ## Methods
 
 * [Create Device Group](../../doc/controllers/device-groups.md#create-device-group)
-* [Update Device Group](../../doc/controllers/device-groups.md#update-device-group)
 * [List Device Groups](../../doc/controllers/device-groups.md#list-device-groups)
-* [Delete Device Group](../../doc/controllers/device-groups.md#delete-device-group)
 * [Get Device Group Information](../../doc/controllers/device-groups.md#get-device-group-information)
+* [Update Device Group](../../doc/controllers/device-groups.md#update-device-group)
+* [Delete Device Group](../../doc/controllers/device-groups.md#delete-device-group)
 
 
 # Create Device Group
@@ -58,75 +58,6 @@ CreateDeviceGroupRequest body = new CreateDeviceGroupRequest.Builder(
 .build();
 
 deviceGroupsController.createDeviceGroupAsync(body).thenAccept(result -> {
-    // TODO success callback handler
-    System.out.println(result);
-}).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
-    return null;
-});
-```
-
-## Example Response *(as JSON)*
-
-```json
-{
-  "success": true
-}
-```
-
-## Errors
-
-| HTTP Status Code | Error Description | Exception Class |
-|  --- | --- | --- |
-| 400 | Error response. | [`ConnectivityManagementResultException`](../../doc/models/connectivity-management-result-exception.md) |
-
-
-# Update Device Group
-
-Make changes to a device group, including changing the name and description, and adding or removing devices.
-
-```java
-CompletableFuture<ApiResponse<ConnectivityManagementSuccessResult>> updateDeviceGroupAsync(
-    final String aname,
-    final String gname,
-    final DeviceGroupUpdateRequest body)
-```
-
-## Parameters
-
-| Parameter | Type | Tags | Description |
-|  --- | --- | --- | --- |
-| `aname` | `String` | Template, Required | Account name. |
-| `gname` | `String` | Template, Required | Group name. |
-| `body` | [`DeviceGroupUpdateRequest`](../../doc/models/device-group-update-request.md) | Body, Required | Request to update device group. |
-
-## Server
-
-`Server.THINGSPACE`
-
-## Response Type
-
-[`ConnectivityManagementSuccessResult`](../../doc/models/connectivity-management-success-result.md)
-
-## Example Usage
-
-```java
-String aname = "0252012345-00001";
-String gname = "gname2";
-DeviceGroupUpdateRequest body = new DeviceGroupUpdateRequest.Builder()
-    .devicesToAdd(Arrays.asList(
-        new DeviceId.Builder(
-            "990003420535537",
-            "imei"
-        )
-        .build()
-    ))
-    .newGroupDescription("All western region tank level monitors.")
-    .newGroupName("Western region tanks")
-    .build();
-
-deviceGroupsController.updateDeviceGroupAsync(aname, gname, body).thenAccept(result -> {
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
@@ -215,62 +146,6 @@ deviceGroupsController.listDeviceGroupsAsync(aname).thenAccept(result -> {
 | 400 | Error response. | [`ConnectivityManagementResultException`](../../doc/models/connectivity-management-result-exception.md) |
 
 
-# Delete Device Group
-
-Deletes a device group from the account. Devices in the group are moved to the default device group and are not deleted from the account.
-
-```java
-CompletableFuture<ApiResponse<ConnectivityManagementSuccessResult>> deleteDeviceGroupAsync(
-    final String aname,
-    final String gname)
-```
-
-## Parameters
-
-| Parameter | Type | Tags | Description |
-|  --- | --- | --- | --- |
-| `aname` | `String` | Template, Required | Account name. |
-| `gname` | `String` | Template, Required | Group name. |
-
-## Server
-
-`Server.THINGSPACE`
-
-## Response Type
-
-[`ConnectivityManagementSuccessResult`](../../doc/models/connectivity-management-success-result.md)
-
-## Example Usage
-
-```java
-String aname = "0252012345-00001";
-String gname = "gname2";
-
-deviceGroupsController.deleteDeviceGroupAsync(aname, gname).thenAccept(result -> {
-    // TODO success callback handler
-    System.out.println(result);
-}).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
-    return null;
-});
-```
-
-## Example Response *(as JSON)*
-
-```json
-{
-  "success": true
-}
-```
-
-## Errors
-
-| HTTP Status Code | Error Description | Exception Class |
-|  --- | --- | --- |
-| 400 | Error response. | [`ConnectivityManagementResultException`](../../doc/models/connectivity-management-result-exception.md) |
-
-
 # Get Device Group Information
 
 When HTTP status is 202, a URL will be returned in the Location header of the form /groups/{aname}/name/{gname}/?next={token}. This URL can be used to request the next set of groups.
@@ -335,6 +210,131 @@ deviceGroupsController.getDeviceGroupInformationAsync(aname, gname, null).thenAc
       ]
     }
   ]
+}
+```
+
+## Errors
+
+| HTTP Status Code | Error Description | Exception Class |
+|  --- | --- | --- |
+| 400 | Error response. | [`ConnectivityManagementResultException`](../../doc/models/connectivity-management-result-exception.md) |
+
+
+# Update Device Group
+
+Make changes to a device group, including changing the name and description, and adding or removing devices.
+
+```java
+CompletableFuture<ApiResponse<ConnectivityManagementSuccessResult>> updateDeviceGroupAsync(
+    final String aname,
+    final String gname,
+    final DeviceGroupUpdateRequest body)
+```
+
+## Parameters
+
+| Parameter | Type | Tags | Description |
+|  --- | --- | --- | --- |
+| `aname` | `String` | Template, Required | Account name. |
+| `gname` | `String` | Template, Required | Group name. |
+| `body` | [`DeviceGroupUpdateRequest`](../../doc/models/device-group-update-request.md) | Body, Required | Request to update device group. |
+
+## Server
+
+`Server.THINGSPACE`
+
+## Response Type
+
+[`ConnectivityManagementSuccessResult`](../../doc/models/connectivity-management-success-result.md)
+
+## Example Usage
+
+```java
+String aname = "0252012345-00001";
+String gname = "gname2";
+DeviceGroupUpdateRequest body = new DeviceGroupUpdateRequest.Builder()
+    .devicesToAdd(Arrays.asList(
+        new DeviceId.Builder(
+            "990003420535537",
+            "imei"
+        )
+        .build()
+    ))
+    .newGroupDescription("All western region tank level monitors.")
+    .newGroupName("Western region tanks")
+    .build();
+
+deviceGroupsController.updateDeviceGroupAsync(aname, gname, body).thenAccept(result -> {
+    // TODO success callback handler
+    System.out.println(result);
+}).exceptionally(exception -> {
+    // TODO failure callback handler
+    exception.printStackTrace();
+    return null;
+});
+```
+
+## Example Response *(as JSON)*
+
+```json
+{
+  "success": true
+}
+```
+
+## Errors
+
+| HTTP Status Code | Error Description | Exception Class |
+|  --- | --- | --- |
+| 400 | Error response. | [`ConnectivityManagementResultException`](../../doc/models/connectivity-management-result-exception.md) |
+
+
+# Delete Device Group
+
+Deletes a device group from the account. Devices in the group are moved to the default device group and are not deleted from the account.
+
+```java
+CompletableFuture<ApiResponse<ConnectivityManagementSuccessResult>> deleteDeviceGroupAsync(
+    final String aname,
+    final String gname)
+```
+
+## Parameters
+
+| Parameter | Type | Tags | Description |
+|  --- | --- | --- | --- |
+| `aname` | `String` | Template, Required | Account name. |
+| `gname` | `String` | Template, Required | Group name. |
+
+## Server
+
+`Server.THINGSPACE`
+
+## Response Type
+
+[`ConnectivityManagementSuccessResult`](../../doc/models/connectivity-management-success-result.md)
+
+## Example Usage
+
+```java
+String aname = "0252012345-00001";
+String gname = "gname2";
+
+deviceGroupsController.deleteDeviceGroupAsync(aname, gname).thenAccept(result -> {
+    // TODO success callback handler
+    System.out.println(result);
+}).exceptionally(exception -> {
+    // TODO failure callback handler
+    exception.printStackTrace();
+    return null;
+});
+```
+
+## Example Response *(as JSON)*
+
+```json
+{
+  "success": true
 }
 ```
 

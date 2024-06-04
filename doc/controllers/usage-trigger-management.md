@@ -10,27 +10,25 @@ UsageTriggerManagementController usageTriggerManagementController = client.getUs
 
 ## Methods
 
-* [Delete Trigger](../../doc/controllers/usage-trigger-management.md#delete-trigger)
-* [Update Trigger](../../doc/controllers/usage-trigger-management.md#update-trigger)
 * [Create New Trigger](../../doc/controllers/usage-trigger-management.md#create-new-trigger)
+* [Update Trigger](../../doc/controllers/usage-trigger-management.md#update-trigger)
+* [Delete Trigger](../../doc/controllers/usage-trigger-management.md#delete-trigger)
 
 
-# Delete Trigger
+# Create New Trigger
 
-eletes the specified usage trigger from the given account
+Create a new usage trigger, which will send an alert when the number of device location service transactions reaches a specified percentage of the monthly subscription amount.
 
 ```java
-CompletableFuture<ApiResponse<DeviceLocationSuccessResult>> deleteTriggerAsync(
-    final String accountName,
-    final String triggerId)
+CompletableFuture<ApiResponse<UsageTriggerResponse>> createNewTriggerAsync(
+    final UsageTriggerAddRequest body)
 ```
 
 ## Parameters
 
 | Parameter | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `accountName` | `String` | Template, Required | Account name |
-| `triggerId` | `String` | Template, Required | Usage trigger ID |
+| `body` | [`UsageTriggerAddRequest`](../../doc/models/usage-trigger-add-request.md) | Body, Optional | License assignment. |
 
 ## Server
 
@@ -38,15 +36,25 @@ CompletableFuture<ApiResponse<DeviceLocationSuccessResult>> deleteTriggerAsync(
 
 ## Response Type
 
-[`DeviceLocationSuccessResult`](../../doc/models/device-location-success-result.md)
+[`UsageTriggerResponse`](../../doc/models/usage-trigger-response.md)
 
 ## Example Usage
 
 ```java
-String accountName = "0212312345-00001";
-String triggerId = "595f5c44-c31c-4552-8670-020a1545a84d";
+UsageTriggerAddRequest body = new UsageTriggerAddRequest.Builder(
+    "0212312345-00001",
+    ServiceNameEnum.LOCATION,
+    "95"
+)
+.triggerName("95% usage alert")
+.allowExcess(true)
+.sendSmsNotification(true)
+.smsPhoneNumbers("5551231234")
+.sendEmailNotification(true)
+.emailAddresses("you@theinternet.com")
+.build();
 
-usageTriggerManagementController.deleteTriggerAsync(accountName, triggerId).thenAccept(result -> {
+usageTriggerManagementController.createNewTriggerAsync(body).thenAccept(result -> {
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
@@ -60,7 +68,18 @@ usageTriggerManagementController.deleteTriggerAsync(accountName, triggerId).then
 
 ```json
 {
-  "success": true
+  "triggerId": "595f5c44-c31c-4552-8670-020a1545a84d",
+  "triggerName": "90 percent",
+  "accountName": "1000012345-00001",
+  "serviceName": "Location",
+  "thresholdValue": "90",
+  "allowExcess": true,
+  "sendSmsNotification": true,
+  "smsPhoneNumbers": "5558794321",
+  "sendEmailNotification": false,
+  "emailAddresses": "",
+  "createDate": "2018-08-11",
+  "updateDate": "2018-08-12"
 }
 ```
 
@@ -142,20 +161,22 @@ usageTriggerManagementController.updateTriggerAsync(triggerId, body).thenAccept(
 | 400 | Unexpected error | [`DeviceLocationResultException`](../../doc/models/device-location-result-exception.md) |
 
 
-# Create New Trigger
+# Delete Trigger
 
-Create a new usage trigger, which will send an alert when the number of device location service transactions reaches a specified percentage of the monthly subscription amount.
+eletes the specified usage trigger from the given account
 
 ```java
-CompletableFuture<ApiResponse<UsageTriggerResponse>> createNewTriggerAsync(
-    final UsageTriggerAddRequest body)
+CompletableFuture<ApiResponse<DeviceLocationSuccessResult>> deleteTriggerAsync(
+    final String accountName,
+    final String triggerId)
 ```
 
 ## Parameters
 
 | Parameter | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `body` | [`UsageTriggerAddRequest`](../../doc/models/usage-trigger-add-request.md) | Body, Optional | License assignment. |
+| `accountName` | `String` | Template, Required | Account name |
+| `triggerId` | `String` | Template, Required | Usage trigger ID |
 
 ## Server
 
@@ -163,25 +184,15 @@ CompletableFuture<ApiResponse<UsageTriggerResponse>> createNewTriggerAsync(
 
 ## Response Type
 
-[`UsageTriggerResponse`](../../doc/models/usage-trigger-response.md)
+[`DeviceLocationSuccessResult`](../../doc/models/device-location-success-result.md)
 
 ## Example Usage
 
 ```java
-UsageTriggerAddRequest body = new UsageTriggerAddRequest.Builder(
-    "0212312345-00001",
-    ServiceNameEnum.LOCATION,
-    "95"
-)
-.triggerName("95% usage alert")
-.allowExcess(true)
-.sendSmsNotification(true)
-.smsPhoneNumbers("5551231234")
-.sendEmailNotification(true)
-.emailAddresses("you@theinternet.com")
-.build();
+String accountName = "0212312345-00001";
+String triggerId = "595f5c44-c31c-4552-8670-020a1545a84d";
 
-usageTriggerManagementController.createNewTriggerAsync(body).thenAccept(result -> {
+usageTriggerManagementController.deleteTriggerAsync(accountName, triggerId).thenAccept(result -> {
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
@@ -195,18 +206,7 @@ usageTriggerManagementController.createNewTriggerAsync(body).thenAccept(result -
 
 ```json
 {
-  "triggerId": "595f5c44-c31c-4552-8670-020a1545a84d",
-  "triggerName": "90 percent",
-  "accountName": "1000012345-00001",
-  "serviceName": "Location",
-  "thresholdValue": "90",
-  "allowExcess": true,
-  "sendSmsNotification": true,
-  "smsPhoneNumbers": "5558794321",
-  "sendEmailNotification": false,
-  "emailAddresses": "",
-  "createDate": "2018-08-11",
-  "updateDate": "2018-08-12"
+  "success": true
 }
 ```
 

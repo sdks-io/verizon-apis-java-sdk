@@ -37,6 +37,60 @@ public final class DevicesLocationSubscriptionsController extends BaseController
     }
 
     /**
+     * This subscriptions endpoint retrieves an account's current location subscription status.
+     * @param  account  Required parameter: Account identifier in "##########-#####".
+     * @return    Returns the DeviceLocationSubscription wrapped in ApiResponse response from the API call
+     * @throws    ApiException    Represents error response from the server.
+     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
+     */
+    public ApiResponse<DeviceLocationSubscription> getLocationServiceSubscriptionStatus(
+            final String account) throws ApiException, IOException {
+        return prepareGetLocationServiceSubscriptionStatusRequest(account).execute();
+    }
+
+    /**
+     * This subscriptions endpoint retrieves an account's current location subscription status.
+     * @param  account  Required parameter: Account identifier in "##########-#####".
+     * @return    Returns the DeviceLocationSubscription wrapped in ApiResponse response from the API call
+     */
+    public CompletableFuture<ApiResponse<DeviceLocationSubscription>> getLocationServiceSubscriptionStatusAsync(
+            final String account) {
+        try { 
+            return prepareGetLocationServiceSubscriptionStatusRequest(account).executeAsync(); 
+        } catch (Exception e) {  
+            throw new CompletionException(e); 
+        }
+    }
+
+    /**
+     * Builds the ApiCall object for getLocationServiceSubscriptionStatus.
+     */
+    private ApiCall<ApiResponse<DeviceLocationSubscription>, ApiException> prepareGetLocationServiceSubscriptionStatusRequest(
+            final String account) throws IOException {
+        return new ApiCall.Builder<ApiResponse<DeviceLocationSubscription>, ApiException>()
+                .globalConfig(getGlobalConfiguration())
+                .requestBuilder(requestBuilder -> requestBuilder
+                        .server(Server.DEVICE_LOCATION.value())
+                        .path("/subscriptions/{account}")
+                        .templateParam(param -> param.key("account").value(account)
+                                .shouldEncode(true))
+                        .headerParam(param -> param.key("accept").value("application/json"))
+                        .withAuth(auth -> auth
+                                .add("oAuth2"))
+                        .httpMethod(HttpMethod.GET))
+                .responseHandler(responseHandler -> responseHandler
+                        .responseClassType(ResponseClassType.API_RESPONSE)
+                        .apiResponseDeserializer(
+                                response -> ApiHelper.deserialize(response, DeviceLocationSubscription.class))
+                        .nullify404(false)
+                        .localErrorCase("400",
+                                 ErrorCase.setReason("Unexpected error.",
+                                (reason, context) -> new DeviceLocationResultException(reason, context)))
+                        .globalErrorCase(GLOBAL_ERROR_CASES))
+                .build();
+    }
+
+    /**
      * This endpoint allows user to search for billable usage for accounts based on the provided
      * date range.
      * @param  body  Required parameter: Request to obtain billable usage for accounts.
@@ -86,60 +140,6 @@ public final class DevicesLocationSubscriptionsController extends BaseController
                         .responseClassType(ResponseClassType.API_RESPONSE)
                         .apiResponseDeserializer(
                                 response -> response)
-                        .nullify404(false)
-                        .localErrorCase("400",
-                                 ErrorCase.setReason("Unexpected error.",
-                                (reason, context) -> new DeviceLocationResultException(reason, context)))
-                        .globalErrorCase(GLOBAL_ERROR_CASES))
-                .build();
-    }
-
-    /**
-     * This subscriptions endpoint retrieves an account's current location subscription status.
-     * @param  account  Required parameter: Account identifier in "##########-#####".
-     * @return    Returns the DeviceLocationSubscription wrapped in ApiResponse response from the API call
-     * @throws    ApiException    Represents error response from the server.
-     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
-     */
-    public ApiResponse<DeviceLocationSubscription> getLocationServiceSubscriptionStatus(
-            final String account) throws ApiException, IOException {
-        return prepareGetLocationServiceSubscriptionStatusRequest(account).execute();
-    }
-
-    /**
-     * This subscriptions endpoint retrieves an account's current location subscription status.
-     * @param  account  Required parameter: Account identifier in "##########-#####".
-     * @return    Returns the DeviceLocationSubscription wrapped in ApiResponse response from the API call
-     */
-    public CompletableFuture<ApiResponse<DeviceLocationSubscription>> getLocationServiceSubscriptionStatusAsync(
-            final String account) {
-        try { 
-            return prepareGetLocationServiceSubscriptionStatusRequest(account).executeAsync(); 
-        } catch (Exception e) {  
-            throw new CompletionException(e); 
-        }
-    }
-
-    /**
-     * Builds the ApiCall object for getLocationServiceSubscriptionStatus.
-     */
-    private ApiCall<ApiResponse<DeviceLocationSubscription>, ApiException> prepareGetLocationServiceSubscriptionStatusRequest(
-            final String account) throws IOException {
-        return new ApiCall.Builder<ApiResponse<DeviceLocationSubscription>, ApiException>()
-                .globalConfig(getGlobalConfiguration())
-                .requestBuilder(requestBuilder -> requestBuilder
-                        .server(Server.DEVICE_LOCATION.value())
-                        .path("/subscriptions/{account}")
-                        .templateParam(param -> param.key("account").value(account)
-                                .shouldEncode(true))
-                        .headerParam(param -> param.key("accept").value("application/json"))
-                        .withAuth(auth -> auth
-                                .add("oAuth2"))
-                        .httpMethod(HttpMethod.GET))
-                .responseHandler(responseHandler -> responseHandler
-                        .responseClassType(ResponseClassType.API_RESPONSE)
-                        .apiResponseDeserializer(
-                                response -> ApiHelper.deserialize(response, DeviceLocationSubscription.class))
                         .nullify404(false)
                         .localErrorCase("400",
                                  ErrorCase.setReason("Unexpected error.",
