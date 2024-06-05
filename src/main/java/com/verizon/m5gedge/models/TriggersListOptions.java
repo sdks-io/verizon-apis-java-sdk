@@ -23,7 +23,7 @@ public class TriggersListOptions {
     private String createdAt;
     private String modifiedAt;
     private UsageAnomalyAttributes anomalyattributes;
-    private Notification notification;
+    private TriggerNotification notification;
 
     /**
      * Default constructor.
@@ -41,7 +41,7 @@ public class TriggersListOptions {
      * @param  createdAt  String value for createdAt.
      * @param  modifiedAt  String value for modifiedAt.
      * @param  anomalyattributes  UsageAnomalyAttributes value for anomalyattributes.
-     * @param  notification  Notification value for notification.
+     * @param  notification  TriggerNotification value for notification.
      */
     public TriggersListOptions(
             String triggerId,
@@ -52,7 +52,7 @@ public class TriggersListOptions {
             String createdAt,
             String modifiedAt,
             UsageAnomalyAttributes anomalyattributes,
-            Notification notification) {
+            TriggerNotification notification) {
         this.triggerId = triggerId;
         this.triggerName = triggerName;
         this.organizationName = organizationName;
@@ -237,21 +237,21 @@ public class TriggersListOptions {
     /**
      * Getter for Notification.
      * The notification details of the trigger.
-     * @return Returns the Notification
+     * @return Returns the TriggerNotification
      */
     @JsonGetter("notification")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public Notification getNotification() {
+    public TriggerNotification getNotification() {
         return notification;
     }
 
     /**
      * Setter for Notification.
      * The notification details of the trigger.
-     * @param notification Value for Notification
+     * @param notification Value for TriggerNotification
      */
     @JsonSetter("notification")
-    public void setNotification(Notification notification) {
+    public void setNotification(TriggerNotification notification) {
         this.notification = notification;
     }
 
@@ -299,7 +299,7 @@ public class TriggersListOptions {
         private String createdAt;
         private String modifiedAt;
         private UsageAnomalyAttributes anomalyattributes;
-        private Notification notification;
+        private TriggerNotification notification;
 
 
 
@@ -385,10 +385,10 @@ public class TriggersListOptions {
 
         /**
          * Setter for notification.
-         * @param  notification  Notification value for notification.
+         * @param  notification  TriggerNotification value for notification.
          * @return Builder
          */
-        public Builder notification(Notification notification) {
+        public Builder notification(TriggerNotification notification) {
             this.notification = notification;
             return this;
         }

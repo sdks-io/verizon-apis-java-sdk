@@ -103,33 +103,13 @@ CompletableFuture<ApiResponse<DeviceManagementResult>> retrieveActiveMonitorsUsi
 
 ```java
 RetrieveMonitorsRequest body = new RetrieveMonitorsRequest.Builder(
-    "0868924207-00001",
+    "0242123520-00001",
     Arrays.asList(
         new AccountDeviceList.Builder(
             Arrays.asList(
                 new DeviceId.Builder(
-                    "990013907835573",
-                    "imei"
-                )
-                .build(),
-                new DeviceId.Builder(
-                    "89141390780800784259",
-                    "iccid"
-                )
-                .build()
-            )
-        )
-        .build(),
-        new AccountDeviceList.Builder(
-            Arrays.asList(
-                new DeviceId.Builder(
-                    "990013907884259",
-                    "imei"
-                )
-                .build(),
-                new DeviceId.Builder(
-                    "89141390780800735573",
-                    "iccid"
+                    "12016560696",
+                    "msisdn"
                 )
                 .build()
             )
@@ -137,7 +117,6 @@ RetrieveMonitorsRequest body = new RetrieveMonitorsRequest.Builder(
         .build()
     )
 )
-.monitorType("monitorType")
 .build();
 
 deviceDiagnosticsController.retrieveActiveMonitorsUsingPOSTAsync(body).thenAccept(result -> {

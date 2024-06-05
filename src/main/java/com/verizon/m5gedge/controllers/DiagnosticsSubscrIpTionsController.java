@@ -74,7 +74,9 @@ public final class DiagnosticsSubscriptionsController extends BaseController {
                                 .value(accountName))
                         .headerParam(param -> param.key("accept").value("application/json"))
                         .withAuth(auth -> auth
-                                .add("oAuth2"))
+                                .and(andAuth -> andAuth
+                                        .add("thingspace_oauth")
+                                        .add("VZ-M2M-Token")))
                         .httpMethod(HttpMethod.GET))
                 .responseHandler(responseHandler -> responseHandler
                         .responseClassType(ResponseClassType.API_RESPONSE)

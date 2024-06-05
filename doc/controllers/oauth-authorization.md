@@ -9,14 +9,14 @@ OauthAuthorizationController oauthAuthorizationController = client.getOauthAutho
 `OauthAuthorizationController`
 
 
-# Request Token
+# Request Token Thingspace Oauth
 
 Create a new OAuth 2 token.
 
 :information_source: **Note** This endpoint does not require authentication.
 
 ```java
-CompletableFuture<ApiResponse<OauthToken>> requestTokenAsync(
+CompletableFuture<ApiResponse<OauthToken>> requestTokenThingspaceOauthAsync(
     final String authorization,
     final String scope,
     final Map<String, Object> fieldParameters)
@@ -47,7 +47,7 @@ Map<String, Object> fieldParameters = new LinkedHashMap<String, Object>() {{
     put("key0", ApiHelper.deserialize("\"additionalFieldParams9\""));
 }};
 
-oauthAuthorizationController.requestTokenAsync(authorization, null, fieldParameters).thenAccept(result -> {
+oauthAuthorizationController.requestTokenThingspaceOauthAsync(authorization, null, fieldParameters).thenAccept(result -> {
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {

@@ -82,7 +82,9 @@ public final class UsageTriggerManagementController extends BaseController {
                                 .value("application/json").isRequired(false))
                         .headerParam(param -> param.key("accept").value("application/json"))
                         .withAuth(auth -> auth
-                                .add("oAuth2"))
+                                .and(andAuth -> andAuth
+                                        .add("thingspace_oauth")
+                                        .add("VZ-M2M-Token")))
                         .httpMethod(HttpMethod.POST))
                 .responseHandler(responseHandler -> responseHandler
                         .responseClassType(ResponseClassType.API_RESPONSE)
@@ -145,7 +147,9 @@ public final class UsageTriggerManagementController extends BaseController {
                                 .value("application/json").isRequired(false))
                         .headerParam(param -> param.key("accept").value("application/json"))
                         .withAuth(auth -> auth
-                                .add("oAuth2"))
+                                .and(andAuth -> andAuth
+                                        .add("thingspace_oauth")
+                                        .add("VZ-M2M-Token")))
                         .httpMethod(HttpMethod.POST))
                 .responseHandler(responseHandler -> responseHandler
                         .responseClassType(ResponseClassType.API_RESPONSE)
@@ -206,7 +210,9 @@ public final class UsageTriggerManagementController extends BaseController {
                                 .shouldEncode(true))
                         .headerParam(param -> param.key("accept").value("application/json"))
                         .withAuth(auth -> auth
-                                .add("oAuth2"))
+                                .and(andAuth -> andAuth
+                                        .add("thingspace_oauth")
+                                        .add("VZ-M2M-Token")))
                         .httpMethod(HttpMethod.DELETE))
                 .responseHandler(responseHandler -> responseHandler
                         .responseClassType(ResponseClassType.API_RESPONSE)

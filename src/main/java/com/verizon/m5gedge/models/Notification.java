@@ -23,7 +23,7 @@ public class Notification {
     private String notificationFrequencyInterval;
     private String externalEmailRecipients;
     private Boolean smsNotification;
-    private List<SMSNumber> smsNumbers;
+    private List<SmsNumbers> smsNumbers;
     private Boolean reminder;
     private String severity;
 
@@ -43,7 +43,7 @@ public class Notification {
      * @param  notificationFrequencyInterval  String value for notificationFrequencyInterval.
      * @param  externalEmailRecipients  String value for externalEmailRecipients.
      * @param  smsNotification  Boolean value for smsNotification.
-     * @param  smsNumbers  List of SMSNumber value for smsNumbers.
+     * @param  smsNumbers  List of SmsNumbers value for smsNumbers.
      * @param  reminder  Boolean value for reminder.
      * @param  severity  String value for severity.
      */
@@ -56,7 +56,7 @@ public class Notification {
             String notificationFrequencyInterval,
             String externalEmailRecipients,
             Boolean smsNotification,
-            List<SMSNumber> smsNumbers,
+            List<SmsNumbers> smsNumbers,
             Boolean reminder,
             String severity) {
         this.notificationType = notificationType;
@@ -74,7 +74,6 @@ public class Notification {
 
     /**
      * Getter for NotificationType.
-     * The type of notification, i.e. 'DailySummary'.
      * @return Returns the String
      */
     @JsonGetter("notificationType")
@@ -85,7 +84,6 @@ public class Notification {
 
     /**
      * Setter for NotificationType.
-     * The type of notification, i.e. 'DailySummary'.
      * @param notificationType Value for String
      */
     @JsonSetter("notificationType")
@@ -95,7 +93,6 @@ public class Notification {
 
     /**
      * Getter for Callback.
-     * Whether or not the notification should be sent via callback.&lt;br /&gt;true&lt;br /&gt;false.
      * @return Returns the Boolean
      */
     @JsonGetter("callback")
@@ -106,7 +103,6 @@ public class Notification {
 
     /**
      * Setter for Callback.
-     * Whether or not the notification should be sent via callback.&lt;br /&gt;true&lt;br /&gt;false.
      * @param callback Value for Boolean
      */
     @JsonSetter("callback")
@@ -116,7 +112,6 @@ public class Notification {
 
     /**
      * Getter for EmailNotification.
-     * Whether or not the notification should be sent via e-mail.&lt;br /&gt;true&lt;br /&gt;false.
      * @return Returns the Boolean
      */
     @JsonGetter("emailNotification")
@@ -127,7 +122,6 @@ public class Notification {
 
     /**
      * Setter for EmailNotification.
-     * Whether or not the notification should be sent via e-mail.&lt;br /&gt;true&lt;br /&gt;false.
      * @param emailNotification Value for Boolean
      */
     @JsonSetter("emailNotification")
@@ -137,7 +131,6 @@ public class Notification {
 
     /**
      * Getter for NotificationGroupName.
-     * Name for the notification group.
      * @return Returns the String
      */
     @JsonGetter("notificationGroupName")
@@ -148,7 +141,6 @@ public class Notification {
 
     /**
      * Setter for NotificationGroupName.
-     * Name for the notification group.
      * @param notificationGroupName Value for String
      */
     @JsonSetter("notificationGroupName")
@@ -158,7 +150,6 @@ public class Notification {
 
     /**
      * Getter for NotificationFrequencyFactor.
-     * Frequency factor for notification.
      * @return Returns the Integer
      */
     @JsonGetter("notificationFrequencyFactor")
@@ -169,7 +160,6 @@ public class Notification {
 
     /**
      * Setter for NotificationFrequencyFactor.
-     * Frequency factor for notification.
      * @param notificationFrequencyFactor Value for Integer
      */
     @JsonSetter("notificationFrequencyFactor")
@@ -179,7 +169,6 @@ public class Notification {
 
     /**
      * Getter for NotificationFrequencyInterval.
-     * Frequency interval for notification.
      * @return Returns the String
      */
     @JsonGetter("notificationFrequencyInterval")
@@ -190,7 +179,6 @@ public class Notification {
 
     /**
      * Setter for NotificationFrequencyInterval.
-     * Frequency interval for notification.
      * @param notificationFrequencyInterval Value for String
      */
     @JsonSetter("notificationFrequencyInterval")
@@ -200,7 +188,6 @@ public class Notification {
 
     /**
      * Getter for ExternalEmailRecipients.
-     * E-mail address(es) where the notification should be delivered.
      * @return Returns the String
      */
     @JsonGetter("externalEmailRecipients")
@@ -211,7 +198,6 @@ public class Notification {
 
     /**
      * Setter for ExternalEmailRecipients.
-     * E-mail address(es) where the notification should be delivered.
      * @param externalEmailRecipients Value for String
      */
     @JsonSetter("externalEmailRecipients")
@@ -221,7 +207,6 @@ public class Notification {
 
     /**
      * Getter for SmsNotification.
-     * SMS notification.
      * @return Returns the Boolean
      */
     @JsonGetter("smsNotification")
@@ -232,7 +217,6 @@ public class Notification {
 
     /**
      * Setter for SmsNotification.
-     * SMS notification.
      * @param smsNotification Value for Boolean
      */
     @JsonSetter("smsNotification")
@@ -242,22 +226,20 @@ public class Notification {
 
     /**
      * Getter for SmsNumbers.
-     * List of SMS numbers.
-     * @return Returns the List of SMSNumber
+     * @return Returns the List of SmsNumbers
      */
     @JsonGetter("smsNumbers")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public List<SMSNumber> getSmsNumbers() {
+    public List<SmsNumbers> getSmsNumbers() {
         return smsNumbers;
     }
 
     /**
      * Setter for SmsNumbers.
-     * List of SMS numbers.
-     * @param smsNumbers Value for List of SMSNumber
+     * @param smsNumbers Value for List of SmsNumbers
      */
     @JsonSetter("smsNumbers")
-    public void setSmsNumbers(List<SMSNumber> smsNumbers) {
+    public void setSmsNumbers(List<SmsNumbers> smsNumbers) {
         this.smsNumbers = smsNumbers;
     }
 
@@ -282,8 +264,6 @@ public class Notification {
 
     /**
      * Getter for Severity.
-     * Severity level associated with the notification. Examples would be:&lt;br /&gt;Major&lt;br /&gt;Minor&lt;br
-     * /&gt;Critical&lt;br /&gt;NotApplicable.
      * @return Returns the String
      */
     @JsonGetter("severity")
@@ -294,8 +274,6 @@ public class Notification {
 
     /**
      * Setter for Severity.
-     * Severity level associated with the notification. Examples would be:&lt;br /&gt;Major&lt;br /&gt;Minor&lt;br
-     * /&gt;Critical&lt;br /&gt;NotApplicable.
      * @param severity Value for String
      */
     @JsonSetter("severity")
@@ -351,7 +329,7 @@ public class Notification {
         private String notificationFrequencyInterval;
         private String externalEmailRecipients;
         private Boolean smsNotification;
-        private List<SMSNumber> smsNumbers;
+        private List<SmsNumbers> smsNumbers;
         private Boolean reminder;
         private String severity;
 
@@ -439,10 +417,10 @@ public class Notification {
 
         /**
          * Setter for smsNumbers.
-         * @param  smsNumbers  List of SMSNumber value for smsNumbers.
+         * @param  smsNumbers  List of SmsNumbers value for smsNumbers.
          * @return Builder
          */
-        public Builder smsNumbers(List<SMSNumber> smsNumbers) {
+        public Builder smsNumbers(List<SmsNumbers> smsNumbers) {
             this.smsNumbers = smsNumbers;
             return this;
         }

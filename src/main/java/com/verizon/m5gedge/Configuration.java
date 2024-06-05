@@ -6,7 +6,10 @@
 
 package com.verizon.m5gedge;
 
-import com.verizon.m5gedge.authentication.ClientCredentialsAuthModel;
+import com.verizon.m5gedge.authentication.ThingspaceOauthCredentials;
+import com.verizon.m5gedge.authentication.ThingspaceOauthModel;
+import com.verizon.m5gedge.authentication.VZM2mTokenCredentials;
+import com.verizon.m5gedge.authentication.VZM2mTokenModel;
 import com.verizon.m5gedge.http.client.ReadonlyHttpClientConfiguration;
 
 /**
@@ -21,12 +24,6 @@ public interface Configuration {
     Environment getEnvironment();
 
     /**
-     * M2M Session Token ([How to generate an M2M session token?](page:getting-started/5g-edge-developer-creds-token#obtaining-a-vz-m2m-session-token-programmatically)).
-     * @return a copy of vZM2mToken
-     */
-    String getVZM2mToken();
-
-    /**
      * Http Client Configuration instance.
      * @return a copy of httpClientConfig
      */
@@ -39,16 +36,28 @@ public interface Configuration {
     long timeout();
 
     /**
-     * The credentials to use with ClientCredentialsAuth.
-     * @return clientCredentialsAuth
+     * The credentials to use with ThingspaceOauth.
+     * @return thingspaceOauthCredentials
      */
-    ClientCredentialsAuth getClientCredentialsAuth();
+    ThingspaceOauthCredentials getThingspaceOauthCredentials();
 
     /**
-     * The auth credential model for ClientCredentialsAuth.
-     * @return the instance of ClientCredentialsAuthModel
+     * The auth credential model for ThingspaceOauth.
+     * @return the instance of ThingspaceOauthModel
      */
-    ClientCredentialsAuthModel getClientCredentialsAuthModel();
+    ThingspaceOauthModel getThingspaceOauthModel();
+
+    /**
+     * The credentials to use with VZM2MToken.
+     * @return vZM2mTokenCredentials
+     */
+    VZM2mTokenCredentials getVZM2mTokenCredentials();
+
+    /**
+     * The auth credential model for VZM2MToken.
+     * @return the instance of VZM2mTokenModel
+     */
+    VZM2mTokenModel getVZM2mTokenModel();
 
     /**
      * Get base URI by current environment.

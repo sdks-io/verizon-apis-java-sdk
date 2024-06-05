@@ -18,6 +18,7 @@ public class SessionReport {
     private List<DailyUsageItem> sessions;
     private String id;
     private String txid;
+    private Object example;
 
     /**
      * Default constructor.
@@ -30,14 +31,17 @@ public class SessionReport {
      * @param  id  String value for id.
      * @param  txid  String value for txid.
      * @param  sessions  List of DailyUsageItem value for sessions.
+     * @param  example  Object value for example.
      */
     public SessionReport(
             String id,
             String txid,
-            List<DailyUsageItem> sessions) {
+            List<DailyUsageItem> sessions,
+            Object example) {
         this.sessions = sessions;
         this.id = id;
         this.txid = txid;
+        this.example = example;
     }
 
     /**
@@ -108,12 +112,32 @@ public class SessionReport {
     }
 
     /**
+     * Getter for Example.
+     * @return Returns the Object
+     */
+    @JsonGetter("example")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public Object getExample() {
+        return example;
+    }
+
+    /**
+     * Setter for Example.
+     * @param example Value for Object
+     */
+    @JsonSetter("example")
+    public void setExample(Object example) {
+        this.example = example;
+    }
+
+    /**
      * Converts this SessionReport into string format.
      * @return String representation of this class
      */
     @Override
     public String toString() {
-        return "SessionReport [" + "id=" + id + ", txid=" + txid + ", sessions=" + sessions + "]";
+        return "SessionReport [" + "id=" + id + ", txid=" + txid + ", sessions=" + sessions
+                + ", example=" + example + "]";
     }
 
     /**
@@ -123,7 +147,8 @@ public class SessionReport {
      */
     public Builder toBuilder() {
         Builder builder = new Builder(id, txid)
-                .sessions(getSessions());
+                .sessions(getSessions())
+                .example(getExample());
         return builder;
     }
 
@@ -134,6 +159,7 @@ public class SessionReport {
         private String id;
         private String txid;
         private List<DailyUsageItem> sessions;
+        private Object example;
 
         /**
          * Initialization constructor.
@@ -182,11 +208,21 @@ public class SessionReport {
         }
 
         /**
+         * Setter for example.
+         * @param  example  Object value for example.
+         * @return Builder
+         */
+        public Builder example(Object example) {
+            this.example = example;
+            return this;
+        }
+
+        /**
          * Builds a new {@link SessionReport} object using the set fields.
          * @return {@link SessionReport}
          */
         public SessionReport build() {
-            return new SessionReport(id, txid, sessions);
+            return new SessionReport(id, txid, sessions, example);
         }
     }
 }

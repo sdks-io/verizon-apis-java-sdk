@@ -19,6 +19,7 @@ import java.util.List;
  * This is a model class for RequestBodyForUsage type.
  */
 public class RequestBodyForUsage {
+    private String accountId;
     private List<ReadySimDeviceId> deviceId;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
@@ -31,17 +32,39 @@ public class RequestBodyForUsage {
 
     /**
      * Initialization constructor.
+     * @param  accountId  String value for accountId.
      * @param  deviceId  List of ReadySimDeviceId value for deviceId.
      * @param  startTime  LocalDateTime value for startTime.
      * @param  endTime  LocalDateTime value for endTime.
      */
     public RequestBodyForUsage(
+            String accountId,
             List<ReadySimDeviceId> deviceId,
             LocalDateTime startTime,
             LocalDateTime endTime) {
+        this.accountId = accountId;
         this.deviceId = deviceId;
         this.startTime = startTime;
         this.endTime = endTime;
+    }
+
+    /**
+     * Getter for AccountId.
+     * @return Returns the String
+     */
+    @JsonGetter("accountId")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public String getAccountId() {
+        return accountId;
+    }
+
+    /**
+     * Setter for AccountId.
+     * @param accountId Value for String
+     */
+    @JsonSetter("accountId")
+    public void setAccountId(String accountId) {
+        this.accountId = accountId;
     }
 
     /**
@@ -111,8 +134,8 @@ public class RequestBodyForUsage {
      */
     @Override
     public String toString() {
-        return "RequestBodyForUsage [" + "deviceId=" + deviceId + ", startTime=" + startTime
-                + ", endTime=" + endTime + "]";
+        return "RequestBodyForUsage [" + "accountId=" + accountId + ", deviceId=" + deviceId
+                + ", startTime=" + startTime + ", endTime=" + endTime + "]";
     }
 
     /**
@@ -122,6 +145,7 @@ public class RequestBodyForUsage {
      */
     public Builder toBuilder() {
         Builder builder = new Builder()
+                .accountId(getAccountId())
                 .deviceId(getDeviceId())
                 .startTime(getStartTime())
                 .endTime(getEndTime());
@@ -132,11 +156,22 @@ public class RequestBodyForUsage {
      * Class to build instances of {@link RequestBodyForUsage}.
      */
     public static class Builder {
+        private String accountId;
         private List<ReadySimDeviceId> deviceId;
         private LocalDateTime startTime;
         private LocalDateTime endTime;
 
 
+
+        /**
+         * Setter for accountId.
+         * @param  accountId  String value for accountId.
+         * @return Builder
+         */
+        public Builder accountId(String accountId) {
+            this.accountId = accountId;
+            return this;
+        }
 
         /**
          * Setter for deviceId.
@@ -173,7 +208,7 @@ public class RequestBodyForUsage {
          * @return {@link RequestBodyForUsage}
          */
         public RequestBodyForUsage build() {
-            return new RequestBodyForUsage(deviceId, startTime, endTime);
+            return new RequestBodyForUsage(accountId, deviceId, startTime, endTime);
         }
     }
 }

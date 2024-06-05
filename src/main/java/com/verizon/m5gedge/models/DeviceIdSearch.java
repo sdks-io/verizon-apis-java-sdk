@@ -27,14 +27,14 @@ public class DeviceIdSearch {
 
     /**
      * Initialization constructor.
-     * @param  kind  String value for kind.
      * @param  contains  String value for contains.
+     * @param  kind  String value for kind.
      * @param  startswith  String value for startswith.
      * @param  endswith  String value for endswith.
      */
     public DeviceIdSearch(
-            String kind,
             String contains,
+            String kind,
             String startswith,
             String endswith) {
         this.contains = contains;
@@ -49,7 +49,6 @@ public class DeviceIdSearch {
      * @return Returns the String
      */
     @JsonGetter("contains")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     public String getContains() {
         return contains;
     }
@@ -134,7 +133,7 @@ public class DeviceIdSearch {
      */
     @Override
     public String toString() {
-        return "DeviceIdSearch [" + "kind=" + kind + ", contains=" + contains + ", startswith="
+        return "DeviceIdSearch [" + "contains=" + contains + ", kind=" + kind + ", startswith="
                 + startswith + ", endswith=" + endswith + "]";
     }
 
@@ -144,8 +143,7 @@ public class DeviceIdSearch {
      * @return a new {@link DeviceIdSearch.Builder} object
      */
     public Builder toBuilder() {
-        Builder builder = new Builder(kind)
-                .contains(getContains())
+        Builder builder = new Builder(contains, kind)
                 .startswith(getStartswith())
                 .endswith(getEndswith());
         return builder;
@@ -155,8 +153,8 @@ public class DeviceIdSearch {
      * Class to build instances of {@link DeviceIdSearch}.
      */
     public static class Builder {
-        private String kind;
         private String contains;
+        private String kind;
         private String startswith;
         private String endswith;
 
@@ -168,20 +166,12 @@ public class DeviceIdSearch {
 
         /**
          * Initialization constructor.
+         * @param  contains  String value for contains.
          * @param  kind  String value for kind.
          */
-        public Builder(String kind) {
+        public Builder(String contains, String kind) {
+            this.contains = contains;
             this.kind = kind;
-        }
-
-        /**
-         * Setter for kind.
-         * @param  kind  String value for kind.
-         * @return Builder
-         */
-        public Builder kind(String kind) {
-            this.kind = kind;
-            return this;
         }
 
         /**
@@ -191,6 +181,16 @@ public class DeviceIdSearch {
          */
         public Builder contains(String contains) {
             this.contains = contains;
+            return this;
+        }
+
+        /**
+         * Setter for kind.
+         * @param  kind  String value for kind.
+         * @return Builder
+         */
+        public Builder kind(String kind) {
+            this.kind = kind;
             return this;
         }
 
@@ -219,7 +219,7 @@ public class DeviceIdSearch {
          * @return {@link DeviceIdSearch}
          */
         public DeviceIdSearch build() {
-            return new DeviceIdSearch(kind, contains, startswith, endswith);
+            return new DeviceIdSearch(contains, kind, startswith, endswith);
         }
     }
 }

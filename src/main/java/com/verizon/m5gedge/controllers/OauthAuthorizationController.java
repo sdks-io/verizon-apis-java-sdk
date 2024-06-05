@@ -44,11 +44,12 @@ public final class OauthAuthorizationController extends BaseController {
      * @throws    ApiException    Represents error response from the server.
      * @throws    IOException    Signals that an I/O exception of some sort has occurred.
      */
-    public ApiResponse<OauthToken> requestToken(
+    public ApiResponse<OauthToken> requestTokenThingspaceOauth(
             final String authorization,
             final String scope,
             final Map<String, Object> fieldParameters) throws ApiException, IOException {
-        return prepareRequestTokenRequest(authorization, scope, fieldParameters).execute();
+        return prepareRequestTokenThingspaceOauthRequest(authorization, scope,
+                fieldParameters).execute();
     }
 
     /**
@@ -58,21 +59,22 @@ public final class OauthAuthorizationController extends BaseController {
      * @param    fieldParameters    Additional optional form parameters are supported by this endpoint
      * @return    Returns the OauthToken wrapped in ApiResponse response from the API call
      */
-    public CompletableFuture<ApiResponse<OauthToken>> requestTokenAsync(
+    public CompletableFuture<ApiResponse<OauthToken>> requestTokenThingspaceOauthAsync(
             final String authorization,
             final String scope,
             final Map<String, Object> fieldParameters) {
         try { 
-            return prepareRequestTokenRequest(authorization, scope, fieldParameters).executeAsync(); 
+            return prepareRequestTokenThingspaceOauthRequest(authorization, scope,
+            fieldParameters).executeAsync(); 
         } catch (Exception e) {  
             throw new CompletionException(e); 
         }
     }
 
     /**
-     * Builds the ApiCall object for requestToken.
+     * Builds the ApiCall object for requestTokenThingspaceOauth.
      */
-    private ApiCall<ApiResponse<OauthToken>, ApiException> prepareRequestTokenRequest(
+    private ApiCall<ApiResponse<OauthToken>, ApiException> prepareRequestTokenThingspaceOauthRequest(
             final String authorization,
             final String scope,
             final Map<String, Object> fieldParameters) throws IOException {

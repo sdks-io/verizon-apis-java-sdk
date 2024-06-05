@@ -83,6 +83,7 @@ CarrierActivateRequest body = new CarrierActivateRequest.Builder(
                 .build()
             )
         )
+        .ipAddress("1.2.3.456")
         .build(),
         new AccountDeviceList.Builder(
             Arrays.asList(
@@ -98,9 +99,10 @@ CarrierActivateRequest body = new CarrierActivateRequest.Builder(
                 .build()
             )
         )
+        .ipAddress("1.2.3.456")
         .build()
     ),
-    "m2m_4G",
+    "the service plan name",
     "98801"
 )
 .accountName("0868924207-00001")
@@ -474,21 +476,12 @@ CarrierDeactivateRequest body = new CarrierDeactivateRequest.Builder(
                 .build()
             )
         )
-        .build(),
-        new AccountDeviceList.Builder(
-            Arrays.asList(
-                new DeviceId.Builder(
-                    "20-digit ICCID",
-                    "iccid"
-                )
-                .build()
-            )
-        )
         .build()
     ),
     "FF"
 )
 .etfWaiver(true)
+.deleteAfterDeactivation(true)
 .build();
 
 deviceManagementController.deactivateServiceForDevicesAsync(body).thenAccept(result -> {
@@ -1015,7 +1008,7 @@ CompletableFuture<ApiResponse<DeviceManagementResult>> changeDevicesServicePlanA
 
 ```java
 ServicePlanUpdateRequest body = new ServicePlanUpdateRequest.Builder(
-    "new_service_plan_code"
+    "Tablet5GB"
 )
 .devices(Arrays.asList(
         new AccountDeviceList.Builder(
@@ -1029,6 +1022,7 @@ ServicePlanUpdateRequest body = new ServicePlanUpdateRequest.Builder(
         )
         .build()
     ))
+.carrierIpPoolName("IPPool")
 .build();
 
 deviceManagementController.changeDevicesServicePlanAsync(body).thenAccept(result -> {
@@ -1083,19 +1077,11 @@ CompletableFuture<ApiResponse<DeviceManagementResult>> suspendServiceForDevicesA
 
 ```java
 CarrierActionsRequest body = new CarrierActionsRequest.Builder()
-    .accountName("0000123456-00001")
-    .customFields(Arrays.asList(
-        new CustomFields.Builder(
-            "customField1",
-            "key value"
-        )
-        .build()
-    ))
     .devices(Arrays.asList(
         new AccountDeviceList.Builder(
             Arrays.asList(
                 new DeviceId.Builder(
-                    "20-digit ICCID",
+                    "89148000000800139708",
                     "iccid"
                 )
                 .build()
@@ -1103,9 +1089,6 @@ CarrierActionsRequest body = new CarrierActionsRequest.Builder()
         )
         .build()
     ))
-    .withBilling(true)
-    .groupName("name of the group")
-    .servicePlan("service plan name")
     .build();
 
 deviceManagementController.suspendServiceForDevicesAsync(body).thenAccept(result -> {
@@ -1160,19 +1143,11 @@ CompletableFuture<ApiResponse<DeviceManagementResult>> restoreServiceForSuspende
 
 ```java
 CarrierActionsRequest body = new CarrierActionsRequest.Builder()
-    .accountName("0000123456-00001")
-    .customFields(Arrays.asList(
-        new CustomFields.Builder(
-            "customField1",
-            "key value"
-        )
-        .build()
-    ))
     .devices(Arrays.asList(
         new AccountDeviceList.Builder(
             Arrays.asList(
                 new DeviceId.Builder(
-                    "20-digit ICCID",
+                    "89148000000800139708",
                     "iccid"
                 )
                 .build()
@@ -1180,8 +1155,6 @@ CarrierActionsRequest body = new CarrierActionsRequest.Builder()
         )
         .build()
     ))
-    .groupName("name of the group")
-    .servicePlan("service plan name")
     .build();
 
 deviceManagementController.restoreServiceForSuspendedDevicesAsync(body).thenAccept(result -> {
@@ -1616,9 +1589,18 @@ CompletableFuture<ApiResponse<DeviceManagementResult>> listCurrentDevicesPRLVers
 
 ```java
 DevicePrlListRequest body = new DevicePrlListRequest.Builder()
-    .accountName("101234-0001")
-    .groupName("West Region")
-    .servicePlan("3G 2MB")
+    .deviceIds(Arrays.asList(
+        new DeviceId.Builder(
+            "A10085E5003861",
+            "meid"
+        )
+        .build(),
+        new DeviceId.Builder(
+            "A10085E5003186",
+            "meid"
+        )
+        .build()
+    ))
     .build();
 
 deviceManagementController.listCurrentDevicesPRLVersionAsync(body).thenAccept(result -> {
@@ -1673,10 +1655,18 @@ CompletableFuture<ApiResponse<DeviceManagementResult>> getDeviceServiceSuspensio
 
 ```java
 DeviceSuspensionStatusRequest body = new DeviceSuspensionStatusRequest.Builder()
-    .filter(new DeviceFilterWithoutAccount.Builder()
-        .groupName("suspended devices")
-        .build())
-    .accountName("1223334444-00001")
+    .deviceIds(Arrays.asList(
+        new DeviceId.Builder(
+            "A10085E5003861",
+            "meid"
+        )
+        .build(),
+        new DeviceId.Builder(
+            "A10085E5003186",
+            "meid"
+        )
+        .build()
+    ))
     .build();
 
 deviceManagementController.getDeviceServiceSuspensionStatusAsync(body).thenAccept(result -> {
@@ -1734,6 +1724,11 @@ DeviceUsageListRequest body = new DeviceUsageListRequest.Builder(
     "2018-03-20T00:00:01Z",
     "2020-12-31T00:00:01Z"
 )
+.deviceId(new DeviceId.Builder(
+        "50684915885088839315521399821675",
+        "eid"
+    )
+    .build())
 .build();
 
 deviceManagementController.listDevicesUsageHistoryAsync(body).thenAccept(result -> {
@@ -1948,7 +1943,7 @@ DeviceUploadRequest body = new DeviceUploadRequest.Builder(
             .deviceIds(Arrays.asList(
                 new DeviceId.Builder(
                     "15-digit IMEI",
-                    "imei"
+                    "IMEI"
                 )
                 .build()
             ))
@@ -1957,7 +1952,16 @@ DeviceUploadRequest body = new DeviceUploadRequest.Builder(
             .deviceIds(Arrays.asList(
                 new DeviceId.Builder(
                     "15-digit IMEI",
-                    "imei"
+                    "IMEI"
+                )
+                .build()
+            ))
+            .build(),
+        new DeviceList.Builder()
+            .deviceIds(Arrays.asList(
+                new DeviceId.Builder(
+                    "15-digit IMEI",
+                    "IMEI"
                 )
                 .build()
             ))

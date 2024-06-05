@@ -1,8 +1,6 @@
 
 # Notification
 
-The notification details of the trigger.
-
 ## Structure
 
 `Notification`
@@ -11,38 +9,27 @@ The notification details of the trigger.
 
 | Name | Type | Tags | Description | Getter | Setter |
 |  --- | --- | --- | --- | --- | --- |
-| `NotificationType` | `String` | Optional | The type of notification, i.e. 'DailySummary'. | String getNotificationType() | setNotificationType(String notificationType) |
-| `Callback` | `Boolean` | Optional | Whether or not the notification should be sent via callback.<br />true<br />false. | Boolean getCallback() | setCallback(Boolean callback) |
-| `EmailNotification` | `Boolean` | Optional | Whether or not the notification should be sent via e-mail.<br />true<br />false. | Boolean getEmailNotification() | setEmailNotification(Boolean emailNotification) |
-| `NotificationGroupName` | `String` | Optional | Name for the notification group. | String getNotificationGroupName() | setNotificationGroupName(String notificationGroupName) |
-| `NotificationFrequencyFactor` | `Integer` | Optional | Frequency factor for notification. | Integer getNotificationFrequencyFactor() | setNotificationFrequencyFactor(Integer notificationFrequencyFactor) |
-| `NotificationFrequencyInterval` | `String` | Optional | Frequency interval for notification. | String getNotificationFrequencyInterval() | setNotificationFrequencyInterval(String notificationFrequencyInterval) |
-| `ExternalEmailRecipients` | `String` | Optional | E-mail address(es) where the notification should be delivered. | String getExternalEmailRecipients() | setExternalEmailRecipients(String externalEmailRecipients) |
-| `SmsNotification` | `Boolean` | Optional | SMS notification. | Boolean getSmsNotification() | setSmsNotification(Boolean smsNotification) |
-| `SmsNumbers` | [`List<SMSNumber>`](../../doc/models/sms-number.md) | Optional | List of SMS numbers.<br>**Constraints**: *Maximum Items*: `10` | List<SMSNumber> getSmsNumbers() | setSmsNumbers(List<SMSNumber> smsNumbers) |
+| `NotificationType` | `String` | Optional | - | String getNotificationType() | setNotificationType(String notificationType) |
+| `Callback` | `Boolean` | Optional | - | Boolean getCallback() | setCallback(Boolean callback) |
+| `EmailNotification` | `Boolean` | Optional | - | Boolean getEmailNotification() | setEmailNotification(Boolean emailNotification) |
+| `NotificationGroupName` | `String` | Optional | - | String getNotificationGroupName() | setNotificationGroupName(String notificationGroupName) |
+| `NotificationFrequencyFactor` | `Integer` | Optional | - | Integer getNotificationFrequencyFactor() | setNotificationFrequencyFactor(Integer notificationFrequencyFactor) |
+| `NotificationFrequencyInterval` | `String` | Optional | - | String getNotificationFrequencyInterval() | setNotificationFrequencyInterval(String notificationFrequencyInterval) |
+| `ExternalEmailRecipients` | `String` | Optional | - | String getExternalEmailRecipients() | setExternalEmailRecipients(String externalEmailRecipients) |
+| `SmsNotification` | `Boolean` | Optional | - | Boolean getSmsNotification() | setSmsNotification(Boolean smsNotification) |
+| `SmsNumbers` | [`List<SmsNumbers>`](../../doc/models/sms-numbers.md) | Optional | - | List<SmsNumbers> getSmsNumbers() | setSmsNumbers(List<SmsNumbers> smsNumbers) |
 | `Reminder` | `Boolean` | Optional | - | Boolean getReminder() | setReminder(Boolean reminder) |
-| `Severity` | `String` | Optional | Severity level associated with the notification. Examples would be:<br />Major<br />Minor<br />Critical<br />NotApplicable. | String getSeverity() | setSeverity(String severity) |
+| `Severity` | `String` | Optional | - | String getSeverity() | setSeverity(String severity) |
 
 ## Example (as JSON)
 
 ```json
 {
-  "notificationType": "DailySummary",
-  "callback": true,
+  "notificationType": "notificationType2",
+  "callback": false,
   "emailNotification": false,
-  "notificationGroupName": "Anomaly Test API",
-  "notificationFrequencyFactor": 3,
-  "notificationFrequencyInterval": "Hourly",
-  "externalEmailRecipients": "placeholder@verizon.com",
-  "smsNotification": true,
-  "smsNumbers": [
-    {
-      "carrier": "US Cellular",
-      "number": "9299280711"
-    }
-  ],
-  "reminder": true,
-  "severity": "Critical"
+  "notificationGroupName": "notificationGroupName2",
+  "notificationFrequencyFactor": 214
 }
 ```
 

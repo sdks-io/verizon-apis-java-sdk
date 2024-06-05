@@ -15,12 +15,12 @@ import com.verizon.m5gedge.http.request.HttpMethod;
 import com.verizon.m5gedge.http.response.ApiResponse;
 import com.verizon.m5gedge.models.NotificationReportRequest;
 import com.verizon.m5gedge.models.RequestResponse;
+import com.verizon.m5gedge.models.StopMonitorRequest;
 import io.apimatic.core.ApiCall;
 import io.apimatic.core.ErrorCase;
 import io.apimatic.core.GlobalConfiguration;
 import io.apimatic.coreinterfaces.http.request.ResponseClassType;
 import java.io.IOException;
-import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
 
@@ -77,7 +77,9 @@ public final class DeviceMonitoringController extends BaseController {
                                 .value("application/json").isRequired(false))
                         .headerParam(param -> param.key("accept").value("application/json"))
                         .withAuth(auth -> auth
-                                .add("oAuth2"))
+                                .and(andAuth -> andAuth
+                                        .add("thingspace_oauth")
+                                        .add("VZ-M2M-Token")))
                         .httpMethod(HttpMethod.POST))
                 .responseHandler(responseHandler -> responseHandler
                         .responseClassType(ResponseClassType.API_RESPONSE)
@@ -92,30 +94,24 @@ public final class DeviceMonitoringController extends BaseController {
     }
 
     /**
-     * @param  accountName  Required parameter: The numeric name of the account.
-     * @param  monitorIds  Required parameter: The array contains the monitorIDs (UUID) for which
-     *         the monitor is to be deleted.
+     * @param  body  Optional parameter: Example:
      * @return    Returns the RequestResponse wrapped in ApiResponse response from the API call
      * @throws    ApiException    Represents error response from the server.
      * @throws    IOException    Signals that an I/O exception of some sort has occurred.
      */
     public ApiResponse<RequestResponse> stopDeviceReachability(
-            final String accountName,
-            final List<String> monitorIds) throws ApiException, IOException {
-        return prepareStopDeviceReachabilityRequest(accountName, monitorIds).execute();
+            final StopMonitorRequest body) throws ApiException, IOException {
+        return prepareStopDeviceReachabilityRequest(body).execute();
     }
 
     /**
-     * @param  accountName  Required parameter: The numeric name of the account.
-     * @param  monitorIds  Required parameter: The array contains the monitorIDs (UUID) for which
-     *         the monitor is to be deleted.
+     * @param  body  Optional parameter: Example:
      * @return    Returns the RequestResponse wrapped in ApiResponse response from the API call
      */
     public CompletableFuture<ApiResponse<RequestResponse>> stopDeviceReachabilityAsync(
-            final String accountName,
-            final List<String> monitorIds) {
+            final StopMonitorRequest body) {
         try { 
-            return prepareStopDeviceReachabilityRequest(accountName, monitorIds).executeAsync(); 
+            return prepareStopDeviceReachabilityRequest(body).executeAsync(); 
         } catch (Exception e) {  
             throw new CompletionException(e); 
         }
@@ -125,20 +121,21 @@ public final class DeviceMonitoringController extends BaseController {
      * Builds the ApiCall object for stopDeviceReachability.
      */
     private ApiCall<ApiResponse<RequestResponse>, ApiException> prepareStopDeviceReachabilityRequest(
-            final String accountName,
-            final List<String> monitorIds) throws IOException {
+            final StopMonitorRequest body) throws JsonProcessingException, IOException {
         return new ApiCall.Builder<ApiResponse<RequestResponse>, ApiException>()
                 .globalConfig(getGlobalConfiguration())
                 .requestBuilder(requestBuilder -> requestBuilder
                         .server(Server.THINGSPACE.value())
                         .path("/m2m/v1/diagnostics/basic/devicereachability")
-                        .queryParam(param -> param.key("accountName")
-                                .value(accountName))
-                        .queryParam(param -> param.key("monitorIds")
-                                .value(monitorIds))
+                        .bodyParam(param -> param.value(body).isRequired(false))
+                        .bodySerializer(() ->  ApiHelper.serialize(body))
+                        .headerParam(param -> param.key("Content-Type")
+                                .value("application/json").isRequired(false))
                         .headerParam(param -> param.key("accept").value("application/json"))
                         .withAuth(auth -> auth
-                                .add("oAuth2"))
+                                .and(andAuth -> andAuth
+                                        .add("thingspace_oauth")
+                                        .add("VZ-M2M-Token")))
                         .httpMethod(HttpMethod.DELETE))
                 .responseHandler(responseHandler -> responseHandler
                         .responseClassType(ResponseClassType.API_RESPONSE)

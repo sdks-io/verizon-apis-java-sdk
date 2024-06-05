@@ -5,10 +5,10 @@ The following parameters are configurable for the API Client:
 
 | Parameter | Type | Description |
 |  --- | --- | --- |
-| `vZM2mToken` | `String` | M2M Session Token ([How to generate an M2M session token?](page:getting-started/5g-edge-developer-creds-token#obtaining-a-vz-m2m-session-token-programmatically)) |
 | `environment` | `Environment` | The API environment. <br> **Default: `Environment.PRODUCTION`** |
 | `httpClientConfig` | [`Consumer<HttpClientConfiguration.Builder>`](http-client-configuration-builder.md) | Set up Http Client Configuration instance. |
-| `clientCredentialsAuth` | [`ClientCredentialsAuth`]($a/oauth-2-client-credentials-grant.md) | The Credentials Setter for OAuth 2 Client Credentials Grant |
+| `thingspaceOauthCredentials` | [`ThingspaceOauthCredentials`]($a/oauth-2-client-credentials-grant.md) | The Credentials Setter for OAuth 2 Client Credentials Grant |
+| `vZM2mTokenCredentials` | [`VZM2mTokenCredentials`]($a/custom-header-signature.md) | The Credentials Setter for Custom Header Signature |
 
 The API client can be initialized as follows:
 
@@ -16,15 +16,18 @@ The API client can be initialized as follows:
 VerizonClient client = new VerizonClient.Builder()
     .httpClientConfig(configBuilder -> configBuilder
             .timeout(0))
-    .vZM2mToken("VZ-M2M-Token")
-    .clientCredentialsAuth(new ClientCredentialsAuthModel.Builder(
+    .thingspaceOauthCredentials(new ThingspaceOauthModel.Builder(
             "OAuthClientId",
             "OAuthClientSecret"
         )
         .oauthScopes(Arrays.asList(
-                OauthScopeEnum.DISCOVERYREAD,
-                OauthScopeEnum.SERVICEPROFILEREAD
+                OauthScopeThingspaceOauthEnum.DISCOVERYREAD,
+                OauthScopeThingspaceOauthEnum.SERVICEPROFILEREAD
             ))
+        .build())
+    .vZM2mTokenCredentials(new VZM2mTokenModel.Builder(
+            "VZ-M2M-Token"
+        )
         .build())
     .environment(Environment.PRODUCTION)
     .build();
@@ -117,6 +120,7 @@ The gateway for the SDK. This class acts as a factory for the Controllers and al
 | `getUpdateTriggersController()` | Provides access to UpdateTriggers controller. | `UpdateTriggersController` |
 | `getSIMActionsController()` | Provides access to SIMActions controller. | `SIMActionsController` |
 | `getGlobalReportingController()` | Provides access to GlobalReporting controller. | `GlobalReportingController` |
+| `getMV2TriggersController()` | Provides access to MV2Triggers controller. | `MV2TriggersController` |
 | `getOauthAuthorizationController()` | Provides access to OauthAuthorization controller. | `OauthAuthorizationController` |
 
 ### Methods
@@ -125,10 +129,10 @@ The gateway for the SDK. This class acts as a factory for the Controllers and al
 |  --- | --- | --- |
 | `shutdown()` | Shutdown the underlying HttpClient instance. | `void` |
 | `getEnvironment()` | Current API environment. | `Environment` |
-| `getVZM2mToken()` | M2M Session Token ([How to generate an M2M session token?](page:getting-started/5g-edge-developer-creds-token#obtaining-a-vz-m2m-session-token-programmatically)). | `String` |
 | `getHttpClient()` | The HTTP Client instance to use for making HTTP requests. | `HttpClient` |
 | `getHttpClientConfig()` | Http Client Configuration instance. | [`ReadonlyHttpClientConfiguration`](http-client-configuration.md) |
-| `getClientCredentialsAuth()` | The credentials to use with ClientCredentialsAuth. | [`ClientCredentialsAuth`]($a/oauth-2-client-credentials-grant.md) |
+| `getThingspaceOauthCredentials()` | The credentials to use with ThingspaceOauth. | [`ThingspaceOauthCredentials`]($a/oauth-2-client-credentials-grant.md) |
+| `getVZM2MTokenCredentials()` | The credentials to use with VZM2MToken. | [`VZM2mTokenCredentials`]($a/custom-header-signature.md) |
 | `getBaseUri(Server server)` | Get base URI by current environment | `String` |
 | `getBaseUri()` | Get base URI by current environment | `String` |
 

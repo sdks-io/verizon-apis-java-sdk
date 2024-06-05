@@ -6,8 +6,12 @@
 
 package com.verizon.m5gedge;
 
-import com.verizon.m5gedge.authentication.ClientCredentialsAuthManager;
-import com.verizon.m5gedge.authentication.ClientCredentialsAuthModel;
+import com.verizon.m5gedge.authentication.ThingspaceOauthCredentials;
+import com.verizon.m5gedge.authentication.ThingspaceOauthManager;
+import com.verizon.m5gedge.authentication.ThingspaceOauthModel;
+import com.verizon.m5gedge.authentication.VZM2mTokenCredentials;
+import com.verizon.m5gedge.authentication.VZM2mTokenManager;
+import com.verizon.m5gedge.authentication.VZM2mTokenModel;
 import com.verizon.m5gedge.controllers.AccountDevicesController;
 import com.verizon.m5gedge.controllers.AccountRequestsController;
 import com.verizon.m5gedge.controllers.AccountSubscriptionsController;
@@ -50,6 +54,7 @@ import com.verizon.m5gedge.controllers.GlobalReportingController;
 import com.verizon.m5gedge.controllers.HyperPreciseLocationCallbacksController;
 import com.verizon.m5gedge.controllers.M5gEdgePlatformsController;
 import com.verizon.m5gedge.controllers.MECController;
+import com.verizon.m5gedge.controllers.MV2TriggersController;
 import com.verizon.m5gedge.controllers.ManagingeSIMProfilesController;
 import com.verizon.m5gedge.controllers.OauthAuthorizationController;
 import com.verizon.m5gedge.controllers.PerformanceMetricsController;
@@ -82,8 +87,6 @@ import com.verizon.m5gedge.controllers.UsageTriggerManagementController;
 import com.verizon.m5gedge.controllers.WirelessNetworkPerformanceController;
 import com.verizon.m5gedge.http.client.HttpClientConfiguration;
 import com.verizon.m5gedge.http.client.ReadonlyHttpClientConfiguration;
-import com.verizon.m5gedge.models.OauthScopeEnum;
-import com.verizon.m5gedge.models.OauthToken;
 import io.apimatic.core.GlobalConfiguration;
 import io.apimatic.coreinterfaces.authentication.Authentication;
 import io.apimatic.coreinterfaces.compatibility.CompatibilityFactory;
@@ -91,7 +94,6 @@ import io.apimatic.coreinterfaces.http.HttpClient;
 import io.apimatic.okhttpclient.adapter.OkClient;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
@@ -177,6 +179,7 @@ public final class VerizonClient implements Configuration {
     private UpdateTriggersController updateTriggers;
     private SIMActionsController sIMActions;
     private GlobalReportingController globalReporting;
+    private MV2TriggersController mV2Triggers;
     private OauthAuthorizationController oauthAuthorization;
 
     private static final CompatibilityFactory compatibilityFactory = new CompatibilityFactoryImpl();
@@ -189,11 +192,6 @@ public final class VerizonClient implements Configuration {
     private final Environment environment;
 
     /**
-     * M2M Session Token ([How to generate an M2M session token?](page:getting-started/5g-edge-developer-creds-token#obtaining-a-vz-m2m-session-token-programmatically)).
-     */
-    private final String vZM2mToken;
-
-    /**
      * The HTTP Client instance to use for making HTTP requests.
      */
     private final HttpClient httpClient;
@@ -204,42 +202,53 @@ public final class VerizonClient implements Configuration {
     private final ReadonlyHttpClientConfiguration httpClientConfig;
 
     /**
-     * ClientCredentialsAuthManager.
+     * ThingspaceOauthManager.
      */
-    private ClientCredentialsAuthManager clientCredentialsAuthManager;
+    private ThingspaceOauthManager thingspaceOauthManager;
 
     /**
-     * The instance of ClientCredentialsAuthModel.
+     * The instance of ThingspaceOauthModel.
      */
-    private ClientCredentialsAuthModel clientCredentialsAuthModel;
+    private ThingspaceOauthModel thingspaceOauthModel;
+
+    /**
+     * VZM2MTokenManager.
+     */
+    private VZM2mTokenManager vZM2mTokenManager;
+
+    /**
+     * The instance of VZM2mTokenModel.
+     */
+    private VZM2mTokenModel vZM2mTokenModel;
 
     /**
      * Map of authentication Managers.
      */
     private Map<String, Authentication> authentications = new HashMap<String, Authentication>();
 
-    private VerizonClient(Environment environment, String vZM2mToken, HttpClient httpClient,
+    private VerizonClient(Environment environment, HttpClient httpClient,
             ReadonlyHttpClientConfiguration httpClientConfig,
-            ClientCredentialsAuthModel clientCredentialsAuthModel) {
+            ThingspaceOauthModel thingspaceOauthModel, VZM2mTokenModel vZM2mTokenModel) {
         this.environment = environment;
-        this.vZM2mToken = vZM2mToken;
         this.httpClient = httpClient;
         this.httpClientConfig = httpClientConfig;
 
-        this.clientCredentialsAuthModel = clientCredentialsAuthModel;
+        this.thingspaceOauthModel = thingspaceOauthModel;
+        this.vZM2mTokenModel = vZM2mTokenModel;
 
-        this.clientCredentialsAuthManager = new ClientCredentialsAuthManager(
-                clientCredentialsAuthModel);
-        this.authentications.put("oAuth2", clientCredentialsAuthManager);
+        this.thingspaceOauthManager = new ThingspaceOauthManager(thingspaceOauthModel);
+        this.authentications.put("thingspace_oauth", thingspaceOauthManager);
+
+        this.vZM2mTokenManager = new VZM2mTokenManager(vZM2mTokenModel);
+        this.authentications.put("VZ-M2M-Token", vZM2mTokenManager);
 
         GlobalConfiguration globalConfig = new GlobalConfiguration.Builder()
                 .httpClient(httpClient).baseUri(server -> getBaseUri(server))
                 .compatibilityFactory(compatibilityFactory)
                 .authentication(this.authentications)
                 .userAgent(userAgent)
-                .globalHeader("VZ-M2M-Token", vZM2mToken)
                 .build();
-        this.clientCredentialsAuthManager.applyGlobalConfiguration(globalConfig);
+        this.thingspaceOauthManager.applyGlobalConfiguration(globalConfig);
 
         m5gEdgePlatforms = new M5gEdgePlatformsController(globalConfig);
         serviceEndpoints = new ServiceEndpointsController(globalConfig);
@@ -316,6 +325,7 @@ public final class VerizonClient implements Configuration {
         updateTriggers = new UpdateTriggersController(globalConfig);
         sIMActions = new SIMActionsController(globalConfig);
         globalReporting = new GlobalReportingController(globalConfig);
+        mV2Triggers = new MV2TriggersController(globalConfig);
         oauthAuthorization = new OauthAuthorizationController(globalConfig);
     }
 
@@ -895,6 +905,14 @@ public final class VerizonClient implements Configuration {
     }
 
     /**
+     * Get the instance of MV2TriggersController.
+     * @return mV2Triggers
+     */
+    public MV2TriggersController getMV2TriggersController() {
+        return mV2Triggers;
+    }
+
+    /**
      * Get the instance of OauthAuthorizationController.
      * @return oauthAuthorization
      */
@@ -908,14 +926,6 @@ public final class VerizonClient implements Configuration {
      */
     public Environment getEnvironment() {
         return environment;
-    }
-
-    /**
-     * M2M Session Token ([How to generate an M2M session token?](page:getting-started/5g-edge-developer-creds-token#obtaining-a-vz-m2m-session-token-programmatically)).
-     * @return vZM2mToken
-     */
-    public String getVZM2mToken() {
-        return vZM2mToken;
     }
 
     /**
@@ -935,19 +945,34 @@ public final class VerizonClient implements Configuration {
     }
 
     /**
-     * The credentials to use with ClientCredentialsAuth.
-     * @return clientCredentialsAuth
+     * The credentials to use with ThingspaceOauth.
+     * @return thingspaceOauthCredentials
      */
-    public ClientCredentialsAuth getClientCredentialsAuth() {
-        return clientCredentialsAuthManager;
+    public ThingspaceOauthCredentials getThingspaceOauthCredentials() {
+        return thingspaceOauthManager;
     }
 
     /**
-     * The auth credential model for ClientCredentialsAuth.
-     * @return the instance of ClientCredentialsAuthModel
+     * The auth credential model for ThingspaceOauth.
+     * @return the instance of ThingspaceOauthModel
      */
-    public ClientCredentialsAuthModel getClientCredentialsAuthModel() {
-        return clientCredentialsAuthModel;
+    public ThingspaceOauthModel getThingspaceOauthModel() {
+        return thingspaceOauthModel;
+    }
+    /**
+     * The credentials to use with VZM2MToken.
+     * @return vZM2mTokenCredentials
+     */
+    public VZM2mTokenCredentials getVZM2mTokenCredentials() {
+        return vZM2mTokenManager;
+    }
+
+    /**
+     * The auth credential model for VZM2MToken.
+     * @return the instance of VZM2mTokenModel
+     */
+    public VZM2mTokenModel getVZM2mTokenModel() {
+        return vZM2mTokenModel;
     }
     /**
      * The timeout to use for making HTTP requests.
@@ -1047,6 +1072,53 @@ public final class VerizonClient implements Configuration {
                 return "https://thingspace.verizon.com/api/m2m/v1/devices";
             }
         }
+        if (environment.equals(Environment.MOCK_SERVER_FOR_LIMITED_AVAILABILITY_SEE_QUICK_START)) {
+            if (server.equals(Server.EDGE_DISCOVERY)) {
+                return "https://mock.thingspace.verizon.com/api/mec/eds";
+            }
+            if (server.equals(Server.THINGSPACE)) {
+                return "https://mock.thingspace.verizon.com/api";
+            }
+            if (server.equals(Server.OAUTH_SERVER)) {
+                return "https://mock.thingspace.verizon.com/api/ts/v1";
+            }
+            if (server.equals(Server.M2M)) {
+                return "https://mock.thingspace.verizon.com/api/m2m";
+            }
+            if (server.equals(Server.DEVICE_LOCATION)) {
+                return "https://mock.thingspace.verizon.com/api/loc/v1";
+            }
+            if (server.equals(Server.SUBSCRIPTION_SERVER)) {
+                return "https://mock.thingspace.verizon.com/api/subsc/v1";
+            }
+            if (server.equals(Server.SOFTWARE_MANAGEMENT_V1)) {
+                return "https://mock.thingspace.verizon.com/api/fota/v1";
+            }
+            if (server.equals(Server.SOFTWARE_MANAGEMENT_V2)) {
+                return "https://mock.thingspace.verizon.com/api/fota/v2";
+            }
+            if (server.equals(Server.SOFTWARE_MANAGEMENT_V3)) {
+                return "https://mock.thingspace.verizon.com/api/fota/v3";
+            }
+            if (server.equals(Server.PERFORMANCE)) {
+                return "https://mock.thingspace.verizon.com/api/mec";
+            }
+            if (server.equals(Server.DEVICE_DIAGNOSTICS)) {
+                return "https://mock.thingspace.verizon.com/api/diagnostics/v1";
+            }
+            if (server.equals(Server.CLOUD_CONNECTOR)) {
+                return "https://mock.thingspace.verizon.com/api/cc/v1";
+            }
+            if (server.equals(Server.HYPER_PRECISE_LOCATION)) {
+                return "https://mock.thingspace.verizon.com/api/hyper-precise/v1";
+            }
+            if (server.equals(Server.SERVICES)) {
+                return "https://mock.thingspace.verizon.com/api/mec/services";
+            }
+            if (server.equals(Server.QUALITY_OF_SERVICE)) {
+                return "https://mock.thingspace.verizon.com/api/m2m/v1/devices";
+            }
+        }
         return "https://5gedge.verizon.com/api/mec/eds";
     }
 
@@ -1056,9 +1128,8 @@ public final class VerizonClient implements Configuration {
      */
     @Override
     public String toString() {
-        return "VerizonClient [" + "environment=" + environment + ", vZM2mToken=" + vZM2mToken
-                + ", httpClientConfig=" + httpClientConfig + ", authentications=" + authentications
-                + "]";
+        return "VerizonClient [" + "environment=" + environment + ", httpClientConfig="
+                + httpClientConfig + ", authentications=" + authentications + "]";
     }
 
     /**
@@ -1069,9 +1140,10 @@ public final class VerizonClient implements Configuration {
     public Builder newBuilder() {
         Builder builder = new Builder();
         builder.environment = getEnvironment();
-        builder.vZM2mToken = getVZM2mToken();
         builder.httpClient = getHttpClient();
-        builder.clientCredentialsAuth(getClientCredentialsAuthModel()
+        builder.thingspaceOauthCredentials(getThingspaceOauthModel()
+                .toBuilder().build());
+        builder.vZM2mTokenCredentials(getVZM2mTokenModel()
                 .toBuilder().build());
         builder.httpClientConfig(() -> ((HttpClientConfiguration) httpClientConfig).newBuilder());
         return builder;
@@ -1083,70 +1155,31 @@ public final class VerizonClient implements Configuration {
     public static class Builder {
 
         private Environment environment = Environment.PRODUCTION;
-        private String vZM2mToken = "TODO: Replace";
         private HttpClient httpClient;
-        private ClientCredentialsAuthModel clientCredentialsAuthModel =
-                new ClientCredentialsAuthModel.Builder("", "").build();
+        private ThingspaceOauthModel thingspaceOauthModel =
+                new ThingspaceOauthModel.Builder("", "").build();
+        private VZM2mTokenModel vZM2mTokenModel = new VZM2mTokenModel.Builder("").build();
         private HttpClientConfiguration.Builder httpClientConfigBuilder =
                 new HttpClientConfiguration.Builder();
 
 
         /**
-         * Credentials setter for ClientCredentialsAuth.
-         * @param oauthClientId String value for oauthClientId.
-         * @param oauthClientSecret String value for oauthClientSecret.
-         * @deprecated This builder method is deprecated.
-         * Use {@link #clientCredentialsAuth(ClientCredentialsAuthModel) clientCredentialsAuth} instead.
+         * Credentials setter for ThingspaceOauthCredentials.
+         * @param thingspaceOauthModel The instance of ThingspaceOauthModel.
          * @return The current instance of builder.
          */
-        @Deprecated
-        public Builder clientCredentialsAuthCredentials(String oauthClientId,
-                String oauthClientSecret) {
-            clientCredentialsAuthModel = clientCredentialsAuthModel.toBuilder()
-                .oauthClientId(oauthClientId)
-                .oauthClientSecret(oauthClientSecret)
-                .build();
+        public Builder thingspaceOauthCredentials(ThingspaceOauthModel thingspaceOauthModel) {
+            this.thingspaceOauthModel = thingspaceOauthModel;
             return this;
         }
 
         /**
-         * Credentials setter for ClientCredentialsAuth.
-         * @param oauthToken OauthToken value for oauthToken.
-         * @deprecated This builder method is deprecated.
-         * Use {@link #clientCredentialsAuth(ClientCredentialsAuthModel) clientCredentialsAuth} instead.
-         * @return Builder
-         */
-        @Deprecated
-        public Builder oauthToken(OauthToken oauthToken) {
-            clientCredentialsAuthModel = clientCredentialsAuthModel.toBuilder()
-                .oauthToken(oauthToken)
-                .build();
-            return this;
-        }
-
-        /**
-         * Credentials setter for ClientCredentialsAuth.
-         * @param oauthScopes List of OauthScopeEnum value for oauthScopes.
-         * @deprecated This builder method is deprecated.
-         * Use {@link #clientCredentialsAuth(ClientCredentialsAuthModel) clientCredentialsAuth} instead.
-         * @return Builder
-         */
-        @Deprecated
-        public Builder oauthScopes(List<OauthScopeEnum> oauthScopes) {
-            clientCredentialsAuthModel = clientCredentialsAuthModel.toBuilder()
-                .oauthScopes(oauthScopes)
-                .build();
-            return this;
-        }
-
-        /**
-         * Credentials setter for ClientCredentialsAuth.
-         * @param clientCredentialsAuthModel The instance of ClientCredentialsAuthModel.
+         * Credentials setter for VZM2MTokenCredentials.
+         * @param vZM2mTokenModel The instance of VZM2mTokenModel.
          * @return The current instance of builder.
          */
-        public Builder clientCredentialsAuth(
-                ClientCredentialsAuthModel clientCredentialsAuthModel) {
-            this.clientCredentialsAuthModel = clientCredentialsAuthModel;
+        public Builder vZM2mTokenCredentials(VZM2mTokenModel vZM2mTokenModel) {
+            this.vZM2mTokenModel = vZM2mTokenModel;
             return this;
         }
 
@@ -1157,19 +1190,6 @@ public final class VerizonClient implements Configuration {
          */
         public Builder environment(Environment environment) {
             this.environment = environment;
-            return this;
-        }
-
-        /**
-         * M2M Session Token ([How to generate an M2M session token?](page:getting-started/5g-edge-developer-creds-token#obtaining-a-vz-m2m-session-token-programmatically)).
-         * @param vZM2mToken The vZM2mToken for client.
-         * @return Builder
-         */
-        public Builder vZM2mToken(String vZM2mToken) {
-            if (vZM2mToken == null) {
-                throw new NullPointerException("vZM2mToken cannot be null");
-            }
-            this.vZM2mToken = vZM2mToken;
             return this;
         }
 
@@ -1218,8 +1238,8 @@ public final class VerizonClient implements Configuration {
             HttpClientConfiguration httpClientConfig = httpClientConfigBuilder.build();
             httpClient = new OkClient(httpClientConfig.getConfiguration(), compatibilityFactory);
 
-            return new VerizonClient(environment, vZM2mToken, httpClient, httpClientConfig,
-                    clientCredentialsAuthModel);
+            return new VerizonClient(environment, httpClient, httpClientConfig,
+                    thingspaceOauthModel, vZM2mTokenModel);
         }
     }
 }

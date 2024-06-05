@@ -44,10 +44,16 @@ CompletableFuture<ApiResponse<DeviceManagementResult>> sendSMSToDeviceAsync(
 
 ```java
 SMSSendRequest body = new SMSSendRequest.Builder(
-    "accountName0",
-    "The rain in Spain stays mainly in the plain."
+    "0000123456-00001",
+    "Can you hear me now?"
 )
-.servicePlan("T Plan 2")
+.deviceIds(Arrays.asList(
+        new DeviceId.Builder(
+            "89148000000800139708",
+            "iccid"
+        )
+        .build()
+    ))
 .build();
 
 sMSController.sendSMSToDeviceAsync(body).thenAccept(result -> {

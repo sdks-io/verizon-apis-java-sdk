@@ -19,7 +19,7 @@ public class TriggerType3 {
     private String triggerCategory;
     private String accountName;
     private AnomalyTriggerRequest anomalyTriggerRequest;
-    private Notification notification;
+    private TriggerNotification notification;
 
     /**
      * Default constructor.
@@ -34,7 +34,7 @@ public class TriggerType3 {
      * @param  triggerCategory  String value for triggerCategory.
      * @param  accountName  String value for accountName.
      * @param  anomalyTriggerRequest  AnomalyTriggerRequest value for anomalyTriggerRequest.
-     * @param  notification  Notification value for notification.
+     * @param  notification  TriggerNotification value for notification.
      */
     public TriggerType3(
             String triggerId,
@@ -42,7 +42,7 @@ public class TriggerType3 {
             String triggerCategory,
             String accountName,
             AnomalyTriggerRequest anomalyTriggerRequest,
-            Notification notification) {
+            TriggerNotification notification) {
         this.triggerId = triggerId;
         this.triggerName = triggerName;
         this.triggerCategory = triggerCategory;
@@ -161,21 +161,21 @@ public class TriggerType3 {
     /**
      * Getter for Notification.
      * The notification details of the trigger.
-     * @return Returns the Notification
+     * @return Returns the TriggerNotification
      */
     @JsonGetter("notification")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public Notification getNotification() {
+    public TriggerNotification getNotification() {
         return notification;
     }
 
     /**
      * Setter for Notification.
      * The notification details of the trigger.
-     * @param notification Value for Notification
+     * @param notification Value for TriggerNotification
      */
     @JsonSetter("notification")
-    public void setNotification(Notification notification) {
+    public void setNotification(TriggerNotification notification) {
         this.notification = notification;
     }
 
@@ -216,7 +216,7 @@ public class TriggerType3 {
         private String triggerCategory;
         private String accountName;
         private AnomalyTriggerRequest anomalyTriggerRequest;
-        private Notification notification;
+        private TriggerNotification notification;
 
 
 
@@ -272,10 +272,10 @@ public class TriggerType3 {
 
         /**
          * Setter for notification.
-         * @param  notification  Notification value for notification.
+         * @param  notification  TriggerNotification value for notification.
          * @return Builder
          */
-        public Builder notification(Notification notification) {
+        public Builder notification(TriggerNotification notification) {
             this.notification = notification;
             return this;
         }

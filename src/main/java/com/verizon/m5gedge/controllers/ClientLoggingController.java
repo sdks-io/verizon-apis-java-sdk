@@ -78,7 +78,9 @@ public final class ClientLoggingController extends BaseController {
                                 .shouldEncode(true))
                         .headerParam(param -> param.key("accept").value("application/json"))
                         .withAuth(auth -> auth
-                                .add("oAuth2"))
+                                .and(andAuth -> andAuth
+                                        .add("thingspace_oauth")
+                                        .add("VZ-M2M-Token")))
                         .httpMethod(HttpMethod.GET))
                 .responseHandler(responseHandler -> responseHandler
                         .responseClassType(ResponseClassType.API_RESPONSE)
@@ -142,7 +144,9 @@ public final class ClientLoggingController extends BaseController {
                                 .value("*/*").isRequired(false))
                         .headerParam(param -> param.key("accept").value("application/json"))
                         .withAuth(auth -> auth
-                                .add("oAuth2"))
+                                .and(andAuth -> andAuth
+                                        .add("thingspace_oauth")
+                                        .add("VZ-M2M-Token")))
                         .httpMethod(HttpMethod.PUT))
                 .responseHandler(responseHandler -> responseHandler
                         .responseClassType(ResponseClassType.API_RESPONSE)
@@ -202,7 +206,9 @@ public final class ClientLoggingController extends BaseController {
                         .templateParam(param -> param.key("account").value(account)
                                 .shouldEncode(true))
                         .withAuth(auth -> auth
-                                .add("oAuth2"))
+                                .and(andAuth -> andAuth
+                                        .add("thingspace_oauth")
+                                        .add("VZ-M2M-Token")))
                         .httpMethod(HttpMethod.DELETE))
                 .responseHandler(responseHandler -> responseHandler
                         .responseClassType(ResponseClassType.API_RESPONSE)
@@ -261,7 +267,9 @@ public final class ClientLoggingController extends BaseController {
                                 .shouldEncode(true))
                         .headerParam(param -> param.key("accept").value("application/json"))
                         .withAuth(auth -> auth
-                                .add("oAuth2"))
+                                .and(andAuth -> andAuth
+                                        .add("thingspace_oauth")
+                                        .add("VZ-M2M-Token")))
                         .httpMethod(HttpMethod.PUT))
                 .responseHandler(responseHandler -> responseHandler
                         .responseClassType(ResponseClassType.API_RESPONSE)
@@ -320,7 +328,9 @@ public final class ClientLoggingController extends BaseController {
                         .templateParam(param -> param.key("deviceId").value(deviceId)
                                 .shouldEncode(true))
                         .withAuth(auth -> auth
-                                .add("oAuth2"))
+                                .and(andAuth -> andAuth
+                                        .add("thingspace_oauth")
+                                        .add("VZ-M2M-Token")))
                         .httpMethod(HttpMethod.DELETE))
                 .responseHandler(responseHandler -> responseHandler
                         .responseClassType(ResponseClassType.API_RESPONSE)
@@ -379,7 +389,9 @@ public final class ClientLoggingController extends BaseController {
                                 .shouldEncode(true))
                         .headerParam(param -> param.key("accept").value("application/json"))
                         .withAuth(auth -> auth
-                                .add("oAuth2"))
+                                .and(andAuth -> andAuth
+                                        .add("thingspace_oauth")
+                                        .add("VZ-M2M-Token")))
                         .httpMethod(HttpMethod.GET))
                 .responseHandler(responseHandler -> responseHandler
                         .responseClassType(ResponseClassType.API_RESPONSE)

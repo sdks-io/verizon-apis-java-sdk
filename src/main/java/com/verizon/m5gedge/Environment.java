@@ -17,7 +17,9 @@ import java.util.TreeMap;
  * Environment to be used.
  */
 public enum Environment {
-    PRODUCTION;
+    PRODUCTION,
+
+    MOCK_SERVER_FOR_LIMITED_AVAILABILITY_SEE_QUICK_START;
 
 
     private static TreeMap<String, Environment> valueMap = new TreeMap<>();
@@ -25,8 +27,10 @@ public enum Environment {
 
     static {
         PRODUCTION.value = "Production";
+        MOCK_SERVER_FOR_LIMITED_AVAILABILITY_SEE_QUICK_START.value = "Mock server for limited availability, see quick start";
 
         valueMap.put("Production", PRODUCTION);
+        valueMap.put("Mock server for limited availability, see quick start", MOCK_SERVER_FOR_LIMITED_AVAILABILITY_SEE_QUICK_START);
     }
 
     /**

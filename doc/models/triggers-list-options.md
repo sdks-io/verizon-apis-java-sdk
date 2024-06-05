@@ -17,7 +17,7 @@
 | `CreatedAt` | `String` | Optional | Timestamp for whe the trigger was created. | String getCreatedAt() | setCreatedAt(String createdAt) |
 | `ModifiedAt` | `String` | Optional | Timestamp for the most recent time the trigger was modified. | String getModifiedAt() | setModifiedAt(String modifiedAt) |
 | `Anomalyattributes` | [`UsageAnomalyAttributes`](../../doc/models/usage-anomaly-attributes.md) | Optional | The details of the UsageAnomaly trigger. | UsageAnomalyAttributes getAnomalyattributes() | setAnomalyattributes(UsageAnomalyAttributes anomalyattributes) |
-| `Notification` | [`Notification`](../../doc/models/notification.md) | Optional | The notification details of the trigger. | Notification getNotification() | setNotification(Notification notification) |
+| `Notification` | [`TriggerNotification`](../../doc/models/trigger-notification.md) | Optional | The notification details of the trigger. | TriggerNotification getNotification() | setNotification(TriggerNotification notification) |
 
 ## Example (as JSON)
 

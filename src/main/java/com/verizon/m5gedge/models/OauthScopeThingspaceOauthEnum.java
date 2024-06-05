@@ -14,9 +14,9 @@ import java.util.TreeMap;
 
 
 /**
- * OauthScopeEnum to be used.
+ * OauthScopeThingspaceOauthEnum to be used.
  */
-public enum OauthScopeEnum {
+public enum OauthScopeThingspaceOauthEnum {
     /**
      * Grant read-only access to discovery data
      */
@@ -54,6 +54,16 @@ public enum OauthScopeEnum {
 
     TS_APPLICATION_RO,
 
+    EDGEDISCOVERYREAD,
+
+    EDGESERVICEPROFILEREAD,
+
+    EDGESERVICEPROFILEWRITE,
+
+    EDGESERVICEREGISTRYREAD,
+
+    EDGESERVICEREGISTRYWRITE,
+
     /**
      * read access
      */
@@ -65,7 +75,7 @@ public enum OauthScopeEnum {
     WRITE;
 
 
-    private static TreeMap<String, OauthScopeEnum> valueMap = new TreeMap<>();
+    private static TreeMap<String, OauthScopeThingspaceOauthEnum> valueMap = new TreeMap<>();
     private String value;
 
     static {
@@ -77,6 +87,11 @@ public enum OauthScopeEnum {
         TS_MEC_FULLACCESS.value = "ts.mec.fullaccess";
         TS_MEC_LIMITACCESS.value = "ts.mec.limitaccess";
         TS_APPLICATION_RO.value = "ts.application.ro";
+        EDGEDISCOVERYREAD.value = "edge:discovery:read";
+        EDGESERVICEPROFILEREAD.value = "edge:serviceprofile:read";
+        EDGESERVICEPROFILEWRITE.value = "edge:serviceprofile:write";
+        EDGESERVICEREGISTRYREAD.value = "edge:serviceregistry:read";
+        EDGESERVICEREGISTRYWRITE.value = "edge:serviceregistry:write";
         READ.value = "read";
         WRITE.value = "write";
 
@@ -88,6 +103,11 @@ public enum OauthScopeEnum {
         valueMap.put("ts.mec.fullaccess", TS_MEC_FULLACCESS);
         valueMap.put("ts.mec.limitaccess", TS_MEC_LIMITACCESS);
         valueMap.put("ts.application.ro", TS_APPLICATION_RO);
+        valueMap.put("edge:discovery:read", EDGEDISCOVERYREAD);
+        valueMap.put("edge:serviceprofile:read", EDGESERVICEPROFILEREAD);
+        valueMap.put("edge:serviceprofile:write", EDGESERVICEPROFILEWRITE);
+        valueMap.put("edge:serviceregistry:read", EDGESERVICEREGISTRYREAD);
+        valueMap.put("edge:serviceregistry:write", EDGESERVICEREGISTRYWRITE);
         valueMap.put("read", READ);
         valueMap.put("write", WRITE);
     }
@@ -99,8 +119,8 @@ public enum OauthScopeEnum {
      * @throws IOException when provided value is not mapped to any enum member.
      */
     @JsonCreator
-    public static OauthScopeEnum constructFromString(String toConvert) throws IOException {
-        OauthScopeEnum enumValue = fromString(toConvert);
+    public static OauthScopeThingspaceOauthEnum constructFromString(String toConvert) throws IOException {
+        OauthScopeThingspaceOauthEnum enumValue = fromString(toConvert);
         if (enumValue == null) {
             throw new IOException("Unable to create enum instance with value: " + toConvert);
         }
@@ -112,7 +132,7 @@ public enum OauthScopeEnum {
      * @param toConvert String value to get enum member.
      * @return The enum member against the given string value.
      */
-    public static OauthScopeEnum fromString(String toConvert) {
+    public static OauthScopeThingspaceOauthEnum fromString(String toConvert) {
         return valueMap.get(toConvert);
     }
 
@@ -134,16 +154,16 @@ public enum OauthScopeEnum {
     }
 
     /**
-     * Convert list of OauthScopeEnum values to list of string values.
-     * @param toConvert The list of OauthScopeEnum values to convert.
+     * Convert list of OauthScopeThingspaceOauthEnum values to list of string values.
+     * @param toConvert The list of OauthScopeThingspaceOauthEnum values to convert.
      * @return List of representative string values.
      */
-    public static List<String> toValue(List<OauthScopeEnum> toConvert) {
+    public static List<String> toValue(List<OauthScopeThingspaceOauthEnum> toConvert) {
         if (toConvert == null) {
             return null;
         }
         List<String> convertedValues = new ArrayList<>();
-        for (OauthScopeEnum enumValue : toConvert) {
+        for (OauthScopeThingspaceOauthEnum enumValue : toConvert) {
             convertedValues.add(enumValue.value);
         }
         return convertedValues;

@@ -17,6 +17,7 @@ public class AggregateUsageItem {
     private String imei;
     private Integer numberOfSessions;
     private Integer bytesTransferred;
+    private Object example;
 
     /**
      * Default constructor.
@@ -29,14 +30,17 @@ public class AggregateUsageItem {
      * @param  imei  String value for imei.
      * @param  numberOfSessions  Integer value for numberOfSessions.
      * @param  bytesTransferred  Integer value for bytesTransferred.
+     * @param  example  Object value for example.
      */
     public AggregateUsageItem(
             String imei,
             Integer numberOfSessions,
-            Integer bytesTransferred) {
+            Integer bytesTransferred,
+            Object example) {
         this.imei = imei;
         this.numberOfSessions = numberOfSessions;
         this.bytesTransferred = bytesTransferred;
+        this.example = example;
     }
 
     /**
@@ -103,13 +107,32 @@ public class AggregateUsageItem {
     }
 
     /**
+     * Getter for Example.
+     * @return Returns the Object
+     */
+    @JsonGetter("example")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public Object getExample() {
+        return example;
+    }
+
+    /**
+     * Setter for Example.
+     * @param example Value for Object
+     */
+    @JsonSetter("example")
+    public void setExample(Object example) {
+        this.example = example;
+    }
+
+    /**
      * Converts this AggregateUsageItem into string format.
      * @return String representation of this class
      */
     @Override
     public String toString() {
         return "AggregateUsageItem [" + "imei=" + imei + ", numberOfSessions=" + numberOfSessions
-                + ", bytesTransferred=" + bytesTransferred + "]";
+                + ", bytesTransferred=" + bytesTransferred + ", example=" + example + "]";
     }
 
     /**
@@ -121,7 +144,8 @@ public class AggregateUsageItem {
         Builder builder = new Builder()
                 .imei(getImei())
                 .numberOfSessions(getNumberOfSessions())
-                .bytesTransferred(getBytesTransferred());
+                .bytesTransferred(getBytesTransferred())
+                .example(getExample());
         return builder;
     }
 
@@ -132,6 +156,7 @@ public class AggregateUsageItem {
         private String imei;
         private Integer numberOfSessions;
         private Integer bytesTransferred;
+        private Object example;
 
 
 
@@ -166,11 +191,21 @@ public class AggregateUsageItem {
         }
 
         /**
+         * Setter for example.
+         * @param  example  Object value for example.
+         * @return Builder
+         */
+        public Builder example(Object example) {
+            this.example = example;
+            return this;
+        }
+
+        /**
          * Builds a new {@link AggregateUsageItem} object using the set fields.
          * @return {@link AggregateUsageItem}
          */
         public AggregateUsageItem build() {
-            return new AggregateUsageItem(imei, numberOfSessions, bytesTransferred);
+            return new AggregateUsageItem(imei, numberOfSessions, bytesTransferred, example);
         }
     }
 }

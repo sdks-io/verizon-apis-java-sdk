@@ -19,7 +19,7 @@ public class UpdateTriggerRequestOptions {
     private String triggerCategory;
     private String accountName;
     private AnomalyTriggerRequest anomalyTriggerRequest;
-    private Notification notification;
+    private TriggerNotification notification;
     private Boolean active;
 
     /**
@@ -35,7 +35,7 @@ public class UpdateTriggerRequestOptions {
      * @param  triggerCategory  String value for triggerCategory.
      * @param  accountName  String value for accountName.
      * @param  anomalyTriggerRequest  AnomalyTriggerRequest value for anomalyTriggerRequest.
-     * @param  notification  Notification value for notification.
+     * @param  notification  TriggerNotification value for notification.
      * @param  active  Boolean value for active.
      */
     public UpdateTriggerRequestOptions(
@@ -44,7 +44,7 @@ public class UpdateTriggerRequestOptions {
             String triggerCategory,
             String accountName,
             AnomalyTriggerRequest anomalyTriggerRequest,
-            Notification notification,
+            TriggerNotification notification,
             Boolean active) {
         this.triggerId = triggerId;
         this.triggerName = triggerName;
@@ -165,21 +165,21 @@ public class UpdateTriggerRequestOptions {
     /**
      * Getter for Notification.
      * The notification details of the trigger.
-     * @return Returns the Notification
+     * @return Returns the TriggerNotification
      */
     @JsonGetter("notification")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public Notification getNotification() {
+    public TriggerNotification getNotification() {
         return notification;
     }
 
     /**
      * Setter for Notification.
      * The notification details of the trigger.
-     * @param notification Value for Notification
+     * @param notification Value for TriggerNotification
      */
     @JsonSetter("notification")
-    public void setNotification(Notification notification) {
+    public void setNotification(TriggerNotification notification) {
         this.notification = notification;
     }
 
@@ -244,7 +244,7 @@ public class UpdateTriggerRequestOptions {
         private String triggerCategory;
         private String accountName;
         private AnomalyTriggerRequest anomalyTriggerRequest;
-        private Notification notification;
+        private TriggerNotification notification;
         private Boolean active;
 
 
@@ -301,10 +301,10 @@ public class UpdateTriggerRequestOptions {
 
         /**
          * Setter for notification.
-         * @param  notification  Notification value for notification.
+         * @param  notification  TriggerNotification value for notification.
          * @return Builder
          */
-        public Builder notification(Notification notification) {
+        public Builder notification(TriggerNotification notification) {
             this.notification = notification;
             return this;
         }

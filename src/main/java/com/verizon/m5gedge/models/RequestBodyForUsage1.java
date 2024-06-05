@@ -16,10 +16,9 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 /**
- * This is a model class for UsageRequestBody type.
+ * This is a model class for RequestBodyForUsage1 type.
  */
-public class UsageRequestBody {
-    private String accountId;
+public class RequestBodyForUsage1 {
     private List<ReadySimDeviceId> deviceId;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
@@ -27,44 +26,22 @@ public class UsageRequestBody {
     /**
      * Default constructor.
      */
-    public UsageRequestBody() {
+    public RequestBodyForUsage1() {
     }
 
     /**
      * Initialization constructor.
-     * @param  accountId  String value for accountId.
      * @param  deviceId  List of ReadySimDeviceId value for deviceId.
      * @param  startTime  LocalDateTime value for startTime.
      * @param  endTime  LocalDateTime value for endTime.
      */
-    public UsageRequestBody(
-            String accountId,
+    public RequestBodyForUsage1(
             List<ReadySimDeviceId> deviceId,
             LocalDateTime startTime,
             LocalDateTime endTime) {
-        this.accountId = accountId;
         this.deviceId = deviceId;
         this.startTime = startTime;
         this.endTime = endTime;
-    }
-
-    /**
-     * Getter for AccountId.
-     * @return Returns the String
-     */
-    @JsonGetter("accountId")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getAccountId() {
-        return accountId;
-    }
-
-    /**
-     * Setter for AccountId.
-     * @param accountId Value for String
-     */
-    @JsonSetter("accountId")
-    public void setAccountId(String accountId) {
-        this.accountId = accountId;
     }
 
     /**
@@ -129,23 +106,22 @@ public class UsageRequestBody {
     }
 
     /**
-     * Converts this UsageRequestBody into string format.
+     * Converts this RequestBodyForUsage1 into string format.
      * @return String representation of this class
      */
     @Override
     public String toString() {
-        return "UsageRequestBody [" + "accountId=" + accountId + ", deviceId=" + deviceId
-                + ", startTime=" + startTime + ", endTime=" + endTime + "]";
+        return "RequestBodyForUsage1 [" + "deviceId=" + deviceId + ", startTime=" + startTime
+                + ", endTime=" + endTime + "]";
     }
 
     /**
-     * Builds a new {@link UsageRequestBody.Builder} object.
+     * Builds a new {@link RequestBodyForUsage1.Builder} object.
      * Creates the instance with the state of the current model.
-     * @return a new {@link UsageRequestBody.Builder} object
+     * @return a new {@link RequestBodyForUsage1.Builder} object
      */
     public Builder toBuilder() {
         Builder builder = new Builder()
-                .accountId(getAccountId())
                 .deviceId(getDeviceId())
                 .startTime(getStartTime())
                 .endTime(getEndTime());
@@ -153,25 +129,14 @@ public class UsageRequestBody {
     }
 
     /**
-     * Class to build instances of {@link UsageRequestBody}.
+     * Class to build instances of {@link RequestBodyForUsage1}.
      */
     public static class Builder {
-        private String accountId;
         private List<ReadySimDeviceId> deviceId;
         private LocalDateTime startTime;
         private LocalDateTime endTime;
 
 
-
-        /**
-         * Setter for accountId.
-         * @param  accountId  String value for accountId.
-         * @return Builder
-         */
-        public Builder accountId(String accountId) {
-            this.accountId = accountId;
-            return this;
-        }
 
         /**
          * Setter for deviceId.
@@ -204,11 +169,11 @@ public class UsageRequestBody {
         }
 
         /**
-         * Builds a new {@link UsageRequestBody} object using the set fields.
-         * @return {@link UsageRequestBody}
+         * Builds a new {@link RequestBodyForUsage1} object using the set fields.
+         * @return {@link RequestBodyForUsage1}
          */
-        public UsageRequestBody build() {
-            return new UsageRequestBody(accountId, deviceId, startTime, endTime);
+        public RequestBodyForUsage1 build() {
+            return new RequestBodyForUsage1(deviceId, startTime, endTime);
         }
     }
 }

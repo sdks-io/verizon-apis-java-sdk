@@ -6,8 +6,7 @@
 
 package com.verizon.m5gedge.authentication;
 
-import com.verizon.m5gedge.ClientCredentialsAuth;
-import com.verizon.m5gedge.models.OauthScopeEnum;
+import com.verizon.m5gedge.models.OauthScopeThingspaceOauthEnum;
 import com.verizon.m5gedge.models.OauthToken;
 import java.util.List;
 import java.util.function.BiFunction;
@@ -16,20 +15,20 @@ import java.util.function.Consumer;
 /**
  * A data class for OAuth 2 Client Credentials Grant credentials.
  */
-public class ClientCredentialsAuthModel {
+public class ThingspaceOauthModel {
     private String oauthClientId;
     private String oauthClientSecret;
     private OauthToken oauthToken;
-    private List<OauthScopeEnum> oauthScopes;
-    private BiFunction<OauthToken, ClientCredentialsAuth, OauthToken> oauthTokenProvider;
+    private List<OauthScopeThingspaceOauthEnum> oauthScopes;
+    private BiFunction<OauthToken, ThingspaceOauthCredentials, OauthToken> oauthTokenProvider;
     private Consumer<OauthToken> oauthOnTokenUpdate;
 
     /**
-     * A Constructor for ClientCredentialsAuthModel.
+     * A Constructor for ThingspaceOauthModel.
      */
-    private ClientCredentialsAuthModel(String oauthClientId, String oauthClientSecret,
-            OauthToken oauthToken, List<OauthScopeEnum> oauthScopes,
-            BiFunction<OauthToken, ClientCredentialsAuth, OauthToken> oauthTokenProvider,
+    private ThingspaceOauthModel(String oauthClientId, String oauthClientSecret,
+            OauthToken oauthToken, List<OauthScopeThingspaceOauthEnum> oauthScopes,
+            BiFunction<OauthToken, ThingspaceOauthCredentials, OauthToken> oauthTokenProvider,
             Consumer<OauthToken> oauthOnTokenUpdate) {
         this.oauthClientId = oauthClientId;
         this.oauthClientSecret = oauthClientSecret;
@@ -67,7 +66,7 @@ public class ClientCredentialsAuthModel {
      * Getter for oauthScopes.
      * @return oauthScopes The value of OAuthScopes.
      */
-    public List<OauthScopeEnum> getOauthScopes() {
+    public List<OauthScopeThingspaceOauthEnum> getOauthScopes() {
         return this.oauthScopes;
     }
 
@@ -75,7 +74,7 @@ public class ClientCredentialsAuthModel {
      * Getter for oauthTokenProvider.
      * @return oauthTokenProvider The value of oauthTokenProvider.
      */
-    public BiFunction<OauthToken, ClientCredentialsAuth, OauthToken> getOauthTokenProvider() {
+    public BiFunction<OauthToken, ThingspaceOauthCredentials, OauthToken> getOauthTokenProvider() {
         return this.oauthTokenProvider;
     }
 
@@ -88,9 +87,9 @@ public class ClientCredentialsAuthModel {
     }
 
     /**
-     * Builds a new {@link ClientCredentialsAuthModel.Builder} object.
+     * Builds a new {@link ThingspaceOauthModel.Builder} object.
      * Creates the instance with the state of the current auth model.
-     * @return a new {@link ClientCredentialsAuthModel.Builder} object.
+     * @return a new {@link ThingspaceOauthModel.Builder} object.
      */
     public Builder toBuilder() {
         return new Builder(getOauthClientId(), getOauthClientSecret())
@@ -107,8 +106,8 @@ public class ClientCredentialsAuthModel {
         private String oauthClientId;
         private String oauthClientSecret;
         private OauthToken oauthToken;
-        private List<OauthScopeEnum> oauthScopes;
-        private BiFunction<OauthToken, ClientCredentialsAuth, OauthToken> oauthTokenProvider;
+        private List<OauthScopeThingspaceOauthEnum> oauthScopes;
+        private BiFunction<OauthToken, ThingspaceOauthCredentials, OauthToken> oauthTokenProvider;
         private Consumer<OauthToken> oauthOnTokenUpdate;
 
         /**
@@ -172,7 +171,7 @@ public class ClientCredentialsAuthModel {
          * @param oauthScopes The value of OAuthScopes.
          * @return Builder The current instance of Builder.
          */
-        public Builder oauthScopes(List<OauthScopeEnum> oauthScopes) {
+        public Builder oauthScopes(List<OauthScopeThingspaceOauthEnum> oauthScopes) {
             this.oauthScopes = oauthScopes;
             return this;
         }
@@ -182,7 +181,7 @@ public class ClientCredentialsAuthModel {
          * @param oauthTokenProvider The value of oauthTokenProvider.
          * @return Builder The current instance of Builder.
          */
-        public Builder oauthTokenProvider(BiFunction<OauthToken, ClientCredentialsAuth, OauthToken> oauthTokenProvider) {
+        public Builder oauthTokenProvider(BiFunction<OauthToken, ThingspaceOauthCredentials, OauthToken> oauthTokenProvider) {
             this.oauthTokenProvider = oauthTokenProvider;
             return this;
         }
@@ -198,11 +197,11 @@ public class ClientCredentialsAuthModel {
         }
 
         /**
-         * Builds the instance of ClientCredentialsAuthModel using the provided credentials.
-         * @return The instance of ClientCredentialsAuthModel.
+         * Builds the instance of ThingspaceOauthModel using the provided credentials.
+         * @return The instance of ThingspaceOauthModel.
          */
-        public ClientCredentialsAuthModel build() {
-            return new ClientCredentialsAuthModel(oauthClientId, oauthClientSecret, oauthToken,
+        public ThingspaceOauthModel build() {
+            return new ThingspaceOauthModel(oauthClientId, oauthClientSecret, oauthToken,
                     oauthScopes, oauthTokenProvider, oauthOnTokenUpdate);
         }
     }

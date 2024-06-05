@@ -6,10 +6,9 @@
 
 package com.verizon.m5gedge.authentication;
 
-import com.verizon.m5gedge.ClientCredentialsAuth;
 import com.verizon.m5gedge.controllers.OauthAuthorizationController;
 import com.verizon.m5gedge.exceptions.ApiException;
-import com.verizon.m5gedge.models.OauthScopeEnum;
+import com.verizon.m5gedge.models.OauthScopeThingspaceOauthEnum;
 import com.verizon.m5gedge.models.OauthToken;
 import io.apimatic.core.GlobalConfiguration;
 import io.apimatic.core.authentication.HeaderAuth;
@@ -27,7 +26,7 @@ import java.util.concurrent.CompletableFuture;
 /**
  * Utility class for OAuth 2 authorization and token management.
  */
-public class ClientCredentialsAuthManager extends HeaderAuth implements ClientCredentialsAuth {
+public class ThingspaceOauthManager extends HeaderAuth implements ThingspaceOauthCredentials {
 
     /**
      * Private instance of OAuth 2 API controller.
@@ -37,7 +36,7 @@ public class ClientCredentialsAuthManager extends HeaderAuth implements ClientCr
     /**
      * Private instance of the auth model containing the auth credentials.
      */
-    private ClientCredentialsAuthModel authModel;
+    private ThingspaceOauthModel authModel;
 
     /**
      * Private instance of the latest auth token.
@@ -52,7 +51,7 @@ public class ClientCredentialsAuthManager extends HeaderAuth implements ClientCr
     /**
      * Constructor.
      */
-    public ClientCredentialsAuthManager(ClientCredentialsAuthModel authModel) {
+    public ThingspaceOauthManager(ThingspaceOauthModel authModel) {
         super(Collections.emptyMap());
         this.authModel = authModel;
         this.oauthToken = authModel.getOauthToken();
@@ -92,10 +91,10 @@ public class ClientCredentialsAuthManager extends HeaderAuth implements ClientCr
     }
 
     /**
-     * List of OauthScopeEnum value for oauthScopes.
+     * List of OauthScopeThingspaceOauthEnum value for oauthScopes.
      * @return oauthScopes
      */
-    public List<OauthScopeEnum> getOauthScopes() {
+    public List<OauthScopeThingspaceOauthEnum> getOauthScopes() {
         return authModel.getOauthScopes();
     }
 
@@ -104,11 +103,11 @@ public class ClientCredentialsAuthManager extends HeaderAuth implements ClientCr
      * @param oauthClientId String value for credentials.
      * @param oauthClientSecret String value for credentials.
      * @param oauthToken OauthToken value for credentials.
-     * @param oauthScopes List of OauthScopeEnum value for credentials.
+     * @param oauthScopes List of OauthScopeThingspaceOauthEnum value for credentials.
      * @return true if credentials matched.
      */
     public boolean equals(String oauthClientId, String oauthClientSecret, OauthToken oauthToken,
-            List<OauthScopeEnum> oauthScopes) {
+            List<OauthScopeThingspaceOauthEnum> oauthScopes) {
         return oauthClientId.equals(getOauthClientId())
                 && oauthClientSecret.equals(getOauthClientSecret())
                 && ((getOauthToken() == null && oauthToken == null)
@@ -120,12 +119,12 @@ public class ClientCredentialsAuthManager extends HeaderAuth implements ClientCr
     }
 
     /**
-     * Converts this ClientCredentialsAuthManager into string format.
+     * Converts this ThingspaceOauthManager into string format.
      * @return String representation of this class
      */
     @Override
     public String toString() {
-        return "ClientCredentialsAuthManager [" + "oauthClientId=" + getOauthClientId()
+        return "ThingspaceOauthManager [" + "oauthClientId=" + getOauthClientId()
                 + ", oauthClientSecret=" + getOauthClientSecret() + ", oauthToken="
                 + getOauthToken() + ", oauthScopes=" + getOauthScopes() + "]";
     }
@@ -140,7 +139,7 @@ public class ClientCredentialsAuthManager extends HeaderAuth implements ClientCr
                 additionalParameters == null ? new HashMap<String, Object>()
                 : additionalParameters;
 
-        return oAuthApi.requestTokenAsync(
+        return oAuthApi.requestTokenThingspaceOauthAsync(
             getBasicAuthForClient(),
             stringJoin(getOauthScopes(), " "),
             aparams).thenApply(token -> {
@@ -165,7 +164,7 @@ public class ClientCredentialsAuthManager extends HeaderAuth implements ClientCr
                 additionalParameters == null ? new HashMap<String, Object>()
                 : additionalParameters;
 
-        OauthToken token = oAuthApi.requestToken(
+        OauthToken token = oAuthApi.requestTokenThingspaceOauth(
             getBasicAuthForClient(),
             stringJoin(getOauthScopes(), " "),
             aparams).getResult();
@@ -326,7 +325,7 @@ public class ClientCredentialsAuthManager extends HeaderAuth implements ClientCr
             return null;
         }
 
-        return "ClientCredentialsAuth - " + errorMessage;
+        return "ThingspaceOauth - " + errorMessage;
      }
 
 }
