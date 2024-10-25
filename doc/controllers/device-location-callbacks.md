@@ -10,9 +10,66 @@ DeviceLocationCallbacksController deviceLocationCallbacksController = client.get
 
 ## Methods
 
+* [Cancel Async Report](../../doc/controllers/device-location-callbacks.md#cancel-async-report)
 * [List Registered Callbacks](../../doc/controllers/device-location-callbacks.md#list-registered-callbacks)
 * [Register Callback](../../doc/controllers/device-location-callbacks.md#register-callback)
 * [Deregister Callback](../../doc/controllers/device-location-callbacks.md#deregister-callback)
+
+
+# Cancel Async Report
+
+Cancel an asynchronous report request.
+
+```java
+CompletableFuture<ApiResponse<TransactionID>> cancelAsyncReportAsync(
+    final String accountName,
+    final String txid)
+```
+
+## Parameters
+
+| Parameter | Type | Tags | Description |
+|  --- | --- | --- | --- |
+| `accountName` | `String` | Query, Required | Account identifier in "##########-#####". |
+| `txid` | `String` | Template, Required | The `transactionId` value. |
+
+## Server
+
+`Server.DEVICE_LOCATION`
+
+## Response Type
+
+[`TransactionID`](../../doc/models/transaction-id.md)
+
+## Example Usage
+
+```java
+String accountName = "0000123456-00001";
+String txid = "2c90bd28-eeee-ffff-gggg-7e3bd4fbff33";
+
+deviceLocationCallbacksController.cancelAsyncReportAsync(accountName, txid).thenAccept(result -> {
+    // TODO success callback handler
+    System.out.println(result);
+}).exceptionally(exception -> {
+    // TODO failure callback handler
+    exception.printStackTrace();
+    return null;
+});
+```
+
+## Example Response *(as JSON)*
+
+```json
+{
+  "txid": "2c90bd28-eeee-ffff-gggg-7e3bd4fbff33"
+}
+```
+
+## Errors
+
+| HTTP Status Code | Error Description | Exception Class |
+|  --- | --- | --- |
+| Default | Unexpected error. | [`DeviceLocationResultException`](../../doc/models/device-location-result-exception.md) |
 
 
 # List Registered Callbacks
@@ -21,14 +78,14 @@ Returns a list of all registered callback URLs for the account.
 
 ```java
 CompletableFuture<ApiResponse<List<DeviceLocationCallback>>> listRegisteredCallbacksAsync(
-    final String account)
+    final String accountName)
 ```
 
 ## Parameters
 
 | Parameter | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `account` | `String` | Template, Required | Account number. |
+| `accountName` | `String` | Template, Required | Account number. |
 
 ## Server
 
@@ -41,9 +98,9 @@ CompletableFuture<ApiResponse<List<DeviceLocationCallback>>> listRegisteredCallb
 ## Example Usage
 
 ```java
-String account = "0252012345-00001";
+String accountName = "0000123456-00001";
 
-deviceLocationCallbacksController.listRegisteredCallbacksAsync(account).thenAccept(result -> {
+deviceLocationCallbacksController.listRegisteredCallbacksAsync(accountName).thenAccept(result -> {
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
@@ -81,7 +138,7 @@ Provide a URL to receive messages from a ThingSpace callback service.
 
 ```java
 CompletableFuture<ApiResponse<CallbackRegistrationResult>> registerCallbackAsync(
-    final String account,
+    final String accountName,
     final DeviceLocationCallback body)
 ```
 
@@ -89,7 +146,7 @@ CompletableFuture<ApiResponse<CallbackRegistrationResult>> registerCallbackAsync
 
 | Parameter | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `account` | `String` | Template, Required | Account number. |
+| `accountName` | `String` | Template, Required | Account number. |
 | `body` | [`DeviceLocationCallback`](../../doc/models/device-location-callback.md) | Body, Required | Request to register a callback. |
 
 ## Server
@@ -103,14 +160,14 @@ CompletableFuture<ApiResponse<CallbackRegistrationResult>> registerCallbackAsync
 ## Example Usage
 
 ```java
-String account = "0252012345-00001";
+String accountName = "0000123456-00001";
 DeviceLocationCallback body = new DeviceLocationCallback.Builder(
     CallbackServiceNameEnum.LOCATION,
     "http://10.120.102.183:50559/CallbackListener/LocationServiceMessages.asmx"
 )
 .build();
 
-deviceLocationCallbacksController.registerCallbackAsync(account, body).thenAccept(result -> {
+deviceLocationCallbacksController.registerCallbackAsync(accountName, body).thenAccept(result -> {
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
@@ -142,7 +199,7 @@ Deregister a URL to stop receiving callback messages.
 
 ```java
 CompletableFuture<ApiResponse<DeviceLocationSuccessResult>> deregisterCallbackAsync(
-    final String account,
+    final String accountName,
     final CallbackServiceNameEnum service)
 ```
 
@@ -150,7 +207,7 @@ CompletableFuture<ApiResponse<DeviceLocationSuccessResult>> deregisterCallbackAs
 
 | Parameter | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `account` | `String` | Template, Required | Account number. |
+| `accountName` | `String` | Template, Required | Account number. |
 | `service` | [`CallbackServiceNameEnum`](../../doc/models/callback-service-name-enum.md) | Template, Required | Callback service name. |
 
 ## Server
@@ -164,10 +221,10 @@ CompletableFuture<ApiResponse<DeviceLocationSuccessResult>> deregisterCallbackAs
 ## Example Usage
 
 ```java
-String account = "0252012345-00001";
+String accountName = "0000123456-00001";
 CallbackServiceNameEnum service = CallbackServiceNameEnum.LOCATION;
 
-deviceLocationCallbacksController.deregisterCallbackAsync(account, service).thenAccept(result -> {
+deviceLocationCallbacksController.deregisterCallbackAsync(accountName, service).thenAccept(result -> {
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {

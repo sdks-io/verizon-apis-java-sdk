@@ -81,4 +81,9 @@ public interface ThingspaceOauthCredentials {
      */
     boolean isTokenExpired();
 
+    /**
+     * Has the OAuth token expired?.
+     * @return True if expired
+     */
+    boolean isTokenExpired(OauthToken oauthToken);
 }

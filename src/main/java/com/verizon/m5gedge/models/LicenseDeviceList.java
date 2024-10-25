@@ -16,7 +16,7 @@ import java.util.List;
  */
 public class LicenseDeviceList {
     private List<LicenseDeviceId> deviceIds;
-    private String ipAddress;
+    private String ipaddress;
 
     /**
      * Default constructor.
@@ -27,13 +27,13 @@ public class LicenseDeviceList {
     /**
      * Initialization constructor.
      * @param  deviceIds  List of LicenseDeviceId value for deviceIds.
-     * @param  ipAddress  String value for ipAddress.
+     * @param  ipaddress  String value for ipaddress.
      */
     public LicenseDeviceList(
             List<LicenseDeviceId> deviceIds,
-            String ipAddress) {
+            String ipaddress) {
         this.deviceIds = deviceIds;
-        this.ipAddress = ipAddress;
+        this.ipaddress = ipaddress;
     }
 
     /**
@@ -58,22 +58,22 @@ public class LicenseDeviceList {
     }
 
     /**
-     * Getter for IpAddress.
+     * Getter for Ipaddress.
      * @return Returns the String
      */
     @JsonGetter("ipAddress")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getIpAddress() {
-        return ipAddress;
+    public String getIpaddress() {
+        return ipaddress;
     }
 
     /**
-     * Setter for IpAddress.
-     * @param ipAddress Value for String
+     * Setter for Ipaddress.
+     * @param ipaddress Value for String
      */
     @JsonSetter("ipAddress")
-    public void setIpAddress(String ipAddress) {
-        this.ipAddress = ipAddress;
+    public void setIpaddress(String ipaddress) {
+        this.ipaddress = ipaddress;
     }
 
     /**
@@ -82,7 +82,7 @@ public class LicenseDeviceList {
      */
     @Override
     public String toString() {
-        return "LicenseDeviceList [" + "deviceIds=" + deviceIds + ", ipAddress=" + ipAddress + "]";
+        return "LicenseDeviceList [" + "deviceIds=" + deviceIds + ", ipaddress=" + ipaddress + "]";
     }
 
     /**
@@ -93,7 +93,7 @@ public class LicenseDeviceList {
     public Builder toBuilder() {
         Builder builder = new Builder()
                 .deviceIds(getDeviceIds())
-                .ipAddress(getIpAddress());
+                .ipaddress(getIpaddress());
         return builder;
     }
 
@@ -102,7 +102,7 @@ public class LicenseDeviceList {
      */
     public static class Builder {
         private List<LicenseDeviceId> deviceIds;
-        private String ipAddress;
+        private String ipaddress;
 
 
 
@@ -117,12 +117,12 @@ public class LicenseDeviceList {
         }
 
         /**
-         * Setter for ipAddress.
-         * @param  ipAddress  String value for ipAddress.
+         * Setter for ipaddress.
+         * @param  ipaddress  String value for ipaddress.
          * @return Builder
          */
-        public Builder ipAddress(String ipAddress) {
-            this.ipAddress = ipAddress;
+        public Builder ipaddress(String ipaddress) {
+            this.ipaddress = ipaddress;
             return this;
         }
 
@@ -131,7 +131,7 @@ public class LicenseDeviceList {
          * @return {@link LicenseDeviceList}
          */
         public LicenseDeviceList build() {
-            return new LicenseDeviceList(deviceIds, ipAddress);
+            return new LicenseDeviceList(deviceIds, ipaddress);
         }
     }
 }

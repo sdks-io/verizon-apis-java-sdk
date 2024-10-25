@@ -12,9 +12,155 @@ ExclusionsController exclusionsController = client.getExclusionsController();
 
 ## Methods
 
+* [Devices Location Get Consent Async](../../doc/controllers/exclusions.md#devices-location-get-consent-async)
+* [Devices Location Give Consent Async](../../doc/controllers/exclusions.md#devices-location-give-consent-async)
+* [Devices Location Update Consent](../../doc/controllers/exclusions.md#devices-location-update-consent)
 * [Exclude Devices](../../doc/controllers/exclusions.md#exclude-devices)
 * [Remove Devices From Exclusion List](../../doc/controllers/exclusions.md#remove-devices-from-exclusion-list)
 * [List Excluded Devices](../../doc/controllers/exclusions.md#list-excluded-devices)
+
+
+# Devices Location Get Consent Async
+
+Get the consent settings for the entire account or device list in an account.
+
+```java
+CompletableFuture<ApiResponse<GetAccountDeviceConsent>> devicesLocationGetConsentAsyncAsync(
+    final String accountName,
+    final String deviceId)
+```
+
+## Parameters
+
+| Parameter | Type | Tags | Description |
+|  --- | --- | --- | --- |
+| `accountName` | `String` | Query, Required | The numeric name of the account. |
+| `deviceId` | `String` | Query, Optional | The IMEI of the device being queried |
+
+## Server
+
+`Server.DEVICE_LOCATION`
+
+## Response Type
+
+[`GetAccountDeviceConsent`](../../doc/models/get-account-device-consent.md)
+
+## Example Usage
+
+```java
+String accountName = "0000123456-00001";
+String deviceId = "900000000000009";
+
+exclusionsController.devicesLocationGetConsentAsyncAsync(accountName, deviceId).thenAccept(result -> {
+    // TODO success callback handler
+    System.out.println(result);
+}).exceptionally(exception -> {
+    // TODO failure callback handler
+    exception.printStackTrace();
+    return null;
+});
+```
+
+## Errors
+
+| HTTP Status Code | Error Description | Exception Class |
+|  --- | --- | --- |
+| Default | Unexpected error. | [`DeviceLocationResultException`](../../doc/models/device-location-result-exception.md) |
+
+
+# Devices Location Give Consent Async
+
+Create a consent record to use location services as an asynchronous request.
+
+```java
+CompletableFuture<ApiResponse<ConsentTransactionID>> devicesLocationGiveConsentAsyncAsync(
+    final AccountConsentCreate body)
+```
+
+## Parameters
+
+| Parameter | Type | Tags | Description |
+|  --- | --- | --- | --- |
+| `body` | [`AccountConsentCreate`](../../doc/models/account-consent-create.md) | Body, Optional | Account details to create a consent record. |
+
+## Server
+
+`Server.DEVICE_LOCATION`
+
+## Response Type
+
+[`ConsentTransactionID`](../../doc/models/consent-transaction-id.md)
+
+## Example Usage
+
+```java
+AccountConsentCreate body = new AccountConsentCreate.Builder()
+    .accountName("0000123456-00001")
+    .build();
+
+exclusionsController.devicesLocationGiveConsentAsyncAsync(body).thenAccept(result -> {
+    // TODO success callback handler
+    System.out.println(result);
+}).exceptionally(exception -> {
+    // TODO failure callback handler
+    exception.printStackTrace();
+    return null;
+});
+```
+
+## Errors
+
+| HTTP Status Code | Error Description | Exception Class |
+|  --- | --- | --- |
+| Default | Unexpected error. | [`DeviceLocationResultException`](../../doc/models/device-location-result-exception.md) |
+
+
+# Devices Location Update Consent
+
+Update the location services consent record for an entire account.
+
+```java
+CompletableFuture<ApiResponse<ConsentTransactionID>> devicesLocationUpdateConsentAsync(
+    final AccountConsentUpdate body)
+```
+
+## Parameters
+
+| Parameter | Type | Tags | Description |
+|  --- | --- | --- | --- |
+| `body` | [`AccountConsentUpdate`](../../doc/models/account-consent-update.md) | Body, Optional | Account details to update a consent record. |
+
+## Server
+
+`Server.DEVICE_LOCATION`
+
+## Response Type
+
+[`ConsentTransactionID`](../../doc/models/consent-transaction-id.md)
+
+## Example Usage
+
+```java
+AccountConsentUpdate body = new AccountConsentUpdate.Builder()
+    .accountName("0000123456-00001")
+    .allDeviceConsent(0)
+    .build();
+
+exclusionsController.devicesLocationUpdateConsentAsync(body).thenAccept(result -> {
+    // TODO success callback handler
+    System.out.println(result);
+}).exceptionally(exception -> {
+    // TODO failure callback handler
+    exception.printStackTrace();
+    return null;
+});
+```
+
+## Errors
+
+| HTTP Status Code | Error Description | Exception Class |
+|  --- | --- | --- |
+| Default | Unexpected error. | [`DeviceLocationResultException`](../../doc/models/device-location-result-exception.md) |
 
 
 # Exclude Devices
@@ -134,7 +280,7 @@ This consents endpoint retrieves a list of excluded devices in an account.
 
 ```java
 CompletableFuture<ApiResponse<DevicesConsentResult>> listExcludedDevicesAsync(
-    final String account,
+    final String accountName,
     final String startIndex)
 ```
 
@@ -142,7 +288,7 @@ CompletableFuture<ApiResponse<DevicesConsentResult>> listExcludedDevicesAsync(
 
 | Parameter | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `account` | `String` | Template, Required | Account identifier in "##########-#####". |
+| `accountName` | `String` | Template, Required | Account identifier in "##########-#####". |
 | `startIndex` | `String` | Template, Required | Zero-based number of the first record to return. |
 
 ## Server
@@ -156,10 +302,10 @@ CompletableFuture<ApiResponse<DevicesConsentResult>> listExcludedDevicesAsync(
 ## Example Usage
 
 ```java
-String account = "0252012345-00001";
+String accountName = "0252012345-00001";
 String startIndex = "0";
 
-exclusionsController.listExcludedDevicesAsync(account, startIndex).thenAccept(result -> {
+exclusionsController.listExcludedDevicesAsync(accountName, startIndex).thenAccept(result -> {
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {

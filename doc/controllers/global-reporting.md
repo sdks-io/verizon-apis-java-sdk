@@ -11,12 +11,12 @@ GlobalReportingController globalReportingController = client.getGlobalReportingC
 ## Methods
 
 * [Deviceprovhistory Using POST](../../doc/controllers/global-reporting.md#deviceprovhistory-using-post)
-* [Requeststatususing GET](../../doc/controllers/global-reporting.md#requeststatususing-get)
+* [Retrieve Global List](../../doc/controllers/global-reporting.md#retrieve-global-list)
 
 
 # Deviceprovhistory Using POST
 
-Retreive the provisioning history of a specific device or devices.
+Retrieve the provisioning history of a specific device or devices.
 
 ```java
 CompletableFuture<ApiResponse<ESIMRequestResponse>> deviceprovhistoryUsingPOSTAsync(
@@ -77,22 +77,20 @@ globalReportingController.deviceprovhistoryUsingPOSTAsync(body).thenAccept(resul
 | Default | Error response | [`ESIMRestErrorResponseException`](../../doc/models/esim-rest-error-response-exception.md) |
 
 
-# Requeststatususing GET
+# Retrieve Global List
 
-Get the status of a request made with the Device Actions.
+Retrieve a list of all devices associated with an account.
 
 ```java
-CompletableFuture<ApiResponse<ESIMStatusResponse>> requeststatususingGETAsync(
-    final String accountname,
-    final String requestID)
+CompletableFuture<ApiResponse<ESIMRequestResponse>> retrieveGlobalListAsync(
+    final ESIMGlobalDeviceList body)
 ```
 
 ## Parameters
 
 | Parameter | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `accountname` | `String` | Template, Required | - |
-| `requestID` | `String` | Template, Required | - |
+| `body` | [`ESIMGlobalDeviceList`](../../doc/models/esim-global-device-list.md) | Body, Required | Device List |
 
 ## Server
 
@@ -100,15 +98,17 @@ CompletableFuture<ApiResponse<ESIMStatusResponse>> requeststatususingGETAsync(
 
 ## Response Type
 
-[`ESIMStatusResponse`](../../doc/models/esim-status-response.md)
+[`ESIMRequestResponse`](../../doc/models/esim-request-response.md)
 
 ## Example Usage
 
 ```java
-String accountname = "0000123456-00001";
-String requestID = "86c83330-4bf5-4235-9c4e-a83f93aeae4c";
+ESIMGlobalDeviceList body = new ESIMGlobalDeviceList.Builder()
+    .accountName("0000123456-00001")
+    .carrierNameFilter("VerizonWireless")
+    .build();
 
-globalReportingController.requeststatususingGETAsync(accountname, requestID).thenAccept(result -> {
+globalReportingController.retrieveGlobalListAsync(body).thenAccept(result -> {
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
@@ -116,24 +116,6 @@ globalReportingController.requeststatususingGETAsync(accountname, requestID).the
     exception.printStackTrace();
     return null;
 });
-```
-
-## Example Response *(as JSON)*
-
-```json
-{
-  "requestId": "d1f08526-5443-4054-9a29-4456490ea9f8",
-  "status": "Success",
-  "subrequests": [
-    {
-      "id": "32-digit EID",
-      "kind": "eid"
-    },
-    {
-      "status": "success"
-    }
-  ]
-}
 ```
 
 ## Errors

@@ -7,6 +7,7 @@
 package com.verizon.m5gedge.controllers;
 
 import com.verizon.m5gedge.exceptions.ApiException;
+import com.verizon.m5gedge.http.client.HttpCallback;
 import com.verizon.m5gedge.http.response.ApiResponse;
 import io.apimatic.core.ErrorCase;
 import io.apimatic.core.GlobalConfiguration;
@@ -30,6 +31,13 @@ public abstract class BaseController {
         this.globalConfig = globalConfig;
     }
 
+    /**
+     * Get httpCallback associated with this controller.
+     * @return HttpCallback
+     */
+    public HttpCallback getHttpCallback() {
+        return (HttpCallback) globalConfig.getHttpCallback();
+    }
     
     /**
      * Shared instance of the Http client.

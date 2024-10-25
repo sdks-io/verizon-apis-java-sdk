@@ -20,14 +20,14 @@ This subscriptions endpoint retrieves an account's current location subscription
 
 ```java
 CompletableFuture<ApiResponse<DeviceLocationSubscription>> getLocationServiceSubscriptionStatusAsync(
-    final String account)
+    final String accountName)
 ```
 
 ## Parameters
 
 | Parameter | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `account` | `String` | Template, Required | Account identifier in "##########-#####". |
+| `accountName` | `String` | Template, Required | Account identifier in "##########-#####". |
 
 ## Server
 
@@ -40,9 +40,9 @@ CompletableFuture<ApiResponse<DeviceLocationSubscription>> getLocationServiceSub
 ## Example Usage
 
 ```java
-String account = "0000123456-00001";
+String accountName = "0000123456-00001";
 
-devicesLocationSubscriptionsController.getLocationServiceSubscriptionStatusAsync(account).thenAccept(result -> {
+devicesLocationSubscriptionsController.getLocationServiceSubscriptionStatusAsync(accountName).thenAccept(result -> {
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {

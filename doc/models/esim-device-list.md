@@ -9,7 +9,7 @@
 
 | Name | Type | Tags | Description | Getter | Setter |
 |  --- | --- | --- | --- | --- | --- |
-| `DeviceIds` | [`List<ESIMDeviceId>`](../../doc/models/esim-device-id.md) | Optional | **Constraints**: *Maximum Items*: `100` | List<ESIMDeviceId> getDeviceIds() | setDeviceIds(List<ESIMDeviceId> deviceIds) |
+| `DeviceIds` | [`List<DeviceId2>`](../../doc/models/device-id-2.md) | Optional | **Constraints**: *Maximum Items*: `100` | List<DeviceId2> getDeviceIds() | setDeviceIds(List<DeviceId2> deviceIds) |
 
 ## Example (as JSON)
 

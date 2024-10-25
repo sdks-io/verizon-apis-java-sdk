@@ -20,7 +20,7 @@ Device that exist in Verizon Mobile Device Management (MDM).
 | `DeviceIds` | [`List<DeviceId>`](../../doc/models/device-id.md) | Optional | All identifiers for the device. | List<DeviceId> getDeviceIds() | setDeviceIds(List<DeviceId> deviceIds) |
 | `ExtendedAttributes` | [`List<CustomFields>`](../../doc/models/custom-fields.md) | Optional | Any extended attributes for the device, as Key and Value pairs. The pairs listed below are returned as part of the response for a single device, but are not included if the request was for information about multiple devices. | List<CustomFields> getExtendedAttributes() | setExtendedAttributes(List<CustomFields> extendedAttributes) |
 | `GroupNames` | `List<String>` | Optional | The device groups that the device belongs to. | List<String> getGroupNames() | setGroupNames(List<String> groupNames) |
-| `IpAddress` | `String` | Optional | The IP address of the device. | String getIpAddress() | setIpAddress(String ipAddress) |
+| `Ipaddress` | `String` | Optional | The IP address of the device. | String getIpaddress() | setIpaddress(String ipaddress) |
 | `LastActivationBy` | `String` | Optional | The user who last activated the device. | String getLastActivationBy() | setLastActivationBy(String lastActivationBy) |
 | `LastActivationDate` | `String` | Optional | The date and time that the device was last activated. | String getLastActivationDate() | setLastActivationDate(String lastActivationDate) |
 | `LastConnectionDate` | `String` | Optional | The most recent connection date and time. | String getLastConnectionDate() | setLastConnectionDate(String lastConnectionDate) |

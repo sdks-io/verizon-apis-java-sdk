@@ -164,71 +164,6 @@ public final class DevicesLocationsController extends BaseController {
     }
 
     /**
-     * Cancel a queued or unfinished device location request.
-     * @param  accountName  Required parameter: Account identifier in "##########-#####".
-     * @param  txid  Required parameter: Transaction ID of the request to cancel, from the
-     *         synchronous response to the original request.
-     * @return    Returns the TransactionID wrapped in ApiResponse response from the API call
-     * @throws    ApiException    Represents error response from the server.
-     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
-     */
-    public ApiResponse<TransactionID> cancelDeviceLocationRequest(
-            final String accountName,
-            final String txid) throws ApiException, IOException {
-        return prepareCancelDeviceLocationRequestRequest(accountName, txid).execute();
-    }
-
-    /**
-     * Cancel a queued or unfinished device location request.
-     * @param  accountName  Required parameter: Account identifier in "##########-#####".
-     * @param  txid  Required parameter: Transaction ID of the request to cancel, from the
-     *         synchronous response to the original request.
-     * @return    Returns the TransactionID wrapped in ApiResponse response from the API call
-     */
-    public CompletableFuture<ApiResponse<TransactionID>> cancelDeviceLocationRequestAsync(
-            final String accountName,
-            final String txid) {
-        try { 
-            return prepareCancelDeviceLocationRequestRequest(accountName, txid).executeAsync(); 
-        } catch (Exception e) {  
-            throw new CompletionException(e); 
-        }
-    }
-
-    /**
-     * Builds the ApiCall object for cancelDeviceLocationRequest.
-     */
-    private ApiCall<ApiResponse<TransactionID>, ApiException> prepareCancelDeviceLocationRequestRequest(
-            final String accountName,
-            final String txid) throws IOException {
-        return new ApiCall.Builder<ApiResponse<TransactionID>, ApiException>()
-                .globalConfig(getGlobalConfiguration())
-                .requestBuilder(requestBuilder -> requestBuilder
-                        .server(Server.DEVICE_LOCATION.value())
-                        .path("/devicelocations/{txid}")
-                        .queryParam(param -> param.key("accountName")
-                                .value(accountName))
-                        .templateParam(param -> param.key("txid").value(txid)
-                                .shouldEncode(true))
-                        .headerParam(param -> param.key("accept").value("application/json"))
-                        .withAuth(auth -> auth
-                                .and(andAuth -> andAuth
-                                        .add("thingspace_oauth")
-                                        .add("VZ-M2M-Token")))
-                        .httpMethod(HttpMethod.DELETE))
-                .responseHandler(responseHandler -> responseHandler
-                        .responseClassType(ResponseClassType.API_RESPONSE)
-                        .apiResponseDeserializer(
-                                response -> ApiHelper.deserialize(response, TransactionID.class))
-                        .nullify404(false)
-                        .localErrorCase(ErrorCase.DEFAULT,
-                                 ErrorCase.setReason("Unexpected error.",
-                                (reason, context) -> new DeviceLocationResultException(reason, context)))
-                        .globalErrorCase(GLOBAL_ERROR_CASES))
-                .build();
-    }
-
-    /**
      * Request an asynchronous device location report.
      * @param  body  Required parameter: Request for device location report.
      * @return    Returns the AsynchronousLocationRequestResult wrapped in ApiResponse response from the API call
@@ -288,7 +223,7 @@ public final class DevicesLocationsController extends BaseController {
 
     /**
      * Download a completed asynchronous device location report.
-     * @param  account  Required parameter: Account identifier in "##########-#####".
+     * @param  accountName  Required parameter: Account identifier in "##########-#####".
      * @param  txid  Required parameter: Transaction ID from POST /locationreports response.
      * @param  startindex  Required parameter: Zero-based number of the first record to return.
      * @return    Returns the LocationReport wrapped in ApiResponse response from the API call
@@ -296,25 +231,25 @@ public final class DevicesLocationsController extends BaseController {
      * @throws    IOException    Signals that an I/O exception of some sort has occurred.
      */
     public ApiResponse<LocationReport> retrieveLocationReport(
-            final String account,
+            final String accountName,
             final String txid,
             final int startindex) throws ApiException, IOException {
-        return prepareRetrieveLocationReportRequest(account, txid, startindex).execute();
+        return prepareRetrieveLocationReportRequest(accountName, txid, startindex).execute();
     }
 
     /**
      * Download a completed asynchronous device location report.
-     * @param  account  Required parameter: Account identifier in "##########-#####".
+     * @param  accountName  Required parameter: Account identifier in "##########-#####".
      * @param  txid  Required parameter: Transaction ID from POST /locationreports response.
      * @param  startindex  Required parameter: Zero-based number of the first record to return.
      * @return    Returns the LocationReport wrapped in ApiResponse response from the API call
      */
     public CompletableFuture<ApiResponse<LocationReport>> retrieveLocationReportAsync(
-            final String account,
+            final String accountName,
             final String txid,
             final int startindex) {
         try { 
-            return prepareRetrieveLocationReportRequest(account, txid, startindex).executeAsync(); 
+            return prepareRetrieveLocationReportRequest(accountName, txid, startindex).executeAsync(); 
         } catch (Exception e) {  
             throw new CompletionException(e); 
         }
@@ -324,15 +259,15 @@ public final class DevicesLocationsController extends BaseController {
      * Builds the ApiCall object for retrieveLocationReport.
      */
     private ApiCall<ApiResponse<LocationReport>, ApiException> prepareRetrieveLocationReportRequest(
-            final String account,
+            final String accountName,
             final String txid,
             final int startindex) throws IOException {
         return new ApiCall.Builder<ApiResponse<LocationReport>, ApiException>()
                 .globalConfig(getGlobalConfiguration())
                 .requestBuilder(requestBuilder -> requestBuilder
                         .server(Server.DEVICE_LOCATION.value())
-                        .path("/locationreports/{account}/report/{txid}/index/{startindex}")
-                        .templateParam(param -> param.key("account").value(account)
+                        .path("/locationreports/{accountName}/report/{txid}/index/{startindex}")
+                        .templateParam(param -> param.key("accountName").value(accountName)
                                 .shouldEncode(true))
                         .templateParam(param -> param.key("txid").value(txid)
                                 .shouldEncode(true))
@@ -358,29 +293,29 @@ public final class DevicesLocationsController extends BaseController {
 
     /**
      * Returns the current status of a requested device location report.
-     * @param  account  Required parameter: Account identifier in "##########-#####".
+     * @param  accountName  Required parameter: Account identifier in "##########-#####".
      * @param  txid  Required parameter: Transaction ID of the report.
      * @return    Returns the LocationReportStatus wrapped in ApiResponse response from the API call
      * @throws    ApiException    Represents error response from the server.
      * @throws    IOException    Signals that an I/O exception of some sort has occurred.
      */
     public ApiResponse<LocationReportStatus> getLocationReportStatus(
-            final String account,
+            final String accountName,
             final String txid) throws ApiException, IOException {
-        return prepareGetLocationReportStatusRequest(account, txid).execute();
+        return prepareGetLocationReportStatusRequest(accountName, txid).execute();
     }
 
     /**
      * Returns the current status of a requested device location report.
-     * @param  account  Required parameter: Account identifier in "##########-#####".
+     * @param  accountName  Required parameter: Account identifier in "##########-#####".
      * @param  txid  Required parameter: Transaction ID of the report.
      * @return    Returns the LocationReportStatus wrapped in ApiResponse response from the API call
      */
     public CompletableFuture<ApiResponse<LocationReportStatus>> getLocationReportStatusAsync(
-            final String account,
+            final String accountName,
             final String txid) {
         try { 
-            return prepareGetLocationReportStatusRequest(account, txid).executeAsync(); 
+            return prepareGetLocationReportStatusRequest(accountName, txid).executeAsync(); 
         } catch (Exception e) {  
             throw new CompletionException(e); 
         }
@@ -390,14 +325,14 @@ public final class DevicesLocationsController extends BaseController {
      * Builds the ApiCall object for getLocationReportStatus.
      */
     private ApiCall<ApiResponse<LocationReportStatus>, ApiException> prepareGetLocationReportStatusRequest(
-            final String account,
+            final String accountName,
             final String txid) throws IOException {
         return new ApiCall.Builder<ApiResponse<LocationReportStatus>, ApiException>()
                 .globalConfig(getGlobalConfiguration())
                 .requestBuilder(requestBuilder -> requestBuilder
                         .server(Server.DEVICE_LOCATION.value())
-                        .path("/locationreports/{account}/report/{txid}/status")
-                        .templateParam(param -> param.key("account").value(account)
+                        .path("/locationreports/{accountName}/report/{txid}/status")
+                        .templateParam(param -> param.key("accountName").value(accountName)
                                 .shouldEncode(true))
                         .templateParam(param -> param.key("txid").value(txid)
                                 .shouldEncode(true))
@@ -421,29 +356,29 @@ public final class DevicesLocationsController extends BaseController {
 
     /**
      * Cancel a queued device location report.
-     * @param  account  Required parameter: Account identifier in "##########-#####".
+     * @param  accountName  Required parameter: Account identifier in "##########-#####".
      * @param  txid  Required parameter: Transaction ID of the report to cancel.
      * @return    Returns the TransactionID wrapped in ApiResponse response from the API call
      * @throws    ApiException    Represents error response from the server.
      * @throws    IOException    Signals that an I/O exception of some sort has occurred.
      */
     public ApiResponse<TransactionID> cancelQueuedLocationReportGeneration(
-            final String account,
+            final String accountName,
             final String txid) throws ApiException, IOException {
-        return prepareCancelQueuedLocationReportGenerationRequest(account, txid).execute();
+        return prepareCancelQueuedLocationReportGenerationRequest(accountName, txid).execute();
     }
 
     /**
      * Cancel a queued device location report.
-     * @param  account  Required parameter: Account identifier in "##########-#####".
+     * @param  accountName  Required parameter: Account identifier in "##########-#####".
      * @param  txid  Required parameter: Transaction ID of the report to cancel.
      * @return    Returns the TransactionID wrapped in ApiResponse response from the API call
      */
     public CompletableFuture<ApiResponse<TransactionID>> cancelQueuedLocationReportGenerationAsync(
-            final String account,
+            final String accountName,
             final String txid) {
         try { 
-            return prepareCancelQueuedLocationReportGenerationRequest(account, txid).executeAsync(); 
+            return prepareCancelQueuedLocationReportGenerationRequest(accountName, txid).executeAsync(); 
         } catch (Exception e) {  
             throw new CompletionException(e); 
         }
@@ -453,14 +388,14 @@ public final class DevicesLocationsController extends BaseController {
      * Builds the ApiCall object for cancelQueuedLocationReportGeneration.
      */
     private ApiCall<ApiResponse<TransactionID>, ApiException> prepareCancelQueuedLocationReportGenerationRequest(
-            final String account,
+            final String accountName,
             final String txid) throws IOException {
         return new ApiCall.Builder<ApiResponse<TransactionID>, ApiException>()
                 .globalConfig(getGlobalConfiguration())
                 .requestBuilder(requestBuilder -> requestBuilder
                         .server(Server.DEVICE_LOCATION.value())
-                        .path("/locationreports/{account}/report/{txid}")
-                        .templateParam(param -> param.key("account").value(account)
+                        .path("/locationreports/{accountName}/report/{txid}")
+                        .templateParam(param -> param.key("accountName").value(accountName)
                                 .shouldEncode(true))
                         .templateParam(param -> param.key("txid").value(txid)
                                 .shouldEncode(true))

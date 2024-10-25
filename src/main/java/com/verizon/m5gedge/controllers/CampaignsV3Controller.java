@@ -43,29 +43,29 @@ public final class CampaignsV3Controller extends BaseController {
 
     /**
      * This endpoint allows a user to schedule a firmware upgrade for a list of devices.
-     * @param  acc  Required parameter: Account identifier.
+     * @param  accountName  Required parameter: Account identifier.
      * @param  body  Required parameter: Firmware upgrade information.
      * @return    Returns the FirmwareCampaign wrapped in ApiResponse response from the API call
      * @throws    ApiException    Represents error response from the server.
      * @throws    IOException    Signals that an I/O exception of some sort has occurred.
      */
     public ApiResponse<FirmwareCampaign> scheduleCampaignFirmwareUpgrade(
-            final String acc,
+            final String accountName,
             final CampaignFirmwareUpgrade body) throws ApiException, IOException {
-        return prepareScheduleCampaignFirmwareUpgradeRequest(acc, body).execute();
+        return prepareScheduleCampaignFirmwareUpgradeRequest(accountName, body).execute();
     }
 
     /**
      * This endpoint allows a user to schedule a firmware upgrade for a list of devices.
-     * @param  acc  Required parameter: Account identifier.
+     * @param  accountName  Required parameter: Account identifier.
      * @param  body  Required parameter: Firmware upgrade information.
      * @return    Returns the FirmwareCampaign wrapped in ApiResponse response from the API call
      */
     public CompletableFuture<ApiResponse<FirmwareCampaign>> scheduleCampaignFirmwareUpgradeAsync(
-            final String acc,
+            final String accountName,
             final CampaignFirmwareUpgrade body) {
         try { 
-            return prepareScheduleCampaignFirmwareUpgradeRequest(acc, body).executeAsync(); 
+            return prepareScheduleCampaignFirmwareUpgradeRequest(accountName, body).executeAsync(); 
         } catch (Exception e) {  
             throw new CompletionException(e); 
         }
@@ -75,16 +75,16 @@ public final class CampaignsV3Controller extends BaseController {
      * Builds the ApiCall object for scheduleCampaignFirmwareUpgrade.
      */
     private ApiCall<ApiResponse<FirmwareCampaign>, ApiException> prepareScheduleCampaignFirmwareUpgradeRequest(
-            final String acc,
+            final String accountName,
             final CampaignFirmwareUpgrade body) throws JsonProcessingException, IOException {
         return new ApiCall.Builder<ApiResponse<FirmwareCampaign>, ApiException>()
                 .globalConfig(getGlobalConfiguration())
                 .requestBuilder(requestBuilder -> requestBuilder
                         .server(Server.SOFTWARE_MANAGEMENT_V3.value())
-                        .path("/campaigns/firmware/{acc}")
+                        .path("/campaigns/firmware/{accountName}")
                         .bodyParam(param -> param.value(body))
                         .bodySerializer(() ->  ApiHelper.serialize(body))
-                        .templateParam(param -> param.key("acc").value(acc)
+                        .templateParam(param -> param.key("accountName").value(accountName)
                                 .shouldEncode(true))
                         .headerParam(param -> param.key("Content-Type")
                                 .value("application/json").isRequired(false))
@@ -255,30 +255,30 @@ public final class CampaignsV3Controller extends BaseController {
     /**
      * This endpoint allows the user to retrieve campaign level information for a specified
      * campaign.
-     * @param  acc  Required parameter: Account identifier.
+     * @param  accountName  Required parameter: Account identifier.
      * @param  campaignId  Required parameter: Firmware upgrade identifier.
      * @return    Returns the Campaign wrapped in ApiResponse response from the API call
      * @throws    ApiException    Represents error response from the server.
      * @throws    IOException    Signals that an I/O exception of some sort has occurred.
      */
     public ApiResponse<Campaign> getCampaignInformation(
-            final String acc,
+            final String accountName,
             final String campaignId) throws ApiException, IOException {
-        return prepareGetCampaignInformationRequest(acc, campaignId).execute();
+        return prepareGetCampaignInformationRequest(accountName, campaignId).execute();
     }
 
     /**
      * This endpoint allows the user to retrieve campaign level information for a specified
      * campaign.
-     * @param  acc  Required parameter: Account identifier.
+     * @param  accountName  Required parameter: Account identifier.
      * @param  campaignId  Required parameter: Firmware upgrade identifier.
      * @return    Returns the Campaign wrapped in ApiResponse response from the API call
      */
     public CompletableFuture<ApiResponse<Campaign>> getCampaignInformationAsync(
-            final String acc,
+            final String accountName,
             final String campaignId) {
         try { 
-            return prepareGetCampaignInformationRequest(acc, campaignId).executeAsync(); 
+            return prepareGetCampaignInformationRequest(accountName, campaignId).executeAsync(); 
         } catch (Exception e) {  
             throw new CompletionException(e); 
         }
@@ -288,14 +288,14 @@ public final class CampaignsV3Controller extends BaseController {
      * Builds the ApiCall object for getCampaignInformation.
      */
     private ApiCall<ApiResponse<Campaign>, ApiException> prepareGetCampaignInformationRequest(
-            final String acc,
+            final String accountName,
             final String campaignId) throws IOException {
         return new ApiCall.Builder<ApiResponse<Campaign>, ApiException>()
                 .globalConfig(getGlobalConfiguration())
                 .requestBuilder(requestBuilder -> requestBuilder
                         .server(Server.SOFTWARE_MANAGEMENT_V3.value())
-                        .path("/campaigns/{acc}/{campaignId}")
-                        .templateParam(param -> param.key("acc").value(acc)
+                        .path("/campaigns/{accountName}/{campaignId}")
+                        .templateParam(param -> param.key("accountName").value(accountName)
                                 .shouldEncode(true))
                         .templateParam(param -> param.key("campaignId").value(campaignId)
                                 .shouldEncode(true))
@@ -320,30 +320,30 @@ public final class CampaignsV3Controller extends BaseController {
     /**
      * This endpoint allows user to cancel a firmware campaign. A firmware campaign already started
      * can not be cancelled.
-     * @param  acc  Required parameter: Account identifier.
+     * @param  accountName  Required parameter: Account identifier.
      * @param  campaignId  Required parameter: Firmware upgrade information.
      * @return    Returns the FotaV3SuccessResult wrapped in ApiResponse response from the API call
      * @throws    ApiException    Represents error response from the server.
      * @throws    IOException    Signals that an I/O exception of some sort has occurred.
      */
     public ApiResponse<FotaV3SuccessResult> cancelCampaign(
-            final String acc,
+            final String accountName,
             final String campaignId) throws ApiException, IOException {
-        return prepareCancelCampaignRequest(acc, campaignId).execute();
+        return prepareCancelCampaignRequest(accountName, campaignId).execute();
     }
 
     /**
      * This endpoint allows user to cancel a firmware campaign. A firmware campaign already started
      * can not be cancelled.
-     * @param  acc  Required parameter: Account identifier.
+     * @param  accountName  Required parameter: Account identifier.
      * @param  campaignId  Required parameter: Firmware upgrade information.
      * @return    Returns the FotaV3SuccessResult wrapped in ApiResponse response from the API call
      */
     public CompletableFuture<ApiResponse<FotaV3SuccessResult>> cancelCampaignAsync(
-            final String acc,
+            final String accountName,
             final String campaignId) {
         try { 
-            return prepareCancelCampaignRequest(acc, campaignId).executeAsync(); 
+            return prepareCancelCampaignRequest(accountName, campaignId).executeAsync(); 
         } catch (Exception e) {  
             throw new CompletionException(e); 
         }
@@ -353,14 +353,14 @@ public final class CampaignsV3Controller extends BaseController {
      * Builds the ApiCall object for cancelCampaign.
      */
     private ApiCall<ApiResponse<FotaV3SuccessResult>, ApiException> prepareCancelCampaignRequest(
-            final String acc,
+            final String accountName,
             final String campaignId) throws IOException {
         return new ApiCall.Builder<ApiResponse<FotaV3SuccessResult>, ApiException>()
                 .globalConfig(getGlobalConfiguration())
                 .requestBuilder(requestBuilder -> requestBuilder
                         .server(Server.SOFTWARE_MANAGEMENT_V3.value())
-                        .path("/campaigns/{acc}/{campaignId}")
-                        .templateParam(param -> param.key("acc").value(acc)
+                        .path("/campaigns/{accountName}/{campaignId}")
+                        .templateParam(param -> param.key("accountName").value(accountName)
                                 .shouldEncode(true))
                         .templateParam(param -> param.key("campaignId").value(campaignId)
                                 .shouldEncode(true))

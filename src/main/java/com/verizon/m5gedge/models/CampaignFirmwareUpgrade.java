@@ -28,6 +28,8 @@ public class CampaignFirmwareUpgrade {
     private LocalDate endDate;
     private List<V3TimeWindow> campaignTimeWindowList;
     private List<String> deviceList;
+    private boolean autoAssignLicenseFlag;
+    private boolean autoAddDevicesFlag;
 
     /**
      * Default constructor.
@@ -45,6 +47,8 @@ public class CampaignFirmwareUpgrade {
      * @param  startDate  LocalDate value for startDate.
      * @param  endDate  LocalDate value for endDate.
      * @param  deviceList  List of String value for deviceList.
+     * @param  autoAssignLicenseFlag  boolean value for autoAssignLicenseFlag.
+     * @param  autoAddDevicesFlag  boolean value for autoAddDevicesFlag.
      * @param  campaignName  String value for campaignName.
      * @param  campaignTimeWindowList  List of V3TimeWindow value for campaignTimeWindowList.
      */
@@ -56,6 +60,8 @@ public class CampaignFirmwareUpgrade {
             LocalDate startDate,
             LocalDate endDate,
             List<String> deviceList,
+            boolean autoAssignLicenseFlag,
+            boolean autoAddDevicesFlag,
             String campaignName,
             List<V3TimeWindow> campaignTimeWindowList) {
         this.campaignName = campaignName;
@@ -67,6 +73,8 @@ public class CampaignFirmwareUpgrade {
         this.endDate = endDate;
         this.campaignTimeWindowList = campaignTimeWindowList;
         this.deviceList = deviceList;
+        this.autoAssignLicenseFlag = autoAssignLicenseFlag;
+        this.autoAddDevicesFlag = autoAddDevicesFlag;
     }
 
     /**
@@ -256,6 +264,50 @@ public class CampaignFirmwareUpgrade {
     }
 
     /**
+     * Getter for AutoAssignLicenseFlag.
+     * This flag, when set to true, will assign a FOTA license automatically if the device does not
+     * have one already.
+     * @return Returns the boolean
+     */
+    @JsonGetter("autoAssignLicenseFlag")
+    public boolean getAutoAssignLicenseFlag() {
+        return autoAssignLicenseFlag;
+    }
+
+    /**
+     * Setter for AutoAssignLicenseFlag.
+     * This flag, when set to true, will assign a FOTA license automatically if the device does not
+     * have one already.
+     * @param autoAssignLicenseFlag Value for boolean
+     */
+    @JsonSetter("autoAssignLicenseFlag")
+    public void setAutoAssignLicenseFlag(boolean autoAssignLicenseFlag) {
+        this.autoAssignLicenseFlag = autoAssignLicenseFlag;
+    }
+
+    /**
+     * Getter for AutoAddDevicesFlag.
+     * this flag, when set to true, will automatically add a device of the same make and model to a
+     * campaign.
+     * @return Returns the boolean
+     */
+    @JsonGetter("autoAddDevicesFlag")
+    public boolean getAutoAddDevicesFlag() {
+        return autoAddDevicesFlag;
+    }
+
+    /**
+     * Setter for AutoAddDevicesFlag.
+     * this flag, when set to true, will automatically add a device of the same make and model to a
+     * campaign.
+     * @param autoAddDevicesFlag Value for boolean
+     */
+    @JsonSetter("autoAddDevicesFlag")
+    public void setAutoAddDevicesFlag(boolean autoAddDevicesFlag) {
+        this.autoAddDevicesFlag = autoAddDevicesFlag;
+    }
+
+    /**
      * Converts this CampaignFirmwareUpgrade into string format.
      * @return String representation of this class
      */
@@ -264,8 +316,9 @@ public class CampaignFirmwareUpgrade {
         return "CampaignFirmwareUpgrade [" + "firmwareName=" + firmwareName + ", firmwareFrom="
                 + firmwareFrom + ", firmwareTo=" + firmwareTo + ", protocol=" + protocol
                 + ", startDate=" + startDate + ", endDate=" + endDate + ", deviceList=" + deviceList
-                + ", campaignName=" + campaignName + ", campaignTimeWindowList="
-                + campaignTimeWindowList + "]";
+                + ", autoAssignLicenseFlag=" + autoAssignLicenseFlag + ", autoAddDevicesFlag="
+                + autoAddDevicesFlag + ", campaignName=" + campaignName
+                + ", campaignTimeWindowList=" + campaignTimeWindowList + "]";
     }
 
     /**
@@ -275,7 +328,7 @@ public class CampaignFirmwareUpgrade {
      */
     public Builder toBuilder() {
         Builder builder = new Builder(firmwareName, firmwareFrom, firmwareTo, protocol, startDate,
-                endDate, deviceList)
+                endDate, deviceList, autoAssignLicenseFlag, autoAddDevicesFlag)
                 .campaignName(getCampaignName())
                 .campaignTimeWindowList(getCampaignTimeWindowList());
         return builder;
@@ -292,6 +345,8 @@ public class CampaignFirmwareUpgrade {
         private LocalDate startDate;
         private LocalDate endDate;
         private List<String> deviceList;
+        private boolean autoAssignLicenseFlag;
+        private boolean autoAddDevicesFlag;
         private String campaignName;
         private List<V3TimeWindow> campaignTimeWindowList;
 
@@ -310,9 +365,12 @@ public class CampaignFirmwareUpgrade {
          * @param  startDate  LocalDate value for startDate.
          * @param  endDate  LocalDate value for endDate.
          * @param  deviceList  List of String value for deviceList.
+         * @param  autoAssignLicenseFlag  boolean value for autoAssignLicenseFlag.
+         * @param  autoAddDevicesFlag  boolean value for autoAddDevicesFlag.
          */
         public Builder(String firmwareName, String firmwareFrom, String firmwareTo, String protocol,
-                LocalDate startDate, LocalDate endDate, List<String> deviceList) {
+                LocalDate startDate, LocalDate endDate, List<String> deviceList,
+                boolean autoAssignLicenseFlag, boolean autoAddDevicesFlag) {
             this.firmwareName = firmwareName;
             this.firmwareFrom = firmwareFrom;
             this.firmwareTo = firmwareTo;
@@ -320,6 +378,8 @@ public class CampaignFirmwareUpgrade {
             this.startDate = startDate;
             this.endDate = endDate;
             this.deviceList = deviceList;
+            this.autoAssignLicenseFlag = autoAssignLicenseFlag;
+            this.autoAddDevicesFlag = autoAddDevicesFlag;
         }
 
         /**
@@ -393,6 +453,26 @@ public class CampaignFirmwareUpgrade {
         }
 
         /**
+         * Setter for autoAssignLicenseFlag.
+         * @param  autoAssignLicenseFlag  boolean value for autoAssignLicenseFlag.
+         * @return Builder
+         */
+        public Builder autoAssignLicenseFlag(boolean autoAssignLicenseFlag) {
+            this.autoAssignLicenseFlag = autoAssignLicenseFlag;
+            return this;
+        }
+
+        /**
+         * Setter for autoAddDevicesFlag.
+         * @param  autoAddDevicesFlag  boolean value for autoAddDevicesFlag.
+         * @return Builder
+         */
+        public Builder autoAddDevicesFlag(boolean autoAddDevicesFlag) {
+            this.autoAddDevicesFlag = autoAddDevicesFlag;
+            return this;
+        }
+
+        /**
          * Setter for campaignName.
          * @param  campaignName  String value for campaignName.
          * @return Builder
@@ -418,7 +498,8 @@ public class CampaignFirmwareUpgrade {
          */
         public CampaignFirmwareUpgrade build() {
             return new CampaignFirmwareUpgrade(firmwareName, firmwareFrom, firmwareTo, protocol,
-                    startDate, endDate, deviceList, campaignName, campaignTimeWindowList);
+                    startDate, endDate, deviceList, autoAssignLicenseFlag, autoAddDevicesFlag,
+                    campaignName, campaignTimeWindowList);
         }
     }
 }

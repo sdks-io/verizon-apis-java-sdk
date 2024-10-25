@@ -16,11 +16,10 @@ import io.apimatic.coreinterfaces.http.Context;
  * This is a model class for HyperPreciseLocationResultException type.
  */
 public class HyperPreciseLocationResultException extends ApiException {
-    private static final long serialVersionUID = 2807781723550403789L;
+    private static final long serialVersionUID = -7919105780698194180L;
     private ErrorResponseCodeEnum responseCode;
     private String message;
     private HyperPreciseLocationFault fault;
-    private Object example;
 
     /**
      * Initialization constructor.
@@ -90,23 +89,5 @@ public class HyperPreciseLocationResultException extends ApiException {
     @JsonSetter("fault")
     private void setFault(HyperPreciseLocationFault fault) {
         this.fault = fault;
-    }
-
-    /**
-     * Getter for Example.
-     * @return Returns the Object
-     */
-    @JsonGetter("example")
-    public Object getExample() {
-        return this.example;
-    }
-
-    /**
-     * Setter for Example.
-     * @param example Value for Object
-     */
-    @JsonSetter("example")
-    private void setExample(Object example) {
-        this.example = example;
     }
 }

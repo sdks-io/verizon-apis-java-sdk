@@ -14,6 +14,7 @@ import com.verizon.m5gedge.exceptions.ESIMRestErrorResponseException;
 import com.verizon.m5gedge.http.request.HttpMethod;
 import com.verizon.m5gedge.http.response.ApiResponse;
 import com.verizon.m5gedge.models.ESIMProfileRequest;
+import com.verizon.m5gedge.models.ESIMProfileRequest2;
 import com.verizon.m5gedge.models.ESIMRequestResponse;
 import com.verizon.m5gedge.models.ProfileRequest2;
 import io.apimatic.core.ApiCall;
@@ -35,6 +36,84 @@ public final class SIMActionsController extends BaseController {
      */
     public SIMActionsController(GlobalConfiguration globalConfig) {
         super(globalConfig);
+    }
+
+    /**
+     * System assign a new activation code to reactivate a deactivated device. **Note:** the
+     * previously assigned ICCID must be used to request a new activation code.
+     * @param  body  Required parameter: Device Profile Query
+     * @return    Returns the ESIMRequestResponse wrapped in ApiResponse response from the API call
+     * @throws    ApiException    Represents error response from the server.
+     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
+     */
+    public ApiResponse<ESIMRequestResponse> newactivatecode(
+            final ESIMProfileRequest2 body) throws ApiException, IOException {
+        return prepareNewactivatecodeRequest(body).execute();
+    }
+
+    /**
+     * System assign a new activation code to reactivate a deactivated device. **Note:** the
+     * previously assigned ICCID must be used to request a new activation code.
+     * @param  body  Required parameter: Device Profile Query
+     * @return    Returns the ESIMRequestResponse wrapped in ApiResponse response from the API call
+     */
+    public CompletableFuture<ApiResponse<ESIMRequestResponse>> newactivatecodeAsync(
+            final ESIMProfileRequest2 body) {
+        try { 
+            return prepareNewactivatecodeRequest(body).executeAsync(); 
+        } catch (Exception e) {  
+            throw new CompletionException(e); 
+        }
+    }
+
+    /**
+     * Builds the ApiCall object for newactivatecode.
+     */
+    private ApiCall<ApiResponse<ESIMRequestResponse>, ApiException> prepareNewactivatecodeRequest(
+            final ESIMProfileRequest2 body) throws JsonProcessingException, IOException {
+        return new ApiCall.Builder<ApiResponse<ESIMRequestResponse>, ApiException>()
+                .globalConfig(getGlobalConfiguration())
+                .requestBuilder(requestBuilder -> requestBuilder
+                        .server(Server.THINGSPACE.value())
+                        .path("/m2m/v1/devices/profile/actions/renew_activation_code")
+                        .bodyParam(param -> param.value(body))
+                        .bodySerializer(() ->  ApiHelper.serialize(body))
+                        .headerParam(param -> param.key("Content-Type")
+                                .value("application/json").isRequired(false))
+                        .headerParam(param -> param.key("accept").value("application/json"))
+                        .withAuth(auth -> auth
+                                .and(andAuth -> andAuth
+                                        .add("thingspace_oauth")
+                                        .add("VZ-M2M-Token")))
+                        .httpMethod(HttpMethod.POST))
+                .responseHandler(responseHandler -> responseHandler
+                        .responseClassType(ResponseClassType.API_RESPONSE)
+                        .apiResponseDeserializer(
+                                response -> ApiHelper.deserialize(response, ESIMRequestResponse.class))
+                        .nullify404(false)
+                        .localErrorCase("400",
+                                 ErrorCase.setReason("Bad request",
+                                (reason, context) -> new ESIMRestErrorResponseException(reason, context)))
+                        .localErrorCase("401",
+                                 ErrorCase.setReason("Unauthorized",
+                                (reason, context) -> new ESIMRestErrorResponseException(reason, context)))
+                        .localErrorCase("403",
+                                 ErrorCase.setReason("Forbidden",
+                                (reason, context) -> new ESIMRestErrorResponseException(reason, context)))
+                        .localErrorCase("404",
+                                 ErrorCase.setReason("Not Found / Does not exist",
+                                (reason, context) -> new ESIMRestErrorResponseException(reason, context)))
+                        .localErrorCase("406",
+                                 ErrorCase.setReason("Format / Request Unacceptable",
+                                (reason, context) -> new ESIMRestErrorResponseException(reason, context)))
+                        .localErrorCase("429",
+                                 ErrorCase.setReason("Too many requests",
+                                (reason, context) -> new ESIMRestErrorResponseException(reason, context)))
+                        .localErrorCase(ErrorCase.DEFAULT,
+                                 ErrorCase.setReason("Error response",
+                                (reason, context) -> new ESIMRestErrorResponseException(reason, context)))
+                        .globalErrorCase(GLOBAL_ERROR_CASES))
+                .build();
     }
 
     /**

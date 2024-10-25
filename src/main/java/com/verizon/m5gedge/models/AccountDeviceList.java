@@ -16,7 +16,7 @@ import java.util.List;
  */
 public class AccountDeviceList {
     private List<DeviceId> deviceIds;
-    private String ipAddress;
+    private String ipaddress;
 
     /**
      * Default constructor.
@@ -27,13 +27,13 @@ public class AccountDeviceList {
     /**
      * Initialization constructor.
      * @param  deviceIds  List of DeviceId value for deviceIds.
-     * @param  ipAddress  String value for ipAddress.
+     * @param  ipaddress  String value for ipaddress.
      */
     public AccountDeviceList(
             List<DeviceId> deviceIds,
-            String ipAddress) {
+            String ipaddress) {
         this.deviceIds = deviceIds;
-        this.ipAddress = ipAddress;
+        this.ipaddress = ipaddress;
     }
 
     /**
@@ -57,22 +57,22 @@ public class AccountDeviceList {
     }
 
     /**
-     * Getter for IpAddress.
+     * Getter for Ipaddress.
      * @return Returns the String
      */
     @JsonGetter("ipAddress")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getIpAddress() {
-        return ipAddress;
+    public String getIpaddress() {
+        return ipaddress;
     }
 
     /**
-     * Setter for IpAddress.
-     * @param ipAddress Value for String
+     * Setter for Ipaddress.
+     * @param ipaddress Value for String
      */
     @JsonSetter("ipAddress")
-    public void setIpAddress(String ipAddress) {
-        this.ipAddress = ipAddress;
+    public void setIpaddress(String ipaddress) {
+        this.ipaddress = ipaddress;
     }
 
     /**
@@ -81,7 +81,7 @@ public class AccountDeviceList {
      */
     @Override
     public String toString() {
-        return "AccountDeviceList [" + "deviceIds=" + deviceIds + ", ipAddress=" + ipAddress + "]";
+        return "AccountDeviceList [" + "deviceIds=" + deviceIds + ", ipaddress=" + ipaddress + "]";
     }
 
     /**
@@ -91,7 +91,7 @@ public class AccountDeviceList {
      */
     public Builder toBuilder() {
         Builder builder = new Builder(deviceIds)
-                .ipAddress(getIpAddress());
+                .ipaddress(getIpaddress());
         return builder;
     }
 
@@ -100,7 +100,7 @@ public class AccountDeviceList {
      */
     public static class Builder {
         private List<DeviceId> deviceIds;
-        private String ipAddress;
+        private String ipaddress;
 
         /**
          * Initialization constructor.
@@ -127,12 +127,12 @@ public class AccountDeviceList {
         }
 
         /**
-         * Setter for ipAddress.
-         * @param  ipAddress  String value for ipAddress.
+         * Setter for ipaddress.
+         * @param  ipaddress  String value for ipaddress.
          * @return Builder
          */
-        public Builder ipAddress(String ipAddress) {
-            this.ipAddress = ipAddress;
+        public Builder ipaddress(String ipaddress) {
+            this.ipaddress = ipaddress;
             return this;
         }
 
@@ -141,7 +141,7 @@ public class AccountDeviceList {
          * @return {@link AccountDeviceList}
          */
         public AccountDeviceList build() {
-            return new AccountDeviceList(deviceIds, ipAddress);
+            return new AccountDeviceList(deviceIds, ipaddress);
         }
     }
 }

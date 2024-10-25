@@ -15,7 +15,7 @@ import java.util.List;
  * This is a model class for DeviceList2 type.
  */
 public class DeviceList2 {
-    private List<ESIMDeviceId> ids;
+    private List<DeviceId2> ids;
 
     /**
      * Default constructor.
@@ -25,29 +25,29 @@ public class DeviceList2 {
 
     /**
      * Initialization constructor.
-     * @param  ids  List of ESIMDeviceId value for ids.
+     * @param  ids  List of DeviceId2 value for ids.
      */
     public DeviceList2(
-            List<ESIMDeviceId> ids) {
+            List<DeviceId2> ids) {
         this.ids = ids;
     }
 
     /**
      * Getter for Ids.
-     * @return Returns the List of ESIMDeviceId
+     * @return Returns the List of DeviceId2
      */
     @JsonGetter("ids")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public List<ESIMDeviceId> getIds() {
+    public List<DeviceId2> getIds() {
         return ids;
     }
 
     /**
      * Setter for Ids.
-     * @param ids Value for List of ESIMDeviceId
+     * @param ids Value for List of DeviceId2
      */
     @JsonSetter("ids")
-    public void setIds(List<ESIMDeviceId> ids) {
+    public void setIds(List<DeviceId2> ids) {
         this.ids = ids;
     }
 
@@ -75,16 +75,16 @@ public class DeviceList2 {
      * Class to build instances of {@link DeviceList2}.
      */
     public static class Builder {
-        private List<ESIMDeviceId> ids;
+        private List<DeviceId2> ids;
 
 
 
         /**
          * Setter for ids.
-         * @param  ids  List of ESIMDeviceId value for ids.
+         * @param  ids  List of DeviceId2 value for ids.
          * @return Builder
          */
-        public Builder ids(List<ESIMDeviceId> ids) {
+        public Builder ids(List<DeviceId2> ids) {
             this.ids = ids;
             return this;
         }

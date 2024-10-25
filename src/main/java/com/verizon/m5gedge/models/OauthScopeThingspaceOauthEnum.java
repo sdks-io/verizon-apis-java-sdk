@@ -54,14 +54,29 @@ public enum OauthScopeThingspaceOauthEnum {
 
     TS_APPLICATION_RO,
 
+    /**
+     * Read access to the discovery service
+     */
     EDGEDISCOVERYREAD,
 
+    /**
+     * Read access to the service profile service
+     */
     EDGESERVICEPROFILEREAD,
 
+    /**
+     * Write access to the service profile service
+     */
     EDGESERVICEPROFILEWRITE,
 
+    /**
+     * Read access to the service registry service
+     */
     EDGESERVICEREGISTRYREAD,
 
+    /**
+     * Write access to the service registry service
+     */
     EDGESERVICEREGISTRYWRITE,
 
     /**

@@ -13,9 +13,9 @@ import com.verizon.m5gedge.exceptions.ApiException;
 import com.verizon.m5gedge.exceptions.ESIMRestErrorResponseException;
 import com.verizon.m5gedge.http.request.HttpMethod;
 import com.verizon.m5gedge.http.response.ApiResponse;
+import com.verizon.m5gedge.models.ESIMGlobalDeviceList;
 import com.verizon.m5gedge.models.ESIMProvhistoryRequest;
 import com.verizon.m5gedge.models.ESIMRequestResponse;
-import com.verizon.m5gedge.models.ESIMStatusResponse;
 import io.apimatic.core.ApiCall;
 import io.apimatic.core.ErrorCase;
 import io.apimatic.core.GlobalConfiguration;
@@ -38,7 +38,7 @@ public final class GlobalReportingController extends BaseController {
     }
 
     /**
-     * Retreive the provisioning history of a specific device or devices.
+     * Retrieve the provisioning history of a specific device or devices.
      * @param  body  Required parameter: Device Provisioning History
      * @return    Returns the ESIMRequestResponse wrapped in ApiResponse response from the API call
      * @throws    ApiException    Represents error response from the server.
@@ -50,7 +50,7 @@ public final class GlobalReportingController extends BaseController {
     }
 
     /**
-     * Retreive the provisioning history of a specific device or devices.
+     * Retrieve the provisioning history of a specific device or devices.
      * @param  body  Required parameter: Device Provisioning History
      * @return    Returns the ESIMRequestResponse wrapped in ApiResponse response from the API call
      */
@@ -114,60 +114,55 @@ public final class GlobalReportingController extends BaseController {
     }
 
     /**
-     * Get the status of a request made with the Device Actions.
-     * @param  accountname  Required parameter: Example:
-     * @param  requestID  Required parameter: Example:
-     * @return    Returns the ESIMStatusResponse wrapped in ApiResponse response from the API call
+     * Retrieve a list of all devices associated with an account.
+     * @param  body  Required parameter: Device List
+     * @return    Returns the ESIMRequestResponse wrapped in ApiResponse response from the API call
      * @throws    ApiException    Represents error response from the server.
      * @throws    IOException    Signals that an I/O exception of some sort has occurred.
      */
-    public ApiResponse<ESIMStatusResponse> requeststatususingGET(
-            final String accountname,
-            final String requestID) throws ApiException, IOException {
-        return prepareRequeststatususingGETRequest(accountname, requestID).execute();
+    public ApiResponse<ESIMRequestResponse> retrieveGlobalList(
+            final ESIMGlobalDeviceList body) throws ApiException, IOException {
+        return prepareRetrieveGlobalListRequest(body).execute();
     }
 
     /**
-     * Get the status of a request made with the Device Actions.
-     * @param  accountname  Required parameter: Example:
-     * @param  requestID  Required parameter: Example:
-     * @return    Returns the ESIMStatusResponse wrapped in ApiResponse response from the API call
+     * Retrieve a list of all devices associated with an account.
+     * @param  body  Required parameter: Device List
+     * @return    Returns the ESIMRequestResponse wrapped in ApiResponse response from the API call
      */
-    public CompletableFuture<ApiResponse<ESIMStatusResponse>> requeststatususingGETAsync(
-            final String accountname,
-            final String requestID) {
+    public CompletableFuture<ApiResponse<ESIMRequestResponse>> retrieveGlobalListAsync(
+            final ESIMGlobalDeviceList body) {
         try { 
-            return prepareRequeststatususingGETRequest(accountname, requestID).executeAsync(); 
+            return prepareRetrieveGlobalListRequest(body).executeAsync(); 
         } catch (Exception e) {  
             throw new CompletionException(e); 
         }
     }
 
     /**
-     * Builds the ApiCall object for requeststatususingGET.
+     * Builds the ApiCall object for retrieveGlobalList.
      */
-    private ApiCall<ApiResponse<ESIMStatusResponse>, ApiException> prepareRequeststatususingGETRequest(
-            final String accountname,
-            final String requestID) throws IOException {
-        return new ApiCall.Builder<ApiResponse<ESIMStatusResponse>, ApiException>()
+    private ApiCall<ApiResponse<ESIMRequestResponse>, ApiException> prepareRetrieveGlobalListRequest(
+            final ESIMGlobalDeviceList body) throws JsonProcessingException, IOException {
+        return new ApiCall.Builder<ApiResponse<ESIMRequestResponse>, ApiException>()
                 .globalConfig(getGlobalConfiguration())
                 .requestBuilder(requestBuilder -> requestBuilder
                         .server(Server.THINGSPACE.value())
-                        .path("/m2m/v2/accounts/{accountname}/requests/{requestID}/status")
-                        .templateParam(param -> param.key("accountname").value(accountname)
-                                .shouldEncode(true))
-                        .templateParam(param -> param.key("requestID").value(requestID)
-                                .shouldEncode(true))
+                        .path("/m2m/v2/devices/actions/list")
+                        .bodyParam(param -> param.value(body))
+                        .bodySerializer(() ->  ApiHelper.serialize(body))
+                        .headerParam(param -> param.key("Content-Type")
+                                .value("application/json").isRequired(false))
                         .headerParam(param -> param.key("accept").value("application/json"))
                         .withAuth(auth -> auth
                                 .and(andAuth -> andAuth
                                         .add("thingspace_oauth")
                                         .add("VZ-M2M-Token")))
-                        .httpMethod(HttpMethod.GET))
+                        .httpMethod(HttpMethod.POST))
                 .responseHandler(responseHandler -> responseHandler
                         .responseClassType(ResponseClassType.API_RESPONSE)
                         .apiResponseDeserializer(
-                                response -> ApiHelper.deserialize(response, ESIMStatusResponse.class))
+                                response -> ApiHelper.deserialize(response, ESIMRequestResponse.class))
                         .nullify404(false)
                         .localErrorCase("400",
                                  ErrorCase.setReason("Bad request",

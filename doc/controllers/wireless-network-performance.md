@@ -80,7 +80,7 @@ wirelessNetworkPerformanceController.nearRealTimeNetworkConditionsAsync(body).th
 
 # Domestic 4 G and 5G Nationwide Network Coverage
 
-Run a report to determine network types available and available coverage. Network types covered include: CAT-M, NB-IOT, LTE, LTE-AWS and 5GNW.
+Run a report to determine network types available and available coverage. Network types covered include: CAT-M, NB-IOT, LTE, LTE-AWS, 5GNW and C-BAND.
 
 ```java
 CompletableFuture<ApiResponse<WNPRequestResponse>> domestic4GAnd5gNationwideNetworkCoverageAsync(

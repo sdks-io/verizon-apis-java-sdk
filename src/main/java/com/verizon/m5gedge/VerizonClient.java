@@ -52,11 +52,12 @@ import com.verizon.m5gedge.controllers.FirmwareV3Controller;
 import com.verizon.m5gedge.controllers.FixedWirelessQualificationController;
 import com.verizon.m5gedge.controllers.GlobalReportingController;
 import com.verizon.m5gedge.controllers.HyperPreciseLocationCallbacksController;
+import com.verizon.m5gedge.controllers.M5gBIDeviceActionsController;
 import com.verizon.m5gedge.controllers.M5gEdgePlatformsController;
-import com.verizon.m5gedge.controllers.MECController;
 import com.verizon.m5gedge.controllers.MV2TriggersController;
 import com.verizon.m5gedge.controllers.ManagingeSIMProfilesController;
 import com.verizon.m5gedge.controllers.OauthAuthorizationController;
+import com.verizon.m5gedge.controllers.PWNController;
 import com.verizon.m5gedge.controllers.PerformanceMetricsController;
 import com.verizon.m5gedge.controllers.PromotionPeriodInformationController;
 import com.verizon.m5gedge.controllers.RetrievetheTriggersController;
@@ -85,6 +86,7 @@ import com.verizon.m5gedge.controllers.ThingSpaceQualityofServiceAPIActionsContr
 import com.verizon.m5gedge.controllers.UpdateTriggersController;
 import com.verizon.m5gedge.controllers.UsageTriggerManagementController;
 import com.verizon.m5gedge.controllers.WirelessNetworkPerformanceController;
+import com.verizon.m5gedge.http.client.HttpCallback;
 import com.verizon.m5gedge.http.client.HttpClientConfiguration;
 import com.verizon.m5gedge.http.client.ReadonlyHttpClientConfiguration;
 import io.apimatic.core.GlobalConfiguration;
@@ -173,13 +175,14 @@ public final class VerizonClient implements Configuration {
     private DeviceSMSMessagingController deviceSMSMessaging;
     private DeviceActionsController deviceActions;
     private ThingSpaceQualityofServiceAPIActionsController thingSpaceQualityofServiceAPIActions;
-    private MECController mEC;
+    private PWNController pWN;
     private PromotionPeriodInformationController promotionPeriodInformation;
     private RetrievetheTriggersController retrievetheTriggers;
     private UpdateTriggersController updateTriggers;
     private SIMActionsController sIMActions;
     private GlobalReportingController globalReporting;
     private MV2TriggersController mV2Triggers;
+    private M5gBIDeviceActionsController m5gBIDeviceActions;
     private OauthAuthorizationController oauthAuthorization;
 
     private static final CompatibilityFactory compatibilityFactory = new CompatibilityFactoryImpl();
@@ -226,12 +229,19 @@ public final class VerizonClient implements Configuration {
      */
     private Map<String, Authentication> authentications = new HashMap<String, Authentication>();
 
+    /**
+     * Callback to be called before and after the HTTP call for an endpoint is made.
+     */
+    private final HttpCallback httpCallback;
+
     private VerizonClient(Environment environment, HttpClient httpClient,
             ReadonlyHttpClientConfiguration httpClientConfig,
-            ThingspaceOauthModel thingspaceOauthModel, VZM2mTokenModel vZM2mTokenModel) {
+            ThingspaceOauthModel thingspaceOauthModel, VZM2mTokenModel vZM2mTokenModel,
+            HttpCallback httpCallback) {
         this.environment = environment;
         this.httpClient = httpClient;
         this.httpClientConfig = httpClientConfig;
+        this.httpCallback = httpCallback;
 
         this.thingspaceOauthModel = thingspaceOauthModel;
         this.vZM2mTokenModel = vZM2mTokenModel;
@@ -246,6 +256,7 @@ public final class VerizonClient implements Configuration {
                 .httpClient(httpClient).baseUri(server -> getBaseUri(server))
                 .compatibilityFactory(compatibilityFactory)
                 .authentication(this.authentications)
+                .callback(httpCallback)
                 .userAgent(userAgent)
                 .build();
         this.thingspaceOauthManager.applyGlobalConfiguration(globalConfig);
@@ -319,13 +330,14 @@ public final class VerizonClient implements Configuration {
         deviceActions = new DeviceActionsController(globalConfig);
         thingSpaceQualityofServiceAPIActions = new ThingSpaceQualityofServiceAPIActionsController(
                 globalConfig);
-        mEC = new MECController(globalConfig);
+        pWN = new PWNController(globalConfig);
         promotionPeriodInformation = new PromotionPeriodInformationController(globalConfig);
         retrievetheTriggers = new RetrievetheTriggersController(globalConfig);
         updateTriggers = new UpdateTriggersController(globalConfig);
         sIMActions = new SIMActionsController(globalConfig);
         globalReporting = new GlobalReportingController(globalConfig);
         mV2Triggers = new MV2TriggersController(globalConfig);
+        m5gBIDeviceActions = new M5gBIDeviceActionsController(globalConfig);
         oauthAuthorization = new OauthAuthorizationController(globalConfig);
     }
 
@@ -857,11 +869,11 @@ public final class VerizonClient implements Configuration {
     }
 
     /**
-     * Get the instance of MECController.
-     * @return mEC
+     * Get the instance of PWNController.
+     * @return pWN
      */
-    public MECController getMECController() {
-        return mEC;
+    public PWNController getPWNController() {
+        return pWN;
     }
 
     /**
@@ -910,6 +922,14 @@ public final class VerizonClient implements Configuration {
      */
     public MV2TriggersController getMV2TriggersController() {
         return mV2Triggers;
+    }
+
+    /**
+     * Get the instance of M5gBIDeviceActionsController.
+     * @return m5gBIDeviceActions
+     */
+    public M5gBIDeviceActionsController getM5gBIDeviceActionsController() {
+        return m5gBIDeviceActions;
     }
 
     /**
@@ -1145,6 +1165,7 @@ public final class VerizonClient implements Configuration {
                 .toBuilder().build());
         builder.vZM2mTokenCredentials(getVZM2mTokenModel()
                 .toBuilder().build());
+        builder.httpCallback = httpCallback;
         builder.httpClientConfig(() -> ((HttpClientConfiguration) httpClientConfig).newBuilder());
         return builder;
     }
@@ -1159,6 +1180,7 @@ public final class VerizonClient implements Configuration {
         private ThingspaceOauthModel thingspaceOauthModel =
                 new ThingspaceOauthModel.Builder("", "").build();
         private VZM2mTokenModel vZM2mTokenModel = new VZM2mTokenModel.Builder("").build();
+        private HttpCallback httpCallback = null;
         private HttpClientConfiguration.Builder httpClientConfigBuilder =
                 new HttpClientConfiguration.Builder();
 
@@ -1207,6 +1229,16 @@ public final class VerizonClient implements Configuration {
         }
 
         /**
+         * HttpCallback.
+         * @param httpCallback Callback to be called before and after the HTTP call.
+         * @return Builder
+         */
+        public Builder httpCallback(HttpCallback httpCallback) {
+            this.httpCallback = httpCallback;
+            return this;
+        }
+
+        /**
          * Setter for the Builder of httpClientConfiguration, takes in an operation to be performed
          * on the builder instance of HTTP client configuration.
          * 
@@ -1239,7 +1271,7 @@ public final class VerizonClient implements Configuration {
             httpClient = new OkClient(httpClientConfig.getConfiguration(), compatibilityFactory);
 
             return new VerizonClient(environment, httpClient, httpClientConfig,
-                    thingspaceOauthModel, vZM2mTokenModel);
+                    thingspaceOauthModel, vZM2mTokenModel, httpCallback);
         }
     }
 }

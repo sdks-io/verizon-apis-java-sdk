@@ -227,13 +227,14 @@ public class ThingspaceOauthManager extends HeaderAuth implements ThingspaceOaut
      * @param oauthToken The OAuth token for whose expiry is to check.
      * @return True if expired
      */
-    private boolean isTokenExpired(OauthToken oauthToken) {
+    public boolean isTokenExpired(OauthToken oauthToken) {
         if (oauthToken == null) {
             throw new IllegalStateException("OAuth token is missing.");
         }
 
         return oauthToken.getExpiry() != null 
-            && oauthToken.getExpiry() < (System.currentTimeMillis() / 1000L); 
+            && oauthToken.getExpiry() - authModel.getOauthClockSkew()
+                < (System.currentTimeMillis() / 1000L);
     }
 
     /**

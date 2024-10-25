@@ -109,7 +109,8 @@ FirmwareUpgradeRequest body = new FirmwareUpgradeRequest.Builder(
     "0402196254-00001",
     "FOTA_Verizon_Model-A_01To02_HF",
     "VerizonFirmwareVersion-02",
-    DateTimeHelper.fromRfc8601DateTime("2018-04-01T16:03:00.000Z"),
+    DateTimeHelper.fromSimpleDate("2018-04-01"),
+    DateTimeHelper.fromSimpleDate("2018-04-05"),
     Arrays.asList(
         "990003425730535",
         "990000473475989"
@@ -163,7 +164,7 @@ Returns information about a specified upgrade, include the target date of the up
 
 ```java
 CompletableFuture<ApiResponse<FirmwareUpgrade>> listFirmwareUpgradeDetailsAsync(
-    final String account,
+    final String accountName,
     final String upgradeId)
 ```
 
@@ -171,7 +172,7 @@ CompletableFuture<ApiResponse<FirmwareUpgrade>> listFirmwareUpgradeDetailsAsync(
 
 | Parameter | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `account` | `String` | Template, Required | Account identifier in "##########-#####". |
+| `accountName` | `String` | Template, Required | Account identifier in "##########-#####". |
 | `upgradeId` | `String` | Template, Required | The UUID of the upgrade, returned by POST /upgrades when the upgrade was scheduled. |
 
 ## Server
@@ -185,10 +186,10 @@ CompletableFuture<ApiResponse<FirmwareUpgrade>> listFirmwareUpgradeDetailsAsync(
 ## Example Usage
 
 ```java
-String account = "0242078689-00001";
+String accountName = "0242078689-00001";
 String upgradeId = "e3a8d88a-04c6-4ef3-b039-89b62f91e962";
 
-firmwareV1Controller.listFirmwareUpgradeDetailsAsync(account, upgradeId).thenAccept(result -> {
+firmwareV1Controller.listFirmwareUpgradeDetailsAsync(accountName, upgradeId).thenAccept(result -> {
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
@@ -219,7 +220,8 @@ firmwareV1Controller.listFirmwareUpgradeDetailsAsync(account, upgradeId).thenAcc
       "status": "Device Accepted",
       "resultReason": "success"
     }
-  ]
+  ],
+  "endDate": "2018-04-05"
 }
 ```
 
@@ -236,7 +238,7 @@ Add or remove devices from a scheduled upgrade.
 
 ```java
 CompletableFuture<ApiResponse<FirmwareUpgradeChangeResult>> updateFirmwareUpgradeDevicesAsync(
-    final String account,
+    final String accountName,
     final String upgradeId,
     final FirmwareUpgradeChangeRequest body)
 ```
@@ -245,7 +247,7 @@ CompletableFuture<ApiResponse<FirmwareUpgradeChangeResult>> updateFirmwareUpgrad
 
 | Parameter | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `account` | `String` | Template, Required | Account identifier in "##########-#####". |
+| `accountName` | `String` | Template, Required | Account identifier in "##########-#####". |
 | `upgradeId` | `String` | Template, Required | The UUID of the upgrade, returned by POST /upgrades when the upgrade was scheduled. |
 | `body` | [`FirmwareUpgradeChangeRequest`](../../doc/models/firmware-upgrade-change-request.md) | Body, Required | List of devices to add or remove. |
 
@@ -260,7 +262,7 @@ CompletableFuture<ApiResponse<FirmwareUpgradeChangeResult>> updateFirmwareUpgrad
 ## Example Usage
 
 ```java
-String account = "0242078689-00001";
+String accountName = "0242078689-00001";
 String upgradeId = "e3a8d88a-04c6-4ef3-b039-89b62f91e962";
 FirmwareUpgradeChangeRequest body = new FirmwareUpgradeChangeRequest.Builder(
     FirmwareTypeListEnum.APPEND,
@@ -271,7 +273,7 @@ FirmwareUpgradeChangeRequest body = new FirmwareUpgradeChangeRequest.Builder(
 )
 .build();
 
-firmwareV1Controller.updateFirmwareUpgradeDevicesAsync(account, upgradeId, body).thenAccept(result -> {
+firmwareV1Controller.updateFirmwareUpgradeDevicesAsync(accountName, upgradeId, body).thenAccept(result -> {
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
@@ -315,7 +317,7 @@ Cancel a scheduled firmware upgrade.
 
 ```java
 CompletableFuture<ApiResponse<FotaV1SuccessResult>> cancelScheduledFirmwareUpgradeAsync(
-    final String account,
+    final String accountName,
     final String upgradeId)
 ```
 
@@ -323,7 +325,7 @@ CompletableFuture<ApiResponse<FotaV1SuccessResult>> cancelScheduledFirmwareUpgra
 
 | Parameter | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `account` | `String` | Template, Required | Account identifier in "##########-#####". |
+| `accountName` | `String` | Template, Required | Account identifier in "##########-#####". |
 | `upgradeId` | `String` | Template, Required | The UUID of the scheduled upgrade that you want to cancel. |
 
 ## Server
@@ -337,10 +339,10 @@ CompletableFuture<ApiResponse<FotaV1SuccessResult>> cancelScheduledFirmwareUpgra
 ## Example Usage
 
 ```java
-String account = "0242078689-00001";
+String accountName = "0242078689-00001";
 String upgradeId = "e3a8d88a-04c6-4ef3-b039-89b62f91e962";
 
-firmwareV1Controller.cancelScheduledFirmwareUpgradeAsync(account, upgradeId).thenAccept(result -> {
+firmwareV1Controller.cancelScheduledFirmwareUpgradeAsync(accountName, upgradeId).thenAccept(result -> {
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {

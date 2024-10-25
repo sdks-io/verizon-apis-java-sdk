@@ -13,6 +13,10 @@ import com.verizon.m5gedge.exceptions.ApiException;
 import com.verizon.m5gedge.exceptions.GIORestErrorResponseException;
 import com.verizon.m5gedge.http.request.HttpMethod;
 import com.verizon.m5gedge.http.response.ApiResponse;
+import com.verizon.m5gedge.models.AccountDetails;
+import com.verizon.m5gedge.models.AggregateUsage;
+import com.verizon.m5gedge.models.DailyUsage;
+import com.verizon.m5gedge.models.DailyUsageResponse;
 import com.verizon.m5gedge.models.GIORequestResponse;
 import com.verizon.m5gedge.models.GetDeviceListWithProfilesRequest;
 import com.verizon.m5gedge.models.ProvhistoryRequest;
@@ -36,6 +40,238 @@ public final class DeviceActionsController extends BaseController {
      */
     public DeviceActionsController(GlobalConfiguration globalConfig) {
         super(globalConfig);
+    }
+
+    /**
+     * Retrieve the aggregate usage for a device or a number of devices.
+     * @param  body  Required parameter: Example:
+     * @return    Returns the GIORequestResponse wrapped in ApiResponse response from the API call
+     * @throws    ApiException    Represents error response from the server.
+     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
+     */
+    public ApiResponse<GIORequestResponse> aggregateUsage(
+            final AggregateUsage body) throws ApiException, IOException {
+        return prepareAggregateUsageRequest(body).execute();
+    }
+
+    /**
+     * Retrieve the aggregate usage for a device or a number of devices.
+     * @param  body  Required parameter: Example:
+     * @return    Returns the GIORequestResponse wrapped in ApiResponse response from the API call
+     */
+    public CompletableFuture<ApiResponse<GIORequestResponse>> aggregateUsageAsync(
+            final AggregateUsage body) {
+        try { 
+            return prepareAggregateUsageRequest(body).executeAsync(); 
+        } catch (Exception e) {  
+            throw new CompletionException(e); 
+        }
+    }
+
+    /**
+     * Builds the ApiCall object for aggregateUsage.
+     */
+    private ApiCall<ApiResponse<GIORequestResponse>, ApiException> prepareAggregateUsageRequest(
+            final AggregateUsage body) throws JsonProcessingException, IOException {
+        return new ApiCall.Builder<ApiResponse<GIORequestResponse>, ApiException>()
+                .globalConfig(getGlobalConfiguration())
+                .requestBuilder(requestBuilder -> requestBuilder
+                        .server(Server.THINGSPACE.value())
+                        .path("/v1/devices/usage/actions/list/aggregate")
+                        .bodyParam(param -> param.value(body))
+                        .bodySerializer(() ->  ApiHelper.serialize(body))
+                        .headerParam(param -> param.key("Content-Type")
+                                .value("application/json").isRequired(false))
+                        .headerParam(param -> param.key("accept").value("application/json"))
+                        .withAuth(auth -> auth
+                                .and(andAuth -> andAuth
+                                        .add("thingspace_oauth")
+                                        .add("VZ-M2M-Token")))
+                        .httpMethod(HttpMethod.POST))
+                .responseHandler(responseHandler -> responseHandler
+                        .responseClassType(ResponseClassType.API_RESPONSE)
+                        .apiResponseDeserializer(
+                                response -> ApiHelper.deserialize(response, GIORequestResponse.class))
+                        .nullify404(false)
+                        .localErrorCase(ErrorCase.DEFAULT,
+                                 ErrorCase.setReason("Error response",
+                                (reason, context) -> new GIORestErrorResponseException(reason, context)))
+                        .globalErrorCase(GLOBAL_ERROR_CASES))
+                .build();
+    }
+
+    /**
+     * Retrieve the daily usage for a device, for a specified period of time, segmented by day.
+     * @param  body  Required parameter: Example:
+     * @return    Returns the DailyUsageResponse wrapped in ApiResponse response from the API call
+     * @throws    ApiException    Represents error response from the server.
+     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
+     */
+    public ApiResponse<DailyUsageResponse> dailyUsage(
+            final DailyUsage body) throws ApiException, IOException {
+        return prepareDailyUsageRequest(body).execute();
+    }
+
+    /**
+     * Retrieve the daily usage for a device, for a specified period of time, segmented by day.
+     * @param  body  Required parameter: Example:
+     * @return    Returns the DailyUsageResponse wrapped in ApiResponse response from the API call
+     */
+    public CompletableFuture<ApiResponse<DailyUsageResponse>> dailyUsageAsync(
+            final DailyUsage body) {
+        try { 
+            return prepareDailyUsageRequest(body).executeAsync(); 
+        } catch (Exception e) {  
+            throw new CompletionException(e); 
+        }
+    }
+
+    /**
+     * Builds the ApiCall object for dailyUsage.
+     */
+    private ApiCall<ApiResponse<DailyUsageResponse>, ApiException> prepareDailyUsageRequest(
+            final DailyUsage body) throws JsonProcessingException, IOException {
+        return new ApiCall.Builder<ApiResponse<DailyUsageResponse>, ApiException>()
+                .globalConfig(getGlobalConfiguration())
+                .requestBuilder(requestBuilder -> requestBuilder
+                        .server(Server.THINGSPACE.value())
+                        .path("/v1/devices/usage/actions/list")
+                        .bodyParam(param -> param.value(body))
+                        .bodySerializer(() ->  ApiHelper.serialize(body))
+                        .headerParam(param -> param.key("Content-Type")
+                                .value("application/json").isRequired(false))
+                        .headerParam(param -> param.key("accept").value("application/json"))
+                        .withAuth(auth -> auth
+                                .and(andAuth -> andAuth
+                                        .add("thingspace_oauth")
+                                        .add("VZ-M2M-Token")))
+                        .httpMethod(HttpMethod.POST))
+                .responseHandler(responseHandler -> responseHandler
+                        .responseClassType(ResponseClassType.API_RESPONSE)
+                        .apiResponseDeserializer(
+                                response -> ApiHelper.deserialize(response, DailyUsageResponse.class))
+                        .nullify404(false)
+                        .localErrorCase(ErrorCase.DEFAULT,
+                                 ErrorCase.setReason("Error response",
+                                (reason, context) -> new GIORestErrorResponseException(reason, context)))
+                        .globalErrorCase(GLOBAL_ERROR_CASES))
+                .build();
+    }
+
+    /**
+     * Retrieve all of the service plans, features and carriers associated with the account
+     * specified.
+     * @param  accountName  Required parameter: Example:
+     * @return    Returns the AccountDetails wrapped in ApiResponse response from the API call
+     * @throws    ApiException    Represents error response from the server.
+     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
+     */
+    public ApiResponse<AccountDetails> servicePlanList(
+            final String accountName) throws ApiException, IOException {
+        return prepareServicePlanListRequest(accountName).execute();
+    }
+
+    /**
+     * Retrieve all of the service plans, features and carriers associated with the account
+     * specified.
+     * @param  accountName  Required parameter: Example:
+     * @return    Returns the AccountDetails wrapped in ApiResponse response from the API call
+     */
+    public CompletableFuture<ApiResponse<AccountDetails>> servicePlanListAsync(
+            final String accountName) {
+        try { 
+            return prepareServicePlanListRequest(accountName).executeAsync(); 
+        } catch (Exception e) {  
+            throw new CompletionException(e); 
+        }
+    }
+
+    /**
+     * Builds the ApiCall object for servicePlanList.
+     */
+    private ApiCall<ApiResponse<AccountDetails>, ApiException> prepareServicePlanListRequest(
+            final String accountName) throws IOException {
+        return new ApiCall.Builder<ApiResponse<AccountDetails>, ApiException>()
+                .globalConfig(getGlobalConfiguration())
+                .requestBuilder(requestBuilder -> requestBuilder
+                        .server(Server.THINGSPACE.value())
+                        .path("/v1/plans/{accountName}")
+                        .templateParam(param -> param.key("accountName").value(accountName)
+                                .shouldEncode(true))
+                        .headerParam(param -> param.key("accept").value("application/json"))
+                        .withAuth(auth -> auth
+                                .and(andAuth -> andAuth
+                                        .add("thingspace_oauth")
+                                        .add("VZ-M2M-Token")))
+                        .httpMethod(HttpMethod.GET))
+                .responseHandler(responseHandler -> responseHandler
+                        .responseClassType(ResponseClassType.API_RESPONSE)
+                        .apiResponseDeserializer(
+                                response -> ApiHelper.deserialize(response, AccountDetails.class))
+                        .nullify404(false)
+                        .localErrorCase(ErrorCase.DEFAULT,
+                                 ErrorCase.setReason("Error response",
+                                (reason, context) -> new GIORestErrorResponseException(reason, context)))
+                        .globalErrorCase(GLOBAL_ERROR_CASES))
+                .build();
+    }
+
+    /**
+     * Retrieve all of the service plans, features and carriers associated with the account
+     * specified.
+     * @param  accountName  Required parameter: Example:
+     * @return    Returns the AccountDetails wrapped in ApiResponse response from the API call
+     * @throws    ApiException    Represents error response from the server.
+     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
+     */
+    public ApiResponse<AccountDetails> accountInformation(
+            final String accountName) throws ApiException, IOException {
+        return prepareAccountInformationRequest(accountName).execute();
+    }
+
+    /**
+     * Retrieve all of the service plans, features and carriers associated with the account
+     * specified.
+     * @param  accountName  Required parameter: Example:
+     * @return    Returns the AccountDetails wrapped in ApiResponse response from the API call
+     */
+    public CompletableFuture<ApiResponse<AccountDetails>> accountInformationAsync(
+            final String accountName) {
+        try { 
+            return prepareAccountInformationRequest(accountName).executeAsync(); 
+        } catch (Exception e) {  
+            throw new CompletionException(e); 
+        }
+    }
+
+    /**
+     * Builds the ApiCall object for accountInformation.
+     */
+    private ApiCall<ApiResponse<AccountDetails>, ApiException> prepareAccountInformationRequest(
+            final String accountName) throws IOException {
+        return new ApiCall.Builder<ApiResponse<AccountDetails>, ApiException>()
+                .globalConfig(getGlobalConfiguration())
+                .requestBuilder(requestBuilder -> requestBuilder
+                        .server(Server.THINGSPACE.value())
+                        .path("/v1/accounts/{accountName}")
+                        .templateParam(param -> param.key("accountName").value(accountName)
+                                .shouldEncode(true))
+                        .headerParam(param -> param.key("accept").value("application/json"))
+                        .withAuth(auth -> auth
+                                .and(andAuth -> andAuth
+                                        .add("thingspace_oauth")
+                                        .add("VZ-M2M-Token")))
+                        .httpMethod(HttpMethod.GET))
+                .responseHandler(responseHandler -> responseHandler
+                        .responseClassType(ResponseClassType.API_RESPONSE)
+                        .apiResponseDeserializer(
+                                response -> ApiHelper.deserialize(response, AccountDetails.class))
+                        .nullify404(false)
+                        .localErrorCase(ErrorCase.DEFAULT,
+                                 ErrorCase.setReason("Error response",
+                                (reason, context) -> new GIORestErrorResponseException(reason, context)))
+                        .globalErrorCase(GLOBAL_ERROR_CASES))
+                .build();
     }
 
     /**
@@ -99,7 +335,7 @@ public final class DeviceActionsController extends BaseController {
     }
 
     /**
-     * Retreive the provisioning history of a specific device or devices.
+     * Retrieve the provisioning history of a specific device or devices.
      * @param  body  Required parameter: Device Provisioning History
      * @return    Returns the GIORequestResponse wrapped in ApiResponse response from the API call
      * @throws    ApiException    Represents error response from the server.
@@ -111,7 +347,7 @@ public final class DeviceActionsController extends BaseController {
     }
 
     /**
-     * Retreive the provisioning history of a specific device or devices.
+     * Retrieve the provisioning history of a specific device or devices.
      * @param  body  Required parameter: Device Provisioning History
      * @return    Returns the GIORequestResponse wrapped in ApiResponse response from the API call
      */

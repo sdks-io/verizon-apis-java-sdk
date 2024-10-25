@@ -13,8 +13,8 @@ import com.verizon.m5gedge.exceptions.ApiException;
 import com.verizon.m5gedge.exceptions.ReadySimRestErrorResponseException;
 import com.verizon.m5gedge.http.request.HttpMethod;
 import com.verizon.m5gedge.http.response.ApiResponse;
+import com.verizon.m5gedge.models.ARequestBodyForUsage;
 import com.verizon.m5gedge.models.RequestBodyForUsage;
-import com.verizon.m5gedge.models.RequestBodyForUsage1;
 import com.verizon.m5gedge.models.ResponseToUsageQuery;
 import com.verizon.m5gedge.models.UsageRequestResponse;
 import io.apimatic.core.ApiCall;
@@ -46,7 +46,7 @@ public final class PromotionPeriodInformationController extends BaseController {
      * @throws    IOException    Signals that an I/O exception of some sort has occurred.
      */
     public ApiResponse<ResponseToUsageQuery> getPromoDeviceUsageHistory(
-            final RequestBodyForUsage1 body) throws ApiException, IOException {
+            final ARequestBodyForUsage body) throws ApiException, IOException {
         return prepareGetPromoDeviceUsageHistoryRequest(body).execute();
     }
 
@@ -56,7 +56,7 @@ public final class PromotionPeriodInformationController extends BaseController {
      * @return    Returns the ResponseToUsageQuery wrapped in ApiResponse response from the API call
      */
     public CompletableFuture<ApiResponse<ResponseToUsageQuery>> getPromoDeviceUsageHistoryAsync(
-            final RequestBodyForUsage1 body) {
+            final ARequestBodyForUsage body) {
         try { 
             return prepareGetPromoDeviceUsageHistoryRequest(body).executeAsync(); 
         } catch (Exception e) {  
@@ -68,7 +68,7 @@ public final class PromotionPeriodInformationController extends BaseController {
      * Builds the ApiCall object for getPromoDeviceUsageHistory.
      */
     private ApiCall<ApiResponse<ResponseToUsageQuery>, ApiException> prepareGetPromoDeviceUsageHistoryRequest(
-            final RequestBodyForUsage1 body) throws JsonProcessingException, IOException {
+            final ARequestBodyForUsage body) throws JsonProcessingException, IOException {
         return new ApiCall.Builder<ApiResponse<ResponseToUsageQuery>, ApiException>()
                 .globalConfig(getGlobalConfiguration())
                 .requestBuilder(requestBuilder -> requestBuilder

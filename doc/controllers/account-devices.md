@@ -31,7 +31,7 @@ CompletableFuture<ApiResponse<V3AccountDeviceList>> getAccountDeviceInformationA
 |  --- | --- | --- | --- |
 | `acc` | `String` | Template, Required | Account identifier. |
 | `lastSeenDeviceId` | `String` | Query, Optional | Last seen device identifier. |
-| `protocol` | [`DevicesProtocolEnum`](../../doc/models/devices-protocol-enum.md) | Query, Optional | Filter to retrieve a specific protocol type used. |
+| `protocol` | [`DevicesProtocolEnum`](../../doc/models/devices-protocol-enum.md) | Query, Optional | Filter to retrieve a specific protocol type used.<br>**Default**: `DevicesProtocolEnum.LW_M2M` |
 
 ## Server
 

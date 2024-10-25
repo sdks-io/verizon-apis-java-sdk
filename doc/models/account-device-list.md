@@ -12,7 +12,7 @@ A list of deviceId objects to use when requesting information from multiple devi
 | Name | Type | Tags | Description | Getter | Setter |
 |  --- | --- | --- | --- | --- | --- |
 | `DeviceIds` | [`List<DeviceId>`](../../doc/models/device-id.md) | Required | All identifiers for the device. | List<DeviceId> getDeviceIds() | setDeviceIds(List<DeviceId> deviceIds) |
-| `IpAddress` | `String` | Optional | **Constraints**: *Minimum Length*: `3`, *Maximum Length*: `32`, *Pattern*: `^[0-9].[0-9].[0-9].[0-9]{3,32}$` | String getIpAddress() | setIpAddress(String ipAddress) |
+| `Ipaddress` | `String` | Optional | **Constraints**: *Minimum Length*: `3`, *Maximum Length*: `32`, *Pattern*: `^[0-9].[0-9].[0-9].[0-9]{3,32}$` | String getIpaddress() | setIpaddress(String ipaddress) |
 
 ## Example (as JSON)
 

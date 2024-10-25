@@ -14,6 +14,7 @@ import com.verizon.m5gedge.exceptions.GIORestErrorResponseException;
 import com.verizon.m5gedge.http.request.HttpMethod;
 import com.verizon.m5gedge.http.response.ApiResponse;
 import com.verizon.m5gedge.models.DeviceProfileRequest;
+import com.verizon.m5gedge.models.FallBack;
 import com.verizon.m5gedge.models.GIODeactivateDeviceProfileRequest;
 import com.verizon.m5gedge.models.GIOProfileRequest;
 import com.verizon.m5gedge.models.GIORequestResponse;
@@ -36,6 +37,240 @@ public final class ManagingeSIMProfilesController extends BaseController {
      */
     public ManagingeSIMProfilesController(GlobalConfiguration globalConfig) {
         super(globalConfig);
+    }
+
+    /**
+     * Resume service to a device with either a lead or local profile.
+     * @param  body  Required parameter: Device Profile Query
+     * @return    Returns the GIORequestResponse wrapped in ApiResponse response from the API call
+     * @throws    ApiException    Represents error response from the server.
+     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
+     */
+    public ApiResponse<GIORequestResponse> resumeProfile(
+            final GIOProfileRequest body) throws ApiException, IOException {
+        return prepareResumeProfileRequest(body).execute();
+    }
+
+    /**
+     * Resume service to a device with either a lead or local profile.
+     * @param  body  Required parameter: Device Profile Query
+     * @return    Returns the GIORequestResponse wrapped in ApiResponse response from the API call
+     */
+    public CompletableFuture<ApiResponse<GIORequestResponse>> resumeProfileAsync(
+            final GIOProfileRequest body) {
+        try { 
+            return prepareResumeProfileRequest(body).executeAsync(); 
+        } catch (Exception e) {  
+            throw new CompletionException(e); 
+        }
+    }
+
+    /**
+     * Builds the ApiCall object for resumeProfile.
+     */
+    private ApiCall<ApiResponse<GIORequestResponse>, ApiException> prepareResumeProfileRequest(
+            final GIOProfileRequest body) throws JsonProcessingException, IOException {
+        return new ApiCall.Builder<ApiResponse<GIORequestResponse>, ApiException>()
+                .globalConfig(getGlobalConfiguration())
+                .requestBuilder(requestBuilder -> requestBuilder
+                        .server(Server.THINGSPACE.value())
+                        .path("/m2m/v1/devices/profile/actions/profile_resume")
+                        .bodyParam(param -> param.value(body))
+                        .bodySerializer(() ->  ApiHelper.serialize(body))
+                        .headerParam(param -> param.key("Content-Type")
+                                .value("application/json").isRequired(false))
+                        .headerParam(param -> param.key("accept").value("application/json"))
+                        .withAuth(auth -> auth
+                                .and(andAuth -> andAuth
+                                        .add("thingspace_oauth")
+                                        .add("VZ-M2M-Token")))
+                        .httpMethod(HttpMethod.POST))
+                .responseHandler(responseHandler -> responseHandler
+                        .responseClassType(ResponseClassType.API_RESPONSE)
+                        .apiResponseDeserializer(
+                                response -> ApiHelper.deserialize(response, GIORequestResponse.class))
+                        .nullify404(false)
+                        .localErrorCase(ErrorCase.DEFAULT,
+                                 ErrorCase.setReason("Error response",
+                                (reason, context) -> new GIORestErrorResponseException(reason, context)))
+                        .globalErrorCase(GLOBAL_ERROR_CASES))
+                .build();
+    }
+
+    /**
+     * Suspend a device's Global profile.
+     * @param  body  Required parameter: Device Profile Query
+     * @return    Returns the GIORequestResponse wrapped in ApiResponse response from the API call
+     * @throws    ApiException    Represents error response from the server.
+     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
+     */
+    public ApiResponse<GIORequestResponse> profileSuspend(
+            final GIOProfileRequest body) throws ApiException, IOException {
+        return prepareProfileSuspendRequest(body).execute();
+    }
+
+    /**
+     * Suspend a device's Global profile.
+     * @param  body  Required parameter: Device Profile Query
+     * @return    Returns the GIORequestResponse wrapped in ApiResponse response from the API call
+     */
+    public CompletableFuture<ApiResponse<GIORequestResponse>> profileSuspendAsync(
+            final GIOProfileRequest body) {
+        try { 
+            return prepareProfileSuspendRequest(body).executeAsync(); 
+        } catch (Exception e) {  
+            throw new CompletionException(e); 
+        }
+    }
+
+    /**
+     * Builds the ApiCall object for profileSuspend.
+     */
+    private ApiCall<ApiResponse<GIORequestResponse>, ApiException> prepareProfileSuspendRequest(
+            final GIOProfileRequest body) throws JsonProcessingException, IOException {
+        return new ApiCall.Builder<ApiResponse<GIORequestResponse>, ApiException>()
+                .globalConfig(getGlobalConfiguration())
+                .requestBuilder(requestBuilder -> requestBuilder
+                        .server(Server.THINGSPACE.value())
+                        .path("/m2m/v1/devices/profile/actions/profile_suspend")
+                        .bodyParam(param -> param.value(body))
+                        .bodySerializer(() ->  ApiHelper.serialize(body))
+                        .headerParam(param -> param.key("Content-Type")
+                                .value("application/json").isRequired(false))
+                        .headerParam(param -> param.key("accept").value("application/json"))
+                        .withAuth(auth -> auth
+                                .and(andAuth -> andAuth
+                                        .add("thingspace_oauth")
+                                        .add("VZ-M2M-Token")))
+                        .httpMethod(HttpMethod.POST))
+                .responseHandler(responseHandler -> responseHandler
+                        .responseClassType(ResponseClassType.API_RESPONSE)
+                        .apiResponseDeserializer(
+                                response -> ApiHelper.deserialize(response, GIORequestResponse.class))
+                        .nullify404(false)
+                        .localErrorCase(ErrorCase.DEFAULT,
+                                 ErrorCase.setReason("Error response",
+                                (reason, context) -> new GIORestErrorResponseException(reason, context)))
+                        .globalErrorCase(GLOBAL_ERROR_CASES))
+                .build();
+    }
+
+    /**
+     * Suspend all service to an eUICC device, including the lead and local profile.
+     * @param  body  Required parameter: Device Profile Query
+     * @return    Returns the GIORequestResponse wrapped in ApiResponse response from the API call
+     * @throws    ApiException    Represents error response from the server.
+     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
+     */
+    public ApiResponse<GIORequestResponse> deviceSuspend(
+            final GIOProfileRequest body) throws ApiException, IOException {
+        return prepareDeviceSuspendRequest(body).execute();
+    }
+
+    /**
+     * Suspend all service to an eUICC device, including the lead and local profile.
+     * @param  body  Required parameter: Device Profile Query
+     * @return    Returns the GIORequestResponse wrapped in ApiResponse response from the API call
+     */
+    public CompletableFuture<ApiResponse<GIORequestResponse>> deviceSuspendAsync(
+            final GIOProfileRequest body) {
+        try { 
+            return prepareDeviceSuspendRequest(body).executeAsync(); 
+        } catch (Exception e) {  
+            throw new CompletionException(e); 
+        }
+    }
+
+    /**
+     * Builds the ApiCall object for deviceSuspend.
+     */
+    private ApiCall<ApiResponse<GIORequestResponse>, ApiException> prepareDeviceSuspendRequest(
+            final GIOProfileRequest body) throws JsonProcessingException, IOException {
+        return new ApiCall.Builder<ApiResponse<GIORequestResponse>, ApiException>()
+                .globalConfig(getGlobalConfiguration())
+                .requestBuilder(requestBuilder -> requestBuilder
+                        .server(Server.THINGSPACE.value())
+                        .path("/m2m/v1/devices/profile/actions/device_suspend")
+                        .bodyParam(param -> param.value(body))
+                        .bodySerializer(() ->  ApiHelper.serialize(body))
+                        .headerParam(param -> param.key("Content-Type")
+                                .value("application/json").isRequired(false))
+                        .headerParam(param -> param.key("accept").value("application/json"))
+                        .withAuth(auth -> auth
+                                .and(andAuth -> andAuth
+                                        .add("thingspace_oauth")
+                                        .add("VZ-M2M-Token")))
+                        .httpMethod(HttpMethod.POST))
+                .responseHandler(responseHandler -> responseHandler
+                        .responseClassType(ResponseClassType.API_RESPONSE)
+                        .apiResponseDeserializer(
+                                response -> ApiHelper.deserialize(response, GIORequestResponse.class))
+                        .nullify404(false)
+                        .localErrorCase(ErrorCase.DEFAULT,
+                                 ErrorCase.setReason("Error response",
+                                (reason, context) -> new GIORestErrorResponseException(reason, context)))
+                        .globalErrorCase(GLOBAL_ERROR_CASES))
+                .build();
+    }
+
+    /**
+     * Enable a fallback profile to be set.
+     * @param  body  Required parameter: Set the fallback attributes to allow a fallback profile to
+     *         be activated.
+     * @return    Returns the GIORequestResponse wrapped in ApiResponse response from the API call
+     * @throws    ApiException    Represents error response from the server.
+     * @throws    IOException    Signals that an I/O exception of some sort has occurred.
+     */
+    public ApiResponse<GIORequestResponse> setFallback(
+            final FallBack body) throws ApiException, IOException {
+        return prepareSetFallbackRequest(body).execute();
+    }
+
+    /**
+     * Enable a fallback profile to be set.
+     * @param  body  Required parameter: Set the fallback attributes to allow a fallback profile to
+     *         be activated.
+     * @return    Returns the GIORequestResponse wrapped in ApiResponse response from the API call
+     */
+    public CompletableFuture<ApiResponse<GIORequestResponse>> setFallbackAsync(
+            final FallBack body) {
+        try { 
+            return prepareSetFallbackRequest(body).executeAsync(); 
+        } catch (Exception e) {  
+            throw new CompletionException(e); 
+        }
+    }
+
+    /**
+     * Builds the ApiCall object for setFallback.
+     */
+    private ApiCall<ApiResponse<GIORequestResponse>, ApiException> prepareSetFallbackRequest(
+            final FallBack body) throws JsonProcessingException, IOException {
+        return new ApiCall.Builder<ApiResponse<GIORequestResponse>, ApiException>()
+                .globalConfig(getGlobalConfiguration())
+                .requestBuilder(requestBuilder -> requestBuilder
+                        .server(Server.THINGSPACE.value())
+                        .path("/v1/devices/profile/actions/setfallbackattribute")
+                        .bodyParam(param -> param.value(body))
+                        .bodySerializer(() ->  ApiHelper.serialize(body))
+                        .headerParam(param -> param.key("Content-Type")
+                                .value("application/json").isRequired(false))
+                        .headerParam(param -> param.key("accept").value("application/json"))
+                        .withAuth(auth -> auth
+                                .and(andAuth -> andAuth
+                                        .add("thingspace_oauth")
+                                        .add("VZ-M2M-Token")))
+                        .httpMethod(HttpMethod.POST))
+                .responseHandler(responseHandler -> responseHandler
+                        .responseClassType(ResponseClassType.API_RESPONSE)
+                        .apiResponseDeserializer(
+                                response -> ApiHelper.deserialize(response, GIORequestResponse.class))
+                        .nullify404(false)
+                        .localErrorCase(ErrorCase.DEFAULT,
+                                 ErrorCase.setReason("Error response",
+                                (reason, context) -> new GIORestErrorResponseException(reason, context)))
+                        .globalErrorCase(GLOBAL_ERROR_CASES))
+                .build();
     }
 
     /**

@@ -32,6 +32,8 @@ public class Campaign {
     private LocalDate endDate;
     private List<V3TimeWindow> campaignTimeWindowList;
     private String status;
+    private boolean autoAssignLicenseFlag;
+    private boolean autoAddDevicesFlag;
 
     /**
      * Default constructor.
@@ -50,6 +52,8 @@ public class Campaign {
      * @param  startDate  LocalDate value for startDate.
      * @param  endDate  LocalDate value for endDate.
      * @param  status  String value for status.
+     * @param  autoAssignLicenseFlag  boolean value for autoAssignLicenseFlag.
+     * @param  autoAddDevicesFlag  boolean value for autoAddDevicesFlag.
      * @param  campaignName  String value for campaignName.
      * @param  firmwareName  String value for firmwareName.
      * @param  firmwareFrom  String value for firmwareFrom.
@@ -65,6 +69,8 @@ public class Campaign {
             LocalDate startDate,
             LocalDate endDate,
             String status,
+            boolean autoAssignLicenseFlag,
+            boolean autoAddDevicesFlag,
             String campaignName,
             String firmwareName,
             String firmwareFrom,
@@ -83,6 +89,8 @@ public class Campaign {
         this.endDate = endDate;
         this.campaignTimeWindowList = campaignTimeWindowList;
         this.status = status;
+        this.autoAssignLicenseFlag = autoAssignLicenseFlag;
+        this.autoAddDevicesFlag = autoAddDevicesFlag;
     }
 
     /**
@@ -355,6 +363,52 @@ public class Campaign {
     }
 
     /**
+     * Getter for AutoAssignLicenseFlag.
+     * Any device included in the device list which does not have a license will automatically be
+     * assigned a FOTA license, assuming there are enough FOTA licenses available, when set to true.
+     * @return Returns the boolean
+     */
+    @JsonGetter("autoAssignLicenseFlag")
+    public boolean getAutoAssignLicenseFlag() {
+        return autoAssignLicenseFlag;
+    }
+
+    /**
+     * Setter for AutoAssignLicenseFlag.
+     * Any device included in the device list which does not have a license will automatically be
+     * assigned a FOTA license, assuming there are enough FOTA licenses available, when set to true.
+     * @param autoAssignLicenseFlag Value for boolean
+     */
+    @JsonSetter("autoAssignLicenseFlag")
+    public void setAutoAssignLicenseFlag(boolean autoAssignLicenseFlag) {
+        this.autoAssignLicenseFlag = autoAssignLicenseFlag;
+    }
+
+    /**
+     * Getter for AutoAddDevicesFlag.
+     * Beyond the devices included on the device list, any other device(s) which matches the
+     * eligibility criteria (same make, model, current firmware, protocol, billing account) will
+     * automatically be added to the campaign list during the life of the campaign when set to true.
+     * @return Returns the boolean
+     */
+    @JsonGetter("autoAddDevicesFlag")
+    public boolean getAutoAddDevicesFlag() {
+        return autoAddDevicesFlag;
+    }
+
+    /**
+     * Setter for AutoAddDevicesFlag.
+     * Beyond the devices included on the device list, any other device(s) which matches the
+     * eligibility criteria (same make, model, current firmware, protocol, billing account) will
+     * automatically be added to the campaign list during the life of the campaign when set to true.
+     * @param autoAddDevicesFlag Value for boolean
+     */
+    @JsonSetter("autoAddDevicesFlag")
+    public void setAutoAddDevicesFlag(boolean autoAddDevicesFlag) {
+        this.autoAddDevicesFlag = autoAddDevicesFlag;
+    }
+
+    /**
      * Converts this Campaign into string format.
      * @return String representation of this class
      */
@@ -362,10 +416,11 @@ public class Campaign {
     public String toString() {
         return "Campaign [" + "id=" + id + ", accountName=" + accountName + ", protocol=" + protocol
                 + ", make=" + make + ", model=" + model + ", startDate=" + startDate + ", endDate="
-                + endDate + ", status=" + status + ", campaignName=" + campaignName
-                + ", firmwareName=" + firmwareName + ", firmwareFrom=" + firmwareFrom
-                + ", firmwareTo=" + firmwareTo + ", campaignTimeWindowList="
-                + campaignTimeWindowList + "]";
+                + endDate + ", status=" + status + ", autoAssignLicenseFlag="
+                + autoAssignLicenseFlag + ", autoAddDevicesFlag=" + autoAddDevicesFlag
+                + ", campaignName=" + campaignName + ", firmwareName=" + firmwareName
+                + ", firmwareFrom=" + firmwareFrom + ", firmwareTo=" + firmwareTo
+                + ", campaignTimeWindowList=" + campaignTimeWindowList + "]";
     }
 
     /**
@@ -375,7 +430,7 @@ public class Campaign {
      */
     public Builder toBuilder() {
         Builder builder = new Builder(id, accountName, protocol, make, model, startDate, endDate,
-                status)
+                status, autoAssignLicenseFlag, autoAddDevicesFlag)
                 .campaignName(getCampaignName())
                 .firmwareName(getFirmwareName())
                 .firmwareFrom(getFirmwareFrom())
@@ -396,6 +451,8 @@ public class Campaign {
         private LocalDate startDate;
         private LocalDate endDate;
         private String status;
+        private boolean autoAssignLicenseFlag;
+        private boolean autoAddDevicesFlag;
         private String campaignName;
         private String firmwareName;
         private String firmwareFrom;
@@ -418,9 +475,12 @@ public class Campaign {
          * @param  startDate  LocalDate value for startDate.
          * @param  endDate  LocalDate value for endDate.
          * @param  status  String value for status.
+         * @param  autoAssignLicenseFlag  boolean value for autoAssignLicenseFlag.
+         * @param  autoAddDevicesFlag  boolean value for autoAddDevicesFlag.
          */
         public Builder(String id, String accountName, String protocol, String make, String model,
-                LocalDate startDate, LocalDate endDate, String status) {
+                LocalDate startDate, LocalDate endDate, String status,
+                boolean autoAssignLicenseFlag, boolean autoAddDevicesFlag) {
             this.id = id;
             this.accountName = accountName;
             this.protocol = protocol;
@@ -429,6 +489,8 @@ public class Campaign {
             this.startDate = startDate;
             this.endDate = endDate;
             this.status = status;
+            this.autoAssignLicenseFlag = autoAssignLicenseFlag;
+            this.autoAddDevicesFlag = autoAddDevicesFlag;
         }
 
         /**
@@ -512,6 +574,26 @@ public class Campaign {
         }
 
         /**
+         * Setter for autoAssignLicenseFlag.
+         * @param  autoAssignLicenseFlag  boolean value for autoAssignLicenseFlag.
+         * @return Builder
+         */
+        public Builder autoAssignLicenseFlag(boolean autoAssignLicenseFlag) {
+            this.autoAssignLicenseFlag = autoAssignLicenseFlag;
+            return this;
+        }
+
+        /**
+         * Setter for autoAddDevicesFlag.
+         * @param  autoAddDevicesFlag  boolean value for autoAddDevicesFlag.
+         * @return Builder
+         */
+        public Builder autoAddDevicesFlag(boolean autoAddDevicesFlag) {
+            this.autoAddDevicesFlag = autoAddDevicesFlag;
+            return this;
+        }
+
+        /**
          * Setter for campaignName.
          * @param  campaignName  String value for campaignName.
          * @return Builder
@@ -567,7 +649,8 @@ public class Campaign {
          */
         public Campaign build() {
             return new Campaign(id, accountName, protocol, make, model, startDate, endDate, status,
-                    campaignName, firmwareName, firmwareFrom, firmwareTo, campaignTimeWindowList);
+                    autoAssignLicenseFlag, autoAddDevicesFlag, campaignName, firmwareName,
+                    firmwareFrom, firmwareTo, campaignTimeWindowList);
         }
     }
 }

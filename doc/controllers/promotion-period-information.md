@@ -20,14 +20,14 @@ Retrieves the usage history of a device during the promotion period.
 
 ```java
 CompletableFuture<ApiResponse<ResponseToUsageQuery>> getPromoDeviceUsageHistoryAsync(
-    final RequestBodyForUsage1 body)
+    final ARequestBodyForUsage body)
 ```
 
 ## Parameters
 
 | Parameter | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `body` | [`RequestBodyForUsage1`](../../doc/models/request-body-for-usage-1.md) | Body, Required | Retrieve Aggregate Usage |
+| `body` | [`ARequestBodyForUsage`](../../doc/models/a-request-body-for-usage.md) | Body, Required | Retrieve Aggregate Usage |
 
 ## Server
 
@@ -40,7 +40,7 @@ CompletableFuture<ApiResponse<ResponseToUsageQuery>> getPromoDeviceUsageHistoryA
 ## Example Usage
 
 ```java
-RequestBodyForUsage1 body = new RequestBodyForUsage1.Builder()
+ARequestBodyForUsage body = new ARequestBodyForUsage.Builder()
     .startTime(DateTimeHelper.fromRfc8601DateTime("08/15/2021 00:00:00"))
     .endTime(DateTimeHelper.fromRfc8601DateTime("08/16/2021 00:00:00"))
     .build();

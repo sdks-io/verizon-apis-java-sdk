@@ -7,8 +7,8 @@ The following parameters are configurable for the API Client:
 |  --- | --- | --- |
 | `environment` | `Environment` | The API environment. <br> **Default: `Environment.PRODUCTION`** |
 | `httpClientConfig` | [`Consumer<HttpClientConfiguration.Builder>`](http-client-configuration-builder.md) | Set up Http Client Configuration instance. |
-| `thingspaceOauthCredentials` | [`ThingspaceOauthCredentials`]($a/oauth-2-client-credentials-grant.md) | The Credentials Setter for OAuth 2 Client Credentials Grant |
-| `vZM2mTokenCredentials` | [`VZM2mTokenCredentials`]($a/custom-header-signature.md) | The Credentials Setter for Custom Header Signature |
+| `thingspaceOauthCredentials` | [`ThingspaceOauthCredentials`](auth/oauth-2-client-credentials-grant.md) | The Credentials Setter for OAuth 2 Client Credentials Grant |
+| `vZM2mTokenCredentials` | [`VZM2mTokenCredentials`](auth/custom-header-signature.md) | The Credentials Setter for Custom Header Signature |
 
 The API client can be initialized as follows:
 
@@ -114,13 +114,14 @@ The gateway for the SDK. This class acts as a factory for the Controllers and al
 | `getDeviceSMSMessagingController()` | Provides access to DeviceSMSMessaging controller. | `DeviceSMSMessagingController` |
 | `getDeviceActionsController()` | Provides access to DeviceActions controller. | `DeviceActionsController` |
 | `getThingSpaceQualityofServiceAPIActionsController()` | Provides access to ThingSpaceQualityofServiceAPIActions controller. | `ThingSpaceQualityofServiceAPIActionsController` |
-| `getMECController()` | Provides access to MEC controller. | `MECController` |
+| `getPWNController()` | Provides access to PWN controller. | `PWNController` |
 | `getPromotionPeriodInformationController()` | Provides access to PromotionPeriodInformation controller. | `PromotionPeriodInformationController` |
 | `getRetrievetheTriggersController()` | Provides access to RetrievetheTriggers controller. | `RetrievetheTriggersController` |
 | `getUpdateTriggersController()` | Provides access to UpdateTriggers controller. | `UpdateTriggersController` |
 | `getSIMActionsController()` | Provides access to SIMActions controller. | `SIMActionsController` |
 | `getGlobalReportingController()` | Provides access to GlobalReporting controller. | `GlobalReportingController` |
 | `getMV2TriggersController()` | Provides access to MV2Triggers controller. | `MV2TriggersController` |
+| `getM5gBIDeviceActionsController()` | Provides access to M5gBIDeviceActions controller. | `M5gBIDeviceActionsController` |
 | `getOauthAuthorizationController()` | Provides access to OauthAuthorization controller. | `OauthAuthorizationController` |
 
 ### Methods
@@ -131,8 +132,8 @@ The gateway for the SDK. This class acts as a factory for the Controllers and al
 | `getEnvironment()` | Current API environment. | `Environment` |
 | `getHttpClient()` | The HTTP Client instance to use for making HTTP requests. | `HttpClient` |
 | `getHttpClientConfig()` | Http Client Configuration instance. | [`ReadonlyHttpClientConfiguration`](http-client-configuration.md) |
-| `getThingspaceOauthCredentials()` | The credentials to use with ThingspaceOauth. | [`ThingspaceOauthCredentials`]($a/oauth-2-client-credentials-grant.md) |
-| `getVZM2MTokenCredentials()` | The credentials to use with VZM2MToken. | [`VZM2mTokenCredentials`]($a/custom-header-signature.md) |
+| `getThingspaceOauthCredentials()` | The credentials to use with ThingspaceOauth. | [`ThingspaceOauthCredentials`](auth/oauth-2-client-credentials-grant.md) |
+| `getVZM2MTokenCredentials()` | The credentials to use with VZM2MToken. | [`VZM2mTokenCredentials`](auth/custom-header-signature.md) |
 | `getBaseUri(Server server)` | Get base URI by current environment | `String` |
 | `getBaseUri()` | Get base URI by current environment | `String` |
 

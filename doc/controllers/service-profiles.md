@@ -154,7 +154,7 @@ CompletableFuture<ApiResponse<ResourcesServiceProfileWithId>> getServiceProfileA
 
 | Parameter | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `serviceProfileId` | `String` | Template, Required | - |
+| `serviceProfileId` | `String` | Template, Required | **Constraints**: *Maximum Length*: `36`, *Pattern*: ``^[a-zA-Z0-9!@#$&()\-`.+,/"]{3,36}$`` |
 
 ## Requires scope
 
@@ -233,7 +233,7 @@ CompletableFuture<ApiResponse<UpdateServiceProfileResult>> updateServiceProfileA
 
 | Parameter | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `serviceProfileId` | `String` | Template, Required | - |
+| `serviceProfileId` | `String` | Template, Required | **Constraints**: *Maximum Length*: `36`, *Pattern*: ``^[a-zA-Z0-9!@#$&()\-`.+,/"]{3,36}$`` |
 | `body` | [`ResourcesServiceProfile`](../../doc/models/resources-service-profile.md) | Body, Required | The request body passes the rest of the needed parameters to create a service profile. The `maxLatencyMs` and `clientType` parameters are both required in the request body. **Note:** The `maxLatencyMs` value must be submitted in multiples of 5. Additionally, "GPU" is future functionality and the values are not captured. Default values to use are shown. |
 
 ## Requires scope
@@ -314,7 +314,7 @@ CompletableFuture<ApiResponse<DeleteServiceProfileResult>> deleteServiceProfileA
 
 | Parameter | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `serviceProfileId` | `String` | Template, Required | - |
+| `serviceProfileId` | `String` | Template, Required | **Constraints**: *Maximum Length*: `36`, *Pattern*: ``^[a-zA-Z0-9!@#$&()\-`.+,/"]{3,36}$`` |
 
 ## Requires scope
 

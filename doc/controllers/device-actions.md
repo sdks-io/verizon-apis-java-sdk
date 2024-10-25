@@ -10,9 +10,195 @@ DeviceActionsController deviceActionsController = client.getDeviceActionsControl
 
 ## Methods
 
+* [Aggregate Usage](../../doc/controllers/device-actions.md#aggregate-usage)
+* [Daily Usage](../../doc/controllers/device-actions.md#daily-usage)
+* [Service Plan List](../../doc/controllers/device-actions.md#service-plan-list)
+* [Account Information](../../doc/controllers/device-actions.md#account-information)
 * [Retrieve the Global Device List](../../doc/controllers/device-actions.md#retrieve-the-global-device-list)
 * [Retrieve Device Provisioning History](../../doc/controllers/device-actions.md#retrieve-device-provisioning-history)
 * [Get Asynchronous Request Status](../../doc/controllers/device-actions.md#get-asynchronous-request-status)
+
+
+# Aggregate Usage
+
+Retrieve the aggregate usage for a device or a number of devices.
+
+```java
+CompletableFuture<ApiResponse<GIORequestResponse>> aggregateUsageAsync(
+    final AggregateUsage body)
+```
+
+## Parameters
+
+| Parameter | Type | Tags | Description |
+|  --- | --- | --- | --- |
+| `body` | [`AggregateUsage`](../../doc/models/aggregate-usage.md) | Body, Required | - |
+
+## Server
+
+`Server.THINGSPACE`
+
+## Response Type
+
+[`GIORequestResponse`](../../doc/models/gio-request-response.md)
+
+## Example Usage
+
+```java
+AggregateUsage body = new AggregateUsage.Builder()
+    .build();
+
+deviceActionsController.aggregateUsageAsync(body).thenAccept(result -> {
+    // TODO success callback handler
+    System.out.println(result);
+}).exceptionally(exception -> {
+    // TODO failure callback handler
+    exception.printStackTrace();
+    return null;
+});
+```
+
+## Errors
+
+| HTTP Status Code | Error Description | Exception Class |
+|  --- | --- | --- |
+| Default | Error response | [`GIORestErrorResponseException`](../../doc/models/gio-rest-error-response-exception.md) |
+
+
+# Daily Usage
+
+Retrieve the daily usage for a device, for a specified period of time, segmented by day
+
+```java
+CompletableFuture<ApiResponse<DailyUsageResponse>> dailyUsageAsync(
+    final DailyUsage body)
+```
+
+## Parameters
+
+| Parameter | Type | Tags | Description |
+|  --- | --- | --- | --- |
+| `body` | [`DailyUsage`](../../doc/models/daily-usage.md) | Body, Required | - |
+
+## Server
+
+`Server.THINGSPACE`
+
+## Response Type
+
+[`DailyUsageResponse`](../../doc/models/daily-usage-response.md)
+
+## Example Usage
+
+```java
+DailyUsage body = new DailyUsage.Builder()
+    .build();
+
+deviceActionsController.dailyUsageAsync(body).thenAccept(result -> {
+    // TODO success callback handler
+    System.out.println(result);
+}).exceptionally(exception -> {
+    // TODO failure callback handler
+    exception.printStackTrace();
+    return null;
+});
+```
+
+## Errors
+
+| HTTP Status Code | Error Description | Exception Class |
+|  --- | --- | --- |
+| Default | Error response | [`GIORestErrorResponseException`](../../doc/models/gio-rest-error-response-exception.md) |
+
+
+# Service Plan List
+
+Retrieve all of the service plans, features and carriers associated with the account specified.
+
+```java
+CompletableFuture<ApiResponse<AccountDetails>> servicePlanListAsync(
+    final String accountName)
+```
+
+## Parameters
+
+| Parameter | Type | Tags | Description |
+|  --- | --- | --- | --- |
+| `accountName` | `String` | Template, Required | **Constraints**: *Minimum Length*: `3`, *Maximum Length*: `32`, *Pattern*: `^[A-Za-z0-9]{3,32}$` |
+
+## Server
+
+`Server.THINGSPACE`
+
+## Response Type
+
+[`AccountDetails`](../../doc/models/account-details.md)
+
+## Example Usage
+
+```java
+String accountName = "accountName4";
+
+deviceActionsController.servicePlanListAsync(accountName).thenAccept(result -> {
+    // TODO success callback handler
+    System.out.println(result);
+}).exceptionally(exception -> {
+    // TODO failure callback handler
+    exception.printStackTrace();
+    return null;
+});
+```
+
+## Errors
+
+| HTTP Status Code | Error Description | Exception Class |
+|  --- | --- | --- |
+| Default | Error response | [`GIORestErrorResponseException`](../../doc/models/gio-rest-error-response-exception.md) |
+
+
+# Account Information
+
+Retrieve all of the service plans, features and carriers associated with the account specified.
+
+```java
+CompletableFuture<ApiResponse<AccountDetails>> accountInformationAsync(
+    final String accountName)
+```
+
+## Parameters
+
+| Parameter | Type | Tags | Description |
+|  --- | --- | --- | --- |
+| `accountName` | `String` | Template, Required | **Constraints**: *Minimum Length*: `3`, *Maximum Length*: `32`, *Pattern*: `^[A-Za-z0-9]{3,32}$` |
+
+## Server
+
+`Server.THINGSPACE`
+
+## Response Type
+
+[`AccountDetails`](../../doc/models/account-details.md)
+
+## Example Usage
+
+```java
+String accountName = "accountName4";
+
+deviceActionsController.accountInformationAsync(accountName).thenAccept(result -> {
+    // TODO success callback handler
+    System.out.println(result);
+}).exceptionally(exception -> {
+    // TODO failure callback handler
+    exception.printStackTrace();
+    return null;
+});
+```
+
+## Errors
+
+| HTTP Status Code | Error Description | Exception Class |
+|  --- | --- | --- |
+| Default | Error response | [`GIORestErrorResponseException`](../../doc/models/gio-rest-error-response-exception.md) |
 
 
 # Retrieve the Global Device List
@@ -67,7 +253,7 @@ deviceActionsController.retrieveTheGlobalDeviceListAsync(body).thenAccept(result
 
 # Retrieve Device Provisioning History
 
-Retreive the provisioning history of a specific device or devices.
+Retrieve the provisioning history of a specific device or devices.
 
 ```java
 CompletableFuture<ApiResponse<GIORequestResponse>> retrieveDeviceProvisioningHistoryAsync(
@@ -128,8 +314,8 @@ CompletableFuture<ApiResponse<StatusResponse>> getAsynchronousRequestStatusAsync
 
 | Parameter | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `accountName` | `String` | Template, Required | - |
-| `requestID` | `String` | Template, Required | - |
+| `accountName` | `String` | Template, Required | **Constraints**: *Minimum Length*: `3`, *Maximum Length*: `32`, *Pattern*: `^[A-Za-z0-9\-]{3,32}$` |
+| `requestID` | `String` | Template, Required | **Constraints**: *Minimum Length*: `3`, *Maximum Length*: `64`, *Pattern*: `^[A-Za-z0-9\-]{3,64}$` |
 
 ## Server
 

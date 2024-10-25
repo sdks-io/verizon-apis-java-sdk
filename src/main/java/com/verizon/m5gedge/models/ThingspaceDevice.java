@@ -24,7 +24,7 @@ public class ThingspaceDevice {
     private List<DeviceId> deviceIds;
     private List<CustomFields> extendedAttributes;
     private List<String> groupNames;
-    private String ipAddress;
+    private String ipaddress;
     private String lastActivationBy;
     private String lastActivationDate;
     private String lastConnectionDate;
@@ -46,7 +46,7 @@ public class ThingspaceDevice {
      * @param  deviceIds  List of DeviceId value for deviceIds.
      * @param  extendedAttributes  List of CustomFields value for extendedAttributes.
      * @param  groupNames  List of String value for groupNames.
-     * @param  ipAddress  String value for ipAddress.
+     * @param  ipaddress  String value for ipaddress.
      * @param  lastActivationBy  String value for lastActivationBy.
      * @param  lastActivationDate  String value for lastActivationDate.
      * @param  lastConnectionDate  String value for lastConnectionDate.
@@ -61,7 +61,7 @@ public class ThingspaceDevice {
             List<DeviceId> deviceIds,
             List<CustomFields> extendedAttributes,
             List<String> groupNames,
-            String ipAddress,
+            String ipaddress,
             String lastActivationBy,
             String lastActivationDate,
             String lastConnectionDate) {
@@ -74,7 +74,7 @@ public class ThingspaceDevice {
         this.deviceIds = deviceIds;
         this.extendedAttributes = extendedAttributes;
         this.groupNames = groupNames;
-        this.ipAddress = ipAddress;
+        this.ipaddress = ipaddress;
         this.lastActivationBy = lastActivationBy;
         this.lastActivationDate = lastActivationDate;
         this.lastConnectionDate = lastConnectionDate;
@@ -274,24 +274,24 @@ public class ThingspaceDevice {
     }
 
     /**
-     * Getter for IpAddress.
+     * Getter for Ipaddress.
      * The IP address of the device.
      * @return Returns the String
      */
     @JsonGetter("ipAddress")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getIpAddress() {
-        return ipAddress;
+    public String getIpaddress() {
+        return ipaddress;
     }
 
     /**
-     * Setter for IpAddress.
+     * Setter for Ipaddress.
      * The IP address of the device.
-     * @param ipAddress Value for String
+     * @param ipaddress Value for String
      */
     @JsonSetter("ipAddress")
-    public void setIpAddress(String ipAddress) {
-        this.ipAddress = ipAddress;
+    public void setIpaddress(String ipaddress) {
+        this.ipaddress = ipaddress;
     }
 
     /**
@@ -367,7 +367,7 @@ public class ThingspaceDevice {
                 + billingCycleEndDate + ", carrierInformations=" + carrierInformations
                 + ", connected=" + connected + ", createdAt=" + createdAt + ", customFields="
                 + customFields + ", deviceIds=" + deviceIds + ", extendedAttributes="
-                + extendedAttributes + ", groupNames=" + groupNames + ", ipAddress=" + ipAddress
+                + extendedAttributes + ", groupNames=" + groupNames + ", ipaddress=" + ipaddress
                 + ", lastActivationBy=" + lastActivationBy + ", lastActivationDate="
                 + lastActivationDate + ", lastConnectionDate=" + lastConnectionDate + "]";
     }
@@ -388,7 +388,7 @@ public class ThingspaceDevice {
                 .deviceIds(getDeviceIds())
                 .extendedAttributes(getExtendedAttributes())
                 .groupNames(getGroupNames())
-                .ipAddress(getIpAddress())
+                .ipaddress(getIpaddress())
                 .lastActivationBy(getLastActivationBy())
                 .lastActivationDate(getLastActivationDate())
                 .lastConnectionDate(getLastConnectionDate());
@@ -408,7 +408,7 @@ public class ThingspaceDevice {
         private List<DeviceId> deviceIds;
         private List<CustomFields> extendedAttributes;
         private List<String> groupNames;
-        private String ipAddress;
+        private String ipaddress;
         private String lastActivationBy;
         private String lastActivationDate;
         private String lastConnectionDate;
@@ -506,12 +506,12 @@ public class ThingspaceDevice {
         }
 
         /**
-         * Setter for ipAddress.
-         * @param  ipAddress  String value for ipAddress.
+         * Setter for ipaddress.
+         * @param  ipaddress  String value for ipaddress.
          * @return Builder
          */
-        public Builder ipAddress(String ipAddress) {
-            this.ipAddress = ipAddress;
+        public Builder ipaddress(String ipaddress) {
+            this.ipaddress = ipaddress;
             return this;
         }
 
@@ -552,7 +552,7 @@ public class ThingspaceDevice {
         public ThingspaceDevice build() {
             return new ThingspaceDevice(accountName, billingCycleEndDate, carrierInformations,
                     connected, createdAt, customFields, deviceIds, extendedAttributes, groupNames,
-                    ipAddress, lastActivationBy, lastActivationDate, lastConnectionDate);
+                    ipaddress, lastActivationBy, lastActivationDate, lastConnectionDate);
         }
     }
 }

@@ -23,7 +23,7 @@ This endpoint allows a user to schedule a firmware upgrade for a list of devices
 
 ```java
 CompletableFuture<ApiResponse<FirmwareCampaign>> scheduleCampaignFirmwareUpgradeAsync(
-    final String acc,
+    final String accountName,
     final CampaignFirmwareUpgrade body)
 ```
 
@@ -31,7 +31,7 @@ CompletableFuture<ApiResponse<FirmwareCampaign>> scheduleCampaignFirmwareUpgrade
 
 | Parameter | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `acc` | `String` | Template, Required | Account identifier. |
+| `accountName` | `String` | Template, Required | Account identifier. |
 | `body` | [`CampaignFirmwareUpgrade`](../../doc/models/campaign-firmware-upgrade.md) | Body, Required | Firmware upgrade information. |
 
 ## Server
@@ -45,7 +45,7 @@ CompletableFuture<ApiResponse<FirmwareCampaign>> scheduleCampaignFirmwareUpgrade
 ## Example Usage
 
 ```java
-String acc = "0000123456-00001";
+String accountName = "0000123456-00001";
 CampaignFirmwareUpgrade body = new CampaignFirmwareUpgrade.Builder(
     "SEQUANSCommunications_GM01Q_SR1.2.0.0-10512_SR1.2.0.0-10657",
     "SR1.2.0.0-10512",
@@ -55,7 +55,9 @@ CampaignFirmwareUpgrade body = new CampaignFirmwareUpgrade.Builder(
     DateTimeHelper.fromSimpleDate("2021-10-01"),
     Arrays.asList(
         "15-digit IMEI"
-    )
+    ),
+    false,
+    false
 )
 .campaignName("Smart FOTA - test 4")
 .campaignTimeWindowList(Arrays.asList(
@@ -67,7 +69,7 @@ CampaignFirmwareUpgrade body = new CampaignFirmwareUpgrade.Builder(
     ))
 .build();
 
-campaignsV3Controller.scheduleCampaignFirmwareUpgradeAsync(acc, body).thenAccept(result -> {
+campaignsV3Controller.scheduleCampaignFirmwareUpgradeAsync(accountName, body).thenAccept(result -> {
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
@@ -275,7 +277,7 @@ This endpoint allows the user to retrieve campaign level information for a speci
 
 ```java
 CompletableFuture<ApiResponse<Campaign>> getCampaignInformationAsync(
-    final String acc,
+    final String accountName,
     final String campaignId)
 ```
 
@@ -283,7 +285,7 @@ CompletableFuture<ApiResponse<Campaign>> getCampaignInformationAsync(
 
 | Parameter | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `acc` | `String` | Template, Required | Account identifier. |
+| `accountName` | `String` | Template, Required | Account identifier. |
 | `campaignId` | `String` | Template, Required | Firmware upgrade identifier. |
 
 ## Server
@@ -297,10 +299,10 @@ CompletableFuture<ApiResponse<Campaign>> getCampaignInformationAsync(
 ## Example Usage
 
 ```java
-String acc = "0000123456-00001";
+String accountName = "0000123456-00001";
 String campaignId = "f858b8c4-2153-11ec-8c44-aeb16d1aa652";
 
-campaignsV3Controller.getCampaignInformationAsync(acc, campaignId).thenAccept(result -> {
+campaignsV3Controller.getCampaignInformationAsync(accountName, campaignId).thenAccept(result -> {
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
@@ -331,7 +333,9 @@ campaignsV3Controller.getCampaignInformationAsync(acc, campaignId).thenAccept(re
       "startTime": 18,
       "endTime": 22
     }
-  ]
+  ],
+  "autoAssignLicenseFlag": false,
+  "autoAddDevicesFlag": false
 }
 ```
 
@@ -348,7 +352,7 @@ This endpoint allows user to cancel a firmware campaign. A firmware campaign alr
 
 ```java
 CompletableFuture<ApiResponse<FotaV3SuccessResult>> cancelCampaignAsync(
-    final String acc,
+    final String accountName,
     final String campaignId)
 ```
 
@@ -356,7 +360,7 @@ CompletableFuture<ApiResponse<FotaV3SuccessResult>> cancelCampaignAsync(
 
 | Parameter | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `acc` | `String` | Template, Required | Account identifier. |
+| `accountName` | `String` | Template, Required | Account identifier. |
 | `campaignId` | `String` | Template, Required | Firmware upgrade information. |
 
 ## Server
@@ -370,10 +374,10 @@ CompletableFuture<ApiResponse<FotaV3SuccessResult>> cancelCampaignAsync(
 ## Example Usage
 
 ```java
-String acc = "0000123456-00001";
+String accountName = "0000123456-00001";
 String campaignId = "f858b8c4-2153-11ec-8c44-aeb16d1aa652";
 
-campaignsV3Controller.cancelCampaignAsync(acc, campaignId).thenAccept(result -> {
+campaignsV3Controller.cancelCampaignAsync(accountName, campaignId).thenAccept(result -> {
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {

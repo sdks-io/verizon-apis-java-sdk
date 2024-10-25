@@ -234,7 +234,7 @@ public final class DeviceManagementController extends BaseController {
                 .globalConfig(getGlobalConfiguration())
                 .requestBuilder(requestBuilder -> requestBuilder
                         .server(Server.THINGSPACE.value())
-                        .path("/m2m/v1/devices/actions/contactinfo")
+                        .path("/m2m/v1/devices/actions/contactInfo")
                         .bodyParam(param -> param.value(body))
                         .bodySerializer(() ->  ApiHelper.serialize(body))
                         .headerParam(param -> param.key("Content-Type")

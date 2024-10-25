@@ -26,7 +26,7 @@ public class GoToStateRequest {
     private String skuNumber;
     private List<CustomFields> customFields;
     private List<Object> devicesWithServiceAddress;
-    private String ipAddress;
+    private String ipaddress;
     private String groupName;
     private PlaceOfUse primaryPlaceOfUse;
 
@@ -49,7 +49,7 @@ public class GoToStateRequest {
      * @param  skuNumber  String value for skuNumber.
      * @param  customFields  List of CustomFields value for customFields.
      * @param  devicesWithServiceAddress  List of Object value for devicesWithServiceAddress.
-     * @param  ipAddress  String value for ipAddress.
+     * @param  ipaddress  String value for ipaddress.
      * @param  groupName  String value for groupName.
      * @param  primaryPlaceOfUse  PlaceOfUse value for primaryPlaceOfUse.
      */
@@ -65,7 +65,7 @@ public class GoToStateRequest {
             String skuNumber,
             List<CustomFields> customFields,
             List<Object> devicesWithServiceAddress,
-            String ipAddress,
+            String ipaddress,
             String groupName,
             PlaceOfUse primaryPlaceOfUse) {
         this.serviceName = serviceName;
@@ -79,7 +79,7 @@ public class GoToStateRequest {
         this.skuNumber = skuNumber;
         this.customFields = customFields;
         this.devicesWithServiceAddress = devicesWithServiceAddress;
-        this.ipAddress = ipAddress;
+        this.ipaddress = ipaddress;
         this.groupName = groupName;
         this.primaryPlaceOfUse = primaryPlaceOfUse;
     }
@@ -332,24 +332,24 @@ public class GoToStateRequest {
     }
 
     /**
-     * Getter for IpAddress.
+     * Getter for Ipaddress.
      * The IP address of the device.
      * @return Returns the String
      */
     @JsonGetter("ipAddress")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public String getIpAddress() {
-        return ipAddress;
+    public String getIpaddress() {
+        return ipaddress;
     }
 
     /**
-     * Setter for IpAddress.
+     * Setter for Ipaddress.
      * The IP address of the device.
-     * @param ipAddress Value for String
+     * @param ipaddress Value for String
      */
     @JsonSetter("ipAddress")
-    public void setIpAddress(String ipAddress) {
-        this.ipAddress = ipAddress;
+    public void setIpaddress(String ipaddress) {
+        this.ipaddress = ipaddress;
     }
 
     /**
@@ -413,7 +413,7 @@ public class GoToStateRequest {
                 + devices + ", filter=" + filter + ", carrierIpPoolName=" + carrierIpPoolName
                 + ", publicIpRestriction=" + publicIpRestriction + ", skuNumber=" + skuNumber
                 + ", customFields=" + customFields + ", devicesWithServiceAddress="
-                + devicesWithServiceAddress + ", ipAddress=" + ipAddress + ", groupName="
+                + devicesWithServiceAddress + ", ipaddress=" + ipaddress + ", groupName="
                 + groupName + ", primaryPlaceOfUse=" + primaryPlaceOfUse + "]";
     }
 
@@ -431,7 +431,7 @@ public class GoToStateRequest {
                 .skuNumber(getSkuNumber())
                 .customFields(getCustomFields())
                 .devicesWithServiceAddress(getDevicesWithServiceAddress())
-                .ipAddress(getIpAddress())
+                .ipaddress(getIpaddress())
                 .groupName(getGroupName())
                 .primaryPlaceOfUse(getPrimaryPlaceOfUse());
         return builder;
@@ -452,7 +452,7 @@ public class GoToStateRequest {
         private String skuNumber;
         private List<CustomFields> customFields;
         private List<Object> devicesWithServiceAddress;
-        private String ipAddress;
+        private String ipaddress;
         private String groupName;
         private PlaceOfUse primaryPlaceOfUse;
 
@@ -588,12 +588,12 @@ public class GoToStateRequest {
         }
 
         /**
-         * Setter for ipAddress.
-         * @param  ipAddress  String value for ipAddress.
+         * Setter for ipaddress.
+         * @param  ipaddress  String value for ipaddress.
          * @return Builder
          */
-        public Builder ipAddress(String ipAddress) {
-            this.ipAddress = ipAddress;
+        public Builder ipaddress(String ipaddress) {
+            this.ipaddress = ipaddress;
             return this;
         }
 
@@ -624,7 +624,7 @@ public class GoToStateRequest {
         public GoToStateRequest build() {
             return new GoToStateRequest(serviceName, stateName, servicePlan, mdnZipCode, devices,
                     filter, carrierIpPoolName, publicIpRestriction, skuNumber, customFields,
-                    devicesWithServiceAddress, ipAddress, groupName, primaryPlaceOfUse);
+                    devicesWithServiceAddress, ipaddress, groupName, primaryPlaceOfUse);
         }
     }
 }

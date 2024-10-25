@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.verizon.m5gedge.DateTimeHelper;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -21,7 +21,8 @@ public class FirmwareUpgradeRequest {
     private String accountName;
     private String firmwareName;
     private String firmwareTo;
-    private LocalDateTime startDate;
+    private LocalDate startDate;
+    private LocalDate endDate;
     private List<String> deviceList;
 
     /**
@@ -35,19 +36,22 @@ public class FirmwareUpgradeRequest {
      * @param  accountName  String value for accountName.
      * @param  firmwareName  String value for firmwareName.
      * @param  firmwareTo  String value for firmwareTo.
-     * @param  startDate  LocalDateTime value for startDate.
+     * @param  startDate  LocalDate value for startDate.
+     * @param  endDate  LocalDate value for endDate.
      * @param  deviceList  List of String value for deviceList.
      */
     public FirmwareUpgradeRequest(
             String accountName,
             String firmwareName,
             String firmwareTo,
-            LocalDateTime startDate,
+            LocalDate startDate,
+            LocalDate endDate,
             List<String> deviceList) {
         this.accountName = accountName;
         this.firmwareName = firmwareName;
         this.firmwareTo = firmwareTo;
         this.startDate = startDate;
+        this.endDate = endDate;
         this.deviceList = deviceList;
     }
 
@@ -115,24 +119,46 @@ public class FirmwareUpgradeRequest {
 
     /**
      * Getter for StartDate.
-     * The date that the upgrade should begin.
-     * @return Returns the LocalDateTime
+     * The date that the upgrade begins.
+     * @return Returns the LocalDate
      */
     @JsonGetter("startDate")
-    @JsonSerialize(using = DateTimeHelper.Rfc8601DateTimeSerializer.class)
-    public LocalDateTime getStartDate() {
+    @JsonSerialize(using = DateTimeHelper.SimpleDateSerializer.class)
+    public LocalDate getStartDate() {
         return startDate;
     }
 
     /**
      * Setter for StartDate.
-     * The date that the upgrade should begin.
-     * @param startDate Value for LocalDateTime
+     * The date that the upgrade begins.
+     * @param startDate Value for LocalDate
      */
     @JsonSetter("startDate")
-    @JsonDeserialize(using = DateTimeHelper.Rfc8601DateTimeDeserializer.class)
-    public void setStartDate(LocalDateTime startDate) {
+    @JsonDeserialize(using = DateTimeHelper.SimpleDateDeserializer.class)
+    public void setStartDate(LocalDate startDate) {
         this.startDate = startDate;
+    }
+
+    /**
+     * Getter for EndDate.
+     * The date that the upgrade ends.
+     * @return Returns the LocalDate
+     */
+    @JsonGetter("endDate")
+    @JsonSerialize(using = DateTimeHelper.SimpleDateSerializer.class)
+    public LocalDate getEndDate() {
+        return endDate;
+    }
+
+    /**
+     * Setter for EndDate.
+     * The date that the upgrade ends.
+     * @param endDate Value for LocalDate
+     */
+    @JsonSetter("endDate")
+    @JsonDeserialize(using = DateTimeHelper.SimpleDateDeserializer.class)
+    public void setEndDate(LocalDate endDate) {
+        this.endDate = endDate;
     }
 
     /**
@@ -163,7 +189,7 @@ public class FirmwareUpgradeRequest {
     public String toString() {
         return "FirmwareUpgradeRequest [" + "accountName=" + accountName + ", firmwareName="
                 + firmwareName + ", firmwareTo=" + firmwareTo + ", startDate=" + startDate
-                + ", deviceList=" + deviceList + "]";
+                + ", endDate=" + endDate + ", deviceList=" + deviceList + "]";
     }
 
     /**
@@ -172,7 +198,8 @@ public class FirmwareUpgradeRequest {
      * @return a new {@link FirmwareUpgradeRequest.Builder} object
      */
     public Builder toBuilder() {
-        Builder builder = new Builder(accountName, firmwareName, firmwareTo, startDate, deviceList);
+        Builder builder = new Builder(accountName, firmwareName, firmwareTo, startDate, endDate,
+                deviceList);
         return builder;
     }
 
@@ -183,7 +210,8 @@ public class FirmwareUpgradeRequest {
         private String accountName;
         private String firmwareName;
         private String firmwareTo;
-        private LocalDateTime startDate;
+        private LocalDate startDate;
+        private LocalDate endDate;
         private List<String> deviceList;
 
         /**
@@ -197,15 +225,17 @@ public class FirmwareUpgradeRequest {
          * @param  accountName  String value for accountName.
          * @param  firmwareName  String value for firmwareName.
          * @param  firmwareTo  String value for firmwareTo.
-         * @param  startDate  LocalDateTime value for startDate.
+         * @param  startDate  LocalDate value for startDate.
+         * @param  endDate  LocalDate value for endDate.
          * @param  deviceList  List of String value for deviceList.
          */
         public Builder(String accountName, String firmwareName, String firmwareTo,
-                LocalDateTime startDate, List<String> deviceList) {
+                LocalDate startDate, LocalDate endDate, List<String> deviceList) {
             this.accountName = accountName;
             this.firmwareName = firmwareName;
             this.firmwareTo = firmwareTo;
             this.startDate = startDate;
+            this.endDate = endDate;
             this.deviceList = deviceList;
         }
 
@@ -241,11 +271,21 @@ public class FirmwareUpgradeRequest {
 
         /**
          * Setter for startDate.
-         * @param  startDate  LocalDateTime value for startDate.
+         * @param  startDate  LocalDate value for startDate.
          * @return Builder
          */
-        public Builder startDate(LocalDateTime startDate) {
+        public Builder startDate(LocalDate startDate) {
             this.startDate = startDate;
+            return this;
+        }
+
+        /**
+         * Setter for endDate.
+         * @param  endDate  LocalDate value for endDate.
+         * @return Builder
+         */
+        public Builder endDate(LocalDate endDate) {
+            this.endDate = endDate;
             return this;
         }
 
@@ -265,7 +305,7 @@ public class FirmwareUpgradeRequest {
          */
         public FirmwareUpgradeRequest build() {
             return new FirmwareUpgradeRequest(accountName, firmwareName, firmwareTo, startDate,
-                    deviceList);
+                    endDate, deviceList);
         }
     }
 }

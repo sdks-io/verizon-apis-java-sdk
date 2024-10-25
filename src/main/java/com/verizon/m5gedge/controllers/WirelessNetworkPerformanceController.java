@@ -99,7 +99,7 @@ public final class WirelessNetworkPerformanceController extends BaseController {
 
     /**
      * Run a report to determine network types available and available coverage. Network types
-     * covered include: CAT-M, NB-IOT, LTE, LTE-AWS and 5GNW.
+     * covered include: CAT-M, NB-IOT, LTE, LTE-AWS, 5GNW and C-BAND.
      * @param  body  Required parameter: Request for network coverage details.
      * @return    Returns the WNPRequestResponse wrapped in ApiResponse response from the API call
      * @throws    ApiException    Represents error response from the server.
@@ -112,7 +112,7 @@ public final class WirelessNetworkPerformanceController extends BaseController {
 
     /**
      * Run a report to determine network types available and available coverage. Network types
-     * covered include: CAT-M, NB-IOT, LTE, LTE-AWS and 5GNW.
+     * covered include: CAT-M, NB-IOT, LTE, LTE-AWS, 5GNW and C-BAND.
      * @param  body  Required parameter: Request for network coverage details.
      * @return    Returns the WNPRequestResponse wrapped in ApiResponse response from the API call
      */

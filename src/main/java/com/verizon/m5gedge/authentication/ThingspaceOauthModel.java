@@ -22,6 +22,7 @@ public class ThingspaceOauthModel {
     private List<OauthScopeThingspaceOauthEnum> oauthScopes;
     private BiFunction<OauthToken, ThingspaceOauthCredentials, OauthToken> oauthTokenProvider;
     private Consumer<OauthToken> oauthOnTokenUpdate;
+    private long oauthClockSkew;
 
     /**
      * A Constructor for ThingspaceOauthModel.
@@ -29,13 +30,14 @@ public class ThingspaceOauthModel {
     private ThingspaceOauthModel(String oauthClientId, String oauthClientSecret,
             OauthToken oauthToken, List<OauthScopeThingspaceOauthEnum> oauthScopes,
             BiFunction<OauthToken, ThingspaceOauthCredentials, OauthToken> oauthTokenProvider,
-            Consumer<OauthToken> oauthOnTokenUpdate) {
+            Consumer<OauthToken> oauthOnTokenUpdate, long oauthClockSkew) {
         this.oauthClientId = oauthClientId;
         this.oauthClientSecret = oauthClientSecret;
         this.oauthToken = oauthToken;
         this.oauthScopes = oauthScopes;
         this.oauthTokenProvider = oauthTokenProvider;
         this.oauthOnTokenUpdate = oauthOnTokenUpdate;
+        this.oauthClockSkew = oauthClockSkew;
     }
 
     /**
@@ -87,6 +89,14 @@ public class ThingspaceOauthModel {
     }
 
     /**
+     * Getter for oauthClockSkew.
+     * @return oauthClockSkew The value of oauthClockSkew.
+     */
+    public long getOauthClockSkew() {
+        return this.oauthClockSkew;
+    }
+
+    /**
      * Builds a new {@link ThingspaceOauthModel.Builder} object.
      * Creates the instance with the state of the current auth model.
      * @return a new {@link ThingspaceOauthModel.Builder} object.
@@ -96,7 +106,8 @@ public class ThingspaceOauthModel {
             .oauthToken(getOauthToken())
             .oauthScopes(getOauthScopes())
             .oauthTokenProvider(getOauthTokenProvider())
-            .oauthOnTokenUpdate(getOauthOnTokenUpdate());
+            .oauthOnTokenUpdate(getOauthOnTokenUpdate())
+            .oauthClockSkew(getOauthClockSkew());
     }
 
     /**
@@ -109,6 +120,7 @@ public class ThingspaceOauthModel {
         private List<OauthScopeThingspaceOauthEnum> oauthScopes;
         private BiFunction<OauthToken, ThingspaceOauthCredentials, OauthToken> oauthTokenProvider;
         private Consumer<OauthToken> oauthOnTokenUpdate;
+        private long oauthClockSkew;
 
         /**
          * The constructor with required auth credentials.
@@ -197,12 +209,22 @@ public class ThingspaceOauthModel {
         }
 
         /**
+         * Setter for oauthClockSkew.
+         * @param oauthClockSkew The value of oauthClockSkew.
+         * @return Builder The current instance of Builder.
+         */
+        public Builder oauthClockSkew(long oauthClockSkew) {
+            this.oauthClockSkew = oauthClockSkew;
+            return this;
+        }
+
+        /**
          * Builds the instance of ThingspaceOauthModel using the provided credentials.
          * @return The instance of ThingspaceOauthModel.
          */
         public ThingspaceOauthModel build() {
             return new ThingspaceOauthModel(oauthClientId, oauthClientSecret, oauthToken,
-                    oauthScopes, oauthTokenProvider, oauthOnTokenUpdate);
+                    oauthScopes, oauthTokenProvider, oauthOnTokenUpdate, oauthClockSkew);
         }
     }
 }

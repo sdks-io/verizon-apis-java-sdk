@@ -10,12 +10,224 @@ ManagingeSIMProfilesController managingeSIMProfilesController = client.getManagi
 
 ## Methods
 
+* [Resume Profile](../../doc/controllers/managinge-sim-profiles.md#resume-profile)
+* [Profile Suspend](../../doc/controllers/managinge-sim-profiles.md#profile-suspend)
+* [Device Suspend](../../doc/controllers/managinge-sim-profiles.md#device-suspend)
+* [Set Fallback](../../doc/controllers/managinge-sim-profiles.md#set-fallback)
 * [Activate a Device Profile](../../doc/controllers/managinge-sim-profiles.md#activate-a-device-profile)
 * [Enable a Device Profile](../../doc/controllers/managinge-sim-profiles.md#enable-a-device-profile)
 * [Deactivate a Device Profile](../../doc/controllers/managinge-sim-profiles.md#deactivate-a-device-profile)
 * [Enable a Device Profile for Download](../../doc/controllers/managinge-sim-profiles.md#enable-a-device-profile-for-download)
 * [Download a Device Profile](../../doc/controllers/managinge-sim-profiles.md#download-a-device-profile)
 * [Delete a Device Profile](../../doc/controllers/managinge-sim-profiles.md#delete-a-device-profile)
+
+
+# Resume Profile
+
+Resume service to a device with either a lead or local profile.
+
+```java
+CompletableFuture<ApiResponse<GIORequestResponse>> resumeProfileAsync(
+    final GIOProfileRequest body)
+```
+
+## Parameters
+
+| Parameter | Type | Tags | Description |
+|  --- | --- | --- | --- |
+| `body` | [`GIOProfileRequest`](../../doc/models/gio-profile-request.md) | Body, Required | Device Profile Query |
+
+## Server
+
+`Server.THINGSPACE`
+
+## Response Type
+
+[`GIORequestResponse`](../../doc/models/gio-request-response.md)
+
+## Example Usage
+
+```java
+GIOProfileRequest body = new GIOProfileRequest.Builder(
+    Arrays.asList(
+        new GIODeviceList.Builder()
+            .build()
+    ),
+    "0000123456-00001"
+)
+.mdnZipCode("12345")
+.servicePlan("service plan name")
+.build();
+
+managingeSIMProfilesController.resumeProfileAsync(body).thenAccept(result -> {
+    // TODO success callback handler
+    System.out.println(result);
+}).exceptionally(exception -> {
+    // TODO failure callback handler
+    exception.printStackTrace();
+    return null;
+});
+```
+
+## Errors
+
+| HTTP Status Code | Error Description | Exception Class |
+|  --- | --- | --- |
+| Default | Error response | [`GIORestErrorResponseException`](../../doc/models/gio-rest-error-response-exception.md) |
+
+
+# Profile Suspend
+
+Suspend a device's Global profile.
+
+```java
+CompletableFuture<ApiResponse<GIORequestResponse>> profileSuspendAsync(
+    final GIOProfileRequest body)
+```
+
+## Parameters
+
+| Parameter | Type | Tags | Description |
+|  --- | --- | --- | --- |
+| `body` | [`GIOProfileRequest`](../../doc/models/gio-profile-request.md) | Body, Required | Device Profile Query |
+
+## Server
+
+`Server.THINGSPACE`
+
+## Response Type
+
+[`GIORequestResponse`](../../doc/models/gio-request-response.md)
+
+## Example Usage
+
+```java
+GIOProfileRequest body = new GIOProfileRequest.Builder(
+    Arrays.asList(
+        new GIODeviceList.Builder()
+            .build()
+    ),
+    "0000123456-00001"
+)
+.mdnZipCode("12345")
+.servicePlan("service plan name")
+.build();
+
+managingeSIMProfilesController.profileSuspendAsync(body).thenAccept(result -> {
+    // TODO success callback handler
+    System.out.println(result);
+}).exceptionally(exception -> {
+    // TODO failure callback handler
+    exception.printStackTrace();
+    return null;
+});
+```
+
+## Errors
+
+| HTTP Status Code | Error Description | Exception Class |
+|  --- | --- | --- |
+| Default | Error response | [`GIORestErrorResponseException`](../../doc/models/gio-rest-error-response-exception.md) |
+
+
+# Device Suspend
+
+Suspend all service to an eUICC device, including the lead and local profile.
+
+```java
+CompletableFuture<ApiResponse<GIORequestResponse>> deviceSuspendAsync(
+    final GIOProfileRequest body)
+```
+
+## Parameters
+
+| Parameter | Type | Tags | Description |
+|  --- | --- | --- | --- |
+| `body` | [`GIOProfileRequest`](../../doc/models/gio-profile-request.md) | Body, Required | Device Profile Query |
+
+## Server
+
+`Server.THINGSPACE`
+
+## Response Type
+
+[`GIORequestResponse`](../../doc/models/gio-request-response.md)
+
+## Example Usage
+
+```java
+GIOProfileRequest body = new GIOProfileRequest.Builder(
+    Arrays.asList(
+        new GIODeviceList.Builder()
+            .build()
+    ),
+    "0000123456-00001"
+)
+.mdnZipCode("12345")
+.servicePlan("service plan name")
+.build();
+
+managingeSIMProfilesController.deviceSuspendAsync(body).thenAccept(result -> {
+    // TODO success callback handler
+    System.out.println(result);
+}).exceptionally(exception -> {
+    // TODO failure callback handler
+    exception.printStackTrace();
+    return null;
+});
+```
+
+## Errors
+
+| HTTP Status Code | Error Description | Exception Class |
+|  --- | --- | --- |
+| Default | Error response | [`GIORestErrorResponseException`](../../doc/models/gio-rest-error-response-exception.md) |
+
+
+# Set Fallback
+
+Enable a fallback profile to be set.
+
+```java
+CompletableFuture<ApiResponse<GIORequestResponse>> setFallbackAsync(
+    final FallBack body)
+```
+
+## Parameters
+
+| Parameter | Type | Tags | Description |
+|  --- | --- | --- | --- |
+| `body` | [`FallBack`](../../doc/models/fall-back.md) | Body, Required | Set the fallback attributes to allow a fallback profile to be activated. |
+
+## Server
+
+`Server.THINGSPACE`
+
+## Response Type
+
+[`GIORequestResponse`](../../doc/models/gio-request-response.md)
+
+## Example Usage
+
+```java
+FallBack body = new FallBack.Builder()
+    .build();
+
+managingeSIMProfilesController.setFallbackAsync(body).thenAccept(result -> {
+    // TODO success callback handler
+    System.out.println(result);
+}).exceptionally(exception -> {
+    // TODO failure callback handler
+    exception.printStackTrace();
+    return null;
+});
+```
+
+## Errors
+
+| HTTP Status Code | Error Description | Exception Class |
+|  --- | --- | --- |
+| Default | Error response | [`GIORestErrorResponseException`](../../doc/models/gio-rest-error-response-exception.md) |
 
 
 # Activate a Device Profile

@@ -83,7 +83,7 @@ CarrierActivateRequest body = new CarrierActivateRequest.Builder(
                 .build()
             )
         )
-        .ipAddress("1.2.3.456")
+        .ipaddress("1.2.3.456")
         .build(),
         new AccountDeviceList.Builder(
             Arrays.asList(
@@ -99,7 +99,7 @@ CarrierActivateRequest body = new CarrierActivateRequest.Builder(
                 .build()
             )
         )
-        .ipAddress("1.2.3.456")
+        .ipaddress("1.2.3.456")
         .build()
     ),
     "the service plan name",
@@ -315,7 +315,7 @@ ContactInfoUpdateRequest body = new ContactInfoUpdateRequest.Builder(
     )
     .build()
 )
-.accountName("0212345678-00001")
+.accountName("0000123456-00001")
 .devices(Arrays.asList(
         new AccountDeviceList.Builder(
             Arrays.asList(

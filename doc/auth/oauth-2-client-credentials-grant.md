@@ -13,6 +13,7 @@ Documentation for accessing and setting credentials for thingspace_oauth.
 | OAuthClientSecret | `String` | OAuth 2 Client Secret | `oauthClientSecret` | `getOauthClientSecret()` |
 | OAuthToken | `OauthToken` | Object for storing information about the OAuth token | `oauthToken` | `getOauthToken()` |
 | OAuthScopes | `List<OauthScopeThingspaceOauthEnum>` | List of scopes that apply to the OAuth token | `oauthScopes` | `getOauthScopes()` |
+| OAuthClockSkew | `long` | Clock skew time in seconds applied while checking the OAuth Token expiry. | `oauthClockSkew` | `getOauthClockSkew()` |
 | OAuthTokenProvider | `BiFunction<OAuthToken, ThingspaceOauthCredentials, OAuthToken>` | Registers a callback for oAuth Token Provider used for automatic token fetching/refreshing. | `oauthTokenProvider` | `getOauthTokenProvider()` |
 | OAuthOnTokenUpdate | `Consumer<OAuthToken>` | Registers a callback for token update event. | `oauthOnTokenUpdate` | `getOauthOnTokenUpdate()` |
 
@@ -60,17 +61,17 @@ Scopes enable your application to only request access to the resources it needs 
 | `TS_MEC_FULLACCESS` | Full access for /serviceprofiles and /serviceendpoints. |
 | `TS_MEC_LIMITACCESS` | Limited access. Will not allow use of /serviceprofiles and /serviceendpoints but will allow discovery. |
 | `TS_APPLICATION_RO` |  |
-| `EDGEDISCOVERYREAD` |  |
-| `EDGESERVICEPROFILEREAD` |  |
-| `EDGESERVICEPROFILEWRITE` |  |
-| `EDGESERVICEREGISTRYREAD` |  |
-| `EDGESERVICEREGISTRYWRITE` |  |
+| `EDGEDISCOVERYREAD` | Read access to the discovery service |
+| `EDGESERVICEPROFILEREAD` | Read access to the service profile service |
+| `EDGESERVICEPROFILEWRITE` | Write access to the service profile service |
+| `EDGESERVICEREGISTRYREAD` | Read access to the service registry service |
+| `EDGESERVICEREGISTRYWRITE` | Write access to the service registry service |
 | `READ` | read access |
 | `WRITE` | read/write access |
 
 ### Adding OAuth Token Update Callback
 
-Whenever the OAuth Token gets updated, the provided callback implementation will be executed. For instance, you may use it store your access token whenever it gets updated.
+Whenever the OAuth Token gets updated, the provided callback implementation will be executed. For instance, you may use it to store your access token whenever it gets updated.
 
 ```java
 VerizonClient client = new VerizonClient.Builder()
@@ -85,7 +86,7 @@ VerizonClient client = new VerizonClient.Builder()
         .oauthOnTokenUpdate(oAuthToken -> {
                 // Add the callback handler to perform operations like save to DB or file etc.
                 // It will be triggered whenever the token gets updated
-                System.out.println(oAuthToken);
+                saveTokenToDatabase(oAuthToken);
         })
         .build())
     .build();
@@ -93,7 +94,7 @@ VerizonClient client = new VerizonClient.Builder()
 
 ### Adding Custom OAuth Token Provider
 
-To authorize a client from a stored access token, set up the `oauthTokenProvider` in `ThingspaceOauthModel` builder along with the other auth parameters before creating the client:
+To authorize a client using a stored access token, set up the `oauthTokenProvider` in `ThingspaceOauthModel` builder along with the other auth parameters before creating the client:
 
 ```java
 VerizonClient client = new VerizonClient.Builder()
@@ -108,9 +109,11 @@ VerizonClient client = new VerizonClient.Builder()
         .oauthTokenProvider((lastOAuthToken, credentialsManager) -> {
                 // Add the callback handler to provide a new OAuth token
                 // It will be triggered whenever the lastOAuthToken is undefined or expired
-                return lastOAuthToken.toBuilder()
-                        .expiry(lastOAuthToken.getExpiry() + 60)
-                        .build();
+                OAuthToken oAuthToken = loadTokenFromDatabase();
+                if (oAuthToken != null && !credentialsManager.isTokenExpired(oAuthToken)) {
+                    return oAuthToken;
+                }
+                return credentialsManager.fetchToken();
         })
         .build())
     .build();
