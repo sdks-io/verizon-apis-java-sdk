@@ -1,8 +1,6 @@
 
 # Device Info
 
-The devices that you want to locate. The array cannot contain more than 20 devices.
-
 ## Structure
 
 `DeviceInfo`
@@ -11,17 +9,35 @@ The devices that you want to locate. The array cannot contain more than 20 devic
 
 | Name | Type | Tags | Description | Getter | Setter |
 |  --- | --- | --- | --- | --- | --- |
-| `Id` | `String` | Required | Device identifier. | String getId() | setId(String id) |
-| `Kind` | `String` | Required | Device identifier kind. | String getKind() | setKind(String kind) |
-| `Mdn` | `String` | Required | Device MDN. | String getMdn() | setMdn(String mdn) |
+| `DeviceId` | [`DeviceId`](../../doc/models/device-id.md) | Optional | device identifiers consisting of an ID value and what that value represents (kind) | DeviceId getDeviceId() | setDeviceId(DeviceId deviceId) |
+| `DeviceIPv6Addr` | `String` | Optional | the IPv6 IP address of the device | String getDeviceIPv6Addr() | setDeviceIPv6Addr(String deviceIPv6Addr) |
+| `FlowInfo` | [`List<FlowInfo>`](../../doc/models/flow-info.md) | Optional | The details of the data connection | List<FlowInfo> getFlowInfo() | setFlowInfo(List<FlowInfo> flowInfo) |
 
 ## Example (as JSON)
 
 ```json
 {
-  "id": "980003420535573",
-  "kind": "imei",
-  "mdn": "7892345678"
+  "deviceIPv6Addr": "IPv6 address",
+  "deviceId": {
+    "id": "id0",
+    "kind": "kind8"
+  },
+  "flowInfo": [
+    {
+      "flowServer": "flowServer4",
+      "flowDevice": "flowDevice2",
+      "flowDirection": "flowDirection6",
+      "flowProtocol": "flowProtocol4",
+      "qciOption": "qciOption0"
+    },
+    {
+      "flowServer": "flowServer4",
+      "flowDevice": "flowDevice2",
+      "flowDirection": "flowDirection6",
+      "flowProtocol": "flowProtocol4",
+      "qciOption": "qciOption0"
+    }
+  ]
 }
 ```
 

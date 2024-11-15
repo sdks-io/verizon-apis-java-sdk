@@ -1,7 +1,7 @@
 
 # Device Id
 
-An identifier for a single device.
+device identifiers consisting of an ID value and what that value represents (kind)
 
 ## Structure
 
@@ -11,15 +11,15 @@ An identifier for a single device.
 
 | Name | Type | Tags | Description | Getter | Setter |
 |  --- | --- | --- | --- | --- | --- |
-| `Id` | `String` | Required | The value of the device identifier. | String getId() | setId(String id) |
-| `Kind` | `String` | Required | The type of the device identifier. Valid types of identifiers are:ESN (decimal),EID,ICCID (up to 20 digits),IMEI (up to 16 digits),MDN,MEID (hexadecimal),MSISDN. | String getKind() | setKind(String kind) |
+| `Id` | `String` | Optional | The numeric or alphanumeric ID value | String getId() | setId(String id) |
+| `Kind` | `String` | Optional | What the ID value represents, which could be a Mobile Directory Number (MDN) or an International Mobile Equipment Identifier (IMEI) as an example | String getKind() | setKind(String kind) |
 
 ## Example (as JSON)
 
 ```json
 {
-  "kind": "imei",
-  "id": "990013907835573"
+  "id": "10-digit phone number",
+  "kind": "mdn"
 }
 ```
 
