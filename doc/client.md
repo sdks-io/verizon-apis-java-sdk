@@ -5,25 +5,27 @@ The following parameters are configurable for the API Client:
 
 | Parameter | Type | Description |
 |  --- | --- | --- |
-| `vZM2MToken2` | `String` | The VZ-M2M session token from [Getting Started](/content/thingspace-portal/documentation/apis/connectivity-management/get-started.html) |
 | `environment` | `Environment` | The API environment. <br> **Default: `Environment.PRODUCTION`** |
 | `httpClientConfig` | [`Consumer<HttpClientConfiguration.Builder>`](http-client-configuration-builder.md) | Set up Http Client Configuration instance. |
 | `thingspaceOauthCredentials` | [`ThingspaceOauthCredentials`](auth/oauth-2-client-credentials-grant.md) | The Credentials Setter for OAuth 2 Client Credentials Grant |
-| `vzM2mSessionTokenCredentials` | [`VzM2mSessionTokenCredentials`](auth/custom-header-signature.md) | The Credentials Setter for Custom Header Signature |
+| `vZM2mTokenCredentials` | [`VZM2mTokenCredentials`](auth/custom-header-signature.md) | The Credentials Setter for Custom Header Signature |
 
 The API client can be initialized as follows:
 
 ```java
-VerizonThingSpaceQualityOfServiceAPIEndpointsClient client = new VerizonThingSpaceQualityOfServiceAPIEndpointsClient.Builder()
+VerizonClient client = new VerizonClient.Builder()
     .httpClientConfig(configBuilder -> configBuilder
             .timeout(0))
-    .vZM2MToken2("VZ-M2M-Token")
     .thingspaceOauthCredentials(new ThingspaceOauthModel.Builder(
             "OAuthClientId",
             "OAuthClientSecret"
         )
+        .oauthScopes(Arrays.asList(
+                OauthScopeThingspaceOauthEnum.DISCOVERYREAD,
+                OauthScopeThingspaceOauthEnum.SERVICEPROFILEREAD
+            ))
         .build())
-    .vzM2mSessionTokenCredentials(new VzM2mSessionTokenModel.Builder(
+    .vZM2mTokenCredentials(new VZM2mTokenModel.Builder(
             "VZ-M2M-Token"
         )
         .build())
@@ -31,7 +33,15 @@ VerizonThingSpaceQualityOfServiceAPIEndpointsClient client = new VerizonThingSpa
     .build();
 ```
 
-## Verizon ThingSpace Quality of Service API endpointsClient Class
+API calls return an `ApiResponse` object that includes the following fields:
+
+| Field | Description |
+|  --- | --- |
+| `getStatusCode` | Status code of the HTTP response |
+| `getHeaders` | Headers of the HTTP response as a Hash |
+| `getResult` | The deserialized body of the HTTP response as a String |
+
+## VerizonClient Class
 
 The gateway for the SDK. This class acts as a factory for the Controllers and also holds the configuration of the SDK.
 
@@ -39,9 +49,80 @@ The gateway for the SDK. This class acts as a factory for the Controllers and al
 
 | Name | Description | Return Type |
 |  --- | --- | --- |
-| `getThingSpaceQualityofServiceAPIActionsController()` | Provides access to ThingSpaceQualityofServiceAPIActions controller. | `ThingSpaceQualityofServiceAPIActionsController` |
+| `getM5gEdgePlatformsController()` | Provides access to M5gEdgePlatforms controller. | `M5gEdgePlatformsController` |
+| `getServiceEndpointsController()` | Provides access to ServiceEndpoints controller. | `ServiceEndpointsController` |
+| `getServiceProfilesController()` | Provides access to ServiceProfiles controller. | `ServiceProfilesController` |
+| `getDeviceManagementController()` | Provides access to DeviceManagement controller. | `DeviceManagementController` |
+| `getAccountsController()` | Provides access to Accounts controller. | `AccountsController` |
+| `getDeviceGroupsController()` | Provides access to DeviceGroups controller. | `DeviceGroupsController` |
+| `getSMSController()` | Provides access to SMS controller. | `SMSController` |
+| `getSessionManagementController()` | Provides access to SessionManagement controller. | `SessionManagementController` |
+| `getConnectivityCallbacksController()` | Provides access to ConnectivityCallbacks controller. | `ConnectivityCallbacksController` |
+| `getAccountRequestsController()` | Provides access to AccountRequests controller. | `AccountRequestsController` |
+| `getServicePlansController()` | Provides access to ServicePlans controller. | `ServicePlansController` |
+| `getDeviceDiagnosticsController()` | Provides access to DeviceDiagnostics controller. | `DeviceDiagnosticsController` |
+| `getDeviceProfileManagementController()` | Provides access to DeviceProfileManagement controller. | `DeviceProfileManagementController` |
+| `getDeviceMonitoringController()` | Provides access to DeviceMonitoring controller. | `DeviceMonitoringController` |
+| `getEUICCDeviceProfileManagementController()` | Provides access to EUICCDeviceProfileManagement controller. | `EUICCDeviceProfileManagementController` |
+| `getDevicesLocationsController()` | Provides access to DevicesLocations controller. | `DevicesLocationsController` |
 | `getExclusionsController()` | Provides access to Exclusions controller. | `ExclusionsController` |
-| `getOAuthAuthorizationController()` | Provides access to OAuthAuthorization controller. | `OAuthAuthorizationController` |
+| `getDevicesLocationSubscriptionsController()` | Provides access to DevicesLocationSubscriptions controller. | `DevicesLocationSubscriptionsController` |
+| `getDeviceLocationCallbacksController()` | Provides access to DeviceLocationCallbacks controller. | `DeviceLocationCallbacksController` |
+| `getUsageTriggerManagementController()` | Provides access to UsageTriggerManagement controller. | `UsageTriggerManagementController` |
+| `getBillingController()` | Provides access to Billing controller. | `BillingController` |
+| `getSoftwareManagementSubscriptionsV1Controller()` | Provides access to SoftwareManagementSubscriptionsV1 controller. | `SoftwareManagementSubscriptionsV1Controller` |
+| `getSoftwareManagementLicensesV1Controller()` | Provides access to SoftwareManagementLicensesV1 controller. | `SoftwareManagementLicensesV1Controller` |
+| `getFirmwareV1Controller()` | Provides access to FirmwareV1 controller. | `FirmwareV1Controller` |
+| `getSoftwareManagementCallbacksV1Controller()` | Provides access to SoftwareManagementCallbacksV1 controller. | `SoftwareManagementCallbacksV1Controller` |
+| `getSoftwareManagementReportsV1Controller()` | Provides access to SoftwareManagementReportsV1 controller. | `SoftwareManagementReportsV1Controller` |
+| `getSoftwareManagementSubscriptionsV2Controller()` | Provides access to SoftwareManagementSubscriptionsV2 controller. | `SoftwareManagementSubscriptionsV2Controller` |
+| `getSoftwareManagementLicensesV2Controller()` | Provides access to SoftwareManagementLicensesV2 controller. | `SoftwareManagementLicensesV2Controller` |
+| `getCampaignsV2Controller()` | Provides access to CampaignsV2 controller. | `CampaignsV2Controller` |
+| `getSoftwareManagementCallbacksV2Controller()` | Provides access to SoftwareManagementCallbacksV2 controller. | `SoftwareManagementCallbacksV2Controller` |
+| `getSoftwareManagementReportsV2Controller()` | Provides access to SoftwareManagementReportsV2 controller. | `SoftwareManagementReportsV2Controller` |
+| `getClientLoggingController()` | Provides access to ClientLogging controller. | `ClientLoggingController` |
+| `getServerLoggingController()` | Provides access to ServerLogging controller. | `ServerLoggingController` |
+| `getConfigurationFilesController()` | Provides access to ConfigurationFiles controller. | `ConfigurationFilesController` |
+| `getSoftwareManagementSubscriptionsV3Controller()` | Provides access to SoftwareManagementSubscriptionsV3 controller. | `SoftwareManagementSubscriptionsV3Controller` |
+| `getSoftwareManagementLicensesV3Controller()` | Provides access to SoftwareManagementLicensesV3 controller. | `SoftwareManagementLicensesV3Controller` |
+| `getCampaignsV3Controller()` | Provides access to CampaignsV3 controller. | `CampaignsV3Controller` |
+| `getSoftwareManagementReportsV3Controller()` | Provides access to SoftwareManagementReportsV3 controller. | `SoftwareManagementReportsV3Controller` |
+| `getFirmwareV3Controller()` | Provides access to FirmwareV3 controller. | `FirmwareV3Controller` |
+| `getAccountDevicesController()` | Provides access to AccountDevices controller. | `AccountDevicesController` |
+| `getSoftwareManagementCallbacksV3Controller()` | Provides access to SoftwareManagementCallbacksV3 controller. | `SoftwareManagementCallbacksV3Controller` |
+| `getSIMSecureforIoTLicensesController()` | Provides access to SIMSecureforIoTLicenses controller. | `SIMSecureforIoTLicensesController` |
+| `getAccountSubscriptionsController()` | Provides access to AccountSubscriptions controller. | `AccountSubscriptionsController` |
+| `getPerformanceMetricsController()` | Provides access to PerformanceMetrics controller. | `PerformanceMetricsController` |
+| `getDiagnosticsSubscriptionsController()` | Provides access to DiagnosticsSubscriptions controller. | `DiagnosticsSubscriptionsController` |
+| `getDiagnosticsObservationsController()` | Provides access to DiagnosticsObservations controller. | `DiagnosticsObservationsController` |
+| `getDiagnosticsHistoryController()` | Provides access to DiagnosticsHistory controller. | `DiagnosticsHistoryController` |
+| `getDiagnosticsSettingsController()` | Provides access to DiagnosticsSettings controller. | `DiagnosticsSettingsController` |
+| `getDiagnosticsCallbacksController()` | Provides access to DiagnosticsCallbacks controller. | `DiagnosticsCallbacksController` |
+| `getDiagnosticsFactoryResetController()` | Provides access to DiagnosticsFactoryReset controller. | `DiagnosticsFactoryResetController` |
+| `getTargetsController()` | Provides access to Targets controller. | `TargetsController` |
+| `getCloudConnectorSubscriptionsController()` | Provides access to CloudConnectorSubscriptions controller. | `CloudConnectorSubscriptionsController` |
+| `getCloudConnectorDevicesController()` | Provides access to CloudConnectorDevices controller. | `CloudConnectorDevicesController` |
+| `getDeviceServiceManagementController()` | Provides access to DeviceServiceManagement controller. | `DeviceServiceManagementController` |
+| `getDeviceReportsController()` | Provides access to DeviceReports controller. | `DeviceReportsController` |
+| `getHyperPreciseLocationCallbacksController()` | Provides access to HyperPreciseLocationCallbacks controller. | `HyperPreciseLocationCallbacksController` |
+| `getAnomalySettingsController()` | Provides access to AnomalySettings controller. | `AnomalySettingsController` |
+| `getAnomalyTriggersController()` | Provides access to AnomalyTriggers controller. | `AnomalyTriggersController` |
+| `getAnomalyTriggersV2Controller()` | Provides access to AnomalyTriggersV2 controller. | `AnomalyTriggersV2Controller` |
+| `getWirelessNetworkPerformanceController()` | Provides access to WirelessNetworkPerformance controller. | `WirelessNetworkPerformanceController` |
+| `getFixedWirelessQualificationController()` | Provides access to FixedWirelessQualification controller. | `FixedWirelessQualificationController` |
+| `getManagingeSIMProfilesController()` | Provides access to ManagingeSIMProfiles controller. | `ManagingeSIMProfilesController` |
+| `getDeviceSMSMessagingController()` | Provides access to DeviceSMSMessaging controller. | `DeviceSMSMessagingController` |
+| `getDeviceActionsController()` | Provides access to DeviceActions controller. | `DeviceActionsController` |
+| `getThingSpaceQualityofServiceAPIActionsController()` | Provides access to ThingSpaceQualityofServiceAPIActions controller. | `ThingSpaceQualityofServiceAPIActionsController` |
+| `getPWNController()` | Provides access to PWN controller. | `PWNController` |
+| `getPromotionPeriodInformationController()` | Provides access to PromotionPeriodInformation controller. | `PromotionPeriodInformationController` |
+| `getRetrievetheTriggersController()` | Provides access to RetrievetheTriggers controller. | `RetrievetheTriggersController` |
+| `getUpdateTriggersController()` | Provides access to UpdateTriggers controller. | `UpdateTriggersController` |
+| `getSIMActionsController()` | Provides access to SIMActions controller. | `SIMActionsController` |
+| `getGlobalReportingController()` | Provides access to GlobalReporting controller. | `GlobalReportingController` |
+| `getMV2TriggersController()` | Provides access to MV2Triggers controller. | `MV2TriggersController` |
+| `getM5gBIDeviceActionsController()` | Provides access to M5gBIDeviceActions controller. | `M5gBIDeviceActionsController` |
+| `getOauthAuthorizationController()` | Provides access to OauthAuthorization controller. | `OauthAuthorizationController` |
 
 ### Methods
 
@@ -49,11 +130,10 @@ The gateway for the SDK. This class acts as a factory for the Controllers and al
 |  --- | --- | --- |
 | `shutdown()` | Shutdown the underlying HttpClient instance. | `void` |
 | `getEnvironment()` | Current API environment. | `Environment` |
-| `getVZM2MToken2()` | The VZ-M2M session token from [Getting Started](/content/thingspace-portal/documentation/apis/connectivity-management/get-started.html). | `String` |
 | `getHttpClient()` | The HTTP Client instance to use for making HTTP requests. | `HttpClient` |
 | `getHttpClientConfig()` | Http Client Configuration instance. | [`ReadonlyHttpClientConfiguration`](http-client-configuration.md) |
 | `getThingspaceOauthCredentials()` | The credentials to use with ThingspaceOauth. | [`ThingspaceOauthCredentials`](auth/oauth-2-client-credentials-grant.md) |
-| `getVzM2mSessionTokenCredentials()` | The credentials to use with VzM2mSessionToken. | [`VzM2mSessionTokenCredentials`](auth/custom-header-signature.md) |
+| `getVZM2MTokenCredentials()` | The credentials to use with VZM2MToken. | [`VZM2mTokenCredentials`](auth/custom-header-signature.md) |
 | `getBaseUri(Server server)` | Get base URI by current environment | `String` |
 | `getBaseUri()` | Get base URI by current environment | `String` |
 

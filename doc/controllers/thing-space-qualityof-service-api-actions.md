@@ -19,7 +19,7 @@ ThingSpaceQualityofServiceAPIActionsController thingSpaceQualityofServiceAPIActi
 Creates a QoS elevation subscription ID and activates the subscription.
 
 ```java
-CompletableFuture<M201success> createAThingSpaceQualityOfServiceAPISubscriptionAsync(
+CompletableFuture<ApiResponse<M201success>> createAThingSpaceQualityOfServiceAPISubscriptionAsync(
     final SubscribeRequest body)
 ```
 
@@ -29,6 +29,10 @@ CompletableFuture<M201success> createAThingSpaceQualityOfServiceAPISubscriptionA
 |  --- | --- | --- | --- |
 | `body` | [`SubscribeRequest`](../../doc/models/subscribe-request.md) | Body, Required | The request details to create a ThingSpace Quality of Service API subscription. |
 
+## Server
+
+`Server.THINGSPACE`
+
 ## Response Type
 
 [`M201success`](../../doc/models/m201-success.md)
@@ -36,9 +40,29 @@ CompletableFuture<M201success> createAThingSpaceQualityOfServiceAPISubscriptionA
 ## Example Usage
 
 ```java
-SubscribeRequest body = new SubscribeRequest.Builder()
-    .accountName("0000123456-00001")
-    .build();
+SubscribeRequest body = new SubscribeRequest.Builder(
+    "0000123456-00001",
+    Arrays.asList(
+        new QosDeviceInfo.Builder(
+            new QosDeviceId.Builder()
+                .id("10-digit phone number")
+                .kind("mdn")
+                .build(),
+            Arrays.asList(
+                new FlowInfo.Builder()
+                    .flowServer("[IPv6 address]:port")
+                    .flowDevice("[IPv6 address]:port")
+                    .flowDirection("UPLINK")
+                    .flowProtocol("UDP")
+                    .qciOption("Premium")
+                    .build()
+            )
+        )
+        .deviceIPv6Addr("IPv6 address")
+        .build()
+    )
+)
+.build();
 
 thingSpaceQualityofServiceAPIActionsController.createAThingSpaceQualityOfServiceAPISubscriptionAsync(body).thenAccept(result -> {
     // TODO success callback handler
@@ -54,7 +78,7 @@ thingSpaceQualityofServiceAPIActionsController.createAThingSpaceQualityOfService
 
 | HTTP Status Code | Error Description | Exception Class |
 |  --- | --- | --- |
-| Default | Error Response | [`DefaultException`](../../doc/models/default-exception.md) |
+| Default | Error Response | [`DefaultResponseException`](../../doc/models/default-response-exception.md) |
 
 
 # Stop a Thing Space Quality of Service API Subscription
@@ -62,7 +86,7 @@ thingSpaceQualityofServiceAPIActionsController.createAThingSpaceQualityOfService
 Stops an active ThingSpace Quality of Service API subscription using the account name and the subscription ID.
 
 ```java
-CompletableFuture<M201success> stopAThingSpaceQualityOfServiceAPISubscriptionAsync(
+CompletableFuture<ApiResponse<M201success>> stopAThingSpaceQualityOfServiceAPISubscriptionAsync(
     final String accountName,
     final String qosSubscriptionId)
 ```
@@ -73,6 +97,10 @@ CompletableFuture<M201success> stopAThingSpaceQualityOfServiceAPISubscriptionAsy
 |  --- | --- | --- | --- |
 | `accountName` | `String` | Query, Required | - |
 | `qosSubscriptionId` | `String` | Query, Required | - |
+
+## Server
+
+`Server.THINGSPACE`
 
 ## Response Type
 
@@ -98,5 +126,5 @@ thingSpaceQualityofServiceAPIActionsController.stopAThingSpaceQualityOfServiceAP
 
 | HTTP Status Code | Error Description | Exception Class |
 |  --- | --- | --- |
-| Default | Error Response | [`DefaultException`](../../doc/models/default-exception.md) |
+| Default | Error Response | [`DefaultResponseException`](../../doc/models/default-response-exception.md) |
 

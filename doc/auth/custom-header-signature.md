@@ -3,17 +3,17 @@
 
 
 
-Documentation for accessing and setting credentials for vz-m2m-session_token.
+Documentation for accessing and setting credentials for VZ-M2M-Token.
 
 ## Auth Credentials
 
 | Name | Type | Description | Setter | Getter |
 |  --- | --- | --- | --- | --- |
-| VZ-M2M-Token | `String` | The VZ-M2M session token from [Getting Started](/content/thingspace-portal/documentation/apis/connectivity-management/get-started.html) | `vZM2MToken` | `getVZM2MToken()` |
+| VZ-M2M-Token | `String` | M2M Session Token ([How to generate an M2M session token?]($e/Session%20Management/StartConnectivityManagementSession)) | `vZM2mToken` | `getVZM2mToken()` |
 
 
 
-**Note:** Auth credentials can be set using `vzM2mSessionTokenCredentials` in the client builder and accessed through `getVzM2mSessionTokenCredentials` method in the client instance.
+**Note:** Auth credentials can be set using `vZM2mTokenCredentials` in the client builder and accessed through `getVZM2mTokenCredentials` method in the client instance.
 
 ## Usage Example
 
@@ -22,8 +22,8 @@ Documentation for accessing and setting credentials for vz-m2m-session_token.
 You must provide credentials in the client as shown in the following code snippet.
 
 ```java
-VerizonThingSpaceQualityOfServiceAPIEndpointsClient client = new VerizonThingSpaceQualityOfServiceAPIEndpointsClient.Builder()
-    .vzM2mSessionTokenCredentials(new VzM2mSessionTokenModel.Builder(
+VerizonClient client = new VerizonClient.Builder()
+    .vZM2mTokenCredentials(new VZM2mTokenModel.Builder(
             "VZ-M2M-Token"
         )
         .build())
