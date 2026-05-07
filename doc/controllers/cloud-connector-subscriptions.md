@@ -36,7 +36,7 @@ CompletableFuture<ApiResponse<Subscription>> createSubscriptionAsync(
 
 ## Response Type
 
-[`Subscription`](../../doc/models/subscription.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`Subscription`](../../doc/models/subscription.md).
 
 ## Example Usage
 
@@ -106,7 +106,7 @@ CompletableFuture<ApiResponse<List<Subscription>>> querySubscriptionAsync(
 
 ## Response Type
 
-[`List<Subscription>`](../../doc/models/subscription.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`List<Subscription>`](../../doc/models/subscription.md).
 
 ## Example Usage
 

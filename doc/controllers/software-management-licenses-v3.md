@@ -12,7 +12,7 @@ SoftwareManagementLicensesV3Controller softwareManagementLicensesV3Controller = 
 
 * [Get Account Licenses Status](../../doc/controllers/software-management-licenses-v3.md#get-account-licenses-status)
 * [Assign Licenses to Devices](../../doc/controllers/software-management-licenses-v3.md#assign-licenses-to-devices)
-* [Remove Licenses From Devices](../../doc/controllers/software-management-licenses-v3.md#remove-licenses-from-devices)
+* [Remove Licenses from Devices](../../doc/controllers/software-management-licenses-v3.md#remove-licenses-from-devices)
 
 
 # Get Account Licenses Status
@@ -38,7 +38,7 @@ CompletableFuture<ApiResponse<V3LicenseSummary>> getAccountLicensesStatusAsync(
 
 ## Response Type
 
-[`V3LicenseSummary`](../../doc/models/v3-license-summary.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`V3LicenseSummary`](../../doc/models/v3-license-summary.md).
 
 ## Example Usage
 
@@ -50,8 +50,16 @@ softwareManagementLicensesV3Controller.getAccountLicensesStatusAsync(acc, lastSe
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof FotaV3ResultException) {
+        FotaV3ResultException fotaV3ResultException = (FotaV3ResultException) cause;
+        fotaV3ResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -108,7 +116,7 @@ CompletableFuture<ApiResponse<V3LicenseAssignedRemovedResult>> assignLicensesToD
 
 ## Response Type
 
-[`V3LicenseAssignedRemovedResult`](../../doc/models/v3-license-assigned-removed-result.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`V3LicenseAssignedRemovedResult`](../../doc/models/v3-license-assigned-removed-result.md).
 
 ## Example Usage
 
@@ -126,8 +134,16 @@ softwareManagementLicensesV3Controller.assignLicensesToDevicesAsync(acc, body).t
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof FotaV3ResultException) {
+        FotaV3ResultException fotaV3ResultException = (FotaV3ResultException) cause;
+        fotaV3ResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -159,7 +175,7 @@ softwareManagementLicensesV3Controller.assignLicensesToDevicesAsync(acc, body).t
 | 400 | Unexpected error. | [`FotaV3ResultException`](../../doc/models/fota-v3-result-exception.md) |
 
 
-# Remove Licenses From Devices
+# Remove Licenses from Devices
 
 This endpoint allows user to remove licenses from a list of devices.
 
@@ -182,7 +198,7 @@ CompletableFuture<ApiResponse<V3LicenseAssignedRemovedResult>> removeLicensesFro
 
 ## Response Type
 
-[`V3LicenseAssignedRemovedResult`](../../doc/models/v3-license-assigned-removed-result.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`V3LicenseAssignedRemovedResult`](../../doc/models/v3-license-assigned-removed-result.md).
 
 ## Example Usage
 
@@ -201,8 +217,16 @@ softwareManagementLicensesV3Controller.removeLicensesFromDevicesAsync(acc, body)
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof FotaV3ResultException) {
+        FotaV3ResultException fotaV3ResultException = (FotaV3ResultException) cause;
+        fotaV3ResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```

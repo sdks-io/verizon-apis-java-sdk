@@ -10,7 +10,7 @@
 | Name | Type | Tags | Description | Getter | Setter |
 |  --- | --- | --- | --- | --- | --- |
 | `AccountName` | `String` | Required | Account identifier | String getAccountName() | setAccountName(String accountName) |
-| `ServiceName` | [`ServiceNameEnum`](../../doc/models/service-name-enum.md) | Required | Service name<br>**Default**: `ServiceNameEnum.LOCATION` | ServiceNameEnum getServiceName() | setServiceName(ServiceNameEnum serviceName) |
+| `ServiceName` | [`ServiceNameEnum`](../../doc/models/service-name-enum.md) | Required | Service name<br><br>**Default**: `ServiceNameEnum.LOCATION` | ServiceNameEnum getServiceName() | setServiceName(ServiceNameEnum serviceName) |
 | `Type` | `String` | Required | SKU name | String getType() | setType(String type) |
 | `ManagedAccList` | `List<String>` | Required | managed account list | List<String> getManagedAccList() | setManagedAccList(List<String> managedAccList) |
 

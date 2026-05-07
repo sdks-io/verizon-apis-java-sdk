@@ -40,7 +40,7 @@ CompletableFuture<ApiResponse<FirmwareCampaign>> scheduleCampaignFirmwareUpgrade
 
 ## Response Type
 
-[`FirmwareCampaign`](../../doc/models/firmware-campaign.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`FirmwareCampaign`](../../doc/models/firmware-campaign.md).
 
 ## Example Usage
 
@@ -73,8 +73,16 @@ campaignsV3Controller.scheduleCampaignFirmwareUpgradeAsync(accountName, body).th
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof FotaV3ResultException) {
+        FotaV3ResultException fotaV3ResultException = (FotaV3ResultException) cause;
+        fotaV3ResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -136,7 +144,7 @@ CompletableFuture<ApiResponse<V3AddOrRemoveDeviceResult>> updateCampaignFirmware
 
 ## Response Type
 
-[`V3AddOrRemoveDeviceResult`](../../doc/models/v3-add-or-remove-device-result.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`V3AddOrRemoveDeviceResult`](../../doc/models/v3-add-or-remove-device-result.md).
 
 ## Example Usage
 
@@ -155,8 +163,16 @@ campaignsV3Controller.updateCampaignFirmwareDevicesAsync(acc, campaignId, body).
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof FotaV3ResultException) {
+        FotaV3ResultException fotaV3ResultException = (FotaV3ResultException) cause;
+        fotaV3ResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -209,7 +225,7 @@ CompletableFuture<ApiResponse<FirmwareCampaign>> updateCampaignDatesAsync(
 
 ## Response Type
 
-[`FirmwareCampaign`](../../doc/models/firmware-campaign.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`FirmwareCampaign`](../../doc/models/firmware-campaign.md).
 
 ## Example Usage
 
@@ -233,8 +249,16 @@ campaignsV3Controller.updateCampaignDatesAsync(acc, campaignId, body).thenAccept
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof FotaV3ResultException) {
+        FotaV3ResultException fotaV3ResultException = (FotaV3ResultException) cause;
+        fotaV3ResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -294,7 +318,7 @@ CompletableFuture<ApiResponse<Campaign>> getCampaignInformationAsync(
 
 ## Response Type
 
-[`Campaign`](../../doc/models/campaign.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`Campaign`](../../doc/models/campaign.md).
 
 ## Example Usage
 
@@ -306,8 +330,16 @@ campaignsV3Controller.getCampaignInformationAsync(accountName, campaignId).thenA
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof FotaV3ResultException) {
+        FotaV3ResultException fotaV3ResultException = (FotaV3ResultException) cause;
+        fotaV3ResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -369,7 +401,7 @@ CompletableFuture<ApiResponse<FotaV3SuccessResult>> cancelCampaignAsync(
 
 ## Response Type
 
-[`FotaV3SuccessResult`](../../doc/models/fota-v3-success-result.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`FotaV3SuccessResult`](../../doc/models/fota-v3-success-result.md).
 
 ## Example Usage
 
@@ -381,8 +413,16 @@ campaignsV3Controller.cancelCampaignAsync(accountName, campaignId).thenAccept(re
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof FotaV3ResultException) {
+        FotaV3ResultException fotaV3ResultException = (FotaV3ResultException) cause;
+        fotaV3ResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```

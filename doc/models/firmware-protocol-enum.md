@@ -11,9 +11,9 @@ Firmware protocol. Valid values include: LWM2M, OMD-DM, all.
 
 | Name |
 |  --- |
-| `LWM2m` |
+| `LW_M2M` |
 | `OMDDM` |
-| `All` |
+| `ALL` |
 
 ## Example
 

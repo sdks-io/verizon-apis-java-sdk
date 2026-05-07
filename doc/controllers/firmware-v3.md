@@ -38,7 +38,7 @@ CompletableFuture<ApiResponse<List<FirmwarePackage>>> listAvailableFirmwareAsync
 
 ## Response Type
 
-[`List<FirmwarePackage>`](../../doc/models/firmware-package.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`List<FirmwarePackage>`](../../doc/models/firmware-package.md).
 
 ## Example Usage
 
@@ -50,8 +50,16 @@ firmwareV3Controller.listAvailableFirmwareAsync(acc, protocol).thenAccept(result
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof FotaV3ResultException) {
+        FotaV3ResultException fotaV3ResultException = (FotaV3ResultException) cause;
+        fotaV3ResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -103,7 +111,7 @@ CompletableFuture<ApiResponse<DeviceFirmwareList>> synchronizeDeviceFirmwareAsyn
 
 ## Response Type
 
-[`DeviceFirmwareList`](../../doc/models/device-firmware-list.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`DeviceFirmwareList`](../../doc/models/device-firmware-list.md).
 
 ## Example Usage
 
@@ -120,8 +128,16 @@ firmwareV3Controller.synchronizeDeviceFirmwareAsync(acc, body).thenAccept(result
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof FotaV3ResultException) {
+        FotaV3ResultException fotaV3ResultException = (FotaV3ResultException) cause;
+        fotaV3ResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -171,7 +187,7 @@ CompletableFuture<ApiResponse<DeviceFirmwareVersionUpdateResult>> reportDeviceFi
 
 ## Response Type
 
-[`DeviceFirmwareVersionUpdateResult`](../../doc/models/device-firmware-version-update-result.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`DeviceFirmwareVersionUpdateResult`](../../doc/models/device-firmware-version-update-result.md).
 
 ## Example Usage
 
@@ -183,8 +199,16 @@ firmwareV3Controller.reportDeviceFirmwareAsync(acc, deviceId).thenAccept(result 
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof FotaV3ResultException) {
+        FotaV3ResultException fotaV3ResultException = (FotaV3ResultException) cause;
+        fotaV3ResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```

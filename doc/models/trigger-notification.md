@@ -19,7 +19,7 @@ The notification details of the trigger.
 | `NotificationFrequencyInterval` | `String` | Optional | Frequency interval for notification. | String getNotificationFrequencyInterval() | setNotificationFrequencyInterval(String notificationFrequencyInterval) |
 | `ExternalEmailRecipients` | `String` | Optional | E-mail address(es) where the notification should be delivered. | String getExternalEmailRecipients() | setExternalEmailRecipients(String externalEmailRecipients) |
 | `SmsNotification` | `Boolean` | Optional | SMS notification. | Boolean getSmsNotification() | setSmsNotification(Boolean smsNotification) |
-| `SmsNumbers` | [`List<SMSNumber>`](../../doc/models/sms-number.md) | Optional | List of SMS numbers.<br>**Constraints**: *Maximum Items*: `10` | List<SMSNumber> getSmsNumbers() | setSmsNumbers(List<SMSNumber> smsNumbers) |
+| `SmsNumbers` | [`List<SMSNumber>`](../../doc/models/sms-number.md) | Optional | List of SMS numbers.<br><br>**Constraints**: *Maximum Items*: `10` | List<SMSNumber> getSmsNumbers() | setSmsNumbers(List<SMSNumber> smsNumbers) |
 | `Reminder` | `Boolean` | Optional | - | Boolean getReminder() | setReminder(Boolean reminder) |
 | `Severity` | `String` | Optional | Severity level associated with the notification. Examples would be:<br />Major<br />Minor<br />Critical<br />NotApplicable. | String getSeverity() | setSeverity(String severity) |
 

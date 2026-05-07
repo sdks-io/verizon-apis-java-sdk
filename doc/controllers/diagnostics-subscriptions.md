@@ -30,7 +30,7 @@ CompletableFuture<ApiResponse<DiagnosticsSubscription>> getDiagnosticsSubscripti
 
 ## Response Type
 
-[`DiagnosticsSubscription`](../../doc/models/diagnostics-subscription.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`DiagnosticsSubscription`](../../doc/models/diagnostics-subscription.md).
 
 ## Example Usage
 
@@ -41,8 +41,16 @@ diagnosticsSubscriptionsController.getDiagnosticsSubscriptionAsync(accountName).
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof DeviceDiagnosticsResultException) {
+        DeviceDiagnosticsResultException deviceDiagnosticsResultException = (DeviceDiagnosticsResultException) cause;
+        deviceDiagnosticsResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```

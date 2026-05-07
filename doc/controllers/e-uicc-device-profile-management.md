@@ -32,13 +32,9 @@ CompletableFuture<ApiResponse<DeviceManagementResult>> downloadLocalProfileToEna
 |  --- | --- | --- | --- |
 | `body` | [`ProfileChangeStateRequest`](../../doc/models/profile-change-state-request.md) | Body, Required | Device Profile Query |
 
-## Server
-
-`Server.THINGSPACE`
-
 ## Response Type
 
-[`DeviceManagementResult`](../../doc/models/device-management-result.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`DeviceManagementResult`](../../doc/models/device-management-result.md).
 
 ## Example Usage
 
@@ -69,8 +65,16 @@ eUICCDeviceProfileManagementController.downloadLocalProfileToEnableAsync(body).t
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof ConnectivityManagementResultException) {
+        ConnectivityManagementResultException connectivityManagementResultException = (ConnectivityManagementResultException) cause;
+        connectivityManagementResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -105,13 +109,9 @@ CompletableFuture<ApiResponse<DeviceManagementResult>> downloadLocalProfileToDis
 |  --- | --- | --- | --- |
 | `body` | [`ProfileChangeStateRequest`](../../doc/models/profile-change-state-request.md) | Body, Required | Device Profile Query |
 
-## Server
-
-`Server.THINGSPACE`
-
 ## Response Type
 
-[`DeviceManagementResult`](../../doc/models/device-management-result.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`DeviceManagementResult`](../../doc/models/device-management-result.md).
 
 ## Example Usage
 
@@ -142,8 +142,16 @@ eUICCDeviceProfileManagementController.downloadLocalProfileToDisableAsync(body).
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof ConnectivityManagementResultException) {
+        ConnectivityManagementResultException connectivityManagementResultException = (ConnectivityManagementResultException) cause;
+        connectivityManagementResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -178,13 +186,9 @@ CompletableFuture<ApiResponse<RequestResponse>> enableLocalProfileAsync(
 |  --- | --- | --- | --- |
 | `body` | [`ProfileChangeStateRequest`](../../doc/models/profile-change-state-request.md) | Body, Required | Update state |
 
-## Server
-
-`Server.THINGSPACE`
-
 ## Response Type
 
-[`RequestResponse`](../../doc/models/request-response.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`RequestResponse`](../../doc/models/request-response.md).
 
 ## Example Usage
 
@@ -215,8 +219,16 @@ eUICCDeviceProfileManagementController.enableLocalProfileAsync(body).thenAccept(
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof RestErrorResponseException) {
+        RestErrorResponseException restErrorResponseException = (RestErrorResponseException) cause;
+        restErrorResponseException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -243,13 +255,9 @@ CompletableFuture<ApiResponse<RequestResponse>> disableLocalProfileAsync(
 |  --- | --- | --- | --- |
 | `body` | [`ProfileChangeStateRequest`](../../doc/models/profile-change-state-request.md) | Body, Required | Update state |
 
-## Server
-
-`Server.THINGSPACE`
-
 ## Response Type
 
-[`RequestResponse`](../../doc/models/request-response.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`RequestResponse`](../../doc/models/request-response.md).
 
 ## Example Usage
 
@@ -280,8 +288,16 @@ eUICCDeviceProfileManagementController.disableLocalProfileAsync(body).thenAccept
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof RestErrorResponseException) {
+        RestErrorResponseException restErrorResponseException = (RestErrorResponseException) cause;
+        restErrorResponseException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -308,13 +324,9 @@ CompletableFuture<ApiResponse<RequestResponse>> deleteLocalProfileAsync(
 |  --- | --- | --- | --- |
 | `body` | [`ProfileChangeStateRequest`](../../doc/models/profile-change-state-request.md) | Body, Required | Update state |
 
-## Server
-
-`Server.THINGSPACE`
-
 ## Response Type
 
-[`RequestResponse`](../../doc/models/request-response.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`RequestResponse`](../../doc/models/request-response.md).
 
 ## Example Usage
 
@@ -345,8 +357,16 @@ eUICCDeviceProfileManagementController.deleteLocalProfileAsync(body).thenAccept(
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof RestErrorResponseException) {
+        RestErrorResponseException restErrorResponseException = (RestErrorResponseException) cause;
+        restErrorResponseException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```

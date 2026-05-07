@@ -35,7 +35,7 @@ CompletableFuture<ApiResponse<V1AccountSubscription>> getAccountSubscriptionStat
 
 ## Response Type
 
-[`V1AccountSubscription`](../../doc/models/v1-account-subscription.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`V1AccountSubscription`](../../doc/models/v1-account-subscription.md).
 
 ## Example Usage
 
@@ -46,8 +46,16 @@ softwareManagementSubscriptionsV1Controller.getAccountSubscriptionStatusAsync(ac
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof FotaV1ResultException) {
+        FotaV1ResultException fotaV1ResultException = (FotaV1ResultException) cause;
+        fotaV1ResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -94,7 +102,7 @@ CompletableFuture<ApiResponse<AccountLicenseInfo>> getAccountLicenseStatusAsync(
 
 ## Response Type
 
-[`AccountLicenseInfo`](../../doc/models/account-license-info.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`AccountLicenseInfo`](../../doc/models/account-license-info.md).
 
 ## Example Usage
 
@@ -106,8 +114,16 @@ softwareManagementSubscriptionsV1Controller.getAccountLicenseStatusAsync(account
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof FotaV1ResultException) {
+        FotaV1ResultException fotaV1ResultException = (FotaV1ResultException) cause;
+        fotaV1ResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```

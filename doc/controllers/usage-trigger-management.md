@@ -36,7 +36,7 @@ CompletableFuture<ApiResponse<UsageTriggerResponse>> createNewTriggerAsync(
 
 ## Response Type
 
-[`UsageTriggerResponse`](../../doc/models/usage-trigger-response.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`UsageTriggerResponse`](../../doc/models/usage-trigger-response.md).
 
 ## Example Usage
 
@@ -58,8 +58,16 @@ usageTriggerManagementController.createNewTriggerAsync(body).thenAccept(result -
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof DeviceLocationResultException) {
+        DeviceLocationResultException deviceLocationResultException = (DeviceLocationResultException) cause;
+        deviceLocationResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -113,7 +121,7 @@ CompletableFuture<ApiResponse<UsageTriggerResponse>> updateTriggerAsync(
 
 ## Response Type
 
-[`UsageTriggerResponse`](../../doc/models/usage-trigger-response.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`UsageTriggerResponse`](../../doc/models/usage-trigger-response.md).
 
 ## Example Usage
 
@@ -129,8 +137,16 @@ usageTriggerManagementController.updateTriggerAsync(triggerId, body).thenAccept(
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof DeviceLocationResultException) {
+        DeviceLocationResultException deviceLocationResultException = (DeviceLocationResultException) cause;
+        deviceLocationResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -184,7 +200,7 @@ CompletableFuture<ApiResponse<DeviceLocationSuccessResult>> deleteTriggerAsync(
 
 ## Response Type
 
-[`DeviceLocationSuccessResult`](../../doc/models/device-location-success-result.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`DeviceLocationSuccessResult`](../../doc/models/device-location-success-result.md).
 
 ## Example Usage
 
@@ -196,8 +212,16 @@ usageTriggerManagementController.deleteTriggerAsync(accountName, triggerId).then
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof DeviceLocationResultException) {
+        DeviceLocationResultException deviceLocationResultException = (DeviceLocationResultException) cause;
+        deviceLocationResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```

@@ -30,13 +30,9 @@ CompletableFuture<ApiResponse<IntelligenceSuccessResult>> activateAnomalyDetecti
 |  --- | --- | --- | --- |
 | `body` | [`AnomalyDetectionRequest`](../../doc/models/anomaly-detection-request.md) | Body, Required | Request to activate anomaly detection. |
 
-## Server
-
-`Server.THINGSPACE`
-
 ## Response Type
 
-[`IntelligenceSuccessResult`](../../doc/models/intelligence-success-result.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`IntelligenceSuccessResult`](../../doc/models/intelligence-success-result.md).
 
 ## Example Usage
 
@@ -56,8 +52,16 @@ anomalySettingsController.activateAnomalyDetectionAsync(body).thenAccept(result 
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof IntelligenceResultException) {
+        IntelligenceResultException intelligenceResultException = (IntelligenceResultException) cause;
+        intelligenceResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -92,13 +96,9 @@ CompletableFuture<ApiResponse<AnomalyDetectionSettings>> listAnomalyDetectionSet
 |  --- | --- | --- | --- |
 | `accountName` | `String` | Template, Required | The name of the subscribed account. |
 
-## Server
-
-`Server.THINGSPACE`
-
 ## Response Type
 
-[`AnomalyDetectionSettings`](../../doc/models/anomaly-detection-settings.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`AnomalyDetectionSettings`](../../doc/models/anomaly-detection-settings.md).
 
 ## Example Usage
 
@@ -109,8 +109,16 @@ anomalySettingsController.listAnomalyDetectionSettingsAsync(accountName).thenAcc
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof IntelligenceResultException) {
+        IntelligenceResultException intelligenceResultException = (IntelligenceResultException) cause;
+        intelligenceResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -152,13 +160,9 @@ CompletableFuture<ApiResponse<IntelligenceSuccessResult>> resetAnomalyDetectionP
 |  --- | --- | --- | --- |
 | `accountName` | `String` | Template, Required | The name of the subscribed account. |
 
-## Server
-
-`Server.THINGSPACE`
-
 ## Response Type
 
-[`IntelligenceSuccessResult`](../../doc/models/intelligence-success-result.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`IntelligenceSuccessResult`](../../doc/models/intelligence-success-result.md).
 
 ## Example Usage
 
@@ -169,8 +173,16 @@ anomalySettingsController.resetAnomalyDetectionParametersAsync(accountName).then
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof IntelligenceResultException) {
+        IntelligenceResultException intelligenceResultException = (IntelligenceResultException) cause;
+        intelligenceResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```

@@ -17,13 +17,13 @@ The last status of the device as a list filter.
 | `DEACTIVE` |
 | `ACTIVE` |
 | `SUSPEND` |
-| `PENDINGACTIVATION` |
-| `PENDINGDEACTIVATION` |
-| `PREACTIVE` |
-| `ACTIVATIONREADY` |
+| `PENDING_ACTIVATION` |
+| `PENDING_DEACTIVATION` |
+| `PRE_ACTIVE` |
+| `ACTIVATION_READY` |
 | `INVENTORY` |
 | `PURGED` |
 | `REPLACED` |
 | `RETIRED` |
-| `TESTREADY` |
+| `TEST_READY` |
 

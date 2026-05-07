@@ -17,7 +17,7 @@ Firmware upgrade information.
 | `FirmwareName` | `String` | Optional | Firmware name (for firmware upgrade only). | String getFirmwareName() | setFirmwareName(String firmwareName) |
 | `FirmwareFrom` | `String` | Required | Old firmware version (for firmware upgrade only). | String getFirmwareFrom() | setFirmwareFrom(String firmwareFrom) |
 | `FirmwareTo` | `String` | Required | New firmware version (for firmware upgrade only). | String getFirmwareTo() | setFirmwareTo(String firmwareTo) |
-| `Protocol` | `String` | Required | Available values: LWM2M.<br>**Default**: `"LWM2M"` | String getProtocol() | setProtocol(String protocol) |
+| `Protocol` | `String` | Required | Available values: LWM2M.<br><br>**Default**: `"LWM2M"` | String getProtocol() | setProtocol(String protocol) |
 | `Make` | `String` | Required | - | String getMake() | setMake(String make) |
 | `Model` | `String` | Required | - | String getModel() | setModel(String model) |
 | `StartDate` | `LocalDate` | Required | Campaign start date. | LocalDate getStartDate() | setStartDate(LocalDate startDate) |

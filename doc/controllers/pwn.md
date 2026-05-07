@@ -32,13 +32,9 @@ CompletableFuture<ApiResponse<KPIInfoList>> kPIListAsync(
 |  --- | --- | --- | --- |
 | `aname` | `String` | Template, Required | Account name. |
 
-## Server
-
-`Server.THINGSPACE`
-
 ## Response Type
 
-[`KPIInfoList`](../../doc/models/kpi-info-list.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`KPIInfoList`](../../doc/models/kpi-info-list.md).
 
 ## Example Usage
 
@@ -88,13 +84,9 @@ CompletableFuture<ApiResponse<PWNProfileList>> getProfileListAsync(
 |  --- | --- | --- | --- |
 | `aname` | `String` | Template, Required | Account name. |
 
-## Server
-
-`Server.THINGSPACE`
-
 ## Response Type
 
-[`PWNProfileList`](../../doc/models/pwn-profile-list.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`PWNProfileList`](../../doc/models/pwn-profile-list.md).
 
 ## Example Usage
 
@@ -138,13 +130,9 @@ CompletableFuture<ApiResponse<ChangePWNDeviceStateResponse>> changePWNDeviceStat
 |  --- | --- | --- | --- |
 | `body` | [`ChangePWNDeviceStateActivateRequest`](../../doc/models/change-pwn-device-state-activate-request.md) | Body, Required | - |
 
-## Server
-
-`Server.THINGSPACE`
-
 ## Response Type
 
-[`ChangePWNDeviceStateResponse`](../../doc/models/change-pwn-device-state-response.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`ChangePWNDeviceStateResponse`](../../doc/models/change-pwn-device-state-response.md).
 
 ## Example Usage
 
@@ -202,13 +190,9 @@ CompletableFuture<ApiResponse<ChangePWNDeviceStateResponse>> changePWNDeviceStat
 |  --- | --- | --- | --- |
 | `body` | [`ChangePWNDeviceStateDeactivateRequest`](../../doc/models/change-pwn-device-state-deactivate-request.md) | Body, Required | - |
 
-## Server
-
-`Server.THINGSPACE`
-
 ## Response Type
 
-[`ChangePWNDeviceStateResponse`](../../doc/models/change-pwn-device-state-response.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`ChangePWNDeviceStateResponse`](../../doc/models/change-pwn-device-state-response.md).
 
 ## Example Usage
 
@@ -272,13 +256,9 @@ CompletableFuture<ApiResponse<ChangePWNDeviceProfileResponse>> changePWNDevicePr
 |  --- | --- | --- | --- |
 | `body` | [`ChangePWNDeviceProfileRequest`](../../doc/models/change-pwn-device-profile-request.md) | Body, Required | - |
 
-## Server
-
-`Server.THINGSPACE`
-
 ## Response Type
 
-[`ChangePWNDeviceProfileResponse`](../../doc/models/change-pwn-device-profile-response.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`ChangePWNDeviceProfileResponse`](../../doc/models/change-pwn-device-profile-response.md).
 
 ## Example Usage
 
@@ -333,13 +313,9 @@ CompletableFuture<ApiResponse<ChangePWNDeviceIpaddressResponse>> changePWNDevice
 |  --- | --- | --- | --- |
 | `body` | [`ChangePWNDeviceIpaddressRequest`](../../doc/models/change-pwn-device-ipaddress-request.md) | Body, Required | - |
 
-## Server
-
-`Server.THINGSPACE`
-
 ## Response Type
 
-[`ChangePWNDeviceIpaddressResponse`](../../doc/models/change-pwn-device-ipaddress-response.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`ChangePWNDeviceIpaddressResponse`](../../doc/models/change-pwn-device-ipaddress-response.md).
 
 ## Example Usage
 
@@ -405,13 +381,9 @@ CompletableFuture<ApiResponse<GetPWNPerformanceConsentResponse>> getPWNPerforman
 |  --- | --- | --- | --- |
 | `aname` | `String` | Template, Required | Account name. |
 
-## Server
-
-`Server.THINGSPACE`
-
 ## Response Type
 
-[`GetPWNPerformanceConsentResponse`](../../doc/models/get-pwn-performance-consent-response.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`GetPWNPerformanceConsentResponse`](../../doc/models/get-pwn-performance-consent-response.md).
 
 ## Example Usage
 

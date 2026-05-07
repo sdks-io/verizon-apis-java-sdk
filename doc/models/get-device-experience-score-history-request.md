@@ -11,7 +11,7 @@ Get device experience score history.
 
 | Name | Type | Tags | Description | Getter | Setter |
 |  --- | --- | --- | --- | --- | --- |
-| `AccountName` | `String` | Required | Account name.<br>**Constraints**: *Minimum Length*: `3`, *Maximum Length*: `32`, *Pattern*: `^[0-9-]{3,32}$` | String getAccountName() | setAccountName(String accountName) |
+| `AccountName` | `String` | Required | Account name.<br><br>**Constraints**: *Minimum Length*: `3`, *Maximum Length*: `32`, *Pattern*: `^[0-9-]{3,32}$` | String getAccountName() | setAccountName(String accountName) |
 | `DeviceId` | [`DeviceIdentifier`](../../doc/models/device-identifier.md) | Required | Device Id details. | DeviceIdentifier getDeviceId() | setDeviceId(DeviceIdentifier deviceId) |
 
 ## Example (as JSON)

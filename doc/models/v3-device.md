@@ -22,8 +22,8 @@ Device information.
 | `Status` | `String` | Optional | Device status. | String getStatus() | setStatus(String status) |
 | `LicenseAssigned` | `Boolean` | Optional | License assigned device. | Boolean getLicenseAssigned() | setLicenseAssigned(Boolean licenseAssigned) |
 | `Protocol` | `String` | Optional | Firmware protocol. Valid values include: LWM2M, OMADM, HTTP or NONE. | String getProtocol() | setProtocol(String protocol) |
-| `SoftwareList` | [`List<V3SoftwareInfo>`](../../doc/models/v3-software-info.md) | Optional | List of sofware.<br>**Constraints**: *Maximum Items*: `1000` | List<V3SoftwareInfo> getSoftwareList() | setSoftwareList(List<V3SoftwareInfo> softwareList) |
-| `FileList` | [`List<V3SoftwareInfo>`](../../doc/models/v3-software-info.md) | Optional | List of files.<br>**Constraints**: *Maximum Items*: `1000` | List<V3SoftwareInfo> getFileList() | setFileList(List<V3SoftwareInfo> fileList) |
+| `SoftwareList` | [`List<V3SoftwareInfo>`](../../doc/models/v3-software-info.md) | Optional | List of sofware.<br><br>**Constraints**: *Maximum Items*: `1000` | List<V3SoftwareInfo> getSoftwareList() | setSoftwareList(List<V3SoftwareInfo> softwareList) |
+| `FileList` | [`List<V3SoftwareInfo>`](../../doc/models/v3-software-info.md) | Optional | List of files.<br><br>**Constraints**: *Maximum Items*: `1000` | List<V3SoftwareInfo> getFileList() | setFileList(List<V3SoftwareInfo> fileList) |
 | `CreateTime` | `String` | Optional | The date and time of when the device is created. | String getCreateTime() | setCreateTime(String createTime) |
 | `StatusTime` | `String` | Optional | The date and time of when the device firmware or software is updated. | String getStatusTime() | setStatusTime(String statusTime) |
 | `UpdateTime` | `String` | Optional | The date and time of when the device is updated. | String getUpdateTime() | setUpdateTime(String updateTime) |

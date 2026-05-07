@@ -37,7 +37,7 @@ CompletableFuture<ApiResponse<ManagedAccountsAddResponse>> addAccountAsync(
 
 ## Response Type
 
-[`ManagedAccountsAddResponse`](../../doc/models/managed-accounts-add-response.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`ManagedAccountsAddResponse`](../../doc/models/managed-accounts-add-response.md).
 
 ## Example Usage
 
@@ -58,8 +58,16 @@ billingController.addAccountAsync(body).thenAccept(result -> {
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof DeviceLocationResultException) {
+        DeviceLocationResultException deviceLocationResultException = (DeviceLocationResultException) cause;
+        deviceLocationResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -117,7 +125,7 @@ CompletableFuture<ApiResponse<ManagedAccountsProvisionResponse>> managedAccountA
 
 ## Response Type
 
-[`ManagedAccountsProvisionResponse`](../../doc/models/managed-accounts-provision-response.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`ManagedAccountsProvisionResponse`](../../doc/models/managed-accounts-provision-response.md).
 
 ## Example Usage
 
@@ -135,8 +143,16 @@ billingController.managedAccountActionAsync(body).thenAccept(result -> {
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof DeviceLocationResultException) {
+        DeviceLocationResultException deviceLocationResultException = (DeviceLocationResultException) cause;
+        deviceLocationResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -182,7 +198,7 @@ CompletableFuture<ApiResponse<ManagedAccountCancelResponse>> cancelManagedAccoun
 
 ## Response Type
 
-[`ManagedAccountCancelResponse`](../../doc/models/managed-account-cancel-response.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`ManagedAccountCancelResponse`](../../doc/models/managed-account-cancel-response.md).
 
 ## Example Usage
 
@@ -200,8 +216,16 @@ billingController.cancelManagedAccountActionAsync(body).thenAccept(result -> {
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof DeviceLocationResultException) {
+        DeviceLocationResultException deviceLocationResultException = (DeviceLocationResultException) cause;
+        deviceLocationResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -249,7 +273,7 @@ CompletableFuture<ApiResponse<ManagedAccountsGetAllResponse>> listManagedAccount
 
 ## Response Type
 
-[`ManagedAccountsGetAllResponse`](../../doc/models/managed-accounts-get-all-response.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`ManagedAccountsGetAllResponse`](../../doc/models/managed-accounts-get-all-response.md).
 
 ## Example Usage
 
@@ -261,8 +285,16 @@ billingController.listManagedAccountAsync(accountName, serviceName).thenAccept(r
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof DeviceLocationResultException) {
+        DeviceLocationResultException deviceLocationResultException = (DeviceLocationResultException) cause;
+        deviceLocationResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```

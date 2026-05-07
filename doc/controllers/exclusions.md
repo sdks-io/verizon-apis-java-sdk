@@ -16,7 +16,7 @@ ExclusionsController exclusionsController = client.getExclusionsController();
 * [Devices Location Give Consent Async](../../doc/controllers/exclusions.md#devices-location-give-consent-async)
 * [Devices Location Update Consent](../../doc/controllers/exclusions.md#devices-location-update-consent)
 * [Exclude Devices](../../doc/controllers/exclusions.md#exclude-devices)
-* [Remove Devices From Exclusion List](../../doc/controllers/exclusions.md#remove-devices-from-exclusion-list)
+* [Remove Devices from Exclusion List](../../doc/controllers/exclusions.md#remove-devices-from-exclusion-list)
 * [List Excluded Devices](../../doc/controllers/exclusions.md#list-excluded-devices)
 
 
@@ -43,7 +43,7 @@ CompletableFuture<ApiResponse<GetAccountDeviceConsent>> devicesLocationGetConsen
 
 ## Response Type
 
-[`GetAccountDeviceConsent`](../../doc/models/get-account-device-consent.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`GetAccountDeviceConsent`](../../doc/models/get-account-device-consent.md).
 
 ## Example Usage
 
@@ -55,8 +55,16 @@ exclusionsController.devicesLocationGetConsentAsyncAsync(accountName, deviceId).
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof DeviceLocationResultException) {
+        DeviceLocationResultException deviceLocationResultException = (DeviceLocationResultException) cause;
+        deviceLocationResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -89,7 +97,7 @@ CompletableFuture<ApiResponse<ConsentTransactionID>> devicesLocationGiveConsentA
 
 ## Response Type
 
-[`ConsentTransactionID`](../../doc/models/consent-transaction-id.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`ConsentTransactionID`](../../doc/models/consent-transaction-id.md).
 
 ## Example Usage
 
@@ -102,8 +110,16 @@ exclusionsController.devicesLocationGiveConsentAsyncAsync(body).thenAccept(resul
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof DeviceLocationResultException) {
+        DeviceLocationResultException deviceLocationResultException = (DeviceLocationResultException) cause;
+        deviceLocationResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -136,7 +152,7 @@ CompletableFuture<ApiResponse<ConsentTransactionID>> devicesLocationUpdateConsen
 
 ## Response Type
 
-[`ConsentTransactionID`](../../doc/models/consent-transaction-id.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`ConsentTransactionID`](../../doc/models/consent-transaction-id.md).
 
 ## Example Usage
 
@@ -150,8 +166,16 @@ exclusionsController.devicesLocationUpdateConsentAsync(body).thenAccept(result -
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof DeviceLocationResultException) {
+        DeviceLocationResultException deviceLocationResultException = (DeviceLocationResultException) cause;
+        deviceLocationResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -184,7 +208,7 @@ CompletableFuture<ApiResponse<DeviceLocationSuccessResult>> excludeDevicesAsync(
 
 ## Response Type
 
-[`DeviceLocationSuccessResult`](../../doc/models/device-location-success-result.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`DeviceLocationSuccessResult`](../../doc/models/device-location-success-result.md).
 
 ## Example Usage
 
@@ -205,8 +229,16 @@ exclusionsController.excludeDevicesAsync(body).thenAccept(result -> {
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof DeviceLocationResultException) {
+        DeviceLocationResultException deviceLocationResultException = (DeviceLocationResultException) cause;
+        deviceLocationResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -218,7 +250,7 @@ exclusionsController.excludeDevicesAsync(body).thenAccept(result -> {
 | 400 | Unexpected error. | [`DeviceLocationResultException`](../../doc/models/device-location-result-exception.md) |
 
 
-# Remove Devices From Exclusion List
+# Remove Devices from Exclusion List
 
 Removes devices from the exclusion list so that they can be located with Device Location Services requests.
 
@@ -241,7 +273,7 @@ CompletableFuture<ApiResponse<DeviceLocationSuccessResult>> removeDevicesFromExc
 
 ## Response Type
 
-[`DeviceLocationSuccessResult`](../../doc/models/device-location-success-result.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`DeviceLocationSuccessResult`](../../doc/models/device-location-success-result.md).
 
 ## Example Usage
 
@@ -253,8 +285,16 @@ exclusionsController.removeDevicesFromExclusionListAsync(accountName, deviceList
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof DeviceLocationResultException) {
+        DeviceLocationResultException deviceLocationResultException = (DeviceLocationResultException) cause;
+        deviceLocationResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -297,7 +337,7 @@ CompletableFuture<ApiResponse<DevicesConsentResult>> listExcludedDevicesAsync(
 
 ## Response Type
 
-[`DevicesConsentResult`](../../doc/models/devices-consent-result.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`DevicesConsentResult`](../../doc/models/devices-consent-result.md).
 
 ## Example Usage
 
@@ -309,8 +349,16 @@ exclusionsController.listExcludedDevicesAsync(accountName, startIndex).thenAccep
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof DeviceLocationResultException) {
+        DeviceLocationResultException deviceLocationResultException = (DeviceLocationResultException) cause;
+        deviceLocationResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```

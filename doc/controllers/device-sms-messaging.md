@@ -31,35 +31,48 @@ CompletableFuture<ApiResponse<GIORequestResponse>> sendAnSmsMessageAsync(
 |  --- | --- | --- | --- |
 | `body` | [`GIOSMSSendRequest`](../../doc/models/giosms-send-request.md) | Body, Required | SMS message to an indiividual device. |
 
-## Server
-
-`Server.THINGSPACE`
-
 ## Response Type
 
-[`GIORequestResponse`](../../doc/models/gio-request-response.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`GIORequestResponse`](../../doc/models/gio-request-response.md).
 
 ## Example Usage
 
 ```java
 GIOSMSSendRequest body = new GIOSMSSendRequest.Builder(
-    Arrays.asList(
+    "the body or text of the message itself"
+)
+.accountName("0000123456-00001")
+.customFields(Arrays.asList(
+        new KvPair.Builder()
+            .key("CustomField1")
+            .value("value of the field")
+            .build()
+    ))
+.dataEncoding("optional 7 or 8-bit encoding")
+.timeToLive("000000010000000R")
+.deviceIds(Arrays.asList(
         new GIODeviceId.Builder(
-            "eid",
-            "12345678901234567890123456789012"
+            "iccid",
+            "20-digit ICCID"
         )
         .build()
-    ),
-    "A text message"
-)
+    ))
 .build();
 
 deviceSMSMessagingController.sendAnSmsMessageAsync(body).thenAccept(result -> {
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof GIORestErrorResponseException) {
+        GIORestErrorResponseException gIORestErrorResponseException = (GIORestErrorResponseException) cause;
+        gIORestErrorResponseException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -85,16 +98,12 @@ CompletableFuture<ApiResponse<SmsMessagesResponse>> getSmsMessagesAsync(
 
 | Parameter | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `accountName` | `String` | Template, Required | Numeric account name<br>**Constraints**: *Minimum Length*: `3`, *Maximum Length*: `32`, *Pattern*: `^[A-Za-z0-9\-]{3,32}$` |
-| `next` | `String` | Query, Optional | Continue the previous query from the pageUrl in Location Header<br>**Constraints**: *Minimum Length*: `3`, *Maximum Length*: `64`, *Pattern*: `^[A-Za-z0-9]{3,32}$` |
-
-## Server
-
-`Server.THINGSPACE`
+| `accountName` | `String` | Template, Required | Numeric account name<br><br>**Constraints**: *Minimum Length*: `3`, *Maximum Length*: `32`, *Pattern*: `^[A-Za-z0-9\-]{3,32}$` |
+| `next` | `String` | Query, Optional | Continue the previous query from the pageUrl in Location Header<br><br>**Constraints**: *Minimum Length*: `3`, *Maximum Length*: `64`, *Pattern*: `^[A-Za-z0-9]{3,32}$` |
 
 ## Response Type
 
-[`SmsMessagesResponse`](../../doc/models/sms-messages-response.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`SmsMessagesResponse`](../../doc/models/sms-messages-response.md).
 
 ## Example Usage
 
@@ -106,8 +115,16 @@ deviceSMSMessagingController.getSmsMessagesAsync(accountName, next).thenAccept(r
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof GIORestErrorResponseException) {
+        GIORestErrorResponseException gIORestErrorResponseException = (GIORestErrorResponseException) cause;
+        gIORestErrorResponseException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -132,15 +149,11 @@ CompletableFuture<ApiResponse<SuccessResponse>> startSmsMessageDeliveryAsync(
 
 | Parameter | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `accountName` | `String` | Template, Required | Numeric account name<br>**Constraints**: *Minimum Length*: `3`, *Maximum Length*: `32`, *Pattern*: `^[A-Za-z0-9\-]{3,32}$` |
-
-## Server
-
-`Server.THINGSPACE`
+| `accountName` | `String` | Template, Required | Numeric account name<br><br>**Constraints**: *Minimum Length*: `3`, *Maximum Length*: `32`, *Pattern*: `^[A-Za-z0-9\-]{3,32}$` |
 
 ## Response Type
 
-[`SuccessResponse`](../../doc/models/success-response.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`SuccessResponse`](../../doc/models/success-response.md).
 
 ## Example Usage
 
@@ -151,8 +164,16 @@ deviceSMSMessagingController.startSmsMessageDeliveryAsync(accountName).thenAccep
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof GIORestErrorResponseException) {
+        GIORestErrorResponseException gIORestErrorResponseException = (GIORestErrorResponseException) cause;
+        gIORestErrorResponseException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -179,13 +200,9 @@ CompletableFuture<ApiResponse<GIORequestResponse>> listSmsMessageHistoryAsync(
 |  --- | --- | --- | --- |
 | `body` | [`SMSEventHistoryRequest`](../../doc/models/sms-event-history-request.md) | Body, Required | Device Query |
 
-## Server
-
-`Server.THINGSPACE`
-
 ## Response Type
 
-[`GIORequestResponse`](../../doc/models/gio-request-response.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`GIORequestResponse`](../../doc/models/gio-request-response.md).
 
 ## Example Usage
 
@@ -203,8 +220,16 @@ deviceSMSMessagingController.listSmsMessageHistoryAsync(body).thenAccept(result 
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof GIORestErrorResponseException) {
+        GIORestErrorResponseException gIORestErrorResponseException = (GIORestErrorResponseException) cause;
+        gIORestErrorResponseException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```

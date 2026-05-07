@@ -39,7 +39,7 @@ CompletableFuture<ApiResponse<TransactionID>> cancelAsyncReportAsync(
 
 ## Response Type
 
-[`TransactionID`](../../doc/models/transaction-id.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`TransactionID`](../../doc/models/transaction-id.md).
 
 ## Example Usage
 
@@ -51,8 +51,16 @@ deviceLocationCallbacksController.cancelAsyncReportAsync(accountName, txid).then
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof DeviceLocationResultException) {
+        DeviceLocationResultException deviceLocationResultException = (DeviceLocationResultException) cause;
+        deviceLocationResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -93,7 +101,7 @@ CompletableFuture<ApiResponse<List<DeviceLocationCallback>>> listRegisteredCallb
 
 ## Response Type
 
-[`List<DeviceLocationCallback>`](../../doc/models/device-location-callback.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`List<DeviceLocationCallback>`](../../doc/models/device-location-callback.md).
 
 ## Example Usage
 
@@ -104,8 +112,16 @@ deviceLocationCallbacksController.listRegisteredCallbacksAsync(accountName).then
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof DeviceLocationResultException) {
+        DeviceLocationResultException deviceLocationResultException = (DeviceLocationResultException) cause;
+        deviceLocationResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -155,7 +171,7 @@ CompletableFuture<ApiResponse<CallbackRegistrationResult>> registerCallbackAsync
 
 ## Response Type
 
-[`CallbackRegistrationResult`](../../doc/models/callback-registration-result.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`CallbackRegistrationResult`](../../doc/models/callback-registration-result.md).
 
 ## Example Usage
 
@@ -171,8 +187,16 @@ deviceLocationCallbacksController.registerCallbackAsync(accountName, body).thenA
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof DeviceLocationResultException) {
+        DeviceLocationResultException deviceLocationResultException = (DeviceLocationResultException) cause;
+        deviceLocationResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -216,7 +240,7 @@ CompletableFuture<ApiResponse<DeviceLocationSuccessResult>> deregisterCallbackAs
 
 ## Response Type
 
-[`DeviceLocationSuccessResult`](../../doc/models/device-location-success-result.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`DeviceLocationSuccessResult`](../../doc/models/device-location-success-result.md).
 
 ## Example Usage
 
@@ -228,8 +252,16 @@ deviceLocationCallbacksController.deregisterCallbackAsync(accountName, service).
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof DeviceLocationResultException) {
+        DeviceLocationResultException deviceLocationResultException = (DeviceLocationResultException) cause;
+        deviceLocationResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```

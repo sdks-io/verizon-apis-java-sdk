@@ -11,7 +11,7 @@ Get device experience score bulk request.
 
 | Name | Type | Tags | Description | Getter | Setter |
 |  --- | --- | --- | --- | --- | --- |
-| `AccountName` | `String` | Required | Account name.<br>**Constraints**: *Minimum Length*: `3`, *Maximum Length*: `32`, *Pattern*: `^[0-9-]{3,32}$` | String getAccountName() | setAccountName(String accountName) |
+| `AccountName` | `String` | Required | Account name.<br><br>**Constraints**: *Minimum Length*: `3`, *Maximum Length*: `32`, *Pattern*: `^[0-9-]{3,32}$` | String getAccountName() | setAccountName(String accountName) |
 | `DeviceList` | [`List<DeviceIdentifier>`](../../doc/models/device-identifier.md) | Required | **Constraints**: *Maximum Items*: `100` | List<DeviceIdentifier> getDeviceList() | setDeviceList(List<DeviceIdentifier> deviceList) |
 
 ## Example (as JSON)

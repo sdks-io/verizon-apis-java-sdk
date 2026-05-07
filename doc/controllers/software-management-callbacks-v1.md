@@ -36,7 +36,7 @@ CompletableFuture<ApiResponse<List<RegisteredCallbacks>>> listRegisteredCallback
 
 ## Response Type
 
-[`List<RegisteredCallbacks>`](../../doc/models/registered-callbacks.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`List<RegisteredCallbacks>`](../../doc/models/registered-callbacks.md).
 
 ## Example Usage
 
@@ -47,8 +47,16 @@ softwareManagementCallbacksV1Controller.listRegisteredCallbacksAsync(account).th
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof FotaV1ResultException) {
+        FotaV1ResultException fotaV1ResultException = (FotaV1ResultException) cause;
+        fotaV1ResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -95,7 +103,7 @@ CompletableFuture<ApiResponse<FotaV1CallbackRegistrationResult>> registerCallbac
 
 ## Response Type
 
-[`FotaV1CallbackRegistrationResult`](../../doc/models/fota-v1-callback-registration-result.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`FotaV1CallbackRegistrationResult`](../../doc/models/fota-v1-callback-registration-result.md).
 
 ## Example Usage
 
@@ -111,8 +119,16 @@ softwareManagementCallbacksV1Controller.registerCallbackAsync(account, body).the
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof FotaV1ResultException) {
+        FotaV1ResultException fotaV1ResultException = (FotaV1ResultException) cause;
+        fotaV1ResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -156,7 +172,7 @@ CompletableFuture<ApiResponse<FotaV1SuccessResult>> deregisterCallbackAsync(
 
 ## Response Type
 
-[`FotaV1SuccessResult`](../../doc/models/fota-v1-success-result.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`FotaV1SuccessResult`](../../doc/models/fota-v1-success-result.md).
 
 ## Example Usage
 
@@ -168,8 +184,16 @@ softwareManagementCallbacksV1Controller.deregisterCallbackAsync(account, service
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof FotaV1ResultException) {
+        FotaV1ResultException fotaV1ResultException = (FotaV1ResultException) cause;
+        fotaV1ResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```

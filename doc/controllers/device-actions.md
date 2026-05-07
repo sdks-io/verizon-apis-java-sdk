@@ -34,13 +34,9 @@ CompletableFuture<ApiResponse<GIORequestResponse>> aggregateUsageAsync(
 |  --- | --- | --- | --- |
 | `body` | [`AggregateUsage`](../../doc/models/aggregate-usage.md) | Body, Required | - |
 
-## Server
-
-`Server.THINGSPACE`
-
 ## Response Type
 
-[`GIORequestResponse`](../../doc/models/gio-request-response.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`GIORequestResponse`](../../doc/models/gio-request-response.md).
 
 ## Example Usage
 
@@ -52,8 +48,16 @@ deviceActionsController.aggregateUsageAsync(body).thenAccept(result -> {
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof GIORestErrorResponseException) {
+        GIORestErrorResponseException gIORestErrorResponseException = (GIORestErrorResponseException) cause;
+        gIORestErrorResponseException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -80,13 +84,9 @@ CompletableFuture<ApiResponse<DailyUsageResponse>> dailyUsageAsync(
 |  --- | --- | --- | --- |
 | `body` | [`DailyUsage`](../../doc/models/daily-usage.md) | Body, Required | - |
 
-## Server
-
-`Server.THINGSPACE`
-
 ## Response Type
 
-[`DailyUsageResponse`](../../doc/models/daily-usage-response.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`DailyUsageResponse`](../../doc/models/daily-usage-response.md).
 
 ## Example Usage
 
@@ -98,8 +98,16 @@ deviceActionsController.dailyUsageAsync(body).thenAccept(result -> {
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof GIORestErrorResponseException) {
+        GIORestErrorResponseException gIORestErrorResponseException = (GIORestErrorResponseException) cause;
+        gIORestErrorResponseException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -126,13 +134,9 @@ CompletableFuture<ApiResponse<AccountDetails>> servicePlanListAsync(
 |  --- | --- | --- | --- |
 | `accountName` | `String` | Template, Required | **Constraints**: *Minimum Length*: `3`, *Maximum Length*: `32`, *Pattern*: `^[A-Za-z0-9]{3,32}$` |
 
-## Server
-
-`Server.THINGSPACE`
-
 ## Response Type
 
-[`AccountDetails`](../../doc/models/account-details.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`AccountDetails`](../../doc/models/account-details.md).
 
 ## Example Usage
 
@@ -143,8 +147,16 @@ deviceActionsController.servicePlanListAsync(accountName).thenAccept(result -> {
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof GIORestErrorResponseException) {
+        GIORestErrorResponseException gIORestErrorResponseException = (GIORestErrorResponseException) cause;
+        gIORestErrorResponseException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -171,13 +183,9 @@ CompletableFuture<ApiResponse<AccountDetails>> accountInformationAsync(
 |  --- | --- | --- | --- |
 | `accountName` | `String` | Template, Required | **Constraints**: *Minimum Length*: `3`, *Maximum Length*: `32`, *Pattern*: `^[A-Za-z0-9]{3,32}$` |
 
-## Server
-
-`Server.THINGSPACE`
-
 ## Response Type
 
-[`AccountDetails`](../../doc/models/account-details.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`AccountDetails`](../../doc/models/account-details.md).
 
 ## Example Usage
 
@@ -188,8 +196,16 @@ deviceActionsController.accountInformationAsync(accountName).thenAccept(result -
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof GIORestErrorResponseException) {
+        GIORestErrorResponseException gIORestErrorResponseException = (GIORestErrorResponseException) cause;
+        gIORestErrorResponseException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -216,13 +232,9 @@ CompletableFuture<ApiResponse<GIORequestResponse>> retrieveTheGlobalDeviceListAs
 |  --- | --- | --- | --- |
 | `body` | [`GetDeviceListWithProfilesRequest`](../../doc/models/get-device-list-with-profiles-request.md) | Body, Required | Device Profile Query |
 
-## Server
-
-`Server.THINGSPACE`
-
 ## Response Type
 
-[`GIORequestResponse`](../../doc/models/gio-request-response.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`GIORequestResponse`](../../doc/models/gio-request-response.md).
 
 ## Example Usage
 
@@ -238,8 +250,16 @@ deviceActionsController.retrieveTheGlobalDeviceListAsync(body).thenAccept(result
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof GIORestErrorResponseException) {
+        GIORestErrorResponseException gIORestErrorResponseException = (GIORestErrorResponseException) cause;
+        gIORestErrorResponseException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -266,13 +286,9 @@ CompletableFuture<ApiResponse<GIORequestResponse>> retrieveDeviceProvisioningHis
 |  --- | --- | --- | --- |
 | `body` | [`ProvhistoryRequest`](../../doc/models/provhistory-request.md) | Body, Required | Device Provisioning History |
 
-## Server
-
-`Server.THINGSPACE`
-
 ## Response Type
 
-[`GIORequestResponse`](../../doc/models/gio-request-response.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`GIORequestResponse`](../../doc/models/gio-request-response.md).
 
 ## Example Usage
 
@@ -287,8 +303,16 @@ deviceActionsController.retrieveDeviceProvisioningHistoryAsync(body).thenAccept(
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof GIORestErrorResponseException) {
+        GIORestErrorResponseException gIORestErrorResponseException = (GIORestErrorResponseException) cause;
+        gIORestErrorResponseException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -317,13 +341,9 @@ CompletableFuture<ApiResponse<StatusResponse>> getAsynchronousRequestStatusAsync
 | `accountName` | `String` | Template, Required | **Constraints**: *Minimum Length*: `3`, *Maximum Length*: `32`, *Pattern*: `^[A-Za-z0-9\-]{3,32}$` |
 | `requestID` | `String` | Template, Required | **Constraints**: *Minimum Length*: `3`, *Maximum Length*: `64`, *Pattern*: `^[A-Za-z0-9\-]{3,64}$` |
 
-## Server
-
-`Server.THINGSPACE`
-
 ## Response Type
 
-[`StatusResponse`](../../doc/models/status-response.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`StatusResponse`](../../doc/models/status-response.md).
 
 ## Example Usage
 
@@ -335,8 +355,16 @@ deviceActionsController.getAsynchronousRequestStatusAsync(accountName, requestID
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof GIORestErrorResponseException) {
+        GIORestErrorResponseException gIORestErrorResponseException = (GIORestErrorResponseException) cause;
+        gIORestErrorResponseException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```

@@ -12,7 +12,7 @@
 | `TriggerId` | `String` | Required | Unique usage triggerId | String getTriggerId() | setTriggerId(String triggerId) |
 | `TriggerName` | `String` | Required | Usage trigger name | String getTriggerName() | setTriggerName(String triggerName) |
 | `AccountName` | `String` | Required | Account name | String getAccountName() | setAccountName(String accountName) |
-| `ServiceName` | [`ServiceNameEnum`](../../doc/models/service-name-enum.md) | Required | Service name<br>**Default**: `ServiceNameEnum.LOCATION` | ServiceNameEnum getServiceName() | setServiceName(ServiceNameEnum serviceName) |
+| `ServiceName` | [`ServiceNameEnum`](../../doc/models/service-name-enum.md) | Required | Service name<br><br>**Default**: `ServiceNameEnum.LOCATION` | ServiceNameEnum getServiceName() | setServiceName(ServiceNameEnum serviceName) |
 | `ThresholdValue` | `String` | Required | Percent of subscription at which trigger will send an alert | String getThresholdValue() | setThresholdValue(String thresholdValue) |
 | `AllowExcess` | `boolean` | Required | allowExcess determines whether to restrict usage after exceeds limits | boolean getAllowExcess() | setAllowExcess(boolean allowExcess) |
 | `SendSmsNotification` | `boolean` | Required | Send SMS (text) alerts when the thresholdValue is reached. | boolean getSendSmsNotification() | setSendSmsNotification(boolean sendSmsNotification) |

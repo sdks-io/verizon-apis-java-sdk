@@ -27,30 +27,26 @@ CompletableFuture<ApiResponse<RequestResponse>> deviceReachabilityAsync(
 |  --- | --- | --- | --- |
 | `body` | [`NotificationReportRequest`](../../doc/models/notification-report-request.md) | Body, Required | Create Reachability Report Request |
 
-## Server
-
-`Server.THINGSPACE`
-
 ## Response Type
 
-[`RequestResponse`](../../doc/models/request-response.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`RequestResponse`](../../doc/models/request-response.md).
 
 ## Example Usage
 
 ```java
 NotificationReportRequest body = new NotificationReportRequest.Builder(
-    "0242072320-00001",
+    "0000123456-00001",
     "REACHABLE_FOR_DATA",
     Arrays.asList(
         new DeviceList.Builder()
             .deviceIds(Arrays.asList(
                 new DeviceId.Builder(
-                    "89148000004292933820",
+                    "20-digit ICCID",
                     "iccid"
                 )
                 .build(),
                 new DeviceId.Builder(
-                    "89148000003164287919",
+                    "20-digit ICCID",
                     "iccid"
                 )
                 .build()
@@ -65,8 +61,16 @@ deviceMonitoringController.deviceReachabilityAsync(body).thenAccept(result -> {
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof RestErrorResponseException) {
+        RestErrorResponseException restErrorResponseException = (RestErrorResponseException) cause;
+        restErrorResponseException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -82,40 +86,52 @@ deviceMonitoringController.deviceReachabilityAsync(body).thenAccept(result -> {
 
 ```java
 CompletableFuture<ApiResponse<RequestResponse>> stopDeviceReachabilityAsync(
-    final StopMonitorRequest body)
+    final StopMonitorRequest stopreachabilitypayload)
 ```
 
 ## Parameters
 
 | Parameter | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `body` | [`StopMonitorRequest`](../../doc/models/stop-monitor-request.md) | Body, Optional | - |
-
-## Server
-
-`Server.THINGSPACE`
+| `stopreachabilitypayload` | [`StopMonitorRequest`](../../doc/models/stop-monitor-request.md) | Query, Required | Payload for the Stop Device Reachability monitors request. |
 
 ## Response Type
 
-[`RequestResponse`](../../doc/models/request-response.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`RequestResponse`](../../doc/models/request-response.md).
 
 ## Example Usage
 
 ```java
-StopMonitorRequest body = new StopMonitorRequest.Builder(
-    "0242123520-00001",
+StopMonitorRequest stopreachabilitypayload = new StopMonitorRequest.Builder(
+    "0000123456-00001",
     Arrays.asList(
-        "35596ca6-bab4-4333-a914-42b4fc2da54c"
+        new DeviceList.Builder()
+            .deviceIds(Arrays.asList(
+                new DeviceId.Builder(
+                    "1+ 10-digit phone number",
+                    "msisdn"
+                )
+                .build()
+            ))
+            .build()
     )
 )
 .build();
 
-deviceMonitoringController.stopDeviceReachabilityAsync(body).thenAccept(result -> {
+deviceMonitoringController.stopDeviceReachabilityAsync(stopreachabilitypayload).thenAccept(result -> {
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof RestErrorResponseException) {
+        RestErrorResponseException restErrorResponseException = (RestErrorResponseException) cause;
+        restErrorResponseException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```

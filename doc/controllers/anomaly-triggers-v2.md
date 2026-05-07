@@ -21,65 +21,70 @@ Creates the trigger to identify an anomaly.
 
 ```java
 CompletableFuture<ApiResponse<AnomalyDetectionTrigger>> createAnomalyDetectionTriggerV2Async(
-    final List<CreateTriggerRequestOptions> body)
+    final List<CreateTriggerRequestOptions2> body)
 ```
 
 ## Parameters
 
 | Parameter | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `body` | [`List<CreateTriggerRequestOptions>`](../../doc/models/create-trigger-request-options.md) | Body, Required | Request to create an anomaly trigger. |
-
-## Server
-
-`Server.THINGSPACE`
+| `body` | [`List<CreateTriggerRequestOptions2>`](../../doc/models/containers/create-trigger-request-options-2.md) | Body, Required | Request to create an anomaly trigger. |
 
 ## Response Type
 
-[`AnomalyDetectionTrigger`](../../doc/models/anomaly-detection-trigger.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`AnomalyDetectionTrigger`](../../doc/models/anomaly-detection-trigger.md).
 
 ## Example Usage
 
 ```java
-List<CreateTriggerRequestOptions> body = Arrays.asList(
-    new CreateTriggerRequestOptions.Builder()
-        .name("Anomaly Daily Usage REST Test-Patch 1")
-        .triggerCategory("UsageAnomaly")
-        .accountName("0000123456-00001")
-        .anomalyTriggerRequest(new AnomalyTriggerRequest.Builder()
-            .accountNames("0000123456-00001")
-            .includeAbnormal(true)
-            .includeVeryAbnormal(true)
-            .includeUnderExpectedUsage(true)
-            .includeOverExpectedUsage(true)
-            .build())
-        .notification(new TriggerNotification.Builder()
-            .notificationType("DailySummary")
-            .callback(true)
-            .emailNotification(false)
-            .notificationGroupName("Anomaly Test API")
-            .notificationFrequencyFactor(3)
-            .notificationFrequencyInterval("Hourly")
-            .externalEmailRecipients("placeholder@verizon.com")
-            .smsNotification(true)
-            .smsNumbers(Arrays.asList(
-                new SMSNumber.Builder()
-                    .carrier("US Cellular")
-                    .number("9299280711")
-                    .build()
-            ))
-            .reminder(true)
-            .severity("Critical")
-            .build())
-        .build()
+List<CreateTriggerRequestOptions2> body = Arrays.asList(
+    CreateTriggerRequestOptions2.fromTriggerType1(
+        new TriggerType1.Builder()
+            .name("Anomaly Daily Usage REST Test-Patch 1")
+            .triggerCategory("UsageAnomaly")
+            .accountName("0000123456-00001")
+            .anomalyTriggerRequest(new AnomalyTriggerRequest.Builder()
+                .accountNames("0000123456-00001")
+                .includeAbnormal(true)
+                .includeVeryAbnormal(true)
+                .includeUnderExpectedUsage(true)
+                .includeOverExpectedUsage(true)
+                .build())
+            .notification(new TriggerNotification.Builder()
+                .notificationType("DailySummary")
+                .callback(true)
+                .emailNotification(false)
+                .notificationGroupName("Anomaly Test API")
+                .notificationFrequencyFactor(3)
+                .notificationFrequencyInterval("Hourly")
+                .externalEmailRecipients("placeholder@verizon.com")
+                .smsNotification(true)
+                .smsNumbers(Arrays.asList(
+                    new SMSNumber.Builder()
+                        .carrier("US Cellular")
+                        .number("9299280711")
+                        .build()
+                ))
+                .reminder(true)
+                .severity("Critical")
+                .build())
+            .build()
+    )
 );
-
 anomalyTriggersV2Controller.createAnomalyDetectionTriggerV2Async(body).thenAccept(result -> {
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof IntelligenceResultException) {
+        IntelligenceResultException intelligenceResultException = (IntelligenceResultException) cause;
+        intelligenceResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -105,66 +110,71 @@ Updates an existing trigger using the account name.
 
 ```java
 CompletableFuture<ApiResponse<IntelligenceSuccessResult>> updateAnomalyDetectionTriggerV2Async(
-    final List<UpdateTriggerRequestOptions> body)
+    final List<UpdateTriggerRequestOptions2> body)
 ```
 
 ## Parameters
 
 | Parameter | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `body` | [`List<UpdateTriggerRequestOptions>`](../../doc/models/update-trigger-request-options.md) | Body, Required | Request to update existing trigger. |
-
-## Server
-
-`Server.THINGSPACE`
+| `body` | [`List<UpdateTriggerRequestOptions2>`](../../doc/models/containers/update-trigger-request-options-2.md) | Body, Required | Request to update existing trigger. |
 
 ## Response Type
 
-[`IntelligenceSuccessResult`](../../doc/models/intelligence-success-result.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`IntelligenceSuccessResult`](../../doc/models/intelligence-success-result.md).
 
 ## Example Usage
 
 ```java
-List<UpdateTriggerRequestOptions> body = Arrays.asList(
-    new UpdateTriggerRequestOptions.Builder()
-        .triggerId("595f5c44-c31c-4552-8670-020a1545a84d")
-        .triggerName("Anomaly Daily Usage REST Test-Patch Update 4")
-        .triggerCategory("UsageAnomaly")
-        .accountName("0000123456-00001")
-        .anomalyTriggerRequest(new AnomalyTriggerRequest.Builder()
-            .accountNames("0000123456-00001")
-            .includeAbnormal(true)
-            .includeVeryAbnormal(true)
-            .includeUnderExpectedUsage(false)
-            .includeOverExpectedUsage(true)
-            .build())
-        .notification(new TriggerNotification.Builder()
-            .notificationType("DailySummary")
-            .callback(true)
-            .emailNotification(false)
-            .notificationGroupName("Anomaly Test API")
-            .notificationFrequencyFactor(3)
-            .notificationFrequencyInterval("Hourly")
-            .externalEmailRecipients("placeholder@verizon.com")
-            .smsNotification(true)
-            .smsNumbers(Arrays.asList(
-                new SMSNumber.Builder()
-                    .carrier("US Cellular")
-                    .number("9299280711")
-                    .build()
-            ))
-            .reminder(true)
-            .severity("Critical")
-            .build())
-        .build()
+List<UpdateTriggerRequestOptions2> body = Arrays.asList(
+    UpdateTriggerRequestOptions2.fromTriggerType3(
+        new TriggerType3.Builder()
+            .triggerId("595f5c44-c31c-4552-8670-020a1545a84d")
+            .triggerName("Anomaly Daily Usage REST Test-Patch Update 4")
+            .triggerCategory("UsageAnomaly")
+            .accountName("0000123456-00001")
+            .anomalyTriggerRequest(new AnomalyTriggerRequest.Builder()
+                .accountNames("0000123456-00001")
+                .includeAbnormal(true)
+                .includeVeryAbnormal(true)
+                .includeUnderExpectedUsage(false)
+                .includeOverExpectedUsage(true)
+                .build())
+            .notification(new TriggerNotification.Builder()
+                .notificationType("DailySummary")
+                .callback(true)
+                .emailNotification(false)
+                .notificationGroupName("Anomaly Test API")
+                .notificationFrequencyFactor(3)
+                .notificationFrequencyInterval("Hourly")
+                .externalEmailRecipients("placeholder@verizon.com")
+                .smsNotification(true)
+                .smsNumbers(Arrays.asList(
+                    new SMSNumber.Builder()
+                        .carrier("US Cellular")
+                        .number("9299280711")
+                        .build()
+                ))
+                .reminder(true)
+                .severity("Critical")
+                .build())
+            .build()
+    )
 );
-
 anomalyTriggersV2Controller.updateAnomalyDetectionTriggerV2Async(body).thenAccept(result -> {
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof IntelligenceResultException) {
+        IntelligenceResultException intelligenceResultException = (IntelligenceResultException) cause;
+        intelligenceResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -199,13 +209,9 @@ CompletableFuture<ApiResponse<AnomalyTriggerResult>> listAnomalyDetectionTrigger
 |  --- | --- | --- | --- |
 | `triggerId` | `String` | Template, Required | The trigger ID of a specific trigger. |
 
-## Server
-
-`Server.THINGSPACE`
-
 ## Response Type
 
-[`AnomalyTriggerResult`](../../doc/models/anomaly-trigger-result.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`AnomalyTriggerResult`](../../doc/models/anomaly-trigger-result.md).
 
 ## Example Usage
 
@@ -216,8 +222,16 @@ anomalyTriggersV2Controller.listAnomalyDetectionTriggerSettingsV2Async(triggerId
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof IntelligenceResultException) {
+        IntelligenceResultException intelligenceResultException = (IntelligenceResultException) cause;
+        intelligenceResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```

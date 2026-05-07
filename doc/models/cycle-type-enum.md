@@ -9,6 +9,6 @@
 
 | Name |
 |  --- |
-| `Cycleone` |
-| `Cycletwo` |
+| `CYCLEONE` |
+| `CYCLETWO` |
 

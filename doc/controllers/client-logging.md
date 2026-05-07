@@ -10,7 +10,7 @@ ClientLoggingController clientLoggingController = client.getClientLoggingControl
 
 ## Methods
 
-* [List Devices With Logging Enabled](../../doc/controllers/client-logging.md#list-devices-with-logging-enabled)
+* [List Devices with Logging Enabled](../../doc/controllers/client-logging.md#list-devices-with-logging-enabled)
 * [Enable Logging for Devices](../../doc/controllers/client-logging.md#enable-logging-for-devices)
 * [Disable Logging for Devices](../../doc/controllers/client-logging.md#disable-logging-for-devices)
 * [Enable Device Logging](../../doc/controllers/client-logging.md#enable-device-logging)
@@ -18,7 +18,7 @@ ClientLoggingController clientLoggingController = client.getClientLoggingControl
 * [List Device Logs](../../doc/controllers/client-logging.md#list-device-logs)
 
 
-# List Devices With Logging Enabled
+# List Devices with Logging Enabled
 
 Returns an array of all devices in the specified account for which logging is enabled.
 
@@ -39,7 +39,7 @@ CompletableFuture<ApiResponse<List<DeviceLoggingStatus>>> listDevicesWithLogging
 
 ## Response Type
 
-[`List<DeviceLoggingStatus>`](../../doc/models/device-logging-status.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`List<DeviceLoggingStatus>`](../../doc/models/device-logging-status.md).
 
 ## Example Usage
 
@@ -50,8 +50,16 @@ clientLoggingController.listDevicesWithLoggingEnabledAsync(account).thenAccept(r
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof FotaV2ResultException) {
+        FotaV2ResultException fotaV2ResultException = (FotaV2ResultException) cause;
+        fotaV2ResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -113,7 +121,7 @@ CompletableFuture<ApiResponse<List<DeviceLoggingStatus>>> enableLoggingForDevice
 
 ## Response Type
 
-[`List<DeviceLoggingStatus>`](../../doc/models/device-logging-status.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`List<DeviceLoggingStatus>`](../../doc/models/device-logging-status.md).
 
 ## Example Usage
 
@@ -134,8 +142,16 @@ clientLoggingController.enableLoggingForDevicesAsync(account, body).thenAccept(r
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof FotaV2ResultException) {
+        FotaV2ResultException fotaV2ResultException = (FotaV2ResultException) cause;
+        fotaV2ResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -209,8 +225,16 @@ clientLoggingController.disableLoggingForDevicesAsync(account, deviceIds).thenAc
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof FotaV2ResultException) {
+        FotaV2ResultException fotaV2ResultException = (FotaV2ResultException) cause;
+        fotaV2ResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -245,7 +269,7 @@ CompletableFuture<ApiResponse<DeviceLoggingStatus>> enableDeviceLoggingAsync(
 
 ## Response Type
 
-[`DeviceLoggingStatus`](../../doc/models/device-logging-status.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`DeviceLoggingStatus`](../../doc/models/device-logging-status.md).
 
 ## Example Usage
 
@@ -257,8 +281,16 @@ clientLoggingController.enableDeviceLoggingAsync(account, deviceId).thenAccept(r
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof FotaV2ResultException) {
+        FotaV2ResultException fotaV2ResultException = (FotaV2ResultException) cause;
+        fotaV2ResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -314,8 +346,16 @@ clientLoggingController.disableDeviceLoggingAsync(account, deviceId).thenAccept(
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof FotaV2ResultException) {
+        FotaV2ResultException fotaV2ResultException = (FotaV2ResultException) cause;
+        fotaV2ResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -350,7 +390,7 @@ CompletableFuture<ApiResponse<List<DeviceLog>>> listDeviceLogsAsync(
 
 ## Response Type
 
-[`List<DeviceLog>`](../../doc/models/device-log.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`List<DeviceLog>`](../../doc/models/device-log.md).
 
 ## Example Usage
 
@@ -362,8 +402,16 @@ clientLoggingController.listDeviceLogsAsync(account, deviceId).thenAccept(result
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof FotaV2ResultException) {
+        FotaV2ResultException fotaV2ResultException = (FotaV2ResultException) cause;
+        fotaV2ResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```

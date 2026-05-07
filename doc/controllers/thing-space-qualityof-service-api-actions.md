@@ -29,13 +29,9 @@ CompletableFuture<ApiResponse<M201success>> createAThingSpaceQualityOfServiceAPI
 |  --- | --- | --- | --- |
 | `body` | [`SubscribeRequest`](../../doc/models/subscribe-request.md) | Body, Required | The request details to create a ThingSpace Quality of Service API subscription. |
 
-## Server
-
-`Server.THINGSPACE`
-
 ## Response Type
 
-[`M201success`](../../doc/models/m201-success.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`M201success`](../../doc/models/m201-success.md).
 
 ## Example Usage
 
@@ -68,8 +64,16 @@ thingSpaceQualityofServiceAPIActionsController.createAThingSpaceQualityOfService
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof DefaultResponseException) {
+        DefaultResponseException defaultResponseException = (DefaultResponseException) cause;
+        defaultResponseException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -98,13 +102,9 @@ CompletableFuture<ApiResponse<M201success>> stopAThingSpaceQualityOfServiceAPISu
 | `accountName` | `String` | Query, Required | - |
 | `qosSubscriptionId` | `String` | Query, Required | - |
 
-## Server
-
-`Server.THINGSPACE`
-
 ## Response Type
 
-[`M201success`](../../doc/models/m201-success.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`M201success`](../../doc/models/m201-success.md).
 
 ## Example Usage
 
@@ -116,8 +116,16 @@ thingSpaceQualityofServiceAPIActionsController.stopAThingSpaceQualityOfServiceAP
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof DefaultResponseException) {
+        DefaultResponseException defaultResponseException = (DefaultResponseException) cause;
+        defaultResponseException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```

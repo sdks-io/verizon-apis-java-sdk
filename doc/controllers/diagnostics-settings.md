@@ -24,7 +24,7 @@ CompletableFuture<ApiResponse<List<DiagnosticObservationSetting>>> listDiagnosti
 | Parameter | Type | Tags | Description |
 |  --- | --- | --- | --- |
 | `accountName` | `String` | Query, Required | Account identifier. |
-| `devices` | `String` | Query, Required | Devices list format: [{"id":"{imei1}","kind":"imei"},{"id":"{imei2}","kind":"imei"}]. |
+| `devices` | `String` | Query, Required | Devices list formatted as "id, kind" |
 
 ## Server
 
@@ -32,20 +32,28 @@ CompletableFuture<ApiResponse<List<DiagnosticObservationSetting>>> listDiagnosti
 
 ## Response Type
 
-[`List<DiagnosticObservationSetting>`](../../doc/models/diagnostic-observation-setting.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`List<DiagnosticObservationSetting>`](../../doc/models/diagnostic-observation-setting.md).
 
 ## Example Usage
 
 ```java
 String accountName = "0000123456-00001";
-String devices = "[{\"id\":\"864508030026238\",\"kind\":\"IMEI\"},{\"id\":\"864508030026238\",\"kind\":\"IMEI\"}]";
+String devices = "864508030026238,IMEI";
 
 diagnosticsSettingsController.listDiagnosticsSettingsAsync(accountName, devices).thenAccept(result -> {
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof DeviceDiagnosticsResultException) {
+        DeviceDiagnosticsResultException deviceDiagnosticsResultException = (DeviceDiagnosticsResultException) cause;
+        deviceDiagnosticsResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```

@@ -11,7 +11,7 @@ Error reported by a device.
 
 | Name | Type | Tags | Description | Getter | Setter |
 |  --- | --- | --- | --- | --- | --- |
-| `Imei` | `String` | Optional | International Mobile Equipment Identifier. This is the ID of the device reporting errors. | String getImei() | setImei(String imei) |
+| `Imei` | `String` | Optional | The International Mobile Equipment Identifier of the device. | String getImei() | setImei(String imei) |
 | `ErrorMessage` | `String` | Optional | A general error message. | String getErrorMessage() | setErrorMessage(String errorMessage) |
 | `ErrorResponse` | [`IErrorMessage`](../../doc/models/i-error-message.md) | Optional | Error message. | IErrorMessage getErrorResponse() | setErrorResponse(IErrorMessage errorResponse) |
 
@@ -19,14 +19,14 @@ Error reported by a device.
 
 ```json
 {
+  "imei": "15-digit IMEI",
+  "errorMessage": "errorMessage4",
   "errorResponse": {
-    "httpStatusCode": "200 OK",
-    "errorCode": "INVALID_ACCESS",
+    "errorCode": "INVALID_PARAMETER",
     "errorMessage": "errorMessage4",
+    "httpStatusCode": "423 LOCKED",
     "detailErrorMessage": "detailErrorMessage6"
-  },
-  "imei": "imei0",
-  "errorMessage": "errorMessage4"
+  }
 }
 ```
 

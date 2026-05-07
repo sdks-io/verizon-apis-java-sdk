@@ -37,7 +37,7 @@ CompletableFuture<ApiResponse<RetrievesAvailableFilesResponseList>> getListOfFil
 
 ## Response Type
 
-[`RetrievesAvailableFilesResponseList`](../../doc/models/retrieves-available-files-response-list.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`RetrievesAvailableFilesResponseList`](../../doc/models/retrieves-available-files-response-list.md).
 
 ## Example Usage
 
@@ -49,8 +49,16 @@ configurationFilesController.getListOfFilesAsync(acc, distributionType).thenAcce
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof FotaV2ResultException) {
+        FotaV2ResultException fotaV2ResultException = (FotaV2ResultException) cause;
+        fotaV2ResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -93,7 +101,7 @@ CompletableFuture<ApiResponse<UploadConfigurationFilesResponse>> uploadConfigFil
 
 ## Response Type
 
-[`UploadConfigurationFilesResponse`](../../doc/models/upload-configuration-files-response.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`UploadConfigurationFilesResponse`](../../doc/models/upload-configuration-files-response.md).
 
 ## Example Usage
 
@@ -108,8 +116,16 @@ configurationFilesController.uploadConfigFileAsync(acc, null, fileVersion, make,
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof FotaV2ResultException) {
+        FotaV2ResultException fotaV2ResultException = (FotaV2ResultException) cause;
+        fotaV2ResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```

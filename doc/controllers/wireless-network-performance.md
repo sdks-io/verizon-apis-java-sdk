@@ -32,13 +32,9 @@ CompletableFuture<ApiResponse<WNPRequestResponse>> nearRealTimeNetworkConditions
 |  --- | --- | --- | --- |
 | `body` | [`GetNetworkConditionsRequest`](../../doc/models/get-network-conditions-request.md) | Body, Required | Request for current network health. |
 
-## Server
-
-`Server.THINGSPACE`
-
 ## Response Type
 
-[`WNPRequestResponse`](../../doc/models/wnp-request-response.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`WNPRequestResponse`](../../doc/models/wnp-request-response.md).
 
 ## Example Usage
 
@@ -57,8 +53,16 @@ wirelessNetworkPerformanceController.nearRealTimeNetworkConditionsAsync(body).th
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof WNPRestErrorResponseException) {
+        WNPRestErrorResponseException wNPRestErrorResponseException = (WNPRestErrorResponseException) cause;
+        wNPRestErrorResponseException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -67,7 +71,7 @@ wirelessNetworkPerformanceController.nearRealTimeNetworkConditionsAsync(body).th
 
 ```json
 {
-  "requestId": "d1f08526-5443-4054-9a29-4456490ea9f8"
+  "requestId": "d1f08526-eeee-ffff-gggg-4456490ea9f8"
 }
 ```
 
@@ -80,57 +84,64 @@ wirelessNetworkPerformanceController.nearRealTimeNetworkConditionsAsync(body).th
 
 # Domestic 4 G and 5G Nationwide Network Coverage
 
-Run a report to determine network types available and available coverage. Network types covered include: CAT-M, NB-IOT, LTE, LTE-AWS, 5GNW and C-BAND.
+Run a report for FWA Address qualification or to determine network types available and available coverage. Network types covered include: CAT-M, NB-IOT, LTE, LTE-AWS, 5GNW, MMWAVE and C-BAND.
 
 ```java
 CompletableFuture<ApiResponse<WNPRequestResponse>> domestic4GAnd5gNationwideNetworkCoverageAsync(
-    final GetWirelessCoverageRequest body)
+    final Domestic4GAnd5gNationwideNetworkCoverageBody body)
 ```
 
 ## Parameters
 
 | Parameter | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `body` | [`GetWirelessCoverageRequest`](../../doc/models/get-wireless-coverage-request.md) | Body, Required | Request for network coverage details. |
-
-## Server
-
-`Server.THINGSPACE`
+| `body` | [`Domestic4GAnd5gNationwideNetworkCoverageBody`](../../doc/models/containers/domestic-4-g-and-5g-nationwide-network-coverage-body.md) | Body, Required | This is a container for any-of cases. |
 
 ## Response Type
 
-[`WNPRequestResponse`](../../doc/models/wnp-request-response.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`WNPRequestResponse`](../../doc/models/wnp-request-response.md).
 
 ## Example Usage
 
 ```java
-GetWirelessCoverageRequest body = new GetWirelessCoverageRequest.Builder(
-    "0000123456-00001",
-    "NW",
-    "LONGLAT",
-    new Locationscoord.Builder(
+Domestic4GAnd5gNationwideNetworkCoverageBody body = Domestic4GAnd5gNationwideNetworkCoverageBody.fromGetWirelessCoverageRequestFWA(
+    new GetWirelessCoverageRequestFWA.Builder(
+        "0000123456-00001",
+        "FWA",
+        "ADDRESS",
+        new Locations.Builder()
+            .addressList(Arrays.asList(
+                new AddressItem.Builder()
+                    .addressLine1("street address")
+                    .city("city")
+                    .state("LA")
+                    .country("USA")
+                    .zip("00000")
+                    .build()
+            ))
+            .build(),
         Arrays.asList(
-            new Coordinates.Builder()
-                .latitude("-33.84819")
-                .longitude("151.22049")
+            new NetworkTypeObject.Builder()
+                .networkType("LTE")
                 .build()
         )
     )
-    .build(),
-    Arrays.asList(
-        new NetworkType.Builder()
-            .networkType("LTE")
-            .build()
-    )
-)
-.build();
-
+    .build()
+);
 wirelessNetworkPerformanceController.domestic4GAnd5gNationwideNetworkCoverageAsync(body).thenAccept(result -> {
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof WNPRestErrorResponseException) {
+        WNPRestErrorResponseException wNPRestErrorResponseException = (WNPRestErrorResponseException) cause;
+        wNPRestErrorResponseException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -139,7 +150,7 @@ wirelessNetworkPerformanceController.domestic4GAnd5gNationwideNetworkCoverageAsy
 
 ```json
 {
-  "requestId": "d1f08526-5443-4054-9a29-4456490ea9f8"
+  "requestId": "d1f08526-eeee-ffff-gggg-4456490ea9f8"
 }
 ```
 
@@ -165,13 +176,9 @@ CompletableFuture<ApiResponse<WNPRequestResponse>> siteProximityAsync(
 |  --- | --- | --- | --- |
 | `body` | [`GetNetworkConditionsRequest`](../../doc/models/get-network-conditions-request.md) | Body, Required | Request for cell site proximity. |
 
-## Server
-
-`Server.THINGSPACE`
-
 ## Response Type
 
-[`WNPRequestResponse`](../../doc/models/wnp-request-response.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`WNPRequestResponse`](../../doc/models/wnp-request-response.md).
 
 ## Example Usage
 
@@ -190,8 +197,16 @@ wirelessNetworkPerformanceController.siteProximityAsync(body).thenAccept(result 
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof WNPRestErrorResponseException) {
+        WNPRestErrorResponseException wNPRestErrorResponseException = (WNPRestErrorResponseException) cause;
+        wNPRestErrorResponseException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -200,7 +215,7 @@ wirelessNetworkPerformanceController.siteProximityAsync(body).thenAccept(result 
 
 ```json
 {
-  "requestId": "d1f08526-5443-4054-9a29-4456490ea9f8"
+  "requestId": "d1f08526-eeee-ffff-gggg-4456490ea9f8"
 }
 ```
 
@@ -226,13 +241,9 @@ CompletableFuture<ApiResponse<WNPRequestResponse>> deviceExperience30daysHistory
 |  --- | --- | --- | --- |
 | `body` | [`GetDeviceExperienceScoreHistoryRequest`](../../doc/models/get-device-experience-score-history-request.md) | Body, Required | Request for a device's 30 day experience. |
 
-## Server
-
-`Server.THINGSPACE`
-
 ## Response Type
 
-[`WNPRequestResponse`](../../doc/models/wnp-request-response.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`WNPRequestResponse`](../../doc/models/wnp-request-response.md).
 
 ## Example Usage
 
@@ -252,8 +263,16 @@ wirelessNetworkPerformanceController.deviceExperience30daysHistoryAsync(body).th
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof WNPRestErrorResponseException) {
+        WNPRestErrorResponseException wNPRestErrorResponseException = (WNPRestErrorResponseException) cause;
+        wNPRestErrorResponseException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -262,7 +281,7 @@ wirelessNetworkPerformanceController.deviceExperience30daysHistoryAsync(body).th
 
 ```json
 {
-  "requestId": "d1f08526-5443-4054-9a29-4456490ea9f8"
+  "requestId": "d1f08526-eeee-ffff-gggg-4456490ea9f8"
 }
 ```
 
@@ -288,13 +307,9 @@ CompletableFuture<ApiResponse<WNPRequestResponse>> deviceExperienceBulkLatestAsy
 |  --- | --- | --- | --- |
 | `body` | [`GetDeviceExperienceScoreBulkRequest`](../../doc/models/get-device-experience-score-bulk-request.md) | Body, Required | Request for bulk latest history details. |
 
-## Server
-
-`Server.THINGSPACE`
-
 ## Response Type
 
-[`WNPRequestResponse`](../../doc/models/wnp-request-response.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`WNPRequestResponse`](../../doc/models/wnp-request-response.md).
 
 ## Example Usage
 
@@ -316,8 +331,16 @@ wirelessNetworkPerformanceController.deviceExperienceBulkLatestAsync(body).thenA
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof WNPRestErrorResponseException) {
+        WNPRestErrorResponseException wNPRestErrorResponseException = (WNPRestErrorResponseException) cause;
+        wNPRestErrorResponseException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -326,7 +349,7 @@ wirelessNetworkPerformanceController.deviceExperienceBulkLatestAsync(body).thenA
 
 ```json
 {
-  "requestId": "d1f08526-5443-4054-9a29-4456490ea9f8"
+  "requestId": "d1f08526-eeee-ffff-gggg-4456490ea9f8"
 }
 ```
 

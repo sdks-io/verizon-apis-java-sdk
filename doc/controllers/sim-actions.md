@@ -30,13 +30,9 @@ CompletableFuture<ApiResponse<ESIMRequestResponse>> newactivatecodeAsync(
 |  --- | --- | --- | --- |
 | `body` | [`ESIMProfileRequest2`](../../doc/models/esim-profile-request-2.md) | Body, Required | Device Profile Query |
 
-## Server
-
-`Server.THINGSPACE`
-
 ## Response Type
 
-[`ESIMRequestResponse`](../../doc/models/esim-request-response.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`ESIMRequestResponse`](../../doc/models/esim-request-response.md).
 
 ## Example Usage
 
@@ -45,14 +41,18 @@ ESIMProfileRequest2 body = new ESIMProfileRequest2.Builder()
     .devices(Arrays.asList(
         new ESIMDeviceList.Builder()
             .deviceIds(Arrays.asList(
-                new DeviceId2.Builder()
-                    .id("15-digit IMEI")
-                    .kind("imei")
-                    .build(),
-                new DeviceId2.Builder()
-                    .id("20-digit ICCID")
-                    .kind("iccid")
-                    .build()
+                ESIMDeviceListDeviceIds.fromESIMDeviceId(
+                    new ESIMDeviceId.Builder()
+                        .id("15-digit IMEI")
+                        .kind("imei")
+                        .build()
+                ),
+                ESIMDeviceListDeviceIds.fromESIMDeviceId(
+                    new ESIMDeviceId.Builder()
+                        .id("20-digit ICCID")
+                        .kind("iccid")
+                        .build()
+                )
             ))
             .build()
     ))
@@ -65,8 +65,16 @@ sIMActionsController.newactivatecodeAsync(body).thenAccept(result -> {
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof ESIMRestErrorResponseException) {
+        ESIMRestErrorResponseException eSIMRestErrorResponseException = (ESIMRestErrorResponseException) cause;
+        eSIMRestErrorResponseException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -107,13 +115,9 @@ CompletableFuture<ApiResponse<ESIMRequestResponse>> setactivateUsingPOSTAsync(
 |  --- | --- | --- | --- |
 | `body` | [`ESIMProfileRequest`](../../doc/models/esim-profile-request.md) | Body, Required | Device Profile Query |
 
-## Server
-
-`Server.THINGSPACE`
-
 ## Response Type
 
-[`ESIMRequestResponse`](../../doc/models/esim-request-response.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`ESIMRequestResponse`](../../doc/models/esim-request-response.md).
 
 ## Example Usage
 
@@ -122,18 +126,24 @@ ESIMProfileRequest body = new ESIMProfileRequest.Builder()
     .devices(Arrays.asList(
         new ESIMDeviceList.Builder()
             .deviceIds(Arrays.asList(
-                new DeviceId2.Builder()
-                    .id("32-digit EID")
-                    .kind("eid")
-                    .build(),
-                new DeviceId2.Builder()
-                    .id("15-digit IMEI")
-                    .kind("imei")
-                    .build(),
-                new DeviceId2.Builder()
-                    .id("20-digit ICCID")
-                    .kind("iccid (ICCID is only used for reactivation)")
-                    .build()
+                ESIMDeviceListDeviceIds.fromESIMDeviceId(
+                    new ESIMDeviceId.Builder()
+                        .id("32-digit EID")
+                        .kind("eid")
+                        .build()
+                ),
+                ESIMDeviceListDeviceIds.fromESIMDeviceId(
+                    new ESIMDeviceId.Builder()
+                        .id("15-digit IMEI")
+                        .kind("imei")
+                        .build()
+                ),
+                ESIMDeviceListDeviceIds.fromESIMDeviceId(
+                    new ESIMDeviceId.Builder()
+                        .id("20-digit ICCID")
+                        .kind("iccid (ICCID is only used for reactivation)")
+                        .build()
+                )
             ))
             .build()
     ))
@@ -147,8 +157,16 @@ sIMActionsController.setactivateUsingPOSTAsync(body).thenAccept(result -> {
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof ESIMRestErrorResponseException) {
+        ESIMRestErrorResponseException eSIMRestErrorResponseException = (ESIMRestErrorResponseException) cause;
+        eSIMRestErrorResponseException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -189,13 +207,9 @@ CompletableFuture<ApiResponse<ESIMRequestResponse>> setdeactivateUsingPOSTAsync(
 |  --- | --- | --- | --- |
 | `body` | [`ProfileRequest2`](../../doc/models/profile-request-2.md) | Body, Required | Device Profile Query |
 
-## Server
-
-`Server.THINGSPACE`
-
 ## Response Type
 
-[`ESIMRequestResponse`](../../doc/models/esim-request-response.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`ESIMRequestResponse`](../../doc/models/esim-request-response.md).
 
 ## Example Usage
 
@@ -212,8 +226,16 @@ sIMActionsController.setdeactivateUsingPOSTAsync(body).thenAccept(result -> {
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof ESIMRestErrorResponseException) {
+        ESIMRestErrorResponseException eSIMRestErrorResponseException = (ESIMRestErrorResponseException) cause;
+        eSIMRestErrorResponseException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```

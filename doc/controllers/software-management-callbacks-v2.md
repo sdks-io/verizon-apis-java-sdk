@@ -37,7 +37,7 @@ CompletableFuture<ApiResponse<CallbackSummary>> listRegisteredCallbacksAsync(
 
 ## Response Type
 
-[`CallbackSummary`](../../doc/models/callback-summary.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`CallbackSummary`](../../doc/models/callback-summary.md).
 
 ## Example Usage
 
@@ -48,8 +48,16 @@ softwareManagementCallbacksV2Controller.listRegisteredCallbacksAsync(account).th
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof FotaV2ResultException) {
+        FotaV2ResultException fotaV2ResultException = (FotaV2ResultException) cause;
+        fotaV2ResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -92,7 +100,7 @@ CompletableFuture<ApiResponse<FotaV2CallbackRegistrationResult>> updateCallbackA
 
 ## Response Type
 
-[`FotaV2CallbackRegistrationResult`](../../doc/models/fota-v2-callback-registration-result.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`FotaV2CallbackRegistrationResult`](../../doc/models/fota-v2-callback-registration-result.md).
 
 ## Example Usage
 
@@ -106,8 +114,16 @@ softwareManagementCallbacksV2Controller.updateCallbackAsync(account, body).thenA
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof FotaV2ResultException) {
+        FotaV2ResultException fotaV2ResultException = (FotaV2ResultException) cause;
+        fotaV2ResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -150,7 +166,7 @@ CompletableFuture<ApiResponse<FotaV2CallbackRegistrationResult>> registerCallbac
 
 ## Response Type
 
-[`FotaV2CallbackRegistrationResult`](../../doc/models/fota-v2-callback-registration-result.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`FotaV2CallbackRegistrationResult`](../../doc/models/fota-v2-callback-registration-result.md).
 
 ## Example Usage
 
@@ -164,8 +180,16 @@ softwareManagementCallbacksV2Controller.registerCallbackAsync(account, body).the
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof FotaV2ResultException) {
+        FotaV2ResultException fotaV2ResultException = (FotaV2ResultException) cause;
+        fotaV2ResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -206,7 +230,7 @@ CompletableFuture<ApiResponse<FotaV2SuccessResult>> deregisterCallbackAsync(
 
 ## Response Type
 
-[`FotaV2SuccessResult`](../../doc/models/fota-v2-success-result.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`FotaV2SuccessResult`](../../doc/models/fota-v2-success-result.md).
 
 ## Example Usage
 
@@ -217,8 +241,16 @@ softwareManagementCallbacksV2Controller.deregisterCallbackAsync(account).thenAcc
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof FotaV2ResultException) {
+        FotaV2ResultException fotaV2ResultException = (FotaV2ResultException) cause;
+        fotaV2ResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```

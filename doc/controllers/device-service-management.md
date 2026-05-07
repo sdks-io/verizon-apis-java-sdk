@@ -28,8 +28,8 @@ CompletableFuture<ApiResponse<BullseyeServiceResult>> getDeviceHyperPreciseStatu
 
 | Parameter | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `imei` | `String` | Query, Required | A unique identifier for a device. |
-| `accountNumber` | `String` | Query, Required | A unique identifier for an account. |
+| `imei` | `String` | Query, Required | The International Mobile Equipment Identifier of the device. |
+| `accountNumber` | `String` | Query, Required | The numeric name of the account and must include leading zeroes. |
 
 ## Server
 
@@ -37,36 +37,30 @@ CompletableFuture<ApiResponse<BullseyeServiceResult>> getDeviceHyperPreciseStatu
 
 ## Response Type
 
-[`BullseyeServiceResult`](../../doc/models/bullseye-service-result.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`BullseyeServiceResult`](../../doc/models/bullseye-service-result.md).
 
 ## Example Usage
 
 ```java
-String imei = "709312034493372";
-String accountNumber = "0844021539-00001";
+String imei = "15-digit IMEI";
+String accountNumber = "0000123456-00001";
 
 deviceServiceManagementController.getDeviceHyperPreciseStatusAsync(imei, accountNumber).thenAccept(result -> {
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof HyperPreciseLocationResultException) {
+        HyperPreciseLocationResultException hyperPreciseLocationResultException = (HyperPreciseLocationResultException) cause;
+        hyperPreciseLocationResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
-```
-
-## Example Response *(as JSON)*
-
-```json
-{
-  "accountNumber": "0844021539-00001",
-  "deviceList": [
-    {
-      "imei": "709312034493372",
-      "BullseyeEnable": true
-    }
-  ]
-}
 ```
 
 ## Errors
@@ -102,7 +96,7 @@ CompletableFuture<ApiResponse<BullseyeServiceResult>> updateDeviceHyperPreciseSt
 
 ## Response Type
 
-[`BullseyeServiceResult`](../../doc/models/bullseye-service-result.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`BullseyeServiceResult`](../../doc/models/bullseye-service-result.md).
 
 ## Example Usage
 
@@ -110,12 +104,14 @@ CompletableFuture<ApiResponse<BullseyeServiceResult>> updateDeviceHyperPreciseSt
 BullseyeServiceRequest body = new BullseyeServiceRequest.Builder(
     Arrays.asList(
         new DeviceServiceRequest.Builder(
-            "354658090356210",
-            true
+            "15-digit IMEI",
+            new HplBullseyeEnable.Builder()
+                .bullseyeEnable(true)
+                .build()
         )
         .build()
     ),
-    "0242080353-00001"
+    "0000123456-00001"
 )
 .build();
 
@@ -123,24 +119,18 @@ deviceServiceManagementController.updateDeviceHyperPreciseStatusAsync(body).then
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof HyperPreciseLocationResultException) {
+        HyperPreciseLocationResultException hyperPreciseLocationResultException = (HyperPreciseLocationResultException) cause;
+        hyperPreciseLocationResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
-```
-
-## Example Response *(as JSON)*
-
-```json
-{
-  "accountNumber": "0844021539-00001",
-  "deviceList": [
-    {
-      "imei": "709312034493372",
-      "BullseyeEnable": true
-    }
-  ]
-}
 ```
 
 ## Errors

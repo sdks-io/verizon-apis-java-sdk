@@ -29,13 +29,9 @@ CompletableFuture<ApiResponse<ESIMRequestResponse>> deviceprovhistoryUsingPOSTAs
 |  --- | --- | --- | --- |
 | `body` | [`ESIMProvhistoryRequest`](../../doc/models/esim-provhistory-request.md) | Body, Required | Device Provisioning History |
 
-## Server
-
-`Server.THINGSPACE`
-
 ## Response Type
 
-[`ESIMRequestResponse`](../../doc/models/esim-request-response.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`ESIMRequestResponse`](../../doc/models/esim-request-response.md).
 
 ## Example Usage
 
@@ -50,8 +46,16 @@ globalReportingController.deviceprovhistoryUsingPOSTAsync(body).thenAccept(resul
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof ESIMRestErrorResponseException) {
+        ESIMRestErrorResponseException eSIMRestErrorResponseException = (ESIMRestErrorResponseException) cause;
+        eSIMRestErrorResponseException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -92,13 +96,9 @@ CompletableFuture<ApiResponse<ESIMRequestResponse>> retrieveGlobalListAsync(
 |  --- | --- | --- | --- |
 | `body` | [`ESIMGlobalDeviceList`](../../doc/models/esim-global-device-list.md) | Body, Required | Device List |
 
-## Server
-
-`Server.THINGSPACE`
-
 ## Response Type
 
-[`ESIMRequestResponse`](../../doc/models/esim-request-response.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`ESIMRequestResponse`](../../doc/models/esim-request-response.md).
 
 ## Example Usage
 
@@ -112,8 +112,16 @@ globalReportingController.retrieveGlobalListAsync(body).thenAccept(result -> {
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof ESIMRestErrorResponseException) {
+        ESIMRestErrorResponseException eSIMRestErrorResponseException = (ESIMRestErrorResponseException) cause;
+        eSIMRestErrorResponseException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```

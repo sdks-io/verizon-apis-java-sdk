@@ -10,13 +10,13 @@ DeviceProfileManagementController deviceProfileManagementController = client.get
 
 ## Methods
 
-* [Activate Device Through Profile](../../doc/controllers/device-profile-management.md#activate-device-through-profile)
+* [Activate Device through Profile](../../doc/controllers/device-profile-management.md#activate-device-through-profile)
 * [Profile to Activate Device](../../doc/controllers/device-profile-management.md#profile-to-activate-device)
 * [Profile to Deactivate Device](../../doc/controllers/device-profile-management.md#profile-to-deactivate-device)
 * [Profile to Set Fallback Attribute](../../doc/controllers/device-profile-management.md#profile-to-set-fallback-attribute)
 
 
-# Activate Device Through Profile
+# Activate Device through Profile
 
 Uses the profile to bring the device under management.
 
@@ -31,13 +31,9 @@ CompletableFuture<ApiResponse<RequestResponse>> activateDeviceThroughProfileAsyn
 |  --- | --- | --- | --- |
 | `body` | [`ActivateDeviceProfileRequest`](../../doc/models/activate-device-profile-request.md) | Body, Required | Device Profile Query |
 
-## Server
-
-`Server.THINGSPACE`
-
 ## Response Type
 
-[`RequestResponse`](../../doc/models/request-response.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`RequestResponse`](../../doc/models/request-response.md).
 
 ## Example Usage
 
@@ -69,8 +65,16 @@ deviceProfileManagementController.activateDeviceThroughProfileAsync(body).thenAc
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof RestErrorResponseException) {
+        RestErrorResponseException restErrorResponseException = (RestErrorResponseException) cause;
+        restErrorResponseException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -97,13 +101,9 @@ CompletableFuture<ApiResponse<RequestResponse>> profileToActivateDeviceAsync(
 |  --- | --- | --- | --- |
 | `body` | [`ProfileRequest`](../../doc/models/profile-request.md) | Body, Required | Device Profile Query |
 
-## Server
-
-`Server.THINGSPACE`
-
 ## Response Type
 
-[`RequestResponse`](../../doc/models/request-response.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`RequestResponse`](../../doc/models/request-response.md).
 
 ## Example Usage
 
@@ -124,8 +124,16 @@ deviceProfileManagementController.profileToActivateDeviceAsync(body).thenAccept(
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof RestErrorResponseException) {
+        RestErrorResponseException restErrorResponseException = (RestErrorResponseException) cause;
+        restErrorResponseException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -152,13 +160,9 @@ CompletableFuture<ApiResponse<RequestResponse>> profileToDeactivateDeviceAsync(
 |  --- | --- | --- | --- |
 | `body` | [`DeactivateDeviceProfileRequest`](../../doc/models/deactivate-device-profile-request.md) | Body, Required | Device Profile Query |
 
-## Server
-
-`Server.THINGSPACE`
-
 ## Response Type
 
-[`RequestResponse`](../../doc/models/request-response.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`RequestResponse`](../../doc/models/request-response.md).
 
 ## Example Usage
 
@@ -176,8 +180,16 @@ deviceProfileManagementController.profileToDeactivateDeviceAsync(body).thenAccep
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof RestErrorResponseException) {
+        RestErrorResponseException restErrorResponseException = (RestErrorResponseException) cause;
+        restErrorResponseException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -204,13 +216,9 @@ CompletableFuture<ApiResponse<RequestResponse>> profileToSetFallbackAttributeAsy
 |  --- | --- | --- | --- |
 | `body` | [`SetFallbackAttributeRequest`](../../doc/models/set-fallback-attribute-request.md) | Body, Required | Device Profile Query |
 
-## Server
-
-`Server.THINGSPACE`
-
 ## Response Type
 
-[`RequestResponse`](../../doc/models/request-response.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`RequestResponse`](../../doc/models/request-response.md).
 
 ## Example Usage
 
@@ -229,8 +237,16 @@ deviceProfileManagementController.profileToSetFallbackAttributeAsync(body).thenA
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof RestErrorResponseException) {
+        RestErrorResponseException restErrorResponseException = (RestErrorResponseException) cause;
+        restErrorResponseException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```

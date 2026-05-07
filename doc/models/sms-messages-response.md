@@ -9,7 +9,7 @@
 
 | Name | Type | Tags | Description | Getter | Setter |
 |  --- | --- | --- | --- | --- | --- |
-| `Messages` | [`List<GIOSmsMessage>`](../../doc/models/gio-sms-message.md) | Optional | **Constraints**: *Maximum Items*: `5` | List<GIOSmsMessage> getMessages() | setMessages(List<GIOSmsMessage> messages) |
+| `Messages` | [`List<SmsMessagesResponseMessages>`](../../doc/models/containers/sms-messages-response-messages.md) | Optional | This is List of a container for any-of cases.<br><br>**Constraints**: *Maximum Items*: `5` | List<SmsMessagesResponseMessages> getMessages() | setMessages(List<SmsMessagesResponseMessages> messages) |
 | `HasMoreData` | `Boolean` | Optional | - | Boolean getHasMoreData() | setHasMoreData(Boolean hasMoreData) |
 
 ## Example (as JSON)
@@ -23,13 +23,9 @@
         {
           "kind": "kind8",
           "id": "id0"
-        },
-        {
-          "kind": "kind8",
-          "id": "id0"
         }
       ],
-      "message": "message8",
+      "message": "message4",
       "timestamp": "2016-03-13T12:52:32.123Z"
     },
     {
@@ -37,13 +33,9 @@
         {
           "kind": "kind8",
           "id": "id0"
-        },
-        {
-          "kind": "kind8",
-          "id": "id0"
         }
       ],
-      "message": "message8",
+      "message": "message4",
       "timestamp": "2016-03-13T12:52:32.123Z"
     }
   ]

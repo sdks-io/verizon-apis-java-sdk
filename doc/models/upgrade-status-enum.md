@@ -11,12 +11,12 @@ The status of the upgrades that you want to retrieve.
 
 | Name |
 |  --- |
-| `RequestPending` |
-| `Queued` |
-| `RequestFailed` |
-| `InProgress` |
-| `Finished` |
-| `UpgradeFailed` |
+| `REQUESTPENDING` |
+| `QUEUED` |
+| `REQUESTFAILED` |
+| `INPROGRESS` |
+| `FINISHED` |
+| `UPGRADEFAILED` |
 
 ## Example
 

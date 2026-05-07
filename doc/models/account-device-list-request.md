@@ -20,8 +20,8 @@ Request for listing account devices.
 | `GroupName` | `String` | Optional | Only include devices that are in this device group. | String getGroupName() | setGroupName(String groupName) |
 | `Latest` | `String` | Optional | Only include devices that were added before this date and time. | String getLatest() | setLatest(String latest) |
 | `ServicePlan` | `String` | Optional | Only include devices that have this service plan. | String getServicePlan() | setServicePlan(String servicePlan) |
-| `MaxNumberOfDevices` | `Integer` | Optional | **Constraints**: `>= 0`, `<= 100` | Integer getMaxNumberOfDevices() | setMaxNumberOfDevices(Integer maxNumberOfDevices) |
-| `LargestDeviceIdSeen` | `Long` | Optional | **Constraints**: `>= 0`, `<= 100` | Long getLargestDeviceIdSeen() | setLargestDeviceIdSeen(Long largestDeviceIdSeen) |
+| `MaxNumberOfDevices` | `Integer` | Optional | **Constraints**: `>= 0`, `<= 500` | Integer getMaxNumberOfDevices() | setMaxNumberOfDevices(Integer maxNumberOfDevices) |
+| `LargestDeviceIdSeen` | `Long` | Optional | **Constraints**: `>= 0`, `<= 0` | Long getLargestDeviceIdSeen() | setLargestDeviceIdSeen(Long largestDeviceIdSeen) |
 
 ## Example (as JSON)
 
@@ -38,10 +38,7 @@ Request for listing account devices.
       }
     ]
   },
-  "deviceId": {
-    "id": "id0",
-    "kind": "kind8"
-  },
+  "deviceId": null,
   "currentState": "currentState0",
   "customFields": [
     {

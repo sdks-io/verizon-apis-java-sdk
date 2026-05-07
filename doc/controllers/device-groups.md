@@ -32,13 +32,9 @@ CompletableFuture<ApiResponse<ConnectivityManagementSuccessResult>> createDevice
 |  --- | --- | --- | --- |
 | `body` | [`CreateDeviceGroupRequest`](../../doc/models/create-device-group-request.md) | Body, Required | A request to create a new device group. |
 
-## Server
-
-`Server.THINGSPACE`
-
 ## Response Type
 
-[`ConnectivityManagementSuccessResult`](../../doc/models/connectivity-management-success-result.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`ConnectivityManagementSuccessResult`](../../doc/models/connectivity-management-success-result.md).
 
 ## Example Usage
 
@@ -61,8 +57,16 @@ deviceGroupsController.createDeviceGroupAsync(body).thenAccept(result -> {
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof ConnectivityManagementResultException) {
+        ConnectivityManagementResultException connectivityManagementResultException = (ConnectivityManagementResultException) cause;
+        connectivityManagementResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -97,13 +101,9 @@ CompletableFuture<ApiResponse<List<DeviceGroup>>> listDeviceGroupsAsync(
 |  --- | --- | --- | --- |
 | `aname` | `String` | Template, Required | Account name. |
 
-## Server
-
-`Server.THINGSPACE`
-
 ## Response Type
 
-[`List<DeviceGroup>`](../../doc/models/device-group.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`List<DeviceGroup>`](../../doc/models/device-group.md).
 
 ## Example Usage
 
@@ -114,8 +114,16 @@ deviceGroupsController.listDeviceGroupsAsync(aname).thenAccept(result -> {
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof ConnectivityManagementResultException) {
+        ConnectivityManagementResultException connectivityManagementResultException = (ConnectivityManagementResultException) cause;
+        connectivityManagementResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -165,13 +173,9 @@ CompletableFuture<ApiResponse<DeviceGroupDevicesData>> getDeviceGroupInformation
 | `gname` | `String` | Template, Required | Group name. |
 | `next` | `Long` | Query, Optional | Continue the previous query from the pageUrl pagetoken. |
 
-## Server
-
-`Server.THINGSPACE`
-
 ## Response Type
 
-[`DeviceGroupDevicesData`](../../doc/models/device-group-devices-data.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`DeviceGroupDevicesData`](../../doc/models/device-group-devices-data.md).
 
 ## Example Usage
 
@@ -183,8 +187,16 @@ deviceGroupsController.getDeviceGroupInformationAsync(aname, gname, null).thenAc
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof ConnectivityManagementResultException) {
+        ConnectivityManagementResultException connectivityManagementResultException = (ConnectivityManagementResultException) cause;
+        connectivityManagementResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -239,13 +251,9 @@ CompletableFuture<ApiResponse<ConnectivityManagementSuccessResult>> updateDevice
 | `gname` | `String` | Template, Required | Group name. |
 | `body` | [`DeviceGroupUpdateRequest`](../../doc/models/device-group-update-request.md) | Body, Required | Request to update device group. |
 
-## Server
-
-`Server.THINGSPACE`
-
 ## Response Type
 
-[`ConnectivityManagementSuccessResult`](../../doc/models/connectivity-management-success-result.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`ConnectivityManagementSuccessResult`](../../doc/models/connectivity-management-success-result.md).
 
 ## Example Usage
 
@@ -268,8 +276,16 @@ deviceGroupsController.updateDeviceGroupAsync(aname, gname, body).thenAccept(res
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof ConnectivityManagementResultException) {
+        ConnectivityManagementResultException connectivityManagementResultException = (ConnectivityManagementResultException) cause;
+        connectivityManagementResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -306,13 +322,9 @@ CompletableFuture<ApiResponse<ConnectivityManagementSuccessResult>> deleteDevice
 | `aname` | `String` | Template, Required | Account name. |
 | `gname` | `String` | Template, Required | Group name. |
 
-## Server
-
-`Server.THINGSPACE`
-
 ## Response Type
 
-[`ConnectivityManagementSuccessResult`](../../doc/models/connectivity-management-success-result.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`ConnectivityManagementSuccessResult`](../../doc/models/connectivity-management-success-result.md).
 
 ## Example Usage
 
@@ -324,8 +336,16 @@ deviceGroupsController.deleteDeviceGroupAsync(aname, gname).thenAccept(result ->
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof ConnectivityManagementResultException) {
+        ConnectivityManagementResultException connectivityManagementResultException = (ConnectivityManagementResultException) cause;
+        connectivityManagementResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```

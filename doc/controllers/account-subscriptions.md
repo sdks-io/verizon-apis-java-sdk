@@ -24,7 +24,7 @@ CompletableFuture<ApiResponse<SecuritySubscriptionResult>> listAccountSubscripti
 | Parameter | Type | Tags | Description |
 |  --- | --- | --- | --- |
 | `body` | [`SecuritySubscriptionRequest`](../../doc/models/security-subscription-request.md) | Body, Required | Request for account subscription. |
-| `xRequestID` | `String` | Header, Optional | Transaction Id.<br>**Constraints**: *Minimum Length*: `3`, *Maximum Length*: `32`, *Pattern*: `^[0-9]-[0-9]{3,32}$` |
+| `xRequestID` | `String` | Header, Optional | Transaction Id.<br><br>**Constraints**: *Minimum Length*: `3`, *Maximum Length*: `32`, *Pattern*: `^[0-9]-[0-9]{3,32}$` |
 
 ## Server
 
@@ -32,7 +32,7 @@ CompletableFuture<ApiResponse<SecuritySubscriptionResult>> listAccountSubscripti
 
 ## Response Type
 
-[`SecuritySubscriptionResult`](../../doc/models/security-subscription-result.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`SecuritySubscriptionResult`](../../doc/models/security-subscription-result.md).
 
 ## Example Usage
 
@@ -47,8 +47,16 @@ accountSubscriptionsController.listAccountSubscriptionsAsync(body, null).thenAcc
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof SecurityResultException) {
+        SecurityResultException securityResultException = (SecurityResultException) cause;
+        securityResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```

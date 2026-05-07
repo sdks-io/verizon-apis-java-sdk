@@ -40,7 +40,7 @@ CompletableFuture<ApiResponse<List<SoftwarePackage>>> listAvailableSoftwareAsync
 
 ## Response Type
 
-[`List<SoftwarePackage>`](../../doc/models/software-package.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`List<SoftwarePackage>`](../../doc/models/software-package.md).
 
 ## Example Usage
 
@@ -52,8 +52,16 @@ softwareManagementReportsV2Controller.listAvailableSoftwareAsync(account, distri
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof FotaV2ResultException) {
+        FotaV2ResultException fotaV2ResultException = (FotaV2ResultException) cause;
+        fotaV2ResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -106,7 +114,7 @@ CompletableFuture<ApiResponse<V2AccountDeviceList>> listAccountDevicesAsync(
 
 ## Response Type
 
-[`V2AccountDeviceList`](../../doc/models/v2-account-device-list.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`V2AccountDeviceList`](../../doc/models/v2-account-device-list.md).
 
 ## Example Usage
 
@@ -119,8 +127,16 @@ softwareManagementReportsV2Controller.listAccountDevicesAsync(account, lastSeenD
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof FotaV2ResultException) {
+        FotaV2ResultException fotaV2ResultException = (FotaV2ResultException) cause;
+        fotaV2ResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -231,7 +247,7 @@ CompletableFuture<ApiResponse<List<DeviceSoftwareUpgrade>>> getDeviceFirmwareUpg
 
 ## Response Type
 
-[`List<DeviceSoftwareUpgrade>`](../../doc/models/device-software-upgrade.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`List<DeviceSoftwareUpgrade>`](../../doc/models/device-software-upgrade.md).
 
 ## Example Usage
 
@@ -243,8 +259,16 @@ softwareManagementReportsV2Controller.getDeviceFirmwareUpgradeHistoryAsync(accou
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof FotaV2ResultException) {
+        FotaV2ResultException fotaV2ResultException = (FotaV2ResultException) cause;
+        fotaV2ResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -306,7 +330,7 @@ CompletableFuture<ApiResponse<V2CampaignHistory>> getCampaignHistoryByStatusAsyn
 
 ## Response Type
 
-[`V2CampaignHistory`](../../doc/models/v2-campaign-history.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`V2CampaignHistory`](../../doc/models/v2-campaign-history.md).
 
 ## Example Usage
 
@@ -319,8 +343,16 @@ softwareManagementReportsV2Controller.getCampaignHistoryByStatusAsync(account, c
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof FotaV2ResultException) {
+        FotaV2ResultException fotaV2ResultException = (FotaV2ResultException) cause;
+        fotaV2ResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -396,7 +428,7 @@ CompletableFuture<ApiResponse<V2CampaignDevice>> getCampaignDeviceStatusAsync(
 
 ## Response Type
 
-[`V2CampaignDevice`](../../doc/models/v2-campaign-device.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`V2CampaignDevice`](../../doc/models/v2-campaign-device.md).
 
 ## Example Usage
 
@@ -409,8 +441,16 @@ softwareManagementReportsV2Controller.getCampaignDeviceStatusAsync(account, camp
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof FotaV2ResultException) {
+        FotaV2ResultException fotaV2ResultException = (FotaV2ResultException) cause;
+        fotaV2ResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```

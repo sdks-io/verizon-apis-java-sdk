@@ -11,9 +11,9 @@ Possible response codes.
 
 | Name |
 |  --- |
-| `INVALIDACCESS` |
-| `INVALIDPARAMETER` |
-| `INTERNALERROR` |
+| `INVALID_ACCESS` |
+| `INVALID_PARAMETER` |
+| `INTERNAL_ERROR` |
 | `SUCCESS` |
 
 ## Example

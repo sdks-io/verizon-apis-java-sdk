@@ -42,7 +42,7 @@ CompletableFuture<ApiResponse<CampaignSoftware>> scheduleCampaignFirmwareUpgrade
 
 ## Response Type
 
-[`CampaignSoftware`](../../doc/models/campaign-software.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`CampaignSoftware`](../../doc/models/campaign-software.md).
 
 ## Example Usage
 
@@ -83,8 +83,16 @@ campaignsV2Controller.scheduleCampaignFirmwareUpgradeAsync(account, body).thenAc
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof FotaV2ResultException) {
+        FotaV2ResultException fotaV2ResultException = (FotaV2ResultException) cause;
+        fotaV2ResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -152,7 +160,7 @@ CompletableFuture<ApiResponse<CampaignSoftware>> getCampaignInformationAsync(
 
 ## Response Type
 
-[`CampaignSoftware`](../../doc/models/campaign-software.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`CampaignSoftware`](../../doc/models/campaign-software.md).
 
 ## Example Usage
 
@@ -164,8 +172,16 @@ campaignsV2Controller.getCampaignInformationAsync(account, campaignId).thenAccep
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof FotaV2ResultException) {
+        FotaV2ResultException fotaV2ResultException = (FotaV2ResultException) cause;
+        fotaV2ResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -235,7 +251,7 @@ CompletableFuture<ApiResponse<V2AddOrRemoveDeviceResult>> updateCampaignFirmware
 
 ## Response Type
 
-[`V2AddOrRemoveDeviceResult`](../../doc/models/v2-add-or-remove-device-result.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`V2AddOrRemoveDeviceResult`](../../doc/models/v2-add-or-remove-device-result.md).
 
 ## Example Usage
 
@@ -256,8 +272,16 @@ campaignsV2Controller.updateCampaignFirmwareDevicesAsync(account, campaignId, bo
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof FotaV2ResultException) {
+        FotaV2ResultException fotaV2ResultException = (FotaV2ResultException) cause;
+        fotaV2ResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -292,7 +316,7 @@ CompletableFuture<ApiResponse<FotaV2SuccessResult>> cancelCampaignAsync(
 
 ## Response Type
 
-[`FotaV2SuccessResult`](../../doc/models/fota-v2-success-result.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`FotaV2SuccessResult`](../../doc/models/fota-v2-success-result.md).
 
 ## Example Usage
 
@@ -304,8 +328,16 @@ campaignsV2Controller.cancelCampaignAsync(account, campaignId).thenAccept(result
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof FotaV2ResultException) {
+        FotaV2ResultException fotaV2ResultException = (FotaV2ResultException) cause;
+        fotaV2ResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -350,7 +382,7 @@ CompletableFuture<ApiResponse<CampaignSoftware>> updateCampaignDatesAsync(
 
 ## Response Type
 
-[`CampaignSoftware`](../../doc/models/campaign-software.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`CampaignSoftware`](../../doc/models/campaign-software.md).
 
 ## Example Usage
 
@@ -383,8 +415,16 @@ campaignsV2Controller.updateCampaignDatesAsync(account, campaignId, body).thenAc
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof FotaV2ResultException) {
+        FotaV2ResultException fotaV2ResultException = (FotaV2ResultException) cause;
+        fotaV2ResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -460,7 +500,7 @@ CompletableFuture<ApiResponse<UploadAndScheduleFileResponse>> scheduleFileUpgrad
 
 ## Response Type
 
-[`UploadAndScheduleFileResponse`](../../doc/models/upload-and-schedule-file-response.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`UploadAndScheduleFileResponse`](../../doc/models/upload-and-schedule-file-response.md).
 
 ## Example Usage
 
@@ -480,8 +520,16 @@ campaignsV2Controller.scheduleFileUpgradeAsync(acc, body).thenAccept(result -> {
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof FotaV2ResultException) {
+        FotaV2ResultException fotaV2ResultException = (FotaV2ResultException) cause;
+        fotaV2ResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -516,7 +564,7 @@ CompletableFuture<ApiResponse<UploadAndScheduleFileResponse>> scheduleSWUpgradeH
 
 ## Response Type
 
-[`UploadAndScheduleFileResponse`](../../doc/models/upload-and-schedule-file-response.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`UploadAndScheduleFileResponse`](../../doc/models/upload-and-schedule-file-response.md).
 
 ## Example Usage
 
@@ -554,8 +602,16 @@ campaignsV2Controller.scheduleSWUpgradeHttpDevicesAsync(acc, body).thenAccept(re
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof FotaV2ResultException) {
+        FotaV2ResultException fotaV2ResultException = (FotaV2ResultException) cause;
+        fotaV2ResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```

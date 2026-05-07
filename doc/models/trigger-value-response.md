@@ -9,7 +9,7 @@
 
 | Name | Type | Tags | Description | Getter | Setter |
 |  --- | --- | --- | --- | --- | --- |
-| `Triggers` | [`List<Triggervalues>`](../../doc/models/triggervalues.md) | Optional | - | List<Triggervalues> getTriggers() | setTriggers(List<Triggervalues> triggers) |
+| `Triggers` | [`List<TriggervalueChunk>`](../../doc/models/containers/triggervalue-chunk.md) | Optional | - | List<TriggervalueChunk> getTriggers() | setTriggers(List<TriggervalueChunk> triggers) |
 
 ## Example (as JSON)
 
@@ -17,18 +17,18 @@
 {
   "triggers": [
     {
-      "triggerId": "triggerId0",
-      "triggerName": "triggerName8",
-      "accountName": "accountName4",
-      "organizationName": "organizationName2",
-      "triggerCategory": "triggerCategory2"
+      "triggerId": "triggerId4",
+      "triggerName": "triggerName2",
+      "accountName": "accountName8",
+      "organizationName": "organizationName6",
+      "triggerCategory": "triggerCategory6"
     },
     {
-      "triggerId": "triggerId0",
-      "triggerName": "triggerName8",
-      "accountName": "accountName4",
-      "organizationName": "organizationName2",
-      "triggerCategory": "triggerCategory2"
+      "triggerId": "triggerId4",
+      "triggerName": "triggerName2",
+      "accountName": "accountName8",
+      "organizationName": "organizationName6",
+      "triggerCategory": "triggerCategory6"
     }
   ]
 }

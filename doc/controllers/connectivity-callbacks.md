@@ -30,13 +30,9 @@ CompletableFuture<ApiResponse<List<ConnectivityManagementCallback>>> listRegiste
 |  --- | --- | --- | --- |
 | `aname` | `String` | Template, Required | Account name. |
 
-## Server
-
-`Server.THINGSPACE`
-
 ## Response Type
 
-[`List<ConnectivityManagementCallback>`](../../doc/models/connectivity-management-callback.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`List<ConnectivityManagementCallback>`](../../doc/models/connectivity-management-callback.md).
 
 ## Example Usage
 
@@ -47,8 +43,16 @@ connectivityCallbacksController.listRegisteredCallbacksAsync(aname).thenAccept(r
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof ConnectivityManagementResultException) {
+        ConnectivityManagementResultException connectivityManagementResultException = (ConnectivityManagementResultException) cause;
+        connectivityManagementResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -96,13 +100,9 @@ CompletableFuture<ApiResponse<CallbackActionResult>> registerCallbackAsync(
 | `aname` | `String` | Template, Required | Account name. |
 | `body` | [`RegisterCallbackRequest`](../../doc/models/register-callback-request.md) | Body, Required | Request to register a callback. |
 
-## Server
-
-`Server.THINGSPACE`
-
 ## Response Type
 
-[`CallbackActionResult`](../../doc/models/callback-action-result.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`CallbackActionResult`](../../doc/models/callback-action-result.md).
 
 ## Example Usage
 
@@ -118,8 +118,16 @@ connectivityCallbacksController.registerCallbackAsync(aname, body).thenAccept(re
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof ConnectivityManagementResultException) {
+        ConnectivityManagementResultException connectivityManagementResultException = (ConnectivityManagementResultException) cause;
+        connectivityManagementResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -157,13 +165,9 @@ CompletableFuture<ApiResponse<CallbackActionResult>> deregisterCallbackAsync(
 | `aname` | `String` | Template, Required | Account name. |
 | `sname` | `String` | Template, Required | Service name. |
 
-## Server
-
-`Server.THINGSPACE`
-
 ## Response Type
 
-[`CallbackActionResult`](../../doc/models/callback-action-result.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`CallbackActionResult`](../../doc/models/callback-action-result.md).
 
 ## Example Usage
 
@@ -175,8 +179,16 @@ connectivityCallbacksController.deregisterCallbackAsync(aname, sname).thenAccept
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof ConnectivityManagementResultException) {
+        ConnectivityManagementResultException connectivityManagementResultException = (ConnectivityManagementResultException) cause;
+        connectivityManagementResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```

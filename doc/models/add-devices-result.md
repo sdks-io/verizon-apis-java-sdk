@@ -12,7 +12,7 @@ Contains the device identifiers and a success or failure response for each devic
 | Name | Type | Tags | Description | Getter | Setter |
 |  --- | --- | --- | --- | --- | --- |
 | `DeviceIds` | [`List<DeviceId>`](../../doc/models/device-id.md) | Optional | Identifiers for the device. | List<DeviceId> getDeviceIds() | setDeviceIds(List<DeviceId> deviceIds) |
-| `Response` | `String` | Optional | The success message or error message for the current device. | String getResponse() | setResponse(String response) |
+| `Response` | `String` | Optional | The status message for the current device. This will be Success or Failed | String getResponse() | setResponse(String response) |
 
 ## Example (as JSON)
 
@@ -20,7 +20,7 @@ Contains the device identifiers and a success or failure response for each devic
 {
   "deviceIds": [
     {
-      "id": "89148000000800784259",
+      "id": "20-digit ICCID",
       "kind": "iccid"
     }
   ],

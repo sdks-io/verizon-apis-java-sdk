@@ -38,7 +38,7 @@ CompletableFuture<ApiResponse<List<Target>>> queryTargetAsync(
 
 ## Response Type
 
-[`List<Target>`](../../doc/models/target.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`List<Target>`](../../doc/models/target.md).
 
 ## Example Usage
 
@@ -161,7 +161,7 @@ CompletableFuture<ApiResponse<Target>> createTargetAsync(
 
 ## Response Type
 
-[`Target`](../../doc/models/target.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`Target`](../../doc/models/target.md).
 
 ## Example Usage
 
@@ -238,7 +238,7 @@ CompletableFuture<ApiResponse<GenerateExternalIDResult>> generateTargetExternalI
 
 ## Response Type
 
-[`GenerateExternalIDResult`](../../doc/models/generate-external-id-result.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`GenerateExternalIDResult`](../../doc/models/generate-external-id-result.md).
 
 ## Example Usage
 
@@ -291,7 +291,7 @@ CompletableFuture<ApiResponse<CreateIoTApplicationResponse>> createAzureCentralI
 
 ## Response Type
 
-[`CreateIoTApplicationResponse`](../../doc/models/create-io-t-application-response.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`CreateIoTApplicationResponse`](../../doc/models/create-io-t-application-response.md).
 
 ## Example Usage
 

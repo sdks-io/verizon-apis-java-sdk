@@ -11,8 +11,8 @@ Get network conditions.
 
 | Name | Type | Tags | Description | Getter | Setter |
 |  --- | --- | --- | --- | --- | --- |
-| `AccountName` | `String` | Required | Account name.<br>**Constraints**: *Minimum Length*: `3`, *Maximum Length*: `32`, *Pattern*: `^[0-9-]{3,32}$` | String getAccountName() | setAccountName(String accountName) |
-| `LocationType` | `String` | Required | Type of location detail.<br>**Constraints**: *Minimum Length*: `3`, *Maximum Length*: `10`, *Pattern*: `^[A-Za-z]{3,10}$` | String getLocationType() | setLocationType(String locationType) |
+| `AccountName` | `String` | Required | Account name.<br><br>**Constraints**: *Minimum Length*: `3`, *Maximum Length*: `32`, *Pattern*: `^[0-9-]{3,32}$` | String getAccountName() | setAccountName(String accountName) |
+| `LocationType` | `String` | Required | Type of location detail. | String getLocationType() | setLocationType(String locationType) |
 | `Coordinates` | [`Coordinates`](../../doc/models/coordinates.md) | Required | Coordinates information. | Coordinates getCoordinates() | setCoordinates(Coordinates coordinates) |
 
 ## Example (as JSON)

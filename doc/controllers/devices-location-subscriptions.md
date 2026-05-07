@@ -35,7 +35,7 @@ CompletableFuture<ApiResponse<DeviceLocationSubscription>> getLocationServiceSub
 
 ## Response Type
 
-[`DeviceLocationSubscription`](../../doc/models/device-location-subscription.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`DeviceLocationSubscription`](../../doc/models/device-location-subscription.md).
 
 ## Example Usage
 
@@ -46,8 +46,16 @@ devicesLocationSubscriptionsController.getLocationServiceSubscriptionStatusAsync
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof DeviceLocationResultException) {
+        DeviceLocationResultException deviceLocationResultException = (DeviceLocationResultException) cause;
+        deviceLocationResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -91,7 +99,7 @@ CompletableFuture<ApiResponse<Object>> getLocationServiceUsageAsync(
 
 ## Response Type
 
-`Object`
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type `Object`.
 
 ## Example Usage
 
@@ -108,8 +116,16 @@ devicesLocationSubscriptionsController.getLocationServiceUsageAsync(body).thenAc
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof DeviceLocationResultException) {
+        DeviceLocationResultException deviceLocationResultException = (DeviceLocationResultException) cause;
+        deviceLocationResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```

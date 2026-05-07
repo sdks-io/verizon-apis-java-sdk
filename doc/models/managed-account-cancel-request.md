@@ -11,7 +11,7 @@
 |  --- | --- | --- | --- | --- | --- |
 | `AccountName` | `String` | Required | Managed account identifier | String getAccountName() | setAccountName(String accountName) |
 | `PaccountName` | `String` | Required | Primary Account identifier | String getPaccountName() | setPaccountName(String paccountName) |
-| `ServiceName` | [`ServiceNameEnum`](../../doc/models/service-name-enum.md) | Required | Service name<br>**Default**: `ServiceNameEnum.LOCATION` | ServiceNameEnum getServiceName() | setServiceName(ServiceNameEnum serviceName) |
+| `ServiceName` | [`ServiceNameEnum`](../../doc/models/service-name-enum.md) | Required | Service name<br><br>**Default**: `ServiceNameEnum.LOCATION` | ServiceNameEnum getServiceName() | setServiceName(ServiceNameEnum serviceName) |
 | `Type` | `String` | Required | SKU name | String getType() | setType(String type) |
 | `Txid` | `String` | Required | Transaction identifier returned by provision request | String getTxid() | setTxid(String txid) |
 

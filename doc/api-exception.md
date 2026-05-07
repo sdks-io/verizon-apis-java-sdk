@@ -1,5 +1,5 @@
 
-# ApiException Class
+# ApiException
 
 This is the base class for all exceptions that represent an error response from the server.
 
@@ -8,12 +8,12 @@ This is the base class for all exceptions that represent an error response from 
 | Name | Description |
 |  --- | --- |
 | `ApiException(String reason)` | Initialization constructor. |
-| `ApiException(String reason,` [`HttpContext`](http-context.md) `context)` | Initialization constructor. |
+| <code>ApiException(String reason, [`HttpContext`](../doc/http-context.md) context)</code> | Initialization constructor. |
 
 ## Methods
 
 | Name | Description | Return Type |
 |  --- | --- | --- |
-| `getResponseCode()` | The HTTP response code from the API request | `int` |
-| `getHeaders()` | The HTTP response body from the API request. | [`Headers`](headers.md) |
+| `getResponseCode()` | The HTTP Response code from the API request | `int` |
+| `getHttpContext()` | The HTTP Context from the API request. | [`HttpContext`](../doc/http-context.md) |
 

@@ -30,13 +30,9 @@ CompletableFuture<ApiResponse<LogInResult>> startConnectivityManagementSessionAs
 |  --- | --- | --- | --- |
 | `body` | [`LogInRequest`](../../doc/models/log-in-request.md) | Body, Optional | Request to initiate a session. |
 
-## Server
-
-`Server.THINGSPACE`
-
 ## Response Type
 
-[`LogInResult`](../../doc/models/log-in-result.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`LogInResult`](../../doc/models/log-in-result.md).
 
 ## Example Usage
 
@@ -51,8 +47,16 @@ sessionManagementController.startConnectivityManagementSessionAsync(body).thenAc
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof ConnectivityManagementResultException) {
+        ConnectivityManagementResultException connectivityManagementResultException = (ConnectivityManagementResultException) cause;
+        connectivityManagementResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -80,13 +84,9 @@ Ends a Connectivity Management session.
 CompletableFuture<ApiResponse<LogOutRequest>> endConnectivityManagementSessionAsync()
 ```
 
-## Server
-
-`Server.THINGSPACE`
-
 ## Response Type
 
-[`LogOutRequest`](../../doc/models/log-out-request.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`LogOutRequest`](../../doc/models/log-out-request.md).
 
 ## Example Usage
 
@@ -95,8 +95,16 @@ sessionManagementController.endConnectivityManagementSessionAsync().thenAccept(r
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof ConnectivityManagementResultException) {
+        ConnectivityManagementResultException connectivityManagementResultException = (ConnectivityManagementResultException) cause;
+        connectivityManagementResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -131,13 +139,9 @@ CompletableFuture<ApiResponse<SessionResetPasswordResult>> resetConnectivityMana
 |  --- | --- | --- | --- |
 | `body` | [`SessionResetPasswordRequest`](../../doc/models/session-reset-password-request.md) | Body, Required | Request with current password that needs to be reset. |
 
-## Server
-
-`Server.THINGSPACE`
-
 ## Response Type
 
-[`SessionResetPasswordResult`](../../doc/models/session-reset-password-result.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`SessionResetPasswordResult`](../../doc/models/session-reset-password-result.md).
 
 ## Example Usage
 
@@ -151,8 +155,16 @@ sessionManagementController.resetConnectivityManagementPasswordAsync(body).thenA
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof ConnectivityManagementResultException) {
+        ConnectivityManagementResultException connectivityManagementResultException = (ConnectivityManagementResultException) cause;
+        connectivityManagementResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```

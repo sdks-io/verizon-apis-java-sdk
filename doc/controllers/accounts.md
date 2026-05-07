@@ -32,13 +32,9 @@ CompletableFuture<ApiResponse<Account>> getAccountInformationAsync(
 |  --- | --- | --- | --- |
 | `aname` | `String` | Template, Required | Account name. |
 
-## Server
-
-`Server.THINGSPACE`
-
 ## Response Type
 
-[`Account`](../../doc/models/account.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`Account`](../../doc/models/account.md).
 
 ## Example Usage
 
@@ -49,8 +45,16 @@ accountsController.getAccountInformationAsync(aname).thenAccept(result -> {
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof ConnectivityManagementResultException) {
+        ConnectivityManagementResultException connectivityManagementResultException = (ConnectivityManagementResultException) cause;
+        connectivityManagementResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -124,13 +128,9 @@ CompletableFuture<ApiResponse<AccountStatesAndServices>> listAccountStatesAndSer
 |  --- | --- | --- | --- |
 | `aname` | `String` | Template, Required | Account name. |
 
-## Server
-
-`Server.THINGSPACE`
-
 ## Response Type
 
-[`AccountStatesAndServices`](../../doc/models/account-states-and-services.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`AccountStatesAndServices`](../../doc/models/account-states-and-services.md).
 
 ## Example Usage
 
@@ -141,8 +141,16 @@ accountsController.listAccountStatesAndServicesAsync(aname).thenAccept(result ->
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof ConnectivityManagementResultException) {
+        ConnectivityManagementResultException connectivityManagementResultException = (ConnectivityManagementResultException) cause;
+        connectivityManagementResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -250,13 +258,9 @@ CompletableFuture<ApiResponse<AccountLeadsResult>> listAccountLeadsAsync(
 | `aname` | `String` | Template, Required | Account name. |
 | `next` | `Long` | Query, Optional | Continue the previous query from the pageUrl in Location Header. |
 
-## Server
-
-`Server.THINGSPACE`
-
 ## Response Type
 
-[`AccountLeadsResult`](../../doc/models/account-leads-result.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`AccountLeadsResult`](../../doc/models/account-leads-result.md).
 
 ## Example Usage
 
@@ -267,8 +271,16 @@ accountsController.listAccountLeadsAsync(aname, null).thenAccept(result -> {
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof ConnectivityManagementResultException) {
+        ConnectivityManagementResultException connectivityManagementResultException = (ConnectivityManagementResultException) cause;
+        connectivityManagementResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```

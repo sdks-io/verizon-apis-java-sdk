@@ -9,7 +9,7 @@ ServerLoggingController serverLoggingController = client.getServerLoggingControl
 `ServerLoggingController`
 
 
-# Get Device Check in History
+# Get Device Check In History
 
 Check-in history can be retrieved for any device belonging to the account, not necessarily with logging enabled.
 
@@ -32,7 +32,7 @@ CompletableFuture<ApiResponse<List<CheckInHistoryItem>>> getDeviceCheckInHistory
 
 ## Response Type
 
-[`List<CheckInHistoryItem>`](../../doc/models/check-in-history-item.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`List<CheckInHistoryItem>`](../../doc/models/check-in-history-item.md).
 
 ## Example Usage
 
@@ -44,8 +44,16 @@ serverLoggingController.getDeviceCheckInHistoryAsync(account, deviceId).thenAcce
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof FotaV2ResultException) {
+        FotaV2ResultException fotaV2ResultException = (FotaV2ResultException) cause;
+        fotaV2ResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```

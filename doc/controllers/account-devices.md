@@ -31,7 +31,7 @@ CompletableFuture<ApiResponse<V3AccountDeviceList>> getAccountDeviceInformationA
 |  --- | --- | --- | --- |
 | `acc` | `String` | Template, Required | Account identifier. |
 | `lastSeenDeviceId` | `String` | Query, Optional | Last seen device identifier. |
-| `protocol` | [`DevicesProtocolEnum`](../../doc/models/devices-protocol-enum.md) | Query, Optional | Filter to retrieve a specific protocol type used.<br>**Default**: `DevicesProtocolEnum.LW_M2M` |
+| `protocol` | [`DevicesProtocolEnum`](../../doc/models/devices-protocol-enum.md) | Query, Optional | Filter to retrieve a specific protocol type used.<br><br>**Default**: `DevicesProtocolEnum.LW_M2M` |
 
 ## Server
 
@@ -39,7 +39,7 @@ CompletableFuture<ApiResponse<V3AccountDeviceList>> getAccountDeviceInformationA
 
 ## Response Type
 
-[`V3AccountDeviceList`](../../doc/models/v3-account-device-list.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`V3AccountDeviceList`](../../doc/models/v3-account-device-list.md).
 
 ## Example Usage
 
@@ -52,8 +52,16 @@ accountDevicesController.getAccountDeviceInformationAsync(acc, lastSeenDeviceId,
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof FotaV3ResultException) {
+        FotaV3ResultException fotaV3ResultException = (FotaV3ResultException) cause;
+        fotaV3ResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -88,7 +96,7 @@ CompletableFuture<ApiResponse<DeviceListResult>> listAccountDevicesInformationAs
 
 ## Response Type
 
-[`DeviceListResult`](../../doc/models/device-list-result.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`DeviceListResult`](../../doc/models/device-list-result.md).
 
 ## Example Usage
 
@@ -105,8 +113,16 @@ accountDevicesController.listAccountDevicesInformationAsync(acc, body).thenAccep
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof FotaV3ResultException) {
+        FotaV3ResultException fotaV3ResultException = (FotaV3ResultException) cause;
+        fotaV3ResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```

@@ -24,13 +24,9 @@ CompletableFuture<ApiResponse<Success>> updateAllAvailableTriggersAsync(
 |  --- | --- | --- | --- |
 | `body` | [`RequestTrigger`](../../doc/models/request-trigger.md) | Body, Optional | Update the triggers |
 
-## Server
-
-`Server.THINGSPACE`
-
 ## Response Type
 
-[`Success`](../../doc/models/success.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`Success`](../../doc/models/success.md).
 
 ## Example Usage
 
@@ -47,8 +43,16 @@ updateTriggersController.updateAllAvailableTriggersAsync(body).thenAccept(result
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof ReadySimRestErrorResponseException) {
+        ReadySimRestErrorResponseException readySimRestErrorResponseException = (ReadySimRestErrorResponseException) cause;
+        readySimRestErrorResponseException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```

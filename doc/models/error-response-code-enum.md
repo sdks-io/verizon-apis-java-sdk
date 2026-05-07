@@ -11,14 +11,15 @@ Error Code.
 
 | Name |
 |  --- |
-| `INVALIDACCESS` |
-| `INVALIDPARAMETER` |
-| `INTERNALERROR` |
+| `UNAUTHORIZED` |
+| `INVALID_ACCESS` |
+| `INVALID_PARAMETER` |
+| `INTERNAL_ERROR` |
 | `SUCCESS` |
 
 ## Example
 
 ```
-INVALID_ACCESS
+UNAUTHORIZED
 ```
 

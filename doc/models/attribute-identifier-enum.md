@@ -11,10 +11,10 @@ Attribute identifier.
 
 | Name |
 |  --- |
-| `NETWORKBEARER` |
-| `RADIOSIGNALSTRENGTH` |
-| `LINKQUALITY` |
-| `CELLID` |
+| `NETWORK_BEARER` |
+| `RADIO_SIGNAL_STRENGTH` |
+| `LINK_QUALITY` |
+| `CELL_ID` |
 | `MANUFACTURER` |
 
 ## Example

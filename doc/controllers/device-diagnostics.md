@@ -29,13 +29,9 @@ CompletableFuture<ApiResponse<DeviceManagementResult>> deviceReachabilityStatusU
 |  --- | --- | --- | --- |
 | `body` | [`NotificationReportStatusRequest`](../../doc/models/notification-report-status-request.md) | Body, Required | Retrieve Reachability Report Status for a device. |
 
-## Server
-
-`Server.THINGSPACE`
-
 ## Response Type
 
-[`DeviceManagementResult`](../../doc/models/device-management-result.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`DeviceManagementResult`](../../doc/models/device-management-result.md).
 
 ## Example Usage
 
@@ -55,8 +51,16 @@ deviceDiagnosticsController.deviceReachabilityStatusUsingPOSTAsync(body).thenAcc
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof ConnectivityManagementResultException) {
+        ConnectivityManagementResultException connectivityManagementResultException = (ConnectivityManagementResultException) cause;
+        connectivityManagementResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -91,13 +95,9 @@ CompletableFuture<ApiResponse<DeviceManagementResult>> retrieveActiveMonitorsUsi
 |  --- | --- | --- | --- |
 | `body` | [`RetrieveMonitorsRequest`](../../doc/models/retrieve-monitors-request.md) | Body, Required | Retrieve Monitor Request. |
 
-## Server
-
-`Server.THINGSPACE`
-
 ## Response Type
 
-[`DeviceManagementResult`](../../doc/models/device-management-result.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`DeviceManagementResult`](../../doc/models/device-management-result.md).
 
 ## Example Usage
 
@@ -123,8 +123,16 @@ deviceDiagnosticsController.retrieveActiveMonitorsUsingPOSTAsync(body).thenAccep
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof ConnectivityManagementResultException) {
+        ConnectivityManagementResultException connectivityManagementResultException = (ConnectivityManagementResultException) cause;
+        connectivityManagementResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```

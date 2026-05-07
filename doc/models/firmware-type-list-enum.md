@@ -11,8 +11,8 @@ Possible values are `append` or `remove`
 
 | Name |
 |  --- |
-| `Append` |
-| `Remove` |
+| `APPEND` |
+| `REMOVE` |
 
 ## Example
 

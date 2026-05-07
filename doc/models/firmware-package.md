@@ -18,7 +18,7 @@ Available firmware.
 | `ReleaseNote` | `String` | Required | Firmware release note. | String getReleaseNote() | setReleaseNote(String releaseNote) |
 | `Model` | `String` | Required | Firmware applicable device model. | String getModel() | setModel(String model) |
 | `Make` | `String` | Required | Firmware applicable device make. | String getMake() | setMake(String make) |
-| `Protocol` | [`CampaignMetaInfoProtocolEnum`](../../doc/models/campaign-meta-info-protocol-enum.md) | Required | Firmware protocol. Valid values include: LWM2M, OMD-DM.<br>**Default**: `CampaignMetaInfoProtocolEnum.LW_M2M` | CampaignMetaInfoProtocolEnum getProtocol() | setProtocol(CampaignMetaInfoProtocolEnum protocol) |
+| `Protocol` | [`CampaignMetaInfoProtocolEnum`](../../doc/models/campaign-meta-info-protocol-enum.md) | Required | Firmware protocol. Valid values include: LWM2M, OMD-DM.<br><br>**Default**: `CampaignMetaInfoProtocolEnum.LW_M2M` | CampaignMetaInfoProtocolEnum getProtocol() | setProtocol(CampaignMetaInfoProtocolEnum protocol) |
 
 ## Example (as JSON)
 

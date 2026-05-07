@@ -36,45 +36,40 @@ CompletableFuture<ApiResponse<AggregateSessionReport>> calculateAggregatedReport
 
 ## Response Type
 
-[`AggregateSessionReport`](../../doc/models/aggregate-session-report.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`AggregateSessionReport`](../../doc/models/aggregate-session-report.md).
 
 ## Example Usage
 
 ```java
 AggregateSessionReportRequest body = new AggregateSessionReportRequest.Builder(
-    "0844021539-00001",
+    "0000123456-00001",
     Arrays.asList(
-        "709312034493372"
+        "15-digit IMEI"
     )
 )
 .startDate("2022-12-09T22:01:06.217Z")
 .endDate("2022-12-09T22:01:08.734Z")
-.noSessionFlag("false")
+.deviceGroup("string")
+.dataPlan("string")
+.noSessionFlag(false)
 .build();
 
 deviceReportsController.calculateAggregatedReportSynchronousAsync(body).thenAccept(result -> {
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof HyperPreciseLocationResultException) {
+        HyperPreciseLocationResultException hyperPreciseLocationResultException = (HyperPreciseLocationResultException) cause;
+        hyperPreciseLocationResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
-```
-
-## Example Response *(as JSON)*
-
-```json
-{
-  "txid": null,
-  "usage": [
-    {
-      "imei": "709312034493372",
-      "numberOfSessions": 1,
-      "bytesTransferred": 2057
-    }
-  ]
-}
 ```
 
 ## Errors
@@ -110,28 +105,38 @@ CompletableFuture<ApiResponse<AggregatedReportCallbackResult>> calculateAggregat
 
 ## Response Type
 
-[`AggregatedReportCallbackResult`](../../doc/models/aggregated-report-callback-result.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`AggregatedReportCallbackResult`](../../doc/models/aggregated-report-callback-result.md).
 
 ## Example Usage
 
 ```java
 AggregateSessionReportRequest body = new AggregateSessionReportRequest.Builder(
-    "0844021539-00001",
+    "0000123456-00001",
     Arrays.asList(
-        "709312034493372"
+        "15-digit IMEI"
     )
 )
 .startDate("2022-12-09T22:01:06.217Z")
 .endDate("2022-12-09T22:01:08.734Z")
-.noSessionFlag("false")
+.deviceGroup("string")
+.dataPlan("string")
+.noSessionFlag(false)
 .build();
 
 deviceReportsController.calculateAggregatedReportAsynchronousAsync(body).thenAccept(result -> {
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof HyperPreciseLocationResultException) {
+        HyperPreciseLocationResultException hyperPreciseLocationResultException = (HyperPreciseLocationResultException) cause;
+        hyperPreciseLocationResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -140,7 +145,7 @@ deviceReportsController.calculateAggregatedReportAsynchronousAsync(body).thenAcc
 
 ```json
 {
-  "txid": "60c07fff-470b-4d6d-afcc-75e6a7c238f6",
+  "txid": "60c07fff-eeee-ffff-gggg-75e6a7c238f6",
   "status": "QUEUED"
 }
 ```
@@ -178,25 +183,35 @@ CompletableFuture<ApiResponse<SessionReport>> getSessionsReportAsync(
 
 ## Response Type
 
-[`SessionReport`](../../doc/models/session-report.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`SessionReport`](../../doc/models/session-report.md).
 
 ## Example Usage
 
 ```java
 SessionReportRequest body = new SessionReportRequest.Builder(
-    "0844021539-00001",
-    "709312034493372"
+    "0000123456-00001",
+    "15-digit IMEI"
 )
 .startDate("2022-12-09T22:01:06.217Z")
 .endDate("2022-12-09T22:01:08.734Z")
+.durationLow(0)
+.durationHigh(0)
 .build();
 
 deviceReportsController.getSessionsReportAsync(body).thenAccept(result -> {
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof HyperPreciseLocationResultException) {
+        HyperPreciseLocationResultException hyperPreciseLocationResultException = (HyperPreciseLocationResultException) cause;
+        hyperPreciseLocationResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -205,8 +220,15 @@ deviceReportsController.getSessionsReportAsync(body).thenAccept(result -> {
 
 ```json
 {
-  "id": "709312034493372",
-  "txid": "60c07fff-470b-4d6d-afcc-75e6a7c238f6"
+  "id": "The 10-digit ID of the device",
+  "txid": "60c07fff-eeee-ffff-gggg-75e6a7c238f6",
+  "sessions": [
+    {
+      "startTime": "Start date of session. ISO 8601 format.",
+      "endTime": "End date of session. ISO 8601 format.",
+      "numBytes": 0
+    }
+  ]
 }
 ```
 

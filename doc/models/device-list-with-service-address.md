@@ -1,5 +1,5 @@
 
-# Device List With Service Address
+# Device List with Service Address
 
 ## Structure
 
@@ -9,8 +9,8 @@
 
 | Name | Type | Tags | Description | Getter | Setter |
 |  --- | --- | --- | --- | --- | --- |
-| `DeviceId` | [`List<M5gBideviceId1>`](../../doc/models/5g-bidevice-id-1.md) | Optional | - | List<M5gBideviceId1> getDeviceId() | setDeviceId(List<M5gBideviceId1> deviceId) |
-| `PrimaryPlaceofuse` | [`M5gBiaddressAndcustomerinfo`](../../doc/models/5g-biaddress-andcustomerinfo.md) | Optional | - | M5gBiaddressAndcustomerinfo getPrimaryPlaceofuse() | setPrimaryPlaceofuse(M5gBiaddressAndcustomerinfo primaryPlaceofuse) |
+| `DeviceId` | [`List<M5gBideviceId1>`](../../doc/models/m5-g-bidevice-id-1.md) | Optional | - | List<M5gBideviceId1> getDeviceId() | setDeviceId(List<M5gBideviceId1> deviceId) |
+| `PrimaryPlaceofuse` | [`M5gBiaddressAndcustomerinfo`](../../doc/models/m5-g-biaddress-andcustomerinfo.md) | Optional | - | M5gBiaddressAndcustomerinfo getPrimaryPlaceofuse() | setPrimaryPlaceofuse(M5gBiaddressAndcustomerinfo primaryPlaceofuse) |
 
 ## Example (as JSON)
 

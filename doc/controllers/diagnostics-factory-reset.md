@@ -30,7 +30,7 @@ CompletableFuture<ApiResponse<DiagnosticsObservationResult>> decivesRestartAsync
 
 ## Response Type
 
-[`DiagnosticsObservationResult`](../../doc/models/diagnostics-observation-result.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`DiagnosticsObservationResult`](../../doc/models/diagnostics-observation-result.md).
 
 ## Example Usage
 
@@ -51,8 +51,16 @@ diagnosticsFactoryResetController.decivesRestartAsync(body).thenAccept(result ->
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof DeviceDiagnosticsResultException) {
+        DeviceDiagnosticsResultException deviceDiagnosticsResultException = (DeviceDiagnosticsResultException) cause;
+        deviceDiagnosticsResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```

@@ -28,15 +28,11 @@ CompletableFuture<ApiResponse<M5gBideviceDetailsresponse>> businessInternetlistD
 
 | Parameter | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `body` | [`M5gBideviceId`](../../doc/models/5g-bidevice-id.md) | Body, Required | Device Profile Query |
-
-## Server
-
-`Server.THINGSPACE`
+| `body` | [`M5gBideviceId`](../../doc/models/m5-g-bidevice-id.md) | Body, Required | Device Profile Query |
 
 ## Response Type
 
-[`M5gBideviceDetailsresponse`](../../doc/models/5g-bidevice-detailsresponse.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`M5gBideviceDetailsresponse`](../../doc/models/m5-g-bidevice-detailsresponse.md).
 
 ## Example Usage
 
@@ -52,8 +48,16 @@ m5gBIDeviceActionsController.businessInternetlistDeviceInformationAsync(body).th
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof M5gBiRestErrorResponseException) {
+        M5gBiRestErrorResponseException m5gBiRestErrorResponseException = (M5gBiRestErrorResponseException) cause;
+        m5gBiRestErrorResponseException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -62,7 +66,7 @@ m5gBIDeviceActionsController.businessInternetlistDeviceInformationAsync(body).th
 
 | HTTP Status Code | Error Description | Exception Class |
 |  --- | --- | --- |
-| Default | Error response | [`M5gBiRestErrorResponseException`](../../doc/models/5g-bi-rest-error-response-exception.md) |
+| Default | Error response | [`M5gBiRestErrorResponseException`](../../doc/models/m5-g-bi-rest-error-response-exception.md) |
 
 
 # Business Internetactivate Using POST
@@ -78,15 +82,11 @@ CompletableFuture<ApiResponse<M5gBiRequestResponse>> businessInternetactivateUsi
 
 | Parameter | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `body` | [`M5gBiactivateRequest`](../../doc/models/5g-biactivate-request.md) | Body, Required | Activate 5G BI service. Defining <code>publicIpRestriction</code> as "Unrestricted" or "Restricted" is required for activating as Public Static. Leave  <code>publicIpRestriction</code> undefined to activate as Public Dynamic. Removing <code>publicIpRestriction</code> from the request will activate as Mobile Private Network (MPN). |
-
-## Server
-
-`Server.THINGSPACE`
+| `body` | [`M5gBiactivateRequest`](../../doc/models/m5-g-biactivate-request.md) | Body, Required | Activate 5G BI service. Defining <code>publicIpRestriction</code> as "Unrestricted" or "Restricted" is required for activating as Public Static. Leave  <code>publicIpRestriction</code> undefined to activate as Public Dynamic. Removing <code>publicIpRestriction</code> from the request will activate as Mobile Private Network (MPN). |
 
 ## Response Type
 
-[`M5gBiRequestResponse`](../../doc/models/5g-bi-request-response.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`M5gBiRequestResponse`](../../doc/models/m5-g-bi-request-response.md).
 
 ## Example Usage
 
@@ -95,39 +95,30 @@ M5gBiactivateRequest body = new M5gBiactivateRequest.Builder()
     .accountName("0000123456-00001")
     .servicePlan("service plan name")
     .deviceListWithServiceAddress(Arrays.asList(
-        new DeviceListWithServiceAddress1.Builder()
-            .deviceId(Arrays.asList(
-                new M5gBideviceId1.Builder()
-                    .id("15-digit IMEI")
-                    .kind("imei")
-                    .build(),
-                new M5gBideviceId1.Builder()
-                    .id("20-digit ICCID")
-                    .kind("iccid")
-                    .build()
-            ))
-            .build(),
-        new DeviceListWithServiceAddress1.Builder()
-            .primaryPlaceofuse(new M5gBiprimaryPlaceofuse.Builder()
-                .address(new M5gBiAddress.Builder()
-                    .addressLine1("street number and name")
-                    .city("city of address")
-                    .state("2-letter state ID (conforms to ISO 3166-2)")
-                    .zip("5-digit ZIP code")
-                    .zip4("the +4 digits used for ZIP codes")
-                    .phone("a 10-digit phone number")
-                    .phoneType("W")
-                    .build())
-                .customerName(new M5gBiCustomerName.Builder()
-                    .firstName("First name")
-                    .lastName("Surname or Last Name")
-                    .middleName("middle name or initial")
-                    .title("Mr. or Ms.")
-                    .suffex("Dr or Esq")
-                    .build())
-                .build())
-            .build()
+        M5gBiactivateRequestDeviceListWithServiceAddress.fromM5gBideviceIdarray(
+            new M5gBideviceIdarray.Builder()
+                .deviceId(Arrays.asList(
+                    M5gBideviceIdarrayDeviceId.fromM5gBideviceId1(
+                        new M5gBideviceId1.Builder()
+                            .id("15-digit IMEI")
+                            .kind("imei")
+                            .build()
+                    ),
+                    M5gBideviceIdarrayDeviceId.fromM5gBideviceId1(
+                        new M5gBideviceId1.Builder()
+                            .id("20-digit ICCID")
+                            .kind("iccid")
+                            .build()
+                    )
+                ))
+                .build()
+        ),
+        M5gBiactivateRequestDeviceListWithServiceAddress.fromM5gBideviceIdarray(
+            new M5gBideviceIdarray.Builder()
+                .build()
+        )
     ))
+    .skuNumber("VZW Stock Keeping Unit number")
     .publicIpRestriction("Unrestricted")
     .carrierName("Verizon Wireless")
     .mdnZipCode("the 5-digit ZIP code of the Mobile Directory Number (MDN)")
@@ -137,8 +128,16 @@ m5gBIDeviceActionsController.businessInternetactivateUsingPOSTAsync(body).thenAc
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof M5gBiRestErrorResponseException) {
+        M5gBiRestErrorResponseException m5gBiRestErrorResponseException = (M5gBiRestErrorResponseException) cause;
+        m5gBiRestErrorResponseException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -155,7 +154,7 @@ m5gBIDeviceActionsController.businessInternetactivateUsingPOSTAsync(body).thenAc
 
 | HTTP Status Code | Error Description | Exception Class |
 |  --- | --- | --- |
-| Default | Error response | [`M5gBiRestErrorResponseException`](../../doc/models/5g-bi-rest-error-response-exception.md) |
+| Default | Error response | [`M5gBiRestErrorResponseException`](../../doc/models/m5-g-bi-rest-error-response-exception.md) |
 
 
 # Business Internet Serviceplanchange
@@ -171,15 +170,11 @@ CompletableFuture<ApiResponse<M5gBiRequestResponse>> businessInternetServiceplan
 
 | Parameter | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `body` | [`M5gBichangeRequest`](../../doc/models/5g-bichange-request.md) | Body, Required | This endpoint is for use when changing a device's service plan to a 5G BI service plan. The service plan can change for an active device up to four times per month but will require address validation for each change. The service plan cannot be changed for a device while its service is suspended. |
-
-## Server
-
-`Server.THINGSPACE`
+| `body` | [`M5gBichangeRequest`](../../doc/models/m5-g-bichange-request.md) | Body, Required | This endpoint is for use when changing a device's service plan to a 5G BI service plan. The service plan can change for an active device up to four times per month but will require address validation for each change. The service plan cannot be changed for a device while its service is suspended. |
 
 ## Response Type
 
-[`M5gBiRequestResponse`](../../doc/models/5g-bi-request-response.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`M5gBiRequestResponse`](../../doc/models/m5-g-bi-request-response.md).
 
 ## Example Usage
 
@@ -188,28 +183,38 @@ M5gBichangeRequest body = new M5gBichangeRequest.Builder()
     .accountName("0000123456-00001")
     .servicePlan("5G BI service plan name being changed to")
     .deviceListWithServiceAddress(Arrays.asList(
-        new DeviceListWithServiceAddress.Builder()
-            .deviceId(Arrays.asList(
-                new M5gBideviceId1.Builder()
-                    .id("15-digit IMEI")
-                    .kind("imei")
-                    .build()
-            ))
-            .build(),
-        new DeviceListWithServiceAddress.Builder()
-            .primaryPlaceofuse(new M5gBiaddressAndcustomerinfo.Builder()
-                .build())
-            .build()
+        M5gBichangeRequestDeviceListWithServiceAddress.fromM5gBideviceIdarray2(
+            new M5gBideviceIdarray2.Builder()
+                .deviceId(Arrays.asList(
+                    new M5gBideviceId1.Builder()
+                        .id("15-digit IMEI")
+                        .kind("imei")
+                        .build()
+                ))
+                .build()
+        ),
+        M5gBichangeRequestDeviceListWithServiceAddress.fromM5gBideviceIdarray2(
+            new M5gBideviceIdarray2.Builder()
+                .build()
+        )
     ))
-    .currentServicePlan("Name of the plan being changed from")
+    .currentServicePlan("Optional name of the plan being changed from")
     .build();
 
 m5gBIDeviceActionsController.businessInternetServiceplanchangeAsync(body).thenAccept(result -> {
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof M5gBiRestErrorResponseException) {
+        M5gBiRestErrorResponseException m5gBiRestErrorResponseException = (M5gBiRestErrorResponseException) cause;
+        m5gBiRestErrorResponseException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -226,5 +231,5 @@ m5gBIDeviceActionsController.businessInternetServiceplanchangeAsync(body).thenAc
 
 | HTTP Status Code | Error Description | Exception Class |
 |  --- | --- | --- |
-| Default | Error response | [`M5gBiRestErrorResponseException`](../../doc/models/5g-bi-rest-error-response-exception.md) |
+| Default | Error response | [`M5gBiRestErrorResponseException`](../../doc/models/m5-g-bi-rest-error-response-exception.md) |
 

@@ -1,0 +1,60 @@
+# Device-Role-Controller
+
+```java
+DeviceRoleController deviceRoleController = client.getDeviceRoleController();
+```
+
+## Class Name
+
+`DeviceRoleController`
+
+
+# Get ACL Rules by Vendor Id
+
+This API allows the user to get the access control rules defined for them.
+
+```java
+CompletableFuture<ApiResponse<List<DeviceRole>>> getACLRulesByVendorIdAsync(
+    final String vendorID)
+```
+
+## Parameters
+
+| Parameter | Type | Tags | Description |
+|  --- | --- | --- | --- |
+| `vendorID` | `String` | Query, Required | The user's Vendor ID<br><br>**Constraints**: *Minimum Length*: `1`, *Maximum Length*: `64`, *Pattern*: `^[a-zA-Z0-9]+$` |
+
+## Server
+
+`Server.IMP_SERVER`
+
+## Response Type
+
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`List<DeviceRole>`](../../doc/models/device-role.md).
+
+## Example Usage
+
+```java
+String vendorID = "TestVendor";
+
+deviceRoleController.getACLRulesByVendorIdAsync(vendorID).thenAccept(result -> {
+    // TODO success callback handler
+    System.out.println(result);
+}).exceptionally(exception -> {
+    // TODO failure callback handler
+    exception.printStackTrace();
+    return null;
+});
+```
+
+## Errors
+
+| HTTP Status Code | Error Description | Exception Class |
+|  --- | --- | --- |
+| 400 | Bad Request | `ApiException` |
+| 401 | Unauthorized | `ApiException` |
+| 403 | Forbidden | `ApiException` |
+| 406 | Not Acceptable | `ApiException` |
+| 429 | Too many requests | `ApiException` |
+| Default | unexpected error | `ApiException` |
+

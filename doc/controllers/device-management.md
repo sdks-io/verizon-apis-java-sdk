@@ -17,8 +17,8 @@ DeviceManagementController deviceManagementController = client.getDeviceManageme
 * [Deactivate Service for Devices](../../doc/controllers/device-management.md#deactivate-service-for-devices)
 * [Delete Deactivated Devices](../../doc/controllers/device-management.md#delete-deactivated-devices)
 * [List Devices Information](../../doc/controllers/device-management.md#list-devices-information)
-* [List Devices With Imei Iccid Mismatch](../../doc/controllers/device-management.md#list-devices-with-imei-iccid-mismatch)
-* [Move Devices Within Accounts of Profile](../../doc/controllers/device-management.md#move-devices-within-accounts-of-profile)
+* [List Devices with Imei Iccid Mismatch](../../doc/controllers/device-management.md#list-devices-with-imei-iccid-mismatch)
+* [Move Devices within Accounts of Profile](../../doc/controllers/device-management.md#move-devices-within-accounts-of-profile)
 * [Update Devices State](../../doc/controllers/device-management.md#update-devices-state)
 * [Change Devices Service Plan](../../doc/controllers/device-management.md#change-devices-service-plan)
 * [Suspend Service for Devices](../../doc/controllers/device-management.md#suspend-service-for-devices)
@@ -37,8 +37,8 @@ DeviceManagementController deviceManagementController = client.getDeviceManageme
 * [Billed Usage Info](../../doc/controllers/device-management.md#billed-usage-info)
 * [Usage Segmentation Label Association](../../doc/controllers/device-management.md#usage-segmentation-label-association)
 * [Usage Segmentation Label Deletion](../../doc/controllers/device-management.md#usage-segmentation-label-deletion)
-* [Activation Order Status](../../doc/controllers/device-management.md#activation-order-status)
-* [Upload Device Identifier](../../doc/controllers/device-management.md#upload-device-identifier)
+* [Upload Activate Device](../../doc/controllers/device-management.md#upload-activate-device)
+* [Device Upload Status](../../doc/controllers/device-management.md#device-upload-status)
 
 
 # Activate Service for Devices
@@ -56,13 +56,9 @@ CompletableFuture<ApiResponse<DeviceManagementResult>> activateServiceForDevices
 |  --- | --- | --- | --- |
 | `body` | [`CarrierActivateRequest`](../../doc/models/carrier-activate-request.md) | Body, Required | Request for activating a service on devices. |
 
-## Server
-
-`Server.THINGSPACE`
-
 ## Response Type
 
-[`DeviceManagementResult`](../../doc/models/device-management-result.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`DeviceManagementResult`](../../doc/models/device-management-result.md).
 
 ## Example Usage
 
@@ -137,8 +133,16 @@ deviceManagementController.activateServiceForDevicesAsync(body).thenAccept(resul
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof ConnectivityManagementResultException) {
+        ConnectivityManagementResultException connectivityManagementResultException = (ConnectivityManagementResultException) cause;
+        connectivityManagementResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -173,29 +177,25 @@ CompletableFuture<ApiResponse<List<AddDevicesResult>>> addDevicesAsync(
 |  --- | --- | --- | --- |
 | `body` | [`AddDevicesRequest`](../../doc/models/add-devices-request.md) | Body, Required | Devices to add. |
 
-## Server
-
-`Server.THINGSPACE`
-
 ## Response Type
 
-[`List<AddDevicesResult>`](../../doc/models/add-devices-result.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`List<AddDevicesResult>`](../../doc/models/add-devices-result.md).
 
 ## Example Usage
 
 ```java
 AddDevicesRequest body = new AddDevicesRequest.Builder(
-    "preactive",
+    "Pre-active",
     Arrays.asList(
         new AccountDeviceList.Builder(
             Arrays.asList(
                 new DeviceId.Builder(
-                    "990013907835573",
+                    "15-digit IMEI",
                     "imei"
                 )
                 .build(),
                 new DeviceId.Builder(
-                    "89141390780800784259",
+                    "20-digit ICCID",
                     "iccid"
                 )
                 .build()
@@ -205,12 +205,12 @@ AddDevicesRequest body = new AddDevicesRequest.Builder(
         new AccountDeviceList.Builder(
             Arrays.asList(
                 new DeviceId.Builder(
-                    "990013907884259",
+                    "15-digit IMEI",
                     "imei"
                 )
                 .build(),
                 new DeviceId.Builder(
-                    "89141390780800735573",
+                    "20-digit ICCID",
                     "iccid"
                 )
                 .build()
@@ -219,7 +219,7 @@ AddDevicesRequest body = new AddDevicesRequest.Builder(
         .build()
     )
 )
-.accountName("0868924207-00001")
+.accountName("0000123456-00001")
 .customFields(Arrays.asList(
         new CustomFields.Builder(
             "CustomField2",
@@ -234,8 +234,16 @@ deviceManagementController.addDevicesAsync(body).thenAccept(result -> {
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof ConnectivityManagementResultException) {
+        ConnectivityManagementResultException connectivityManagementResultException = (ConnectivityManagementResultException) cause;
+        connectivityManagementResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -247,7 +255,7 @@ deviceManagementController.addDevicesAsync(body).thenAccept(result -> {
   {
     "deviceIds": [
       {
-        "id": "89148000000800784259",
+        "id": "20-digit ICCID",
         "kind": "iccid"
       }
     ],
@@ -278,13 +286,9 @@ CompletableFuture<ApiResponse<DeviceManagementResult>> updateDevicesContactInfor
 |  --- | --- | --- | --- |
 | `body` | [`ContactInfoUpdateRequest`](../../doc/models/contact-info-update-request.md) | Body, Required | Request to update contact information for devices. |
 
-## Server
-
-`Server.THINGSPACE`
-
 ## Response Type
 
-[`DeviceManagementResult`](../../doc/models/device-management-result.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`DeviceManagementResult`](../../doc/models/device-management-result.md).
 
 ## Example Usage
 
@@ -339,8 +343,16 @@ deviceManagementController.updateDevicesContactInformationAsync(body).thenAccept
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof ConnectivityManagementResultException) {
+        ConnectivityManagementResultException connectivityManagementResultException = (ConnectivityManagementResultException) cause;
+        connectivityManagementResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -375,13 +387,9 @@ CompletableFuture<ApiResponse<DeviceManagementResult>> updateDevicesCustomFields
 |  --- | --- | --- | --- |
 | `body` | [`CustomFieldsUpdateRequest`](../../doc/models/custom-fields-update-request.md) | Body, Required | Request to update custom field of devices. |
 
-## Server
-
-`Server.THINGSPACE`
-
 ## Response Type
 
-[`DeviceManagementResult`](../../doc/models/device-management-result.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`DeviceManagementResult`](../../doc/models/device-management-result.md).
 
 ## Example Usage
 
@@ -417,8 +425,16 @@ deviceManagementController.updateDevicesCustomFieldsAsync(body).thenAccept(resul
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof ConnectivityManagementResultException) {
+        ConnectivityManagementResultException connectivityManagementResultException = (ConnectivityManagementResultException) cause;
+        connectivityManagementResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -453,13 +469,9 @@ CompletableFuture<ApiResponse<DeviceManagementResult>> deactivateServiceForDevic
 |  --- | --- | --- | --- |
 | `body` | [`CarrierDeactivateRequest`](../../doc/models/carrier-deactivate-request.md) | Body, Required | Request to deactivate service for one or more devices. |
 
-## Server
-
-`Server.THINGSPACE`
-
 ## Response Type
 
-[`DeviceManagementResult`](../../doc/models/device-management-result.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`DeviceManagementResult`](../../doc/models/device-management-result.md).
 
 ## Example Usage
 
@@ -488,8 +500,16 @@ deviceManagementController.deactivateServiceForDevicesAsync(body).thenAccept(res
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof ConnectivityManagementResultException) {
+        ConnectivityManagementResultException connectivityManagementResultException = (ConnectivityManagementResultException) cause;
+        connectivityManagementResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -524,13 +544,9 @@ CompletableFuture<ApiResponse<List<DeleteDevicesResult>>> deleteDeactivatedDevic
 |  --- | --- | --- | --- |
 | `body` | [`DeleteDevicesRequest`](../../doc/models/delete-devices-request.md) | Body, Required | Devices to delete. |
 
-## Server
-
-`Server.THINGSPACE`
-
 ## Response Type
 
-[`List<DeleteDevicesResult>`](../../doc/models/delete-devices-result.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`List<DeleteDevicesResult>`](../../doc/models/delete-devices-result.md).
 
 ## Example Usage
 
@@ -575,8 +591,16 @@ deviceManagementController.deleteDeactivatedDevicesAsync(body).thenAccept(result
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof ConnectivityManagementResultException) {
+        ConnectivityManagementResultException connectivityManagementResultException = (ConnectivityManagementResultException) cause;
+        connectivityManagementResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -638,13 +662,9 @@ CompletableFuture<ApiResponse<AccountDeviceListResult>> listDevicesInformationAs
 |  --- | --- | --- | --- |
 | `body` | [`AccountDeviceListRequest`](../../doc/models/account-device-list-request.md) | Body, Required | Device information query. |
 
-## Server
-
-`Server.THINGSPACE`
-
 ## Response Type
 
-[`AccountDeviceListResult`](../../doc/models/account-device-list-result.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`AccountDeviceListResult`](../../doc/models/account-device-list-result.md).
 
 ## Example Usage
 
@@ -661,8 +681,16 @@ deviceManagementController.listDevicesInformationAsync(body).thenAccept(result -
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof ConnectivityManagementResultException) {
+        ConnectivityManagementResultException connectivityManagementResultException = (ConnectivityManagementResultException) cause;
+        connectivityManagementResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -714,7 +742,7 @@ deviceManagementController.listDevicesInformationAsync(body).thenAccept(result -
 | 400 | Error response. | [`ConnectivityManagementResultException`](../../doc/models/connectivity-management-result-exception.md) |
 
 
-# List Devices With Imei Iccid Mismatch
+# List Devices with Imei Iccid Mismatch
 
 Returns a list of all 4G devices with an ICCID (SIM) that was not activated with the expected IMEI (hardware) during a specified time frame.
 
@@ -729,13 +757,9 @@ CompletableFuture<ApiResponse<DeviceMismatchListResult>> listDevicesWithImeiIcci
 |  --- | --- | --- | --- |
 | `body` | [`DeviceMismatchListRequest`](../../doc/models/device-mismatch-list-request.md) | Body, Required | Request to list devices with mismatched IMEIs and ICCIDs. |
 
-## Server
-
-`Server.THINGSPACE`
-
 ## Response Type
 
-[`DeviceMismatchListResult`](../../doc/models/device-mismatch-list-result.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`DeviceMismatchListResult`](../../doc/models/device-mismatch-list-result.md).
 
 ## Example Usage
 
@@ -771,8 +795,16 @@ deviceManagementController.listDevicesWithImeiIccidMismatchAsync(body).thenAccep
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof ConnectivityManagementResultException) {
+        ConnectivityManagementResultException connectivityManagementResultException = (ConnectivityManagementResultException) cause;
+        connectivityManagementResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -802,7 +834,7 @@ deviceManagementController.listDevicesWithImeiIccidMismatchAsync(body).thenAccep
 | 400 | Error response. | [`ConnectivityManagementResultException`](../../doc/models/connectivity-management-result-exception.md) |
 
 
-# Move Devices Within Accounts of Profile
+# Move Devices within Accounts of Profile
 
 Move active devices from one billing account to another within a customer profile.
 
@@ -817,13 +849,9 @@ CompletableFuture<ApiResponse<DeviceManagementResult>> moveDevicesWithinAccounts
 |  --- | --- | --- | --- |
 | `body` | [`MoveDeviceRequest`](../../doc/models/move-device-request.md) | Body, Required | Request to move devices between accounts. |
 
-## Server
-
-`Server.THINGSPACE`
-
 ## Response Type
 
-[`DeviceManagementResult`](../../doc/models/device-management-result.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`DeviceManagementResult`](../../doc/models/device-management-result.md).
 
 ## Example Usage
 
@@ -850,8 +878,16 @@ deviceManagementController.moveDevicesWithinAccountsOfProfileAsync(body).thenAcc
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof ConnectivityManagementResultException) {
+        ConnectivityManagementResultException connectivityManagementResultException = (ConnectivityManagementResultException) cause;
+        connectivityManagementResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -886,13 +922,9 @@ CompletableFuture<ApiResponse<DeviceManagementResult>> updateDevicesStateAsync(
 |  --- | --- | --- | --- |
 | `body` | [`GoToStateRequest`](../../doc/models/go-to-state-request.md) | Body, Required | Request to change device state to one defined by the user. |
 
-## Server
-
-`Server.THINGSPACE`
-
 ## Response Type
 
-[`DeviceManagementResult`](../../doc/models/device-management-result.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`DeviceManagementResult`](../../doc/models/device-management-result.md).
 
 ## Example Usage
 
@@ -960,8 +992,16 @@ deviceManagementController.updateDevicesStateAsync(body).thenAccept(result -> {
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof ConnectivityManagementResultException) {
+        ConnectivityManagementResultException connectivityManagementResultException = (ConnectivityManagementResultException) cause;
+        connectivityManagementResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -996,13 +1036,9 @@ CompletableFuture<ApiResponse<DeviceManagementResult>> changeDevicesServicePlanA
 |  --- | --- | --- | --- |
 | `body` | [`ServicePlanUpdateRequest`](../../doc/models/service-plan-update-request.md) | Body, Required | Request to change device service plan. |
 
-## Server
-
-`Server.THINGSPACE`
-
 ## Response Type
 
-[`DeviceManagementResult`](../../doc/models/device-management-result.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`DeviceManagementResult`](../../doc/models/device-management-result.md).
 
 ## Example Usage
 
@@ -1029,8 +1065,16 @@ deviceManagementController.changeDevicesServicePlanAsync(body).thenAccept(result
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof ConnectivityManagementResultException) {
+        ConnectivityManagementResultException connectivityManagementResultException = (ConnectivityManagementResultException) cause;
+        connectivityManagementResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -1065,13 +1109,9 @@ CompletableFuture<ApiResponse<DeviceManagementResult>> suspendServiceForDevicesA
 |  --- | --- | --- | --- |
 | `body` | [`CarrierActionsRequest`](../../doc/models/carrier-actions-request.md) | Body, Required | Request to suspend service for one or more devices. |
 
-## Server
-
-`Server.THINGSPACE`
-
 ## Response Type
 
-[`DeviceManagementResult`](../../doc/models/device-management-result.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`DeviceManagementResult`](../../doc/models/device-management-result.md).
 
 ## Example Usage
 
@@ -1095,8 +1135,16 @@ deviceManagementController.suspendServiceForDevicesAsync(body).thenAccept(result
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof ConnectivityManagementResultException) {
+        ConnectivityManagementResultException connectivityManagementResultException = (ConnectivityManagementResultException) cause;
+        connectivityManagementResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -1131,13 +1179,9 @@ CompletableFuture<ApiResponse<DeviceManagementResult>> restoreServiceForSuspende
 |  --- | --- | --- | --- |
 | `body` | [`CarrierActionsRequest`](../../doc/models/carrier-actions-request.md) | Body, Required | Request to restore services of one or more suspended devices. |
 
-## Server
-
-`Server.THINGSPACE`
-
 ## Response Type
 
-[`DeviceManagementResult`](../../doc/models/device-management-result.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`DeviceManagementResult`](../../doc/models/device-management-result.md).
 
 ## Example Usage
 
@@ -1161,8 +1205,16 @@ deviceManagementController.restoreServiceForSuspendedDevicesAsync(body).thenAcce
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof ConnectivityManagementResultException) {
+        ConnectivityManagementResultException connectivityManagementResultException = (ConnectivityManagementResultException) cause;
+        connectivityManagementResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -1197,13 +1249,9 @@ CompletableFuture<ApiResponse<DeviceManagementResult>> checkDevicesAvailabilityF
 |  --- | --- | --- | --- |
 | `body` | [`DeviceActivationRequest`](../../doc/models/device-activation-request.md) | Body, Required | Request to check if devices can be activated or not. |
 
-## Server
-
-`Server.THINGSPACE`
-
 ## Response Type
 
-[`DeviceManagementResult`](../../doc/models/device-management-result.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`DeviceManagementResult`](../../doc/models/device-management-result.md).
 
 ## Example Usage
 
@@ -1229,8 +1277,16 @@ deviceManagementController.checkDevicesAvailabilityForActivationAsync(body).then
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof ConnectivityManagementResultException) {
+        ConnectivityManagementResultException connectivityManagementResultException = (ConnectivityManagementResultException) cause;
+        connectivityManagementResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -1265,13 +1321,9 @@ CompletableFuture<ApiResponse<ConnectionHistoryResult>> retrieveDeviceConnection
 |  --- | --- | --- | --- |
 | `body` | [`DeviceConnectionListRequest`](../../doc/models/device-connection-list-request.md) | Body, Required | Query to retrieve device connection history. |
 
-## Server
-
-`Server.THINGSPACE`
-
 ## Response Type
 
-[`ConnectionHistoryResult`](../../doc/models/connection-history-result.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`ConnectionHistoryResult`](../../doc/models/connection-history-result.md).
 
 ## Example Usage
 
@@ -1291,8 +1343,16 @@ deviceManagementController.retrieveDeviceConnectionHistoryAsync(body).thenAccept
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof ConnectivityManagementResultException) {
+        ConnectivityManagementResultException connectivityManagementResultException = (ConnectivityManagementResultException) cause;
+        connectivityManagementResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -1361,13 +1421,9 @@ CompletableFuture<ApiResponse<DeviceManagementResult>> updateDevicesCostCenterCo
 |  --- | --- | --- | --- |
 | `body` | [`DeviceCostCenterRequest`](../../doc/models/device-cost-center-request.md) | Body, Required | Request to update cost center code value for one or more devices. |
 
-## Server
-
-`Server.THINGSPACE`
-
 ## Response Type
 
-[`DeviceManagementResult`](../../doc/models/device-management-result.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`DeviceManagementResult`](../../doc/models/device-management-result.md).
 
 ## Example Usage
 
@@ -1392,8 +1448,16 @@ deviceManagementController.updateDevicesCostCenterCodeAsync(body).thenAccept(res
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof ConnectivityManagementResultException) {
+        ConnectivityManagementResultException connectivityManagementResultException = (ConnectivityManagementResultException) cause;
+        connectivityManagementResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -1428,19 +1492,15 @@ CompletableFuture<ApiResponse<DeviceExtendedDiagnosticsResult>> getDeviceExtende
 |  --- | --- | --- | --- |
 | `body` | [`DeviceExtendedDiagnosticsRequest`](../../doc/models/device-extended-diagnostics-request.md) | Body, Required | Request to query extended diagnostics information for a device. |
 
-## Server
-
-`Server.THINGSPACE`
-
 ## Response Type
 
-[`DeviceExtendedDiagnosticsResult`](../../doc/models/device-extended-diagnostics-result.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`DeviceExtendedDiagnosticsResult`](../../doc/models/device-extended-diagnostics-result.md).
 
 ## Example Usage
 
 ```java
 DeviceExtendedDiagnosticsRequest body = new DeviceExtendedDiagnosticsRequest.Builder(
-    "1223334444-00001",
+    "0000123456-00001",
     Arrays.asList(
         new DeviceId.Builder(
             "10-digit MDN",
@@ -1455,8 +1515,16 @@ deviceManagementController.getDeviceExtendedDiagnosticInformationAsync(body).the
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof ConnectivityManagementResultException) {
+        ConnectivityManagementResultException connectivityManagementResultException = (ConnectivityManagementResultException) cause;
+        connectivityManagementResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -1465,13 +1533,476 @@ deviceManagementController.getDeviceExtendedDiagnosticInformationAsync(body).the
 
 ```json
 {
+  "accountName": "0000123456-00001",
+  "deviceList": [
+    {
+      "id": "15-digit IMEI",
+      "kind": "imei"
+    }
+  ],
   "categories": [
+    {
+      "categoryName": "DeviceIdentifier",
+      "extendedAttributes": [
+        {
+          "key": "ICCID",
+          "value": "20-digit ICCID"
+        },
+        {
+          "key": "IMEI",
+          "value": "15-digit IMEI"
+        },
+        {
+          "key": "IMSI",
+          "value": "15-digit IMSI"
+        },
+        {
+          "key": "MDN",
+          "value": "10-digit phone number"
+        },
+        {
+          "key": "MIN",
+          "value": "10-digit phone number"
+        },
+        {
+          "key": "MSISDN",
+          "value": "1+ 10-digit phone number"
+        }
+      ]
+    },
+    {
+      "categoryName": "DeviceAttributes",
+      "extendedAttributes": [
+        {
+          "key": "AccountName",
+          "value": "0000123456-00001"
+        },
+        {
+          "key": "GroupName",
+          "value": "Default: 0000123456-00001"
+        },
+        {
+          "key": "DeviceSku",
+          "value": "VZW080000100112"
+        },
+        {
+          "key": "CustomFields1",
+          "value": "5G SA FWA site"
+        },
+        {
+          "key": "ServicePlanType",
+          "value": "Public Dynamic"
+        },
+        {
+          "key": "FeatureCodes",
+          "value": "84777,86112"
+        },
+        {
+          "key": "FeatureNames",
+          "value": "84777,86112"
+        },
+        {
+          "key": "FeatureTypes",
+          "value": "4G PUBLIC DYNAM IP DSS STREAM,5G IPV/IPV6 IP"
+        },
+        {
+          "key": "BundleSku",
+          "value": "TSS-IOT-INTELLIGENCE-CUSTOM"
+        },
+        {
+          "key": "RatePlanCode",
+          "value": "5GBI100MBPS"
+        },
+        {
+          "key": "DeviceMake",
+          "value": "ODI"
+        },
+        {
+          "key": "DeviceModel",
+          "value": "DIGI - EX50-WXS6-GLB"
+        },
+        {
+          "key": "ModemGeneration",
+          "value": "5G"
+        },
+        {
+          "key": "4GDeviceDetectionDate",
+          "value": "2024-09-25T22:18:07Z"
+        },
+        {
+          "key": "Services",
+          "value": "null"
+        },
+        {
+          "key": "ModemType",
+          "value": "5GE"
+        },
+        {
+          "key": "DiagnosticsEligibility",
+          "value": "StreamEligible"
+        },
+        {
+          "key": "DiagnosticsSKUName",
+          "value": "TSS-IOT-INTLG-CUSTOM-DIAG-LWM2M"
+        },
+        {
+          "key": "AvailableNetworks",
+          "value": "6"
+        },
+        {
+          "key": "ModemCategory",
+          "value": "IoT Module"
+        }
+      ]
+    },
+    {
+      "categoryName": "Provisioning",
+      "extendedAttributes": [
+        {
+          "key": "LastActivationBy",
+          "value": "Verizon, User"
+        },
+        {
+          "key": "LastActivationDate",
+          "value": "2024-09-25T00:10:24Z"
+        },
+        {
+          "key": "CreatedAt",
+          "value": "2024-09-24T20:56:12Z"
+        },
+        {
+          "key": "DeviceState",
+          "value": "active"
+        },
+        {
+          "key": "LastDeactivationDate",
+          "value": "2024-09-25T00:05:21Z"
+        }
+      ]
+    },
     {
       "categoryName": "Connectivity",
       "extendedAttributes": [
         {
           "key": "Connected",
+          "value": "true"
+        },
+        {
+          "key": "LastConnectionDate",
+          "value": "2025-03-14T13:12:01.000Z"
+        },
+        {
+          "key": "IPAddress",
+          "value": "10.0.0.0"
+        },
+        {
+          "key": "LastDisconnectDate",
+          "value": "2025-03-14T08:34:43.000Z"
+        },
+        {
+          "key": "RoamingStatus",
           "value": "false"
+        },
+        {
+          "key": "RomaingLastModifiedDate",
+          "value": "2025-03-14T13:12:01.000Z"
+        },
+        {
+          "key": "RequiredAPN",
+          "value": "The Access point name"
+        }
+      ]
+    },
+    {
+      "categoryName": "Billing",
+      "extendedAttributes": [
+        {
+          "key": "BillingCycleStartDate",
+          "value": "2024-09-25T12:00:00Z"
+        },
+        {
+          "key": "BillingCycleEndDate",
+          "value": "2024-09-25T12:00:00Z"
+        },
+        {
+          "key": "DefaultRatePlan",
+          "value": "0"
+        }
+      ]
+    },
+    {
+      "categoryName": "Usage",
+      "extendedAttributes": [
+        {
+          "key": "CurrentRatedUsageRecordDate",
+          "value": "2024-09-25T00:00:00Z"
+        },
+        {
+          "key": "CurrentBillCycleDataRatedUsage",
+          "value": "0"
+        },
+        {
+          "key": "CurrentBillCycleRatedSMSUsage",
+          "value": "0"
+        },
+        {
+          "key": "PromoSmsUsage",
+          "value": "0"
+        },
+        {
+          "key": "PromoSmsUsagePercent",
+          "value": "0"
+        },
+        {
+          "key": "PromoDataUsage",
+          "value": "0"
+        },
+        {
+          "key": "PromoDataUsagePercent",
+          "value": "0"
+        },
+        {
+          "key": "AaaPromoDataUsage",
+          "value": "0"
+        },
+        {
+          "key": "RtrPromoDataUsage",
+          "value": "0"
+        },
+        {
+          "key": "InternationalRoamingUsage",
+          "value": "0"
+        }
+      ]
+    },
+    {
+      "categoryName": "Location",
+      "extendedAttributes": [
+        {
+          "key": "LocationSkuName",
+          "value": "TSS-IOT-INTLG-CUSTOM-LOC-COARSE"
+        },
+        {
+          "key": "LastLocationUpdate",
+          "value": "2024-06-17T16:23:14Z"
+        },
+        {
+          "key": "Latitude",
+          "value": "33.122153"
+        },
+        {
+          "key": "Longitude",
+          "value": "-96.641825"
+        },
+        {
+          "key": "LastLocationAttemptDate",
+          "value": "2024-09-25T16:23:14Z"
+        },
+        {
+          "key": "LastLocationStatus",
+          "value": "122"
+        }
+      ]
+    },
+    {
+      "categoryName": "FOTA",
+      "extendedAttributes": [
+        {
+          "key": "FotaCurrentFirmwareVersion",
+          "value": "SWIX55C_03.09.11.00"
+        },
+        {
+          "key": "FotaSku",
+          "value": "TSS-IOT-INTLG-CUSTOM-SWMT"
+        },
+        {
+          "key": "FotaMake",
+          "value": "Sierra Wireless"
+        },
+        {
+          "key": "FotaModel",
+          "value": "EM9191"
+        },
+        {
+          "key": "FotaProtocol",
+          "value": "LWM2M"
+        }
+      ]
+    },
+    {
+      "categoryName": "PrimaryPlaceOfUse",
+      "extendedAttributes": [
+        {
+          "key": "CustomerFirstName",
+          "value": "first name"
+        },
+        {
+          "key": "CustomerLastName",
+          "value": "last name"
+        },
+        {
+          "key": "CustomerAddressLine1",
+          "value": "street number and name"
+        },
+        {
+          "key": "CustomerAddressCity",
+          "value": "PLANO"
+        },
+        {
+          "key": "CustomerAddressState",
+          "value": "TX"
+        },
+        {
+          "key": "CustomerAddressZipCode",
+          "value": "75075"
+        },
+        {
+          "key": "CustomerCountry",
+          "value": "USA"
+        },
+        {
+          "key": "CustomerPpuLatitude",
+          "value": "latitude in decimal degrees"
+        },
+        {
+          "key": "CustomerPpuLongitude",
+          "value": "longitude in decimal degrees"
+        }
+      ]
+    },
+    {
+      "categoryName": "SIMSECURE"
+    },
+    {
+      "categoryName": "RTR",
+      "extendedAttributes": [
+        {
+          "key": "RTRUnRatedDataUsage",
+          "value": "0"
+        }
+      ]
+    },
+    {
+      "categoryName": "PMEC",
+      "extendedAttributes": [
+        {
+          "key": "IsPmec",
+          "value": "false"
+        }
+      ]
+    },
+    {
+      "categoryName": "RfAttributes",
+      "extendedAttributes": [
+        {
+          "key": "CellID",
+          "value": "cellular ID"
+        },
+        {
+          "key": "CellIDUpdatedDate",
+          "value": "2024-09-25T21:35:50Z"
+        },
+        {
+          "key": "CellIDStreamStatus",
+          "value": "ObserveInprogress"
+        },
+        {
+          "key": "CellIDIntervalInSeconds",
+          "value": "15"
+        },
+        {
+          "key": "CellIDDurationInSeconds",
+          "value": "900"
+        },
+        {
+          "key": "NetworkBearer",
+          "value": "6"
+        },
+        {
+          "key": "NetworkBearerUpdateDate",
+          "value": "2024-09-25T21:35:50Z"
+        },
+        {
+          "key": "NetworkBearerStreamStatus",
+          "value": "ObserveInprogress"
+        },
+        {
+          "key": "NetworkBearerIntervalInSeconds",
+          "value": "15"
+        },
+        {
+          "key": "NetworkBearerDurationInSeconds",
+          "value": "900"
+        },
+        {
+          "key": "RadioSignalStrength",
+          "value": "-59"
+        },
+        {
+          "key": "RadioSignalStrengthUpdatedDate",
+          "value": "2024-09-25T21:35:50Z"
+        },
+        {
+          "key": "RadioSignalStrengthStreamStatus",
+          "value": "ObserveDurationExpired"
+        },
+        {
+          "key": "RadioSignalStrengthIntervalInSeconds",
+          "value": "15"
+        },
+        {
+          "key": "RadioSignalStrengthDurationInSeconds",
+          "value": "3600"
+        },
+        {
+          "key": "LinkQuality",
+          "value": "-11"
+        },
+        {
+          "key": "LinkQualityUpdatedDate",
+          "value": "2024-09-25T21:35:50Z"
+        },
+        {
+          "key": "LinkQualityStreamStatus",
+          "value": "ObserveInprogress"
+        },
+        {
+          "key": "LinkQualityIntervalInSeconds",
+          "value": "15"
+        },
+        {
+          "key": "LinkQualityDurationInSeconds",
+          "value": "3600"
+        }
+      ]
+    },
+    {
+      "categoryName": "Battery",
+      "extendedAttributes": [
+        {
+          "key": "BatteryLevel",
+          "value": "0"
+        }
+      ]
+    },
+    {
+      "categoryName": "Restart",
+      "extendedAttributes": [
+        {
+          "key": "DeviceRebootStatus",
+          "value": "REBOOT_QUEUED"
+        },
+        {
+          "key": "DeviceRebootStatusDate",
+          "value": "2024-05-07T14:21:59Z"
+        },
+        {
+          "key": "DeviceRebootStatusErrorCode",
+          "value": "DEVICE_UNREACHABLE"
+        },
+        {
+          "key": "DeviceRebootStatusErrorDescription",
+          "value": "Device not reachable, request will send to device once it become available"
         }
       ]
     }
@@ -1501,13 +2032,9 @@ CompletableFuture<ApiResponse<List<DeviceProvisioningHistoryListResult>>> listDe
 |  --- | --- | --- | --- |
 | `body` | [`DeviceProvisioningHistoryListRequest`](../../doc/models/device-provisioning-history-list-request.md) | Body, Required | Query to obtain device provisioning history. |
 
-## Server
-
-`Server.THINGSPACE`
-
 ## Response Type
 
-[`List<DeviceProvisioningHistoryListResult>`](../../doc/models/device-provisioning-history-list-result.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`List<DeviceProvisioningHistoryListResult>`](../../doc/models/device-provisioning-history-list-result.md).
 
 ## Example Usage
 
@@ -1527,8 +2054,16 @@ deviceManagementController.listDevicesProvisioningHistoryAsync(body).thenAccept(
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof ConnectivityManagementResultException) {
+        ConnectivityManagementResultException connectivityManagementResultException = (ConnectivityManagementResultException) cause;
+        connectivityManagementResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -1577,13 +2112,9 @@ CompletableFuture<ApiResponse<DeviceManagementResult>> listCurrentDevicesPRLVers
 |  --- | --- | --- | --- |
 | `body` | [`DevicePrlListRequest`](../../doc/models/device-prl-list-request.md) | Body, Required | Request to query device PRL. |
 
-## Server
-
-`Server.THINGSPACE`
-
 ## Response Type
 
-[`DeviceManagementResult`](../../doc/models/device-management-result.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`DeviceManagementResult`](../../doc/models/device-management-result.md).
 
 ## Example Usage
 
@@ -1607,8 +2138,16 @@ deviceManagementController.listCurrentDevicesPRLVersionAsync(body).thenAccept(re
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof ConnectivityManagementResultException) {
+        ConnectivityManagementResultException connectivityManagementResultException = (ConnectivityManagementResultException) cause;
+        connectivityManagementResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -1643,13 +2182,9 @@ CompletableFuture<ApiResponse<DeviceManagementResult>> getDeviceServiceSuspensio
 |  --- | --- | --- | --- |
 | `body` | [`DeviceSuspensionStatusRequest`](../../doc/models/device-suspension-status-request.md) | Body, Required | Request to obtain service suspenstion status for a device. |
 
-## Server
-
-`Server.THINGSPACE`
-
 ## Response Type
 
-[`DeviceManagementResult`](../../doc/models/device-management-result.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`DeviceManagementResult`](../../doc/models/device-management-result.md).
 
 ## Example Usage
 
@@ -1673,8 +2208,16 @@ deviceManagementController.getDeviceServiceSuspensionStatusAsync(body).thenAccep
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof ConnectivityManagementResultException) {
+        ConnectivityManagementResultException connectivityManagementResultException = (ConnectivityManagementResultException) cause;
+        connectivityManagementResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -1709,13 +2252,9 @@ CompletableFuture<ApiResponse<DeviceUsageListResult>> listDevicesUsageHistoryAsy
 |  --- | --- | --- | --- |
 | `body` | [`DeviceUsageListRequest`](../../doc/models/device-usage-list-request.md) | Body, Required | Request to obtain usage history for a specific device. |
 
-## Server
-
-`Server.THINGSPACE`
-
 ## Response Type
 
-[`DeviceUsageListResult`](../../doc/models/device-usage-list-result.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`DeviceUsageListResult`](../../doc/models/device-usage-list-result.md).
 
 ## Example Usage
 
@@ -1735,8 +2274,16 @@ deviceManagementController.listDevicesUsageHistoryAsync(body).thenAccept(result 
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof ConnectivityManagementResultException) {
+        ConnectivityManagementResultException connectivityManagementResultException = (ConnectivityManagementResultException) cause;
+        connectivityManagementResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -1785,13 +2332,9 @@ CompletableFuture<ApiResponse<DeviceManagementResult>> retrieveAggregateDeviceUs
 |  --- | --- | --- | --- |
 | `body` | [`DeviceAggregateUsageListRequest`](../../doc/models/device-aggregate-usage-list-request.md) | Body, Required | A request to retrieve aggregated device usage history information. |
 
-## Server
-
-`Server.THINGSPACE`
-
 ## Response Type
 
-[`DeviceManagementResult`](../../doc/models/device-management-result.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`DeviceManagementResult`](../../doc/models/device-management-result.md).
 
 ## Example Usage
 
@@ -1814,8 +2357,16 @@ deviceManagementController.retrieveAggregateDeviceUsageHistoryAsync(body).thenAc
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof ConnectivityManagementResultException) {
+        ConnectivityManagementResultException connectivityManagementResultException = (ConnectivityManagementResultException) cause;
+        connectivityManagementResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -1852,13 +2403,9 @@ CompletableFuture<ApiResponse<DeviceManagementResult>> updateDeviceIdAsync(
 | `serviceType` | `String` | Template, Required | Identifier type. |
 | `body` | [`ChangeDeviceIdRequest`](../../doc/models/change-device-id-request.md) | Body, Required | Request to update device id. |
 
-## Server
-
-`Server.THINGSPACE`
-
 ## Response Type
 
-[`DeviceManagementResult`](../../doc/models/device-management-result.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`DeviceManagementResult`](../../doc/models/device-management-result.md).
 
 ## Example Usage
 
@@ -1889,8 +2436,16 @@ deviceManagementController.updateDeviceIdAsync(serviceType, body).thenAccept(res
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof ConnectivityManagementResultException) {
+        ConnectivityManagementResultException connectivityManagementResultException = (ConnectivityManagementResultException) cause;
+        connectivityManagementResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -1912,7 +2467,7 @@ deviceManagementController.updateDeviceIdAsync(serviceType, body).thenAccept(res
 
 # Device Upload
 
-This corresponds to the M2M-MC SOAP interface, `DeviceUploadService`.
+Upload a device record
 
 ```java
 CompletableFuture<ApiResponse<RequestResponse>> deviceUploadAsync(
@@ -1925,13 +2480,9 @@ CompletableFuture<ApiResponse<RequestResponse>> deviceUploadAsync(
 |  --- | --- | --- | --- |
 | `body` | [`DeviceUploadRequest`](../../doc/models/device-upload-request.md) | Body, Required | Device Upload Query |
 
-## Server
-
-`Server.THINGSPACE`
-
 ## Response Type
 
-[`RequestResponse`](../../doc/models/request-response.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`RequestResponse`](../../doc/models/request-response.md).
 
 ## Example Usage
 
@@ -1977,8 +2528,16 @@ deviceManagementController.deviceUploadAsync(body).thenAccept(result -> {
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof RestErrorResponseException) {
+        RestErrorResponseException restErrorResponseException = (RestErrorResponseException) cause;
+        restErrorResponseException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -2005,13 +2564,9 @@ CompletableFuture<ApiResponse<DeviceManagementResult>> billedUsageInfoAsync(
 |  --- | --- | --- | --- |
 | `body` | [`BilledusageListRequest`](../../doc/models/billedusage-list-request.md) | Body, Required | Request to list devices with mismatched IMEIs and ICCIDs. |
 
-## Server
-
-`Server.THINGSPACE`
-
 ## Response Type
 
-[`DeviceManagementResult`](../../doc/models/device-management-result.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`DeviceManagementResult`](../../doc/models/device-management-result.md).
 
 ## Example Usage
 
@@ -2025,8 +2580,16 @@ deviceManagementController.billedUsageInfoAsync(body).thenAccept(result -> {
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof ConnectivityManagementResultException) {
+        ConnectivityManagementResultException connectivityManagementResultException = (ConnectivityManagementResultException) cause;
+        connectivityManagementResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -2061,13 +2624,9 @@ CompletableFuture<ApiResponse<DeviceManagementResult>> usageSegmentationLabelAss
 |  --- | --- | --- | --- |
 | `body` | [`AssociateLabelRequest`](../../doc/models/associate-label-request.md) | Body, Required | Request to associate a label to a device. |
 
-## Server
-
-`Server.THINGSPACE`
-
 ## Response Type
 
-[`DeviceManagementResult`](../../doc/models/device-management-result.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`DeviceManagementResult`](../../doc/models/device-management-result.md).
 
 ## Example Usage
 
@@ -2088,8 +2647,16 @@ deviceManagementController.usageSegmentationLabelAssociationAsync(body).thenAcce
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof ConnectivityManagementResultException) {
+        ConnectivityManagementResultException connectivityManagementResultException = (ConnectivityManagementResultException) cause;
+        connectivityManagementResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -2126,13 +2693,9 @@ CompletableFuture<ApiResponse<DeviceManagementResult>> usageSegmentationLabelDel
 | `accountName` | `String` | Query, Required | The numeric name of the account. |
 | `labelList` | [`LabelsList`](../../doc/models/labels-list.md) | Query, Required | A list of the Label IDs to remove from the exclusion list. |
 
-## Server
-
-`Server.THINGSPACE`
-
 ## Response Type
 
-[`DeviceManagementResult`](../../doc/models/device-management-result.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`DeviceManagementResult`](../../doc/models/device-management-result.md).
 
 ## Example Usage
 
@@ -2145,8 +2708,16 @@ deviceManagementController.usageSegmentationLabelDeletionAsync(accountName, labe
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof ConnectivityManagementResultException) {
+        ConnectivityManagementResultException connectivityManagementResultException = (ConnectivityManagementResultException) cause;
+        connectivityManagementResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -2166,12 +2737,12 @@ deviceManagementController.usageSegmentationLabelDeletionAsync(accountName, labe
 | 400 | Error response. | [`ConnectivityManagementResultException`](../../doc/models/connectivity-management-result-exception.md) |
 
 
-# Activation Order Status
+# Upload Activate Device
 
 Uploads and activates device identifiers and SKUs for new devices from OEMs to Verizon.
 
 ```java
-CompletableFuture<ApiResponse<DeviceManagementResult>> activationOrderStatusAsync(
+CompletableFuture<ApiResponse<DeviceManagementResult>> uploadActivateDeviceAsync(
     final UploadsActivatesDeviceRequest body)
 ```
 
@@ -2179,15 +2750,11 @@ CompletableFuture<ApiResponse<DeviceManagementResult>> activationOrderStatusAsyn
 
 | Parameter | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `body` | [`UploadsActivatesDeviceRequest`](../../doc/models/uploads-activates-device-request.md) | Body, Required | Request to Uploads and activates device. |
-
-## Server
-
-`Server.THINGSPACE`
+| `body` | [`UploadsActivatesDeviceRequest`](../../doc/models/uploads-activates-device-request.md) | Body, Required | Request to Upload and Activate device. |
 
 ## Response Type
 
-[`DeviceManagementResult`](../../doc/models/device-management-result.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`DeviceManagementResult`](../../doc/models/device-management-result.md).
 
 ## Example Usage
 
@@ -2219,12 +2786,20 @@ UploadsActivatesDeviceRequest body = new UploadsActivatesDeviceRequest.Builder(
 .carrierIpPoolName("")
 .build();
 
-deviceManagementController.activationOrderStatusAsync(body).thenAccept(result -> {
+deviceManagementController.uploadActivateDeviceAsync(body).thenAccept(result -> {
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof ConnectivityManagementResultException) {
+        ConnectivityManagementResultException connectivityManagementResultException = (ConnectivityManagementResultException) cause;
+        connectivityManagementResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -2244,12 +2819,12 @@ deviceManagementController.activationOrderStatusAsync(body).thenAccept(result ->
 | 400 | Error response. | [`ConnectivityManagementResultException`](../../doc/models/connectivity-management-result-exception.md) |
 
 
-# Upload Device Identifier
+# Device Upload Status
 
 Checks the status of an activation order and lists where the order is in the provisioning process.
 
 ```java
-CompletableFuture<ApiResponse<DeviceManagementResult>> uploadDeviceIdentifierAsync(
+CompletableFuture<ApiResponse<DeviceManagementResult>> deviceUploadStatusAsync(
     final CheckOrderStatusRequest body)
 ```
 
@@ -2259,13 +2834,9 @@ CompletableFuture<ApiResponse<DeviceManagementResult>> uploadDeviceIdentifierAsy
 |  --- | --- | --- | --- |
 | `body` | [`CheckOrderStatusRequest`](../../doc/models/check-order-status-request.md) | Body, Required | The request body identifies the device and reporting period that you want included in the report. |
 
-## Server
-
-`Server.THINGSPACE`
-
 ## Response Type
 
-[`DeviceManagementResult`](../../doc/models/device-management-result.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`DeviceManagementResult`](../../doc/models/device-management-result.md).
 
 ## Example Usage
 
@@ -2287,12 +2858,20 @@ CheckOrderStatusRequest body = new CheckOrderStatusRequest.Builder(
 .orderRequestId(" f55fea16-3664-4a32-ae9d-c0cbe3eedf1d ")
 .build();
 
-deviceManagementController.uploadDeviceIdentifierAsync(body).thenAccept(result -> {
+deviceManagementController.deviceUploadStatusAsync(body).thenAccept(result -> {
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof ConnectivityManagementResultException) {
+        ConnectivityManagementResultException connectivityManagementResultException = (ConnectivityManagementResultException) cause;
+        connectivityManagementResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```

@@ -29,13 +29,9 @@ CompletableFuture<ApiResponse<ResponseToUsageQuery>> getPromoDeviceUsageHistoryA
 |  --- | --- | --- | --- |
 | `body` | [`ARequestBodyForUsage`](../../doc/models/a-request-body-for-usage.md) | Body, Required | Retrieve Aggregate Usage |
 
-## Server
-
-`Server.THINGSPACE`
-
 ## Response Type
 
-[`ResponseToUsageQuery`](../../doc/models/response-to-usage-query.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`ResponseToUsageQuery`](../../doc/models/response-to-usage-query.md).
 
 ## Example Usage
 
@@ -49,8 +45,16 @@ promotionPeriodInformationController.getPromoDeviceUsageHistoryAsync(body).thenA
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof ReadySimRestErrorResponseException) {
+        ReadySimRestErrorResponseException readySimRestErrorResponseException = (ReadySimRestErrorResponseException) cause;
+        readySimRestErrorResponseException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -100,13 +104,9 @@ CompletableFuture<ApiResponse<UsageRequestResponse>> getPromoDeviceAggregateUsag
 |  --- | --- | --- | --- |
 | `body` | [`RequestBodyForUsage`](../../doc/models/request-body-for-usage.md) | Body, Required | Retrieve Aggregate Usage |
 
-## Server
-
-`Server.THINGSPACE`
-
 ## Response Type
 
-[`UsageRequestResponse`](../../doc/models/usage-request-response.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`UsageRequestResponse`](../../doc/models/usage-request-response.md).
 
 ## Example Usage
 
@@ -121,8 +121,16 @@ promotionPeriodInformationController.getPromoDeviceAggregateUsageHistoryAsync(bo
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof ReadySimRestErrorResponseException) {
+        ReadySimRestErrorResponseException readySimRestErrorResponseException = (ReadySimRestErrorResponseException) cause;
+        readySimRestErrorResponseException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```

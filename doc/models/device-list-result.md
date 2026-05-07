@@ -13,7 +13,7 @@ Device list information.
 |  --- | --- | --- | --- | --- | --- |
 | `AccountName` | `String` | Required | Account name. | String getAccountName() | setAccountName(String accountName) |
 | `DeviceCount` | `int` | Required | Total device count. | int getDeviceCount() | setDeviceCount(int deviceCount) |
-| `DeviceList` | [`List<V3Device>`](../../doc/models/v3-device.md) | Required | List of devices with id in IMEI.<br>**Constraints**: *Maximum Items*: `1000` | List<V3Device> getDeviceList() | setDeviceList(List<V3Device> deviceList) |
+| `DeviceList` | [`List<V3Device>`](../../doc/models/v3-device.md) | Required | List of devices with id in IMEI.<br><br>**Constraints**: *Maximum Items*: `1000` | List<V3Device> getDeviceList() | setDeviceList(List<V3Device> deviceList) |
 
 ## Example (as JSON)
 

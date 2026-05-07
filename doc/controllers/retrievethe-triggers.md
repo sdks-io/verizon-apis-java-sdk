@@ -24,13 +24,9 @@ Retrieves all of the available triggers for pseudo-MDN.
 CompletableFuture<ApiResponse<TriggerValueResponse>> getAllAvailableTriggersAsync()
 ```
 
-## Server
-
-`Server.THINGSPACE`
-
 ## Response Type
 
-[`TriggerValueResponse`](../../doc/models/trigger-value-response.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`TriggerValueResponse`](../../doc/models/trigger-value-response.md).
 
 ## Example Usage
 
@@ -39,8 +35,16 @@ retrievetheTriggersController.getAllAvailableTriggersAsync().thenAccept(result -
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof ReadySimRestErrorResponseException) {
+        ReadySimRestErrorResponseException readySimRestErrorResponseException = (ReadySimRestErrorResponseException) cause;
+        readySimRestErrorResponseException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -67,13 +71,9 @@ CompletableFuture<ApiResponse<TriggerValueResponse>> getAllTriggersByAccountName
 |  --- | --- | --- | --- |
 | `accountName` | `String` | Template, Required | The account name |
 
-## Server
-
-`Server.THINGSPACE`
-
 ## Response Type
 
-[`TriggerValueResponse`](../../doc/models/trigger-value-response.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`TriggerValueResponse`](../../doc/models/trigger-value-response.md).
 
 ## Example Usage
 
@@ -84,8 +84,16 @@ retrievetheTriggersController.getAllTriggersByAccountNameAsync(accountName).then
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof ReadySimRestErrorResponseException) {
+        ReadySimRestErrorResponseException readySimRestErrorResponseException = (ReadySimRestErrorResponseException) cause;
+        readySimRestErrorResponseException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -105,13 +113,9 @@ Retrieves all of the triggers for the specified account associated with the Prom
 CompletableFuture<ApiResponse<TriggerValueResponse2>> getAllTriggersByTriggerCategoryAsync()
 ```
 
-## Server
-
-`Server.THINGSPACE`
-
 ## Response Type
 
-[`TriggerValueResponse2`](../../doc/models/trigger-value-response-2.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`TriggerValueResponse2`](../../doc/models/trigger-value-response-2.md).
 
 ## Example Usage
 
@@ -120,8 +124,16 @@ retrievetheTriggersController.getAllTriggersByTriggerCategoryAsync().thenAccept(
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof ReadySimRestErrorResponseException) {
+        ReadySimRestErrorResponseException readySimRestErrorResponseException = (ReadySimRestErrorResponseException) cause;
+        readySimRestErrorResponseException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -148,13 +160,9 @@ CompletableFuture<ApiResponse<TriggerValueResponse2>> getTriggersByIdAsync(
 |  --- | --- | --- | --- |
 | `triggerId` | `String` | Template, Required | The ID of a specific trigger |
 
-## Server
-
-`Server.THINGSPACE`
-
 ## Response Type
 
-[`TriggerValueResponse2`](../../doc/models/trigger-value-response-2.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`TriggerValueResponse2`](../../doc/models/trigger-value-response-2.md).
 
 ## Example Usage
 
@@ -165,8 +173,16 @@ retrievetheTriggersController.getTriggersByIdAsync(triggerId).thenAccept(result 
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof ReadySimRestErrorResponseException) {
+        ReadySimRestErrorResponseException readySimRestErrorResponseException = (ReadySimRestErrorResponseException) cause;
+        readySimRestErrorResponseException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```

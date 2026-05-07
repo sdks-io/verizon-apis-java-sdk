@@ -18,6 +18,7 @@ Request to send SMS.
 | `DeviceIds` | [`List<DeviceId>`](../../doc/models/device-id.md) | Optional | The devices that you want to send the message to, specified by device identifier. | List<DeviceId> getDeviceIds() | setDeviceIds(List<DeviceId> deviceIds) |
 | `GroupName` | `String` | Optional | The name of a device group, if you want to send the SMS message to all devices in the device group. | String getGroupName() | setGroupName(String groupName) |
 | `ServicePlan` | `String` | Optional | The name of a service plan, if you want to only include devices that have that service plan. | String getServicePlan() | setServicePlan(String servicePlan) |
+| `TimeToLive` | `String` | Optional | A period of time the message remains valid or an end date for the message. This value would be less than the 5 day default. | String getTimeToLive() | setTimeToLive(String timeToLive) |
 
 ## Example (as JSON)
 

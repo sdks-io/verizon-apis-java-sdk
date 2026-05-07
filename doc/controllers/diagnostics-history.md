@@ -30,7 +30,7 @@ CompletableFuture<ApiResponse<List<History>>> getDiagnosticsHistoryAsync(
 
 ## Response Type
 
-[`List<History>`](../../doc/models/history.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`List<History>`](../../doc/models/history.md).
 
 ## Example Usage
 
@@ -55,8 +55,16 @@ diagnosticsHistoryController.getDiagnosticsHistoryAsync(body).thenAccept(result 
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof DeviceDiagnosticsResultException) {
+        DeviceDiagnosticsResultException deviceDiagnosticsResultException = (DeviceDiagnosticsResultException) cause;
+        deviceDiagnosticsResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```

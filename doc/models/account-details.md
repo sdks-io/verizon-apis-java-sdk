@@ -9,9 +9,9 @@
 
 | Name | Type | Tags | Description | Getter | Setter |
 |  --- | --- | --- | --- | --- | --- |
-| `AccountName` | `String` | Optional | The numeric name of the account, in the format "0000123456-00001". Leading zeros must be included.<br>**Constraints**: *Minimum Length*: `3`, *Maximum Length*: `32`, *Pattern*: `^[0-9-]{3,32}$` | String getAccountName() | setAccountName(String accountName) |
-| `AccountNumber` | `String` | Optional | The numeric name of the account, in the format "0000123456-00001". Leading zeros must be included.<br>**Constraints**: *Minimum Length*: `3`, *Maximum Length*: `32`, *Pattern*: `^[0-9-]{3,32}$` | String getAccountNumber() | setAccountNumber(String accountNumber) |
-| `OrganizationName` | `String` | Optional | user defined name of organization<br>**Constraints**: *Minimum Length*: `3`, *Maximum Length*: `32`, *Pattern*: `^[0-9]{3,32}$` | String getOrganizationName() | setOrganizationName(String organizationName) |
+| `AccountName` | `String` | Optional | The numeric name of the account, in the format "0000123456-00001". Leading zeros must be included.<br><br>**Constraints**: *Minimum Length*: `3`, *Maximum Length*: `32`, *Pattern*: `^[0-9-]{3,32}$` | String getAccountName() | setAccountName(String accountName) |
+| `AccountNumber` | `String` | Optional | The numeric name of the account, in the format "0000123456-00001". Leading zeros must be included.<br><br>**Constraints**: *Minimum Length*: `3`, *Maximum Length*: `32`, *Pattern*: `^[0-9-]{3,32}$` | String getAccountNumber() | setAccountNumber(String accountNumber) |
+| `OrganizationName` | `String` | Optional | user defined name of organization<br><br>**Constraints**: *Minimum Length*: `3`, *Maximum Length*: `32`, *Pattern*: `^[0-9]{3,32}$` | String getOrganizationName() | setOrganizationName(String organizationName) |
 | `IsProvisioningAllowed` | `Boolean` | Optional | Flag set to indicate if account details can be edited or not. Default is "true". | Boolean getIsProvisioningAllowed() | setIsProvisioningAllowed(Boolean isProvisioningAllowed) |
 | `Carriers` | [`List<Carrier>`](../../doc/models/carrier.md) | Optional | - | List<Carrier> getCarriers() | setCarriers(List<Carrier> carriers) |
 | `Features` | [`List<Feature>`](../../doc/models/feature.md) | Optional | - | List<Feature> getFeatures() | setFeatures(List<Feature> features) |

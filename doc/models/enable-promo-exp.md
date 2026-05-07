@@ -9,13 +9,15 @@
 
 | Name | Type | Tags | Description | Getter | Setter |
 |  --- | --- | --- | --- | --- | --- |
-| `EnablePromoExp` | `Boolean` | Optional | - | Boolean getEnablePromoExp() | setEnablePromoExp(Boolean enablePromoExp) |
+| `Key` | `String` | Optional | - | String getKey() | setKey(String key) |
+| `Value` | `Boolean` | Optional | - | Boolean getValue() | setValue(Boolean value) |
 
 ## Example (as JSON)
 
 ```json
 {
-  "enablePromoExp": true
+  "key": "EnablePromoExp",
+  "value": true
 }
 ```
 

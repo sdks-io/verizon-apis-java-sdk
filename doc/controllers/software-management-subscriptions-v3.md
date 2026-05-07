@@ -30,7 +30,7 @@ CompletableFuture<ApiResponse<FotaV3Subscription>> getAccountSubscriptionStatusA
 
 ## Response Type
 
-[`FotaV3Subscription`](../../doc/models/fota-v3-subscription.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`FotaV3Subscription`](../../doc/models/fota-v3-subscription.md).
 
 ## Example Usage
 
@@ -41,8 +41,16 @@ softwareManagementSubscriptionsV3Controller.getAccountSubscriptionStatusAsync(ac
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof FotaV3ResultException) {
+        FotaV3ResultException fotaV3ResultException = (FotaV3ResultException) cause;
+        fotaV3ResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```

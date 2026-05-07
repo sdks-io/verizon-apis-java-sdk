@@ -38,7 +38,7 @@ CompletableFuture<ApiResponse<DeviceListQueryResult>> listAccountDevicesAsync(
 
 ## Response Type
 
-[`DeviceListQueryResult`](../../doc/models/device-list-query-result.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`DeviceListQueryResult`](../../doc/models/device-list-query-result.md).
 
 ## Example Usage
 
@@ -50,8 +50,16 @@ softwareManagementReportsV1Controller.listAccountDevicesAsync(account, startInde
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof FotaV1ResultException) {
+        FotaV1ResultException fotaV1ResultException = (FotaV1ResultException) cause;
+        fotaV1ResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -130,7 +138,7 @@ CompletableFuture<ApiResponse<UpgradeListQueryResult>> listUpgradesForSpecifiedS
 
 ## Response Type
 
-[`UpgradeListQueryResult`](../../doc/models/upgrade-list-query-result.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`UpgradeListQueryResult`](../../doc/models/upgrade-list-query-result.md).
 
 ## Example Usage
 
@@ -143,8 +151,16 @@ softwareManagementReportsV1Controller.listUpgradesForSpecifiedStatusAsync(accoun
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof FotaV1ResultException) {
+        FotaV1ResultException fotaV1ResultException = (FotaV1ResultException) cause;
+        fotaV1ResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -179,7 +195,7 @@ CompletableFuture<ApiResponse<List<DeviceUpgradeHistory>>> getDeviceFirmwareUpgr
 
 ## Response Type
 
-[`List<DeviceUpgradeHistory>`](../../doc/models/device-upgrade-history.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`List<DeviceUpgradeHistory>`](../../doc/models/device-upgrade-history.md).
 
 ## Example Usage
 
@@ -191,8 +207,16 @@ softwareManagementReportsV1Controller.getDeviceFirmwareUpgradeHistoryAsync(accou
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof FotaV1ResultException) {
+        FotaV1ResultException fotaV1ResultException = (FotaV1ResultException) cause;
+        fotaV1ResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```

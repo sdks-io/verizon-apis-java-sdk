@@ -11,14 +11,14 @@ Current status of the campaign.
 
 | Name |
 |  --- |
-| `CampaignRequestPending` |
-| `CampaignRequestFailed` |
-| `CampaignRequestQueued` |
-| `CampaignCancelled` |
-| `CampaignAborted` |
-| `CampaignFailed` |
-| `CampaignScheduled` |
-| `CampaignEnded` |
+| `CAMPAIGNREQUESTPENDING` |
+| `CAMPAIGNREQUESTFAILED` |
+| `CAMPAIGNREQUESTQUEUED` |
+| `CAMPAIGNCANCELLED` |
+| `CAMPAIGNABORTED` |
+| `CAMPAIGNFAILED` |
+| `CAMPAIGNSCHEDULED` |
+| `CAMPAIGNENDED` |
 
 ## Example
 

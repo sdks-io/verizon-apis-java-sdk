@@ -11,7 +11,7 @@
 |  --- | --- | --- | --- | --- | --- |
 | `TriggerName` | `String` | Optional | Usage trigger name | String getTriggerName() | setTriggerName(String triggerName) |
 | `AccountName` | `String` | Required | Account name | String getAccountName() | setAccountName(String accountName) |
-| `ServiceName` | [`ServiceNameEnum`](../../doc/models/service-name-enum.md) | Required | Service name<br>**Default**: `ServiceNameEnum.LOCATION` | ServiceNameEnum getServiceName() | setServiceName(ServiceNameEnum serviceName) |
+| `ServiceName` | [`ServiceNameEnum`](../../doc/models/service-name-enum.md) | Required | Service name<br><br>**Default**: `ServiceNameEnum.LOCATION` | ServiceNameEnum getServiceName() | setServiceName(ServiceNameEnum serviceName) |
 | `ThresholdValue` | `String` | Required | The percent of subscribed usage required to activate the trigger, such as 90 or 100. | String getThresholdValue() | setThresholdValue(String thresholdValue) |
 | `AllowExcess` | `Boolean` | Optional | Allow additional requests after thresholdValue is reached. (currently not functional) | Boolean getAllowExcess() | setAllowExcess(Boolean allowExcess) |
 | `SendSmsNotification` | `Boolean` | Optional | Send SMS (text) alerts when the thresholdValue is reached. | Boolean getSendSmsNotification() | setSendSmsNotification(Boolean sendSmsNotification) |

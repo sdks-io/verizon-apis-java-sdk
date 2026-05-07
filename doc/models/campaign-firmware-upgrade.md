@@ -15,7 +15,7 @@ Firmware upgrade for devices.
 | `FirmwareName` | `String` | Required | Firmware name to upgrade to. | String getFirmwareName() | setFirmwareName(String firmwareName) |
 | `FirmwareFrom` | `String` | Required | Old firmware version. | String getFirmwareFrom() | setFirmwareFrom(String firmwareFrom) |
 | `FirmwareTo` | `String` | Required | New firmware version. | String getFirmwareTo() | setFirmwareTo(String firmwareTo) |
-| `Protocol` | `String` | Required | Valid values include: LWM2M, OMA and HTTP.<br>**Default**: `"LWM2M"` | String getProtocol() | setProtocol(String protocol) |
+| `Protocol` | `String` | Required | Valid values include: LWM2M, OMA and HTTP.<br><br>**Default**: `"LWM2M"` | String getProtocol() | setProtocol(String protocol) |
 | `StartDate` | `LocalDate` | Required | Campaign start date. | LocalDate getStartDate() | setStartDate(LocalDate startDate) |
 | `EndDate` | `LocalDate` | Required | Campaign end date. | LocalDate getEndDate() | setEndDate(LocalDate endDate) |
 | `CampaignTimeWindowList` | [`List<V3TimeWindow>`](../../doc/models/v3-time-window.md) | Optional | List of allowed campaign time windows. | List<V3TimeWindow> getCampaignTimeWindowList() | setCampaignTimeWindowList(List<V3TimeWindow> campaignTimeWindowList) |

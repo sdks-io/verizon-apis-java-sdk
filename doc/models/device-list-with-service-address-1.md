@@ -1,5 +1,5 @@
 
-# Device List With Service Address 1
+# Device List with Service Address 1
 
 ## Structure
 
@@ -9,8 +9,8 @@
 
 | Name | Type | Tags | Description | Getter | Setter |
 |  --- | --- | --- | --- | --- | --- |
-| `DeviceId` | [`List<M5gBideviceId1>`](../../doc/models/5g-bidevice-id-1.md) | Optional | - | List<M5gBideviceId1> getDeviceId() | setDeviceId(List<M5gBideviceId1> deviceId) |
-| `PrimaryPlaceofuse` | [`M5gBiprimaryPlaceofuse`](../../doc/models/5g-biprimary-placeofuse.md) | Optional | - | M5gBiprimaryPlaceofuse getPrimaryPlaceofuse() | setPrimaryPlaceofuse(M5gBiprimaryPlaceofuse primaryPlaceofuse) |
+| `DeviceId` | [`List<DeviceListWithServiceAddress1DeviceId>`](../../doc/models/containers/device-list-with-service-address-1-device-id.md) | Optional | This is List of a container for any-of cases. | List<DeviceListWithServiceAddress1DeviceId> getDeviceId() | setDeviceId(List<DeviceListWithServiceAddress1DeviceId> deviceId) |
+| `PrimaryPlaceofuse` | [`M5gBiprimaryPlaceofuse`](../../doc/models/m5-g-biprimary-placeofuse.md) | Optional | - | M5gBiprimaryPlaceofuse getPrimaryPlaceofuse() | setPrimaryPlaceofuse(M5gBiprimaryPlaceofuse primaryPlaceofuse) |
 
 ## Example (as JSON)
 

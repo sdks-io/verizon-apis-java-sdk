@@ -11,18 +11,18 @@ Get wireless coverage FWA.
 
 | Name | Type | Tags | Description | Getter | Setter |
 |  --- | --- | --- | --- | --- | --- |
-| `AccountName` | `String` | Required | Account name.<br>**Constraints**: *Minimum Length*: `3`, *Maximum Length*: `32`, *Pattern*: `^[0-9-]{3,32}$` | String getAccountName() | setAccountName(String accountName) |
-| `RequestType` | `String` | Required | Type of request.<br>**Constraints**: *Minimum Length*: `3`, *Maximum Length*: `12`, *Pattern*: `^[A-Za-z]{3,12}$` | String getRequestType() | setRequestType(String requestType) |
-| `LocationType` | `String` | Required | Type of location detail.<br>**Constraints**: *Minimum Length*: `3`, *Maximum Length*: `12`, *Pattern*: `^[A-Za-z]{3,12}$` | String getLocationType() | setLocationType(String locationType) |
-| `Locations` | [`Locations`](../../doc/models/locations.md) | Required | Location details. | Locations getLocations() | setLocations(Locations locations) |
-| `NetworkTypesList` | [`List<NetworkType>`](../../doc/models/network-type.md) | Required | **Constraints**: *Maximum Items*: `100` | List<NetworkType> getNetworkTypesList() | setNetworkTypesList(List<NetworkType> networkTypesList) |
+| `AccountName` | `String` | Required | Account name.<br><br>**Constraints**: *Minimum Length*: `3`, *Maximum Length*: `32`, *Pattern*: `^[0-9-]{3,32}$` | String getAccountName() | setAccountName(String accountName) |
+| `RequestType` | `String` | Required | Type of request made. FWA for address qualification and NW for Nationwide coverage.<br><br>**Constraints**: *Minimum Length*: `1`, *Maximum Length*: `12`, *Pattern*: `^[A-Za-z]{1,12}$` | String getRequestType() | setRequestType(String requestType) |
+| `LocationType` | `String` | Required | Type of location detail.<br><br>**Constraints**: *Minimum Length*: `3`, *Maximum Length*: `12`, *Pattern*: `^[A-Za-z]{3,12}$` | String getLocationType() | setLocationType(String locationType) |
+| `Locations` | [`Locations`](../../doc/models/locations.md) | Required | - | Locations getLocations() | setLocations(Locations locations) |
+| `NetworkTypesList` | [`List<NetworkTypeObject>`](../../doc/models/network-type-object.md) | Required | **Constraints**: *Maximum Items*: `100` | List<NetworkTypeObject> getNetworkTypesList() | setNetworkTypesList(List<NetworkTypeObject> networkTypesList) |
 
 ## Example (as JSON)
 
 ```json
 {
   "accountName": "0000123456-00001",
-  "requestType": "FWA",
+  "requestType": "NW",
   "locationType": "ADDRESS",
   "locations": {
     "addressList": [

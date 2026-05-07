@@ -25,13 +25,9 @@ This corresponds to the M2M-MC SOAP interface, `GetTriggers`.
 CompletableFuture<ApiResponse<List<GetTriggerResponseList>>> listAnomalyDetectionTriggersAsync()
 ```
 
-## Server
-
-`Server.THINGSPACE`
-
 ## Response Type
 
-[`List<GetTriggerResponseList>`](../../doc/models/get-trigger-response-list.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`List<GetTriggerResponseList>`](../../doc/models/get-trigger-response-list.md).
 
 ## Example Usage
 
@@ -40,8 +36,16 @@ anomalyTriggersController.listAnomalyDetectionTriggersAsync().thenAccept(result 
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof IntelligenceResultException) {
+        IntelligenceResultException intelligenceResultException = (IntelligenceResultException) cause;
+        intelligenceResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -74,13 +78,9 @@ CompletableFuture<ApiResponse<AnomalyDetectionTrigger>> updateAnomalyDetectionTr
 |  --- | --- | --- | --- |
 | `body` | [`UpdateTriggerRequest`](../../doc/models/update-trigger-request.md) | Body, Required | Update Trigger Request |
 
-## Server
-
-`Server.THINGSPACE`
-
 ## Response Type
 
-[`AnomalyDetectionTrigger`](../../doc/models/anomaly-detection-trigger.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`AnomalyDetectionTrigger`](../../doc/models/anomaly-detection-trigger.md).
 
 ## Example Usage
 
@@ -99,8 +99,16 @@ anomalyTriggersController.updateAnomalyDetectionTriggerAsync(body).thenAccept(re
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof IntelligenceResultException) {
+        IntelligenceResultException intelligenceResultException = (IntelligenceResultException) cause;
+        intelligenceResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -133,13 +141,9 @@ CompletableFuture<ApiResponse<AnomalyDetectionTrigger>> createAnomalyDetectionTr
 |  --- | --- | --- | --- |
 | `body` | [`CreateTriggerRequest`](../../doc/models/create-trigger-request.md) | Body, Required | Create Trigger Request |
 
-## Server
-
-`Server.THINGSPACE`
-
 ## Response Type
 
-[`AnomalyDetectionTrigger`](../../doc/models/anomaly-detection-trigger.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`AnomalyDetectionTrigger`](../../doc/models/anomaly-detection-trigger.md).
 
 ## Example Usage
 
@@ -158,8 +162,16 @@ anomalyTriggersController.createAnomalyDetectionTriggerAsync(body).thenAccept(re
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof IntelligenceResultException) {
+        IntelligenceResultException intelligenceResultException = (IntelligenceResultException) cause;
+        intelligenceResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -192,13 +204,9 @@ CompletableFuture<ApiResponse<List<GetTriggerResponseList>>> listAnomalyDetectio
 |  --- | --- | --- | --- |
 | `triggerId` | `String` | Template, Required | trigger ID |
 
-## Server
-
-`Server.THINGSPACE`
-
 ## Response Type
 
-[`List<GetTriggerResponseList>`](../../doc/models/get-trigger-response-list.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`List<GetTriggerResponseList>`](../../doc/models/get-trigger-response-list.md).
 
 ## Example Usage
 
@@ -209,8 +217,16 @@ anomalyTriggersController.listAnomalyDetectionTriggerSettingsAsync(triggerId).th
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof IntelligenceResultException) {
+        IntelligenceResultException intelligenceResultException = (IntelligenceResultException) cause;
+        intelligenceResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -243,13 +259,9 @@ CompletableFuture<ApiResponse<AnomalyDetectionTrigger>> deleteAnomalyDetectionTr
 |  --- | --- | --- | --- |
 | `triggerId` | `String` | Template, Required | The trigger ID to be deleted |
 
-## Server
-
-`Server.THINGSPACE`
-
 ## Response Type
 
-[`AnomalyDetectionTrigger`](../../doc/models/anomaly-detection-trigger.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`AnomalyDetectionTrigger`](../../doc/models/anomaly-detection-trigger.md).
 
 ## Example Usage
 
@@ -260,8 +272,16 @@ anomalyTriggersController.deleteAnomalyDetectionTriggerAsync(triggerId).thenAcce
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof IntelligenceResultException) {
+        IntelligenceResultException intelligenceResultException = (IntelligenceResultException) cause;
+        intelligenceResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```

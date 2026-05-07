@@ -11,7 +11,7 @@ The details of the UsageAnomaly trigger.
 
 | Name | Type | Tags | Description | Getter | Setter |
 |  --- | --- | --- | --- | --- | --- |
-| `AccountNames` | `String` | Optional | The Verizon billing accounts associated with the anomaly triggers for this trigger to be active for devices in those accounts. An account name is usually numeric, and must include any leading zeros.<br>**Constraints**: *Minimum Length*: `3`, *Maximum Length*: `32` | String getAccountNames() | setAccountNames(String accountNames) |
+| `AccountNames` | `String` | Optional | The Verizon billing accounts associated with the anomaly triggers for this trigger to be active for devices in those accounts. An account name is usually numeric, and must include any leading zeros.<br><br>**Constraints**: *Minimum Length*: `3`, *Maximum Length*: `32` | String getAccountNames() | setAccountNames(String accountNames) |
 | `IncludeAbnormal` | `Boolean` | Optional | Whether or not to include anomalies classified as 'abnormal'.<br />true<br />false<br />Classification is set as part of ThingSpace Intelligence anomaly detection settings. | Boolean getIncludeAbnormal() | setIncludeAbnormal(Boolean includeAbnormal) |
 | `IncludeVeryAbnormal` | `Boolean` | Optional | Whether or not to include anomalies classified as 'very abnormal'.<br />true<br />false<br />Classification is set as part of ThingSpace Intelligence anomaly detection settings. | Boolean getIncludeVeryAbnormal() | setIncludeVeryAbnormal(Boolean includeVeryAbnormal) |
 | `IncludeUnderExpectedUsage` | `Boolean` | Optional | Whether or not to include anomalies that are directionally under the expected usage.<br />true<br />false. | Boolean getIncludeUnderExpectedUsage() | setIncludeUnderExpectedUsage(Boolean includeUnderExpectedUsage) |

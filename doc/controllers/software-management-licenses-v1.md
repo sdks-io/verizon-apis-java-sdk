@@ -11,7 +11,7 @@ SoftwareManagementLicensesV1Controller softwareManagementLicensesV1Controller = 
 ## Methods
 
 * [Assign Licenses to Devices](../../doc/controllers/software-management-licenses-v1.md#assign-licenses-to-devices)
-* [Remove Licenses From Devices](../../doc/controllers/software-management-licenses-v1.md#remove-licenses-from-devices)
+* [Remove Licenses from Devices](../../doc/controllers/software-management-licenses-v1.md#remove-licenses-from-devices)
 * [Create List of Licenses to Remove](../../doc/controllers/software-management-licenses-v1.md#create-list-of-licenses-to-remove)
 * [Delete List of Licenses to Remove](../../doc/controllers/software-management-licenses-v1.md#delete-list-of-licenses-to-remove)
 * [List Licenses to Remove](../../doc/controllers/software-management-licenses-v1.md#list-licenses-to-remove)
@@ -42,7 +42,7 @@ CompletableFuture<ApiResponse<V1LicensesAssignedRemovedResult>> assignLicensesTo
 
 ## Response Type
 
-[`V1LicensesAssignedRemovedResult`](../../doc/models/v1-licenses-assigned-removed-result.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`V1LicensesAssignedRemovedResult`](../../doc/models/v1-licenses-assigned-removed-result.md).
 
 ## Example Usage
 
@@ -60,8 +60,16 @@ softwareManagementLicensesV1Controller.assignLicensesToDevicesAsync(account, bod
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof FotaV1ResultException) {
+        FotaV1ResultException fotaV1ResultException = (FotaV1ResultException) cause;
+        fotaV1ResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -95,7 +103,7 @@ softwareManagementLicensesV1Controller.assignLicensesToDevicesAsync(account, bod
 | 400 | Unexpected error. | [`FotaV1ResultException`](../../doc/models/fota-v1-result-exception.md) |
 
 
-# Remove Licenses From Devices
+# Remove Licenses from Devices
 
 **This endpoint is deprecated.**
 
@@ -120,7 +128,7 @@ CompletableFuture<ApiResponse<V1LicensesAssignedRemovedResult>> removeLicensesFr
 
 ## Response Type
 
-[`V1LicensesAssignedRemovedResult`](../../doc/models/v1-licenses-assigned-removed-result.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`V1LicensesAssignedRemovedResult`](../../doc/models/v1-licenses-assigned-removed-result.md).
 
 ## Example Usage
 
@@ -139,8 +147,16 @@ softwareManagementLicensesV1Controller.removeLicensesFromDevicesAsync(account, b
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof FotaV1ResultException) {
+        FotaV1ResultException fotaV1ResultException = (FotaV1ResultException) cause;
+        fotaV1ResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -204,7 +220,7 @@ CompletableFuture<ApiResponse<V1ListOfLicensesToRemoveResult>> createListOfLicen
 
 ## Response Type
 
-[`V1ListOfLicensesToRemoveResult`](../../doc/models/v1-list-of-licenses-to-remove-result.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`V1ListOfLicensesToRemoveResult`](../../doc/models/v1-list-of-licenses-to-remove-result.md).
 
 ## Example Usage
 
@@ -223,8 +239,16 @@ softwareManagementLicensesV1Controller.createListOfLicensesToRemoveAsync(account
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof FotaV1ResultException) {
+        FotaV1ResultException fotaV1ResultException = (FotaV1ResultException) cause;
+        fotaV1ResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -271,7 +295,7 @@ CompletableFuture<ApiResponse<FotaV1SuccessResult>> deleteListOfLicensesToRemove
 
 ## Response Type
 
-[`FotaV1SuccessResult`](../../doc/models/fota-v1-success-result.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`FotaV1SuccessResult`](../../doc/models/fota-v1-success-result.md).
 
 ## Example Usage
 
@@ -282,8 +306,16 @@ softwareManagementLicensesV1Controller.deleteListOfLicensesToRemoveAsync(account
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof FotaV1ResultException) {
+        FotaV1ResultException fotaV1ResultException = (FotaV1ResultException) cause;
+        fotaV1ResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -328,7 +360,7 @@ CompletableFuture<ApiResponse<V1ListOfLicensesToRemove>> listLicensesToRemoveAsy
 
 ## Response Type
 
-[`V1ListOfLicensesToRemove`](../../doc/models/v1-list-of-licenses-to-remove.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`V1ListOfLicensesToRemove`](../../doc/models/v1-list-of-licenses-to-remove.md).
 
 ## Example Usage
 
@@ -340,8 +372,16 @@ softwareManagementLicensesV1Controller.listLicensesToRemoveAsync(account, startI
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof FotaV1ResultException) {
+        FotaV1ResultException fotaV1ResultException = (FotaV1ResultException) cause;
+        fotaV1ResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```

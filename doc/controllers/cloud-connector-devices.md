@@ -15,7 +15,7 @@ CloudConnectorDevicesController cloudConnectorDevicesController = client.getClou
 * [Search Devices Resources by Property Values](../../doc/controllers/cloud-connector-devices.md#search-devices-resources-by-property-values)
 * [Search Device Event History](../../doc/controllers/cloud-connector-devices.md#search-device-event-history)
 * [Search Sensor Readings](../../doc/controllers/cloud-connector-devices.md#search-sensor-readings)
-* [Delete Device From Account](../../doc/controllers/cloud-connector-devices.md#delete-device-from-account)
+* [Delete Device from Account](../../doc/controllers/cloud-connector-devices.md#delete-device-from-account)
 
 
 # Update Devices Configuration Value
@@ -39,7 +39,7 @@ CompletableFuture<ApiResponse<ChangeConfigurationResponse>> updateDevicesConfigu
 
 ## Response Type
 
-[`ChangeConfigurationResponse`](../../doc/models/change-configuration-response.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`ChangeConfigurationResponse`](../../doc/models/change-configuration-response.md).
 
 ## Example Usage
 
@@ -111,7 +111,7 @@ CompletableFuture<ApiResponse<FindDeviceByPropertyResponseList>> findDeviceByPro
 
 ## Response Type
 
-[`FindDeviceByPropertyResponseList`](../../doc/models/find-device-by-property-response-list.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`FindDeviceByPropertyResponseList`](../../doc/models/find-device-by-property-response-list.md).
 
 ## Example Usage
 
@@ -198,7 +198,7 @@ CompletableFuture<ApiResponse<SearchDeviceByPropertyResponseList>> searchDevices
 
 ## Response Type
 
-[`SearchDeviceByPropertyResponseList`](../../doc/models/search-device-by-property-response-list.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`SearchDeviceByPropertyResponseList`](../../doc/models/search-device-by-property-response-list.md).
 
 ## Example Usage
 
@@ -269,7 +269,7 @@ CompletableFuture<ApiResponse<SearchDeviceEventHistoryResponseList>> searchDevic
 
 ## Response Type
 
-[`SearchDeviceEventHistoryResponseList`](../../doc/models/search-device-event-history-response-list.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`SearchDeviceEventHistoryResponseList`](../../doc/models/search-device-event-history-response-list.md).
 
 ## Example Usage
 
@@ -364,7 +364,7 @@ CompletableFuture<ApiResponse<SearchSensorHistoryResponseList>> searchSensorRead
 
 ## Response Type
 
-[`SearchSensorHistoryResponseList`](../../doc/models/search-sensor-history-response-list.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`SearchSensorHistoryResponseList`](../../doc/models/search-sensor-history-response-list.md).
 
 ## Example Usage
 
@@ -439,7 +439,7 @@ cloudConnectorDevicesController.searchSensorReadingsAsync(fieldname, body).thenA
 ```
 
 
-# Delete Device From Account
+# Delete Device from Account
 
 Remove a device from a ThingSpace account.
 

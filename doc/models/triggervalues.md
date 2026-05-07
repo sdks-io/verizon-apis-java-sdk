@@ -14,7 +14,7 @@
 | `AccountName` | `String` | Optional | - | String getAccountName() | setAccountName(String accountName) |
 | `OrganizationName` | `String` | Optional | - | String getOrganizationName() | setOrganizationName(String organizationName) |
 | `TriggerCategory` | `String` | Optional | - | String getTriggerCategory() | setTriggerCategory(String triggerCategory) |
-| `TriggerAttributes` | [`List<KeyDataPercentage50>`](../../doc/models/key-data-percentage-50.md) | Optional | - | List<KeyDataPercentage50> getTriggerAttributes() | setTriggerAttributes(List<KeyDataPercentage50> triggerAttributes) |
+| `TriggerAttributes` | [`List<KeysChunk>`](../../doc/models/containers/keys-chunk.md) | Optional | - | List<KeysChunk> getTriggerAttributes() | setTriggerAttributes(List<KeysChunk> triggerAttributes) |
 | `CreatedAt` | `LocalDateTime` | Optional | - | LocalDateTime getCreatedAt() | setCreatedAt(LocalDateTime createdAt) |
 | `ModifiedAt` | `LocalDateTime` | Optional | - | LocalDateTime getModifiedAt() | setModifiedAt(LocalDateTime modifiedAt) |
 

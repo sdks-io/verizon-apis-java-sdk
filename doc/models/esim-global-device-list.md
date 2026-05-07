@@ -13,7 +13,7 @@
 | `ProvisioningStatusFilter` | [`ProvisioningStatusFilterEnum`](../../doc/models/provisioning-status-filter-enum.md) | Optional | The last status of the device as a list filter. | ProvisioningStatusFilterEnum getProvisioningStatusFilter() | setProvisioningStatusFilter(ProvisioningStatusFilterEnum provisioningStatusFilter) |
 | `ProfileStatusFilter` | [`ProfileStatusFilterEnum`](../../doc/models/profile-status-filter-enum.md) | Optional | The last status of the device's profile as a filter. | ProfileStatusFilterEnum getProfileStatusFilter() | setProfileStatusFilter(ProfileStatusFilterEnum profileStatusFilter) |
 | `CarrierNameFilter` | `String` | Optional | The cellular service provider. | String getCarrierNameFilter() | setCarrierNameFilter(String carrierNameFilter) |
-| `DeviceFilter` | [`List<DeviceId2>`](../../doc/models/device-id-2.md) | Optional | An array of device identifiers to filter the list. | List<DeviceId2> getDeviceFilter() | setDeviceFilter(List<DeviceId2> deviceFilter) |
+| `DeviceFilter` | [`List<ESIMGlobalDeviceListDeviceFilter>`](../../doc/models/containers/esim-global-device-list-device-filter.md) | Optional | This is List of a container for any-of cases. | List<ESIMGlobalDeviceListDeviceFilter> getDeviceFilter() | setDeviceFilter(List<ESIMGlobalDeviceListDeviceFilter> deviceFilter) |
 
 ## Example (as JSON)
 

@@ -28,7 +28,7 @@ CompletableFuture<ApiResponse<List<CallbackCreated>>> listRegisteredCallbacksAsy
 
 | Parameter | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `accountNumber` | `String` | Query, Required | A unique identifier for an account. |
+| `accountNumber` | `String` | Query, Required | The numeric ID of the account and must include leading zeroes. This value is indentical to `accountName`. |
 
 ## Server
 
@@ -36,19 +36,27 @@ CompletableFuture<ApiResponse<List<CallbackCreated>>> listRegisteredCallbacksAsy
 
 ## Response Type
 
-[`List<CallbackCreated>`](../../doc/models/callback-created.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`List<CallbackCreated>`](../../doc/models/callback-created.md).
 
 ## Example Usage
 
 ```java
-String accountNumber = "0844021539-00001";
+String accountNumber = "0000123456-00001";
 
 hyperPreciseLocationCallbacksController.listRegisteredCallbacksAsync(accountNumber).thenAccept(result -> {
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof HyperPreciseLocationResultException) {
+        HyperPreciseLocationResultException hyperPreciseLocationResultException = (HyperPreciseLocationResultException) cause;
+        hyperPreciseLocationResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -58,7 +66,7 @@ hyperPreciseLocationCallbacksController.listRegisteredCallbacksAsync(accountNumb
 ```json
 [
   {
-    "aname": "0844021539-00001",
+    "accountName": "0000123456-00001",
     "name": "BullseyeReporting",
     "url": "https://tsustgtests.mocklab.io/notifications/bullseye"
   }
@@ -100,12 +108,12 @@ CompletableFuture<ApiResponse<CallbackRegistered>> registerCallbackAsync(
 
 ## Response Type
 
-[`CallbackRegistered`](../../doc/models/callback-registered.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`CallbackRegistered`](../../doc/models/callback-registered.md).
 
 ## Example Usage
 
 ```java
-String accountNumber = "0844021539-00001";
+String accountNumber = "0000123456-00001";
 HyperPreciseLocationCallback body = new HyperPreciseLocationCallback.Builder(
     "BullseyeReporting",
     "https://tsustgtests.mocklab.io/notifications/bullseye"
@@ -116,8 +124,16 @@ hyperPreciseLocationCallbacksController.registerCallbackAsync(accountNumber, bod
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof HyperPreciseLocationResultException) {
+        HyperPreciseLocationResultException hyperPreciseLocationResultException = (HyperPreciseLocationResultException) cause;
+        hyperPreciseLocationResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -126,7 +142,7 @@ hyperPreciseLocationCallbacksController.registerCallbackAsync(accountNumber, bod
 
 ```json
 {
-  "accountName": "0844021539-00001",
+  "accountName": "0000123456-00001",
   "name": "BullseyeReporting"
 }
 ```
@@ -157,7 +173,7 @@ CompletableFuture<ApiResponse<Void>> deregisterCallbackAsync(
 
 | Parameter | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `accountNumber` | `String` | Query, Required | A unique identifier for a account. |
+| `accountNumber` | `String` | Query, Required | The numeric ID of the account and must include leading zeroes. This value is indentical to `accountName`. |
 | `service` | `String` | Query, Required | The name of the callback service that will be deleted. |
 
 ## Server
@@ -171,15 +187,23 @@ CompletableFuture<ApiResponse<Void>> deregisterCallbackAsync(
 ## Example Usage
 
 ```java
-String accountNumber = "0844021539-00001";
+String accountNumber = "0000123456-00001";
 String service = "BullseyeReporting";
 
 hyperPreciseLocationCallbacksController.deregisterCallbackAsync(accountNumber, service).thenAccept(result -> {
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof HyperPreciseLocationResultException) {
+        HyperPreciseLocationResultException hyperPreciseLocationResultException = (HyperPreciseLocationResultException) cause;
+        hyperPreciseLocationResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```

@@ -9,7 +9,7 @@
 
 | Name | Type | Tags | Description | Getter | Setter |
 |  --- | --- | --- | --- | --- | --- |
-| `DeviceIds` | [`List<DeviceLabels>`](../../doc/models/device-labels.md) | Optional | **Constraints**: *Maximum Items*: `100` | List<DeviceLabels> getDeviceIds() | setDeviceIds(List<DeviceLabels> deviceIds) |
+| `DeviceIds` | [`List<LabelsListDeviceIds>`](../../doc/models/containers/labels-list-device-ids.md) | Optional | This is List of a container for any-of cases.<br><br>**Constraints**: *Maximum Items*: `100` | List<LabelsListDeviceIds> getDeviceIds() | setDeviceIds(List<LabelsListDeviceIds> deviceIds) |
 
 ## Example (as JSON)
 
@@ -17,12 +17,12 @@
 {
   "deviceIds": [
     {
-      "name": "name0",
-      "value": "value2"
+      "name": "name6",
+      "value": "value8"
     },
     {
-      "name": "name0",
-      "value": "value2"
+      "name": "name6",
+      "value": "value8"
     }
   ]
 }

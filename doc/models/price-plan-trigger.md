@@ -9,42 +9,38 @@
 
 | Name | Type | Tags | Description | Getter | Setter |
 |  --- | --- | --- | --- | --- | --- |
-| `AccountGroupShare` | [`AccountGroupShare`](../../doc/models/account-group-share.md) | Optional | - | AccountGroupShare getAccountGroupShare() | setAccountGroupShare(AccountGroupShare accountGroupShare) |
+| `StandAlone` | [`FiltercriteriaObjectCall`](../../doc/models/filtercriteria-object-call.md) | Optional | - | FiltercriteriaObjectCall getStandAlone() | setStandAlone(FiltercriteriaObjectCall standAlone) |
+| `Condition` | [`PricePlanTriggerCondition`](../../doc/models/containers/price-plan-trigger-condition.md) | Optional | This is a container for any-of cases. | PricePlanTriggerCondition getCondition() | setCondition(PricePlanTriggerCondition condition) |
+| `Action` | [`Actionobject`](../../doc/models/actionobject.md) | Optional | - | Actionobject getAction() | setAction(Actionobject action) |
 
 ## Example (as JSON)
 
 ```json
 {
-  "accountGroupShare": {
-    "accountGroupShareIndividual": {
-      "filterCriteria": {
-        "ratePlanGroupId": 202
-      },
-      "condition": {
-        "action": "action6"
-      },
-      "action": {
-        "changePlan": {
-          "triggerDate": "triggerDate6",
-          "sharePlan": [
-            {
-              "fromCarrierCode": "fromCarrierCode6",
-              "toCarrierCode": "toCarrierCode8",
-              "criteriaPercentage": 170
-            },
-            {
-              "fromCarrierCode": "fromCarrierCode6",
-              "toCarrierCode": "toCarrierCode8",
-              "criteriaPercentage": 170
-            },
-            {
-              "fromCarrierCode": "fromCarrierCode6",
-              "toCarrierCode": "toCarrierCode8",
-              "criteriaPercentage": 170
-            }
-          ]
-        }
-      }
+  "standAlone": {
+    "filterCriteria": {
+      "carrierServicePlanCode": "carrierServicePlanCode4",
+      "accountNameList": [
+        "accountNameList7",
+        "accountNameList8"
+      ]
+    }
+  },
+  "condition": "Individual",
+  "action": {
+    "suspend": false,
+    "suspendDetails": {
+      "suspendFromAccounts": [
+        "suspendFromAccounts7"
+      ],
+      "suspendDuration": 152,
+      "suspendOption": "suspendOption2",
+      "threshold": 166,
+      "thresholdUnit": "GB"
+    },
+    "changePlan": false,
+    "changePlanDetails": {
+      "toCarrierServicePlanCode": "toCarrierServicePlanCode2"
     }
   }
 }

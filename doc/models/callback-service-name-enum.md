@@ -11,8 +11,8 @@ The name of the callback service.
 
 | Name |
 |  --- |
-| `Location` |
-| `DeviceLocation` |
+| `LOCATION` |
+| `DEVICELOCATION` |
 
 ## Example
 

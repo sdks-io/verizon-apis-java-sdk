@@ -24,13 +24,9 @@ CompletableFuture<ApiResponse<List<ServicePlan>>> listAccountServicePlansAsync(
 |  --- | --- | --- | --- |
 | `aname` | `String` | Template, Required | Account name. |
 
-## Server
-
-`Server.THINGSPACE`
-
 ## Response Type
 
-[`List<ServicePlan>`](../../doc/models/service-plan.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`List<ServicePlan>`](../../doc/models/service-plan.md).
 
 ## Example Usage
 
@@ -41,8 +37,16 @@ servicePlansController.listAccountServicePlansAsync(aname).thenAccept(result -> 
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof ConnectivityManagementResultException) {
+        ConnectivityManagementResultException connectivityManagementResultException = (ConnectivityManagementResultException) cause;
+        connectivityManagementResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```

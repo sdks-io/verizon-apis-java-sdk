@@ -37,13 +37,9 @@ CompletableFuture<ApiResponse<GIORequestResponse>> resumeProfileAsync(
 |  --- | --- | --- | --- |
 | `body` | [`GIOProfileRequest`](../../doc/models/gio-profile-request.md) | Body, Required | Device Profile Query |
 
-## Server
-
-`Server.THINGSPACE`
-
 ## Response Type
 
-[`GIORequestResponse`](../../doc/models/gio-request-response.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`GIORequestResponse`](../../doc/models/gio-request-response.md).
 
 ## Example Usage
 
@@ -51,10 +47,18 @@ CompletableFuture<ApiResponse<GIORequestResponse>> resumeProfileAsync(
 GIOProfileRequest body = new GIOProfileRequest.Builder(
     Arrays.asList(
         new GIODeviceList.Builder()
+            .deviceIds(Arrays.asList(
+                new GIODeviceId.Builder(
+                    "eid",
+                    "12345678901234567890123456789012"
+                )
+                .build()
+            ))
             .build()
     ),
     "0000123456-00001"
 )
+.smrsOid("1.3.6.1.4.1.#####.1.500.200.101.5")
 .mdnZipCode("12345")
 .servicePlan("service plan name")
 .build();
@@ -63,8 +67,16 @@ managingeSIMProfilesController.resumeProfileAsync(body).thenAccept(result -> {
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof GIORestErrorResponseException) {
+        GIORestErrorResponseException gIORestErrorResponseException = (GIORestErrorResponseException) cause;
+        gIORestErrorResponseException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -91,13 +103,9 @@ CompletableFuture<ApiResponse<GIORequestResponse>> profileSuspendAsync(
 |  --- | --- | --- | --- |
 | `body` | [`GIOProfileRequest`](../../doc/models/gio-profile-request.md) | Body, Required | Device Profile Query |
 
-## Server
-
-`Server.THINGSPACE`
-
 ## Response Type
 
-[`GIORequestResponse`](../../doc/models/gio-request-response.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`GIORequestResponse`](../../doc/models/gio-request-response.md).
 
 ## Example Usage
 
@@ -105,10 +113,18 @@ CompletableFuture<ApiResponse<GIORequestResponse>> profileSuspendAsync(
 GIOProfileRequest body = new GIOProfileRequest.Builder(
     Arrays.asList(
         new GIODeviceList.Builder()
+            .deviceIds(Arrays.asList(
+                new GIODeviceId.Builder(
+                    "eid",
+                    "12345678901234567890123456789012"
+                )
+                .build()
+            ))
             .build()
     ),
     "0000123456-00001"
 )
+.smrsOid("1.3.6.1.4.1.#####.1.500.200.101.5")
 .mdnZipCode("12345")
 .servicePlan("service plan name")
 .build();
@@ -117,8 +133,16 @@ managingeSIMProfilesController.profileSuspendAsync(body).thenAccept(result -> {
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof GIORestErrorResponseException) {
+        GIORestErrorResponseException gIORestErrorResponseException = (GIORestErrorResponseException) cause;
+        gIORestErrorResponseException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -145,13 +169,9 @@ CompletableFuture<ApiResponse<GIORequestResponse>> deviceSuspendAsync(
 |  --- | --- | --- | --- |
 | `body` | [`GIOProfileRequest`](../../doc/models/gio-profile-request.md) | Body, Required | Device Profile Query |
 
-## Server
-
-`Server.THINGSPACE`
-
 ## Response Type
 
-[`GIORequestResponse`](../../doc/models/gio-request-response.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`GIORequestResponse`](../../doc/models/gio-request-response.md).
 
 ## Example Usage
 
@@ -163,6 +183,7 @@ GIOProfileRequest body = new GIOProfileRequest.Builder(
     ),
     "0000123456-00001"
 )
+.smrsOid("1.3.6.1.4.1.#####.1.500.200.101.5")
 .mdnZipCode("12345")
 .servicePlan("service plan name")
 .build();
@@ -171,8 +192,16 @@ managingeSIMProfilesController.deviceSuspendAsync(body).thenAccept(result -> {
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof GIORestErrorResponseException) {
+        GIORestErrorResponseException gIORestErrorResponseException = (GIORestErrorResponseException) cause;
+        gIORestErrorResponseException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -199,13 +228,9 @@ CompletableFuture<ApiResponse<GIORequestResponse>> setFallbackAsync(
 |  --- | --- | --- | --- |
 | `body` | [`FallBack`](../../doc/models/fall-back.md) | Body, Required | Set the fallback attributes to allow a fallback profile to be activated. |
 
-## Server
-
-`Server.THINGSPACE`
-
 ## Response Type
 
-[`GIORequestResponse`](../../doc/models/gio-request-response.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`GIORequestResponse`](../../doc/models/gio-request-response.md).
 
 ## Example Usage
 
@@ -217,8 +242,16 @@ managingeSIMProfilesController.setFallbackAsync(body).thenAccept(result -> {
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof GIORestErrorResponseException) {
+        GIORestErrorResponseException gIORestErrorResponseException = (GIORestErrorResponseException) cause;
+        gIORestErrorResponseException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -245,13 +278,9 @@ CompletableFuture<ApiResponse<GIORequestResponse>> activateADeviceProfileAsync(
 |  --- | --- | --- | --- |
 | `body` | [`GIOProfileRequest`](../../doc/models/gio-profile-request.md) | Body, Required | Device Profile Query |
 
-## Server
-
-`Server.THINGSPACE`
-
 ## Response Type
 
-[`GIORequestResponse`](../../doc/models/gio-request-response.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`GIORequestResponse`](../../doc/models/gio-request-response.md).
 
 ## Example Usage
 
@@ -263,6 +292,7 @@ GIOProfileRequest body = new GIOProfileRequest.Builder(
     ),
     "0000123456-00001"
 )
+.smrsOid("1.3.6.1.4.1.#####.1.500.200.101.5")
 .mdnZipCode("12345")
 .servicePlan("service plan name")
 .build();
@@ -271,8 +301,16 @@ managingeSIMProfilesController.activateADeviceProfileAsync(body).thenAccept(resu
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof GIORestErrorResponseException) {
+        GIORestErrorResponseException gIORestErrorResponseException = (GIORestErrorResponseException) cause;
+        gIORestErrorResponseException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -299,13 +337,9 @@ CompletableFuture<ApiResponse<GIORequestResponse>> enableADeviceProfileAsync(
 |  --- | --- | --- | --- |
 | `body` | [`DeviceProfileRequest`](../../doc/models/device-profile-request.md) | Body, Required | Device Profile Query |
 
-## Server
-
-`Server.THINGSPACE`
-
 ## Response Type
 
-[`GIORequestResponse`](../../doc/models/gio-request-response.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`GIORequestResponse`](../../doc/models/gio-request-response.md).
 
 ## Example Usage
 
@@ -319,8 +353,16 @@ managingeSIMProfilesController.enableADeviceProfileAsync(body).thenAccept(result
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof GIORestErrorResponseException) {
+        GIORestErrorResponseException gIORestErrorResponseException = (GIORestErrorResponseException) cause;
+        gIORestErrorResponseException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -347,13 +389,9 @@ CompletableFuture<ApiResponse<GIORequestResponse>> deactivateADeviceProfileAsync
 |  --- | --- | --- | --- |
 | `body` | [`GIODeactivateDeviceProfileRequest`](../../doc/models/gio-deactivate-device-profile-request.md) | Body, Required | Device Profile Query |
 
-## Server
-
-`Server.THINGSPACE`
-
 ## Response Type
 
-[`GIORequestResponse`](../../doc/models/gio-request-response.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`GIORequestResponse`](../../doc/models/gio-request-response.md).
 
 ## Example Usage
 
@@ -369,8 +407,16 @@ managingeSIMProfilesController.deactivateADeviceProfileAsync(body).thenAccept(re
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof GIORestErrorResponseException) {
+        GIORestErrorResponseException gIORestErrorResponseException = (GIORestErrorResponseException) cause;
+        gIORestErrorResponseException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -397,13 +443,9 @@ CompletableFuture<ApiResponse<GIORequestResponse>> enableADeviceProfileForDownlo
 |  --- | --- | --- | --- |
 | `body` | [`DeviceProfileRequest`](../../doc/models/device-profile-request.md) | Body, Required | Device Profile Query |
 
-## Server
-
-`Server.THINGSPACE`
-
 ## Response Type
 
-[`GIORequestResponse`](../../doc/models/gio-request-response.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`GIORequestResponse`](../../doc/models/gio-request-response.md).
 
 ## Example Usage
 
@@ -417,8 +459,16 @@ managingeSIMProfilesController.enableADeviceProfileForDownloadAsync(body).thenAc
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof GIORestErrorResponseException) {
+        GIORestErrorResponseException gIORestErrorResponseException = (GIORestErrorResponseException) cause;
+        gIORestErrorResponseException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -445,13 +495,9 @@ CompletableFuture<ApiResponse<GIORequestResponse>> downloadADeviceProfileAsync(
 |  --- | --- | --- | --- |
 | `body` | [`DeviceProfileRequest`](../../doc/models/device-profile-request.md) | Body, Required | Device Profile Query |
 
-## Server
-
-`Server.THINGSPACE`
-
 ## Response Type
 
-[`GIORequestResponse`](../../doc/models/gio-request-response.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`GIORequestResponse`](../../doc/models/gio-request-response.md).
 
 ## Example Usage
 
@@ -465,8 +511,16 @@ managingeSIMProfilesController.downloadADeviceProfileAsync(body).thenAccept(resu
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof GIORestErrorResponseException) {
+        GIORestErrorResponseException gIORestErrorResponseException = (GIORestErrorResponseException) cause;
+        gIORestErrorResponseException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -493,13 +547,9 @@ CompletableFuture<ApiResponse<GIORequestResponse>> deleteADeviceProfileAsync(
 |  --- | --- | --- | --- |
 | `body` | [`DeviceProfileRequest`](../../doc/models/device-profile-request.md) | Body, Required | Device Profile Query |
 
-## Server
-
-`Server.THINGSPACE`
-
 ## Response Type
 
-[`GIORequestResponse`](../../doc/models/gio-request-response.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`GIORequestResponse`](../../doc/models/gio-request-response.md).
 
 ## Example Usage
 
@@ -513,8 +563,16 @@ managingeSIMProfilesController.deleteADeviceProfileAsync(body).thenAccept(result
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof GIORestErrorResponseException) {
+        GIORestErrorResponseException gIORestErrorResponseException = (GIORestErrorResponseException) cause;
+        gIORestErrorResponseException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```

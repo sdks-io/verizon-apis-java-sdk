@@ -26,13 +26,9 @@ CompletableFuture<ApiResponse<AsynchronousRequestResult>> getCurrentAsynchronous
 | `aname` | `String` | Template, Required | Account name. |
 | `requestId` | `String` | Template, Required | UUID from synchronous response. |
 
-## Server
-
-`Server.THINGSPACE`
-
 ## Response Type
 
-[`AsynchronousRequestResult`](../../doc/models/asynchronous-request-result.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`AsynchronousRequestResult`](../../doc/models/asynchronous-request-result.md).
 
 ## Example Usage
 
@@ -44,8 +40,16 @@ accountRequestsController.getCurrentAsynchronousRequestStatusAsync(aname, reques
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof ConnectivityManagementResultException) {
+        ConnectivityManagementResultException connectivityManagementResultException = (ConnectivityManagementResultException) cause;
+        connectivityManagementResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```

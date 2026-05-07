@@ -11,9 +11,9 @@ Device Id details.
 
 | Name | Type | Tags | Description | Getter | Setter |
 |  --- | --- | --- | --- | --- | --- |
-| `Kind` | `String` | Required | Kind of device.<br>**Constraints**: *Minimum Length*: `3`, *Maximum Length*: `6`, *Pattern*: `^[A-Za-z]{3,6}$` | String getKind() | setKind(String kind) |
-| `Id` | `String` | Required | Device Identity number.<br>**Constraints**: *Minimum Length*: `3`, *Maximum Length*: `32`, *Pattern*: `^[0-9]{3,32}$` | String getId() | setId(String id) |
-| `Mdn` | `String` | Optional | Device MDN number.<br>**Constraints**: *Minimum Length*: `3`, *Maximum Length*: `10`, *Pattern*: `^[A-Za-z0-9]{3,10}$` | String getMdn() | setMdn(String mdn) |
+| `Kind` | `String` | Required | Kind of device.<br><br>**Constraints**: *Minimum Length*: `3`, *Maximum Length*: `6`, *Pattern*: `^[A-Za-z]{3,6}$` | String getKind() | setKind(String kind) |
+| `Id` | `String` | Required | Device Identity number.<br><br>**Constraints**: *Minimum Length*: `3`, *Maximum Length*: `32`, *Pattern*: `^[0-9]{3,32}$` | String getId() | setId(String id) |
+| `Mdn` | `String` | Optional | Device MDN number.<br><br>**Constraints**: *Minimum Length*: `3`, *Maximum Length*: `10`, *Pattern*: `^[A-Za-z0-9]{3,10}$` | String getMdn() | setMdn(String mdn) |
 
 ## Example (as JSON)
 

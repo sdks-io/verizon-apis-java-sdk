@@ -15,7 +15,7 @@ Trigger details.
 | `TriggerName` | `String` | Optional | The user defined name of the trigger. | String getTriggerName() | setTriggerName(String triggerName) |
 | `OrganizationName` | `String` | Optional | The user assigned name of the organization associated with the trigger. | String getOrganizationName() | setOrganizationName(String organizationName) |
 | `TriggerCategory` | `String` | Optional | This is the value to use in the request body to detect anomalous behaivior. The values in this table will only be relevant when this parameter is set to this value. | String getTriggerCategory() | setTriggerCategory(String triggerCategory) |
-| `TriggerAttributes` | [`List<TriggerAttributesOptions>`](../../doc/models/trigger-attributes-options.md) | Optional | Additional details and keys for the trigger. | List<TriggerAttributesOptions> getTriggerAttributes() | setTriggerAttributes(List<TriggerAttributesOptions> triggerAttributes) |
+| `TriggerAttributes` | [`List<TriggerAttributesOptions2>`](../../doc/models/containers/trigger-attributes-options-2.md) | Optional | Additional details and keys for the trigger. | List<TriggerAttributesOptions2> getTriggerAttributes() | setTriggerAttributes(List<TriggerAttributesOptions2> triggerAttributes) |
 | `CreatedAt` | `String` | Optional | Timestamp for whe the trigger was created. | String getCreatedAt() | setCreatedAt(String createdAt) |
 | `ModifiedAt` | `String` | Optional | Timestamp for the most recent time the trigger was modified. | String getModifiedAt() | setModifiedAt(String modifiedAt) |
 

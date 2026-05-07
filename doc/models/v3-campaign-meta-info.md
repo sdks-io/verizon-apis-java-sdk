@@ -17,7 +17,7 @@ Campaign and campaign details.
 | `FirmwareName` | `String` | Optional | Firmware name. | String getFirmwareName() | setFirmwareName(String firmwareName) |
 | `FirmwareFrom` | `String` | Optional | Old firmware version. | String getFirmwareFrom() | setFirmwareFrom(String firmwareFrom) |
 | `FirmwareTo` | `String` | Optional | New software version. | String getFirmwareTo() | setFirmwareTo(String firmwareTo) |
-| `Protocol` | [`CampaignMetaInfoProtocolEnum`](../../doc/models/campaign-meta-info-protocol-enum.md) | Optional | Firmware protocol. Valid values include: LWM2M, OMD-DM.<br>**Default**: `CampaignMetaInfoProtocolEnum.LW_M2M` | CampaignMetaInfoProtocolEnum getProtocol() | setProtocol(CampaignMetaInfoProtocolEnum protocol) |
+| `Protocol` | [`CampaignMetaInfoProtocolEnum`](../../doc/models/campaign-meta-info-protocol-enum.md) | Optional | Firmware protocol. Valid values include: LWM2M, OMD-DM.<br><br>**Default**: `CampaignMetaInfoProtocolEnum.LW_M2M` | CampaignMetaInfoProtocolEnum getProtocol() | setProtocol(CampaignMetaInfoProtocolEnum protocol) |
 | `Make` | `String` | Required | Device make. | String getMake() | setMake(String make) |
 | `Model` | `String` | Required | Device model. | String getModel() | setModel(String model) |
 | `StartDate` | `LocalDate` | Required | Campaign start date. | LocalDate getStartDate() | setStartDate(LocalDate startDate) |

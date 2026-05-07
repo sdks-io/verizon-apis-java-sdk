@@ -32,36 +32,49 @@ CompletableFuture<ApiResponse<DeviceManagementResult>> sendSMSToDeviceAsync(
 |  --- | --- | --- | --- |
 | `body` | [`SMSSendRequest`](../../doc/models/sms-send-request.md) | Body, Required | Request to send SMS. |
 
-## Server
-
-`Server.THINGSPACE`
-
 ## Response Type
 
-[`DeviceManagementResult`](../../doc/models/device-management-result.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`DeviceManagementResult`](../../doc/models/device-management-result.md).
 
 ## Example Usage
 
 ```java
 SMSSendRequest body = new SMSSendRequest.Builder(
     "0000123456-00001",
-    "Can you hear me now?"
+    "the body or text of the message itself"
 )
+.customFields(Arrays.asList(
+        new CustomFields.Builder(
+            "CustomField1",
+            "value of the field"
+        )
+        .build()
+    ))
+.dataEncoding("optional 7 or 8-bit encoding")
 .deviceIds(Arrays.asList(
         new DeviceId.Builder(
-            "89148000000800139708",
+            "20-digit ICCID",
             "iccid"
         )
         .build()
     ))
+.timeToLive("a000000010000000R")
 .build();
 
 sMSController.sendSMSToDeviceAsync(body).thenAccept(result -> {
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof ConnectivityManagementResultException) {
+        ConnectivityManagementResultException connectivityManagementResultException = (ConnectivityManagementResultException) cause;
+        connectivityManagementResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -98,13 +111,9 @@ CompletableFuture<ApiResponse<SMSMessagesQueryResult>> listDevicesSMSMessagesAsy
 | `aname` | `String` | Template, Required | Account name. |
 | `next` | `Long` | Query, Optional | Continue the previous query from the URL in Location Header. |
 
-## Server
-
-`Server.THINGSPACE`
-
 ## Response Type
 
-[`SMSMessagesQueryResult`](../../doc/models/sms-messages-query-result.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`SMSMessagesQueryResult`](../../doc/models/sms-messages-query-result.md).
 
 ## Example Usage
 
@@ -115,8 +124,16 @@ sMSController.listDevicesSMSMessagesAsync(aname, null).thenAccept(result -> {
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof ConnectivityManagementResultException) {
+        ConnectivityManagementResultException connectivityManagementResultException = (ConnectivityManagementResultException) cause;
+        connectivityManagementResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```
@@ -173,13 +190,9 @@ CompletableFuture<ApiResponse<ConnectivityManagementSuccessResult>> startQueuedS
 |  --- | --- | --- | --- |
 | `aname` | `String` | Template, Required | Account name. |
 
-## Server
-
-`Server.THINGSPACE`
-
 ## Response Type
 
-[`ConnectivityManagementSuccessResult`](../../doc/models/connectivity-management-success-result.md)
+This method returns an [`ApiResponse`](../../doc/api-response.md) instance. The `getResult()` getter of this instance returns the response data which is of type [`ConnectivityManagementSuccessResult`](../../doc/models/connectivity-management-success-result.md).
 
 ## Example Usage
 
@@ -190,8 +203,16 @@ sMSController.startQueuedSMSDeliveryAsync(aname).thenAccept(result -> {
     // TODO success callback handler
     System.out.println(result);
 }).exceptionally(exception -> {
-    // TODO failure callback handler
-    exception.printStackTrace();
+    Throwable cause = exception.getCause();
+
+    if (cause instanceof ConnectivityManagementResultException) {
+        ConnectivityManagementResultException connectivityManagementResultException = (ConnectivityManagementResultException) cause;
+        connectivityManagementResultException.printStackTrace();
+    } else {
+        // fallback for unexpected errors
+        exception.printStackTrace();
+    }
+
     return null;
 });
 ```

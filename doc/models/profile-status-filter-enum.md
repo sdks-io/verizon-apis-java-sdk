@@ -13,9 +13,9 @@ The last status of the device's profile as a filter.
 |  --- |
 | `ENABLE` |
 | `DISABLE` |
-| `DOWNLOADDISABLE` |
-| `DOWNLOADENABLE` |
-| `NOTDOWNLOADED` |
+| `DOWNLOAD_DISABLE` |
+| `DOWNLOAD_ENABLE` |
+| `NOT_DOWNLOADED` |
 | `UNKNOWN` |
 | `DELETE` |
 
